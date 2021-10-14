@@ -1,0 +1,106 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Caregiver's burden (Zarit, 9180)'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
++--------------------+-------------------------+----------+--------+
+| Main variable name | Label                   | Format   | Code   |
++:===================+:========================+:=========+:=======+
+| burden             | Burden level (c2019_w1) | Discrete | 0 - 48 |
++--------------------+-------------------------+----------+--------+
+
+# Variable description
+
+La versión de 22 ítems de la Zarit Burden Interview (ZBI) es el instrumento más utilizado en la investigación sobre el cuidado de personas con demencia. Se ha utilizado en una variedad de diseños de investigación, para discriminar entre los participantes del estudio y para medir el cambio a lo largo del tiempo, resultante de la progresión de la condición del receptor de la atención, o de intervenciones destinadas a reducir la carga. Una ventaja significativa de la popularidad del ZBI es que los resultados obtenidos en los estudios se pueden comparar y sintetizar fácilmente. Usamos una versión reducida de 12 ítems [@bédard2001].
+
+# Explanation of how the variables were created
+
+Las variables utilizadas son: `q6712`, `q6713`, `q6714`, `q6715`, `q6716`, `q6717`, `q6718`, `q6719`, `q6720`, `q6721`, `q6722`, `q6723`.
+
+Obtenemos una escala de 0 a 48, mayores índices indican mayor carga.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2019, linea base:
+
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+recode q6712 q6713 q6714 q6715 q6716 q6717 q6718 q6719 q6720 q6721 q6722 q6723 (1=0) (2=1) (3=2) (4=3) (5=4) (else=.)  
+
+gen burden = q6712 + q6713 + q6714 + q6715 + q6716 + q6717 + q6718 + q6719 + q6720 + q6721 + q6722 + q6723
+
+label variable burden "Burden level (c2019_w1)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook burden
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy burden
+
+* Cohorte 2019, linea base:
+save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_caregiversburden.dta", replace
+```
+
+# Contact person:
+
+-   Name: Daniel Morillo
+-   e-mail: [daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+-   Phone number: (+34) 91 497 5816
+
+<br>
+
+Update of the original by:
+
+-   Name: Joan Domènech
+-   e-mail: [j.domenech\@pssjd.org](mailto:j.domenech@pssjd.org){.email}
+-   Phone number: (+34) <!--# TODO: Complete phone -->
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

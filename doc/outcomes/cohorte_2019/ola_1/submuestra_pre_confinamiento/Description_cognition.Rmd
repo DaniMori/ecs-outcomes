@@ -1,0 +1,147 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Cognition (composite score)'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+    number_sections: no
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown: 
+    wrap: 80
+nocite: '@he2012'
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
+| Main variable name | Label                                    | Format     | Code     |
+|:-------------------|:-----------------------------------------|:-----------|:---------|
+| cognition_std      | Cognition score, standardized (c2019_w1) | continuous | standard |
+| cognition          | Cognition score, harmonized (c2019_w1)   | continuous | 0-100    |
+
+# Variable description
+
+Cognitive functioning was assessed by evaluating verbal fluency with the animal-naming technique and immediate and delayed verbal recall was assessed with the Consortium to Establish a Registry for Alzheimer Disease Word List Memory [@moms1989]. Short-term memory was assessed with digit span backward and forward tests from the Weschler Adult Intelligence Scale [@wechsler1997]. A factor analysis was employed at previous waves to confirm that verbal fluency, immediate verbal recall, delayed verbal recall, digit span backward and digit span forward represented one dimension. Then, we calculated a global score for cognitive functioning as the average of the z-scores on each of the variables. We transformed this score into a 0-100 scale, with higher scores indicating better cognitive functioning.
+
+# Explanation on how the variable was created
+
+A global score in cognition was obtained from the standardized averages of verbal fluency (`q2536`), immediate verbal recall (`q2525`, `q2528`, and `q2531`), delayed verbal recall (`q2544`), digit span forward (`q2534`), and digit span backward (`q2535`). The score is given as a standardized variable, and transformed to a 0-100 range , with higher scores indicating better cognitive functioning.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
+```
+
+```{stata, echo=TRUE}
+recode q2525_recal1 q2528_recal2 q2531_recal3 q2534_score q2535_score q2536_score q2544_recall (999=.)
+
+egen immediate_c = rowmean(q2525_recal1 q2528_recal2 q2531_recal3)
+
+generate delayed_c = q2544_recall
+generate ds_forward = q2534_score
+generate ds_backward = q2535_score
+generate animals = q2536_score
+
+label variable immediate_c "Number of words recalled correctly in immediate Verbal recall"
+label variable delayed_c "Number of words recalled correctly in delayed Verbal recall"
+
+label variable ds_forward "Digit span - Digits forward"
+label variable ds_backward "Digit span - Digits backward"
+label variable animals "Number of animals named correctly"
+
+egen z_immediate_c = std(immediate_c)
+egen z_delayed_c = std(delayed_c)
+egen z_ds_forward = std(ds_forward)
+egen z_ds_backward = std(ds_backward)
+egen z_animals = std(animals)
+egen missing_cognitive = rowmiss(z_immediate_c - z_animals)
+egen z_cognitive_test = rowmean(z_immediate_c - z_animals) if missing_cognitive<=1
+
+egen cognition_std = std(z_cognitive_test)
+label variable cognition_std "Cognition score, standardized (c2019_w1)"
+ 
+/* The following step transforms the score generated into a 0-100 scale. */
+generate cognition = ((cognition_std + 3.356419) / (3.327911 + 3.356419))*100
+label variable cognition "Cognition score, harmonized (c2019_w1)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+sum cognition cognition_std
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy cognition_std cognition
+
+save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_cognition.dta", replace
+```
+
+# Contact person:
+
+-   Name: Daniel Morillo (adaptation for Cohort 2019, Wave 1)
+-   e-mail: [daniel.morillo\@uam.es](mailto:daniel.morillo@uam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+<br>
+
+Original version:
+
+The creation of this outcome variable is based on the follow-up 2 equivalent from the *Edad con Salud* study (see document [Description_cognition.doc](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/Cohorte%202011/Outcome%20descriptions/Description_cognition.docx?d=w6c2d69330c6f4ded85e8368f89d286d4&csf=1&web=1&e=V3ScM6)). For the original document, please refer to:
+
+-   Name: Félix Caballero
+
+-   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+
+-   Phone number: (+34) 91 497 24 47
+
+<br>
+
+-   Name: Elvira Lara (adaptation for Cohort 2011, Wave 3)
+
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+
+-   Phone number: (+34) 91 497 46 01
+
+```{r include=FALSE}
+devtools::session_info()
+```
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

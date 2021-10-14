@@ -1,0 +1,203 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Health status'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`"
+bibliography: ../../../../../www/Edad_con_salud_outcome_vars.bib
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@salomon2003, @wilson2006'
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(pacman)
+p_load(haven, tidyverse)
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  message     = FALSE  #   - Omite los mensajes
+)
+```
+
+# Variable information
+
++--------------------+-----------------------------+---------+---------------+
+| Main variable name | Label                       | Format  | Code          |
++:===================+:============================+:========+:==============+
+| health             | Health status (c2019_w1)    | Numeric | 0-100         |
++--------------------+-----------------------------+---------+---------------+
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+# Variable description
+
+`health` is the health status score ranging in 0-100, with 0 meaning the worst health and 100 the perfect health. Health status was assessed with a set of health-related questions grouped into ten health domains: vision, mobility, self-care, cognition, interpersonal activities, pain and discomfort, sleep and energy, affect domestic life and work, and hearing. For each question, the responses were recorded on a five-point scale ranging from 1 (no difficulty/problem) to 5 (extreme difficulty/inability). A composite health status score was derived using Partial Credit Model.
+
+# Explanation of how the variables were created
+
+Items from Section 2000 with a five-category response scale were used when calibrating (health) item difficulties and person abilities (individual health levels) using a Partial Credit Model. A total of 41 items from Section 2000 have been included, after excluding items `q2009`, `q2026`, and `q2041`, as they were conditional on certain values of previous items. Also, it seems like items `q2053_effort` and `q2054_feel` were not present in waves 1 and 2 of the 2011 Cohort.
+
+The method employed to generate the health status score is based on a Partial Credit Model. We have used R package `mirt` [@chalmers2012] to estimate the person ability estimate for each participant, with a marginal maximum likelihood algorithm. The score has been transformed into a 0-100 scale, where the maximum score of 100 represents best health.
+
+# Syntax used to create the variable (R 4.1.1)
+
+<br>
+
+```{r generate-outcomes, results='hide', echo=TRUE}
+library(mirt)
+
+survey_data <- read_dta(
+  file.path(
+    "~/../UAM",
+    "marta.miret@uam.es - Bases de datos maestras Edad con Salud",
+    "Ola_3/Cohorte_2019/Muestra completa",
+    "PES16028242_MN_Final20210602.dta"
+  )
+)
+
+
+HEALTH_VARS <- c(
+  # General health status:
+  "q2000_health", "q2001_activ",
+  
+  # Pain & discomfort:
+  "q2007_pains",
+  
+  # Mobility:
+  "q2003_vigor",  "q2036_walk",
+  "q2029_climb",  "q2046_going",   "q2045_movement", "q2030_crouch",
+  "q2027_stand",  "q2043_arising", "q2025_sitting",  "q2028_stand",
+  "q2031_pickup", "q2034_reach",   "q2040_carry",
+  
+  # Personal care:
+  "q2037_wash",   "q2038_dress", "q2044_toilet", "q2042_eating",
+  "q2005_appear", "q2006_stay", 
+  
+  # Cognition:
+  "q2035_concent", "q2011_learn",
+  
+  # Interpersonal activities:
+  "q2033_activ",  "q2012_relat", "q2013_confl",
+  "q2014_friend", "q2015_strang",
+  
+  # Domestic life & work:
+  "q2032_hh_resp", "q2039_daily", 
+  
+  # Sleep & energy:
+  "q2016_sleep", "q2017_rested",
+  
+  # Affect:
+  "q2018_depr", "q2019_worry", "q2047_affect", "q2048_interf",
+  
+  # Vision:
+  "q2023_vis_diff", "q2024_vis_diff",
+  
+  # Hearing:
+  "q2051_hear_diff", "q2052_hear_diff"
+)
+
+
+survey_data <- survey_data %>%
+  mutate(across(all_of(HEALTH_VARS), na_if, 888))
+
+health_status_data <- survey_data %>% select_at(HEALTH_VARS)
+
+hs_irt_model <- health_status_data %>%
+  mirt(model = 1, itemtype = "Rasch")
+
+hs_scores <- hs_irt_model %>% fscores() %>% drop()
+
+# Invert the scores so a higher score means a better health status
+hs_scores <- -hs_scores
+
+# Normalize the range to 0-100
+range_hs           <- hs_scores %>% range()
+hs_scores_rescaled <- (hs_scores - range_hs[1]) /
+  (range_hs[2] - range_hs[1]) *
+  100
+```
+
+<br>
+
+
+```{r descriptives, results='markup', echo=TRUE}
+# Model statistics:
+
+hs_irt_model %>% print()
+
+
+## Goodness of fit:
+hs_irt_model %>%
+  M2(na.rm = TRUE) %>%
+  pivot_longer(
+    cols      = everything(),
+    names_to  = "Statistic",
+    values_to = "Value"
+  )
+
+
+# Score descriptives:
+bind_cols(
+  health          = hs_scores,
+  health_rescaled = hs_scores_rescaled
+) %>%
+  psych::describe(skew = FALSE) %>%
+  select(-vars)
+```
+
+```{r save-data}
+output <- survey_data %>%
+  select(ID_ECS, q0007a_result, proxy)  %>%
+  add_column(
+    health = hs_scores_rescaled %>%
+      labelled(label = "Health status (c2019_w1)")
+  )
+
+output %>% write_dta(
+  file.path(
+    "~/../UAM",
+    "marta.miret@uam.es - Documentacion Edad con Salud/Edad con salud - Ola 3",
+    "Outcomes/Cohorte 2019/Muestra completa/Outcome datasets",
+    "Outcome_healthstatus.dta"
+  )
+)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo (adaptation for Cohort 2019, Wave 1)
+-   e-mail: [\daniel.morillo\@inv.uam.es\>](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+<br>
+
+Original version:
+
+The creation of this outcome variable is based on the wave-2 equivalent of the 2011 Cohort from the Edad con Salud study (see document [Description_HealthStatus.doc](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%202/Outcomes/Outcome%20descriptions/Description_HealthStatus.doc?d=wde2429dfc1bf4bc884d84b8e461fda79&csf=1&web=1&e=3tovyX)). For the original document, please refer to:
+
+-   Name: Félix Caballero
+-   e-mail: [\felix.caballero\@uam.es\>](mailto:felix.caballero@uam.es){.email}
+-   Phone number: (+34) 91 497 24 47
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

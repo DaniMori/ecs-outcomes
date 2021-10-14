@@ -1,0 +1,101 @@
+---
+title: "Edad con Salud -- cohort 2019 -- wave 1 -- 'Stressful Life Events'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++--------------------+----------------------------------+------------+-------+
+| Main variable name | Label                            | Format     | Code  |
++:===================+:=================================+:===========+:======+
+| sle                | Stressful Life Events (c2019_w1) | Continuous | 0-100 |
++--------------------+----------------------------------+------------+-------+
+
+<br>
+
+# Variable description
+
+A composite score in *Stressful Life Events* is obtained from the responses to the instrument *Cuestionario de Eventos Vitales Estresantes* included in the baseline of the 2019 cohort for the first time in the *Edad con Salud* study (see [the questionnaire document](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Cuestionario/Cohorte%202019/16028242CU0313_Cuestionario%20muestra%20nueva%20EDAD%20CON%20SALUD_CAPI_20190507.docx?d=w500c79adcc8b401ab1f7b442f9cae593&csf=1&web=1&e=TsqxwL), pp. 92-93). This instrument is a Spanish adaptation of the *List of Life Threatening Experiences* [@brugha1990], by @garcía-nieto2012. In the *Edad con Salud* questionnaire for the 2019 cohort, the instrument comprises items `Q4659` through `Q4670`.
+
+The score of this variable ranges from 0 to 100, with higher scores indicating a higher count of stressful life events experienced by the participant. It is worth noting that this measure is a composite variable of the different life events experienced by the participant in the last 12 months. As such, it is not expected that the items are effect indicators of a latent variable. Rather, the measurement model is most likely a causal indicator measurement model, i.e., the amount of "stressful life events" is what is causing a score of "stress suffered").
+
+# Explanation of how the variables were created
+
+Items have all binary responses, except for the values `888`, which indicate a "Don't know" answer. These are recoded as missing values first. Then, the score is computed as the mean of responses for the twelve items. Missing values are treated as `0`s (except in the cases where *all* values are missing; then, the result is also missing).
+
+# Syntax used to create the variable (Stata 15)
+
+<br>
+
+```{stata load-data}
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta"
+```
+
+```{stata generate-outcomes, echo=TRUE}
+recode q4659_ill-q4664_brokeoff (888 = .)
+
+egen sle_mean = rmean(q4659_ill-q4664_brokeoff)
+gen  sle      = sle_mean * 100
+
+label variable sle "Stressful Life Events (c2019_w1)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook sle
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy sle
+
+save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_stressfulLifeEvents.dta", replace
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo
+-   e-mail: [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

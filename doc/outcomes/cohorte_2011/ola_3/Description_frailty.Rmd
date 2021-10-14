@@ -1,0 +1,305 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 3 -- 'Frailty'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++--------------------+--------------------------+-------------+--------------+
+| Main variable name | Label                    | Format      | Code         |
++:===================+:=========================+:============+:=============+
+| frailty_index      | Frailty (c2011_w3)       | Categorical | 0 non-frail; |
+|                    |                          |             |              |
+|                    |                          |             | 1 frail      |
++--------------------+--------------------------+-------------+--------------+
+| frailty_score      | Frailty score (c2011_w3) | Continuous  | 0 - 1        |
++--------------------+--------------------------+-------------+--------------+
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+# Variable description
+
+*Frailty* is an index that considers the various biopsychosocial factors that can influence the presence of frailty in the elderly. This index originally includes a total of 31 ratings, covering the three dimensions assessed: "Chronic Health Conditions", "Cognitive functions" and "Disability and daily-life functioning". Each of these ratings receive a specific score [@tyrovolas2018]. Note though that *presence of injury* was not assessed in this wave, so 30 out of 31 scales were considered here.
+
+-   **Chronic Health Conditions:** Considers the variables Obesity, Hypertension, Stroke, Lung disease, Angina, Asthma, Arthritis, Oral impairment, Diabetes, Cataracts, Use of technical aids and Grip Strength.
+
+-   **Cognitive Functions:** Comprises the assessment of Learning and Short-term Memory (Delayed Recall task), Learning and Short-term Memory (Immediate Recall task), Working memory (Forwards and Backwards Digit tasks), and Verbal fluency (Animal Naming task).
+
+    Verbal Fluency and the Immediate Recall task was assessed using the Consortium to Establish a Registry for Alzheimer Disease Word List Memory [@moms1989]. The Delayed Recall task and the Forwards and Backwards Digit tasks were based on the WAIS III [@wechsler2002].
+
+-   **Disability and daily-life functioning:** Assesses the participant's functionality based on the WHODAS version 2.0 scale, and adds questions that cover the self-perception of the health status. Items such as Mobility, Interpersonal activities, Activities of domestic life, Sleep, Rest, Hearing, and Pain are considered \[@wilson2006, @measurin2010\].
+
+    Participants were asked to report the level of difficulty they had in performing some activities over the past 30 days using a five-point scale (none = 1, mild = 2, moderate = 3, severe = 4, extreme / can't do = 5). However, in the case of the scales for Attention, Mobility, and Interpersonal activities, there are different number of items, so the additive scores have ranges 13-65, 5-25 and 6-30, respectively.
+
+    In the case of mobility, items 2026 and 2041 were omitted [@tyrovolas2018].
+
+    Quintiles of the aforementioned scores were used to classify participants: without difficulty, mild, moderate, severe, and extreme.
+
+For further details on the frailty index, please see @tyrovolas2018 (section 2.3.1 in p. 139, and Table 1).
+
+# Explanation of how the variables were created
+
+The scores are given according to the following components assessed:
+
+-   Dichotomous rating: Assigned to the first 12 items (obesity, hypertension, stroke, lung disease, angina, asthma, arthritis, oral impairment, diabetes, cataracts, use of aid machines, grip strength). Integer values 0 or 1 are given depending on whether the participant has (1) or does not have (0) the condition assessed.
+
+-   3-point scale rating: Given to the four components of cognitive function and the physical activity outcome. Values of 0, 0.5 and, 1 are assigned, where 0 means "no alterations", 0.5 implies intermediate function, and 1 a low function for the "cognitive function" components, and for physical activity 0 means "high", 0.5 "moderate, and 1 "low".
+
+-   4-point scale rating: Values of 0, 0.33, 0.66 and 1 are given to the vision deficit assessment. A higher value represents a greater visual alteration.
+
+-   5-point scale rating: Used for the daily life activities domain; scores of 0, 0.25, 0.5, 0.75 and 1 are assigned, where the higher the assigned score, the greater the limitation in the activities.
+
+All the subscales are then averaged, and a threshold of 0.25 is applied; if the total score is below 0.25, the Non-frail category is assigned (0), while a value of 0.25 or higher indicates frailty (1).
+
+# Syntax used to create the variable (Stata 15)
+
+<br>
+
+```{stata load-data}
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
+```
+
+```{stata generate-outcomes, echo=TRUE}
+* Health deficits
+
+** Obesity
+
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\bmi_s2.dta", keepusing(bmi_cat) gen(merge_bmi)
+
+recode bmi_cat 0/2=0 3=1, gen(obesity)
+
+
+** Chronic conditions
+
+* TODO: Dataset update pending
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\chronics_s2.dta", keepusing(hypertension_s2 stroke_s2 oral_s2 lung_s2 diab_self_s2 angina_s2 asthma_s2 arthritis_s2 cataracts_s2) gen(merge_chronic)
+
+*** Merges in variables `hypertension_s2`, `stroke_s2`,  `oral_s2`,
+***   `lung_s2`, `diab_self_s2`, `angina_s2`, `asthma_s2`, `cataracts_s2`
+***   and `arthritis_s2`.
+recode hypertension_s2 stroke_s2 oral_s2 lung_s2 diab_self_s2 angina_s2 asthma_s2 arthritis_s2 cataracts_s2 (2=0)
+
+
+** Use of aid machines (Recode value `2` (= 'No') into `0`)
+recode q2049_aids_s2 2=0, gen(aid_machines)
+
+
+** Grip Strength (weakness) (grip: 2 levels)
+
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Grip strength.dta", keepusing(grip_s2) gen(merge_grip)
+
+
+** Vision difficulties (vision: 4 levels; note this does not match the
+**   visual acuity measure explained in Tyrovolas, 2018)
+
+recode q2023_vis_diff_s2 q2024_vis_diff_s2 (888=.)
+gen    vision = q2023_vis_diff_s2 + q2024_vis_diff_s2
+recode vision 2=0 3/4=0.33 5/7=.66 8/10=1
+
+
+** Hearing difficulties (WARNING!! These items do NOT correspond to the
+**   domains described in Tyrovolas, 2018; the items refer to
+**   "difficulty hearing someone on the other side of the room
+**   with a normal voice", `q2051`, and
+**   "difficulty hearing in a conversation with another person
+**    in a silent room", `q2052`.
+
+recode q2051_hear_diff 1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(hearing_room)
+
+recode q2052_hear_diff 1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(hearing_conv)
+
+
+** Pain
+
+recode q2007_pains q2009_difficulty (888=.)
+gen    pain = q2007_pains + q2009_difficulty
+recode pain 2/3=0 4=0.25 5/6=0.5 7/8=0.75 9/10=1
+
+
+** Sleep difficulties
+
+* Changed from previous version: `q2017_rested` is considered in another
+*   domain later on, so this section takes only into account
+*   `q2016_sleep`.
+recode q2016_sleep  1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(sleep)
+
+
+* Cognitive functions (TODO: Revisar sección)
+
+recode q2525_recal1 q2528_recal2 q2531_recal3 q2534_score q2535_score q2536_score q2544_recall (999=.)
+
+
+** Learning and short-term memory (delayed recall task)
+
+xtile  delayed_recall = q2544_recall, n(3)
+recode delayed_recall 1=1 2=0.5 3=0
+
+
+** Learning and short-term memory (immediate recall task)
+
+egen   imm_recall_mean  = rowmean(q2525_recal1 q2528_recal2 q2531_recal3)
+xtile  immediate_recall = imm_recall_mean, n(3)
+recode immediate_recall 1=1 2=0.5 3=0
+
+
+** Working Memory (digit span forward and backward tasks)
+
+egen   work_mem_mean  = rowmean(q2534_score q2535_score)
+xtile  working_memory = work_mem_mean, n(3)
+recode working_memory 1=1 2=0.5 3=0
+
+
+** Verbal Fluency
+
+xtile  verbal_fluency = q2536_score, n(3)
+recode verbal_fluency 1=1 2=0.5 3=0
+
+
+* Physical activity (peer week)
+
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Physical activity.dta", keepusing(physical_s2) gen(merge_physical)
+
+generate physical_week = physical_s2 / 2
+
+
+* Disability and daily life functioning
+
+recode q2003 q2005 q2006 q2012 q2013 q2014 q2015 q2025 q2027 q2028 q2029 q2030 q2031 q2032 q2033 q2034 q2036 q2037 q2038 q2039 q2040 q2042 q2043 q2044 q2045 q2046 (888=.)
+
+
+** Self-care activities
+
+gen    self_care_sum = (q2037 + q2038 + q2044 + q2042 + q2005 + q2006)
+xtile  self_care = self_care_sum, n(5)
+recode self_care 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Mobility
+
+gen    m_score = (q2003 + q2025 + q2027 + q2028 + q2029 + q2030 + q2031 + q2034 + q2036 + q2040 + q2043 + q2045 + q2046)
+xtile  mobility = m_score, n(5)
+recode mobility 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Interpersonal activities
+
+gen    interpersonal_sum = (q2033 + q2012 + q2013 + q2014 + q2015)
+xtile  interpersonal = interpersonal_sum, n(5)
+recode interpersonal 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in taking care of household responsibilities
+
+xtile  hh_responsibilities = q2032, n(5)
+recode hh_responsibilities 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in day to day work
+
+xtile  daily_work = q2039, n(5)
+recode daily_work 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in not feeling rested and refreshed during the day
+
+recode q2017_rested 888=.
+xtile  rested = q2017_rested, n(5)
+recode rested 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Learning difficulties
+
+recode q2011 (888=.)
+xtile  learning = q2011, n(5)
+recode learning 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Concentration difficulties
+
+recode q2035 (888=.)
+xtile  concentration = q2035, n (5)
+recode concentration 1=0 2=.25 3=.5 4=.75 5=1
+
+
+* Frailty algoritm
+
+egen frailty_score = rowmean(obesity hypertension stroke oral aid_machines lung diab_self angina asthma arthritis cataracts vision grip hearing_room hearing_conv pain sleep delayed_recall immediate_recall working_memory verbal_fluency physical_week mobility self_care interpersonal hh_responsibilities daily_work rested learning concentration)
+
+label variable frailty_score "Frailty score (c2011_w3)"
+
+
+gen     frailty_index = frailty_score
+replace frailty_index = 0 if frailty_index  < 0.25
+replace frailty_index = 1 if frailty_index >= 0.25 & frailty_index !=.
+
+label variable frailty_index "Frailty (c2011_w3)"
+
+label define frailty_levels 0 "non-frail" 1"frail"
+label values frailty_index frailty_levels
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook frailty_score frailty_index
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy frailty_score frailty_index
+
+save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_frailty.dta", replace
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Viviana Contreras Pizarro
+-   e-mail: [vcontrer\@ucm.es](mailto:vcontrer@ucm.es){.email}
+-   Phone number: (+34) 69 081 70 75
+
+Reviewed by:
+
+-   Name: Daniel Morillo Cuadrado
+-   e-mail: [daniel.morillo\@uam.es](mailto:daniel.morillo@uam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+<br>
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

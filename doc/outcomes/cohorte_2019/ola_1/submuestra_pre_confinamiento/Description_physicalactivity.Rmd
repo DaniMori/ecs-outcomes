@@ -1,0 +1,179 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Physical activity'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`"
+bibliography: ../../../../../www/Edad_con_salud_outcome_vars.bib
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
++--------------------+------------------------------------+-------------+---------------+
+| Main variable name | Label                              | Format      | Code          |
++:===================+:===================================+:============+:==============+
+| physical           | Physical activity level (c2019_w1) | Categorical | 0 = High;     |
+|                    |                                    |             |               |
+|                    |                                    |             | 1 = Moderate; |
+|                    |                                    |             |               |
+|                    |                                    |             | 2 = Low       |
++--------------------+------------------------------------+-------------+---------------+
+
+<br>
+
+# Variable description
+
+Physical activity has been assessed by means of the Global Physical Activity Questionnaire version 2 [GPAQ v2, @worldhealthorganization2012]. The GPAQ v2 has been developed by WHO for physical activity surveillance in countries. It collects information on physical activity participation in three settings (or domains) and sedentary behavior, comprising 16 questions. The three domains are: activity at work, travel to and from places, and recreational activities. The responses given by the participants have been converted to Metabolic Equivalent to Task (MET) values. Applying MET values to activity levels allows for calculating total physical activities. A detailed description of the calculation and categorization of the physical activity levels (low, moderate or high) is available at the GPAQ v2 guidelines in the WHO website.
+
+# Explanation of how the variables were created
+
+Physical activity has been categorized as follows:
+
+-   *High physical activity*: vigorous-intensity activity on at least 3 days achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per week
+
+    OR - seven or more days of any combination of walking, moderate or vigorous intensity activities achieving a minimum of at least 3000 MET-minutes per week.
+
+<br>
+
+-   *Moderate physical activity*: three or more days of vigorous-intensity activity of at least 20 minutes per day
+
+    OR - five or more days of moderate-intensity activity or walking of at least 30 minutes per day
+
+    OR - five or more days of any combination of walking, moderate or vigorous-intensity activities achieving a minimum of at least 600 MET-minutes per week.
+
+<br>
+
+-   *Low physical activity*: a person not meeting any of the above-mentioned criteria.
+
+# Syntax used to create the variable (Stata 15)
+
+<br>
+
+```{stata load-data}
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+recode q3017_days q3018_hours q3018_mins q3020_days q3021_hours q3021_mins q3023_days q3024_hours q3024_mins q3026_days q3027_hours q3027_mins q3029_days q3030_hours q3030_mins (. = 0) if q0007a_result == 1
+
+gen q3018_1=q3018_hours * 60 + q3018_mins
+
+/* The following sentence (and the next `replace` ones) disregard minutes below 1 hour. As far as I can say, this part of the syntax is incorrectly inherited from previous waves (see comment by Elvira in Wave-2 version): */
+
+* replace q3018_1 = 0 if q3018_hours == 0
+
+gen q3021_1 = q3021_hours * 60 + q3021_mins
+
+* replace q3021_1 = 0 if q3021_hours == 0
+
+gen q3024_1 = q3024_hours * 60 + q3024_mins
+
+* replace q3024_1 = 0 if q3024_hours == 0
+
+gen q3027_1 = q3027_hours * 60 + q3027_mins
+
+* replace q3027_1 = 0 if q3027_hours == 0
+
+gen q3030_1 = q3030_hours * 60 + q3030_mins
+
+* replace q3030_1 = 0 if q3030_hours == 0
+
+
+generate MET1 = ((q3017_days * q3018_1 * 8) + (q3020_days * q3021_1 * 4) + (q3023_days * q3024_1 * 4) + (q3026_days * q3027_1 * 8) + (q3029_days * q3030_1 * 4))
+sum MET1
+replace MET1 = . if (q3018_1 > 960 | q3021_1 > 960 | q3024_1 > 960 | q3027_1 > 960 | q3030_1 > 960) | ((q3017_days == 0 & q3018_1 > 0)| (q3020_days == 0 & q3021_1 > 0)|(q3023_days == 0 & q3024_1 > 0)|(q3026_days == 0 & q3027_1 > 0)|(q3029_days == 0 & q3030_1 > 0))
+
+/* More than 16 hours doing vigorous-intensity or moderate-intensity activities, is considered to be a missing value. The previous command aims to correct possible mistakes in the database. */
+
+generate physical = 0 if ((q3017_days + q3026_days) >= 3 & (MET1 >= 1500)) | (((q3017_days + q3020_days + q3023_days + q3026_days + q3029_days) >= 7) & (MET1 >= 3000))
+replace physical = 1 if (((q3017_days + q3026_days) >= 3 & ((q3017_days * q3018_1) + (q3026_days * q3027_1)) >= 60) | ((q3020_days + q3023_days + q3029_days) >= 5 & ((q3020_days * q3021_1) + (q3023_days * q3024_1) + (q3029_days * q3030_1)) >= 150) | ((q3017_days + q3020_days + q3023_days + q3026_days + q3029_days) >= 5 & (MET1 >= 600))) & (physical != 0)
+replace physical = 2 if physical == .
+
+/* If the computation of MET1 is incorrect, then physical should not be computed either, so the following line needs to be added: */
+replace physical = . if MET1 == .  
+
+replace physical = . if (q3016_vigorous == .) & (q3019_moderate == .) & (q3022_walk == .) & (q3025_leisure == .) & (q3028_moderate == .)
+label define dPhysical 0 "High" 1 "Moderate" 2 "Low"
+label values physical dPhysical
+label variable physical  "Physical activity level (c2019_w1)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook physical
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy physical
+
+save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_physicalactivity.dta", replace
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo (*adaptation for Cohort 2019, Wave 1*)
+-   e-mail: [daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+<br>
+
+Original version:
+
+The creation of this outcome variable is based on the Cohort 2011, Follow-up 2 equivalent from the *Edad con Salud* study (see document [Description_physical_activity.doc](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/Cohorte%202011/Outcome%20descriptions/Description_physical%20activity.docx?d=w4977473cde4f4cf08817f94ecf019524&csf=1&web=1&e=R7p3oQ)). For the original document, please refer to:
+
+-   Name: Félix Caballero
+
+-   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es)
+
+-   Phone number: (+34) 91 497 24 47
+
+<br>
+
+-   Name: Natalia Martín María (*adapted the algorithm*)
+
+-   e-mail: [natalia.martinm\@uam.es](mailto:natalia.martinm@uam.es)
+
+-   Phone number: (+34) 91 497 54 92
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
