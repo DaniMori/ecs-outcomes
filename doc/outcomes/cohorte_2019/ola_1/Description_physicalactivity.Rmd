@@ -3,8 +3,7 @@ title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Physical activity'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-# bibliography: "`r ecs.data::get_proj_bib_file()`"
-bibliography: ../../../../../www/Edad_con_salud_outcome_vars.bib
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
 # nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
 ---
@@ -76,7 +75,7 @@ Physical activity has been categorized as follows:
 <br>
 
 ```{stata load-data}
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Muestra completa\PES16028242_MN_Final20210602.dta"
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -131,9 +130,9 @@ codebook physical
 ```
 
 ```{stata save-data}
-keep ID ID_ECS physical
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre physical
 
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Muestra completa\Outcome datasets\Outcome_physicalactivity.dta", replace
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_physicalactivity.dta", replace version(13)
 ```
 
 <br>

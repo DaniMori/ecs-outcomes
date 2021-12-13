@@ -3,8 +3,7 @@ title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'Health status'" ## TODO: Añ
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-# bibliography: "`r ecs.data::get_proj_bib_file()`"
-bibliography: ../../../../../www/Edad_con_salud_outcome_vars.bib
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
 nocite: '@salomon2003, @wilson2006'
 ---
@@ -58,8 +57,8 @@ survey_data <- read_dta(
   file.path(
     "~/../UAM",
     "marta.miret@uam.es - Bases de datos maestras Edad con Salud",
-    "Ola_3/Cohorte_2019/Muestra completa",
-    "PES16028242_MN_Final20210602.dta"
+    "Ola_3/Cohorte_2019",
+    "rawdata_c2019w1.dta"
   )
 )
 
@@ -155,7 +154,7 @@ bind_cols(
 
 ```{r save-data}
 output <- survey_data %>%
-  select(ID_ECS, q0007a_result, proxy)  %>%
+  select(ID_ECS, q0007a_result, proxy, subsample_pre, interview_pre) %>%
   add_column(
     health = hs_scores_rescaled %>%
       labelled(label = "Health status (c2019_w1)")
@@ -165,9 +164,10 @@ output %>% write_dta(
   file.path(
     "~/../UAM",
     "marta.miret@uam.es - Documentacion Edad con Salud/Edad con salud - Ola 3",
-    "Outcomes/Cohorte 2019/Muestra completa/Outcome datasets",
+    "Outcomes/Cohorte 2019/Outcome datasets",
     "Outcome_healthstatus.dta"
-  )
+  ),
+  version = 13
 )
 ```
 
