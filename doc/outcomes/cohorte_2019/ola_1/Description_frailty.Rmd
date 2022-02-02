@@ -3,8 +3,9 @@ title: "Edad con Salud -- cohort 2019 -- wave 1 -- 'Frailty'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-bibliography: ../../../../../www/Edad_con_salud_outcome_vars.bib
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +15,7 @@ library(Statamarkdown)
 
 # Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
 
-STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+STATA_PATH <- r"(C:/Program Files (x86)/StataSE-64.exe)"
 
 
 # Opciones de configuración de las salidas de R y Stata:
@@ -26,7 +27,8 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
   echo        = FALSE, #   - No muestra la sintaxis en el documento
   results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
   cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
 )
 ```
 
@@ -41,8 +43,6 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 +--------------------+--------------------------+---------------+---------------+
 | frailty_score      | Frailty score (c2019_w1) | Continuous    | 0 - 1         |
 +--------------------+--------------------------+---------------+---------------+
-
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
 # Variable description
 
@@ -80,12 +80,10 @@ The scores are given according to the following components assessed:
 
 All the subscales are then averaged, and a threshold of 0.25 is applied; if the total score is below 0.25, the Non-frail category is assigned (0), while a value of 0.25 or higher indicates frailty (1).
 
-# Syntax used to create the variable (Stata 15)
-
-<br>
+# Syntax used to create the variable (Stata 13)
 
 ```{stata load-data}
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta"
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -93,7 +91,7 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 
 ** Obesity
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_BMI.dta", keepusing(bmi) gen(merge_bmi)
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_BMI.dta", keepusing(bmi) gen(merge_bmi)
 
 recode bmi 0/2=0 3=1, gen(obesity)
 
@@ -101,7 +99,7 @@ recode bmi 0/2=0 3=1, gen(obesity)
 ** Chronic conditions
 
 * TODO: Dataset update pending
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Chronic conditions.dta", keepusing(hypertension stroke oral_self lung diab_self angina asthma arthritis catar_self) gen(merge_chronic)
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_chronicconditions.dta", keepusing(hypertension stroke oral_self lung diab_self angina asthma arthritis catar_self) gen(merge_chronic)
 
 *** Directly merges in variables `hypertension`, `stroke`, `lung`,
 *** `angina`, `asthma` and `arthritis`.
@@ -122,7 +120,7 @@ recode q2049_aids 2=0, gen(aid_machines)
 
 ** Grip Strength (weakness) (grip: 2 levels)
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_gripstrength_preconfinement.dta", keepusing(grip) gen(merge_grip)
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_gripstrength.dta", keepusing(grip) gen(merge_grip)
 
 
 ** Vision difficulties (vision: 4 levels; note this does not match the
@@ -194,7 +192,7 @@ recode verbal_fluency 1=1 2=0.5 3=0
 
 * Physical activity (peer week)
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_physicalactivity.dta", keepusing(physical) gen(merge_physical)
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_physicalactivity.dta", keepusing(physical) gen(merge_physical)
 
 generate physical_week = physical / 2
 
@@ -279,20 +277,14 @@ codebook frailty_score frailty_index
 ```
 
 ```{stata save-data}
-keep ID_ECS q0007a_result proxy frailty_score frailty_index
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre frailty_score frailty_index
 
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_frailty.dta", replace
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_frailty.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
-
--   Name: Viviana Contreras Pizarro
--   e-mail: [vcontrer\@ucm.es](mailto:vcontrer@ucm.es){.email}
--   Phone number: (+34) 69 081 70 75
-
-Reviewed by:
 
 -   Name: Daniel Morillo Cuadrado
 -   e-mail: [daniel.morillo\@uam.es](mailto:daniel.morillo@uam.es){.email}
