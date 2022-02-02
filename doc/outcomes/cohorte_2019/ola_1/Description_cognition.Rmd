@@ -53,7 +53,7 @@ Cognitive functioning was assessed by evaluating verbal fluency with the animal-
 
 A global score in cognition was obtained from the standardized averages of verbal fluency (`q2536`), immediate verbal recall (`q2525`, `q2528`, and `q2531`), delayed verbal recall (`q2544`), digit span forward (`q2534`), and digit span backward (`q2535`). The score is given as a standardized variable, and transformed to a 0-100 range , with higher scores indicating better cognitive functioning.
 
-# Syntax used to create the variable (Stata 15)
+# Syntax used to create the variable (Stata 13)
 
 ```{stata load-data}
 * Cohorte 2019, linea base:

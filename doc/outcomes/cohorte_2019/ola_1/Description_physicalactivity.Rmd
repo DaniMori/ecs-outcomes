@@ -70,7 +70,7 @@ Physical activity has been categorized as follows:
 
 -   *Low physical activity*: a person not meeting any of the above-mentioned criteria.
 
-# Syntax used to create the variable (Stata 15)
+# Syntax used to create the variable (Stata 13)
 
 <br>
 
