@@ -1,0 +1,200 @@
+---
+title: "Edad con Salud -- cohort 2019 -- wave 1 -- Mini nutritional assessment" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+# bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+---
+
+<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
+
+<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
+
+<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
+
+<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
+##       o eliminar siguiente linea:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+STATA_PATH <- r"(C:\Stata 16\Stata 16.exe)"
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
+<!--# TODO: Leer párrafos a continuación -->
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+
++--------------------+----------------------------------------------------------+------------+--------------------------------------+
+| Main variable name | Label                                                    | Format     | Code                                 |
++:===================+:=========================================================+:===========+:=====================================+
+| MNA_cont           | Mini Nutritional Assessment continuous score (c2019_w1)  | Continuous | 0-14                                 |
++--------------------+----------------------------------------------------------+------------+--------------------------------------+
+| MNA                | Mini Nutritional Assessment categorical score (c2019_w1) | Ordinal    | 0 Normal nutritional status (12-14); |
+|                    |                                                          |            |                                      |
+|                    |                                                          |            | 1 At risk of malnutrition (8-11);    |
+|                    |                                                          |            |                                      |
+|                    |                                                          |            | 2 Malnourished (0-7)                 |
++--------------------+----------------------------------------------------------+------------+--------------------------------------+
+
+
+<!--# TODO: Añadir variables outcome a la tabla -->
+
+<!--# TODO: Eliminar ejemplos -->
+
+# Variable description
+
+<!--# TODO: Leer párrafo a continuación -->
+
+The Mini Nutritional Assessment - Short Form (MNA-SF) is a valid and sensitive rapid nutrition screen instrument that allows identifying elderly individuals as well nourished or at risk of malnutrition. A nutritional index based on the MNA-SF was obtained, with geriatric-specific assessment questions based on those included in the original screening questionnaire.
+
+<!--# TODO: Borrar párrafo anterior -->
+
+<!--# TODO: Redactar descripción de variable(s) -->
+
+# Explanation of how the variables were created
+
+<!--# TODO: Leer párrafos a continuación -->
+
+Three out of the six questionnaire's items were directly available (changes in appetite, weight loss, and acute illness; corresponding to q3045, q3046, and q3047, respectively). The information on the three remaining items was extracted from similar questions available in the interview (mobility, neuropsychological problems, and BMI; corresponding to q2041 and q2046 for mobility, recent depression in the CIDI module, and q2506 and q2507 for IMC). These items were coded and the resulting score obtained following the MNA-SF's scoring instructions. IMPORTANT: in order to generate these variables, it is necessary that the depression module's outcome variables are available in the dataset.
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+<!--# TODO: Redactar explicación de la creación de variable(s) -->
+
+# Syntax used to create the variable (Stata 16)
+
+<!--# TODO: Cambiar software y versión en el título según correponda a la sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
+
+<!--# TODO: Leer párrafo a continuación -->
+
+<!--# TODO: Borrar párrafo anterior -->
+
+```{stata load-data}
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_BMI.dta", keepusing(bmi_cont) nogenerate
+
+merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD10.dta", keepusing(d_lifetime_severity) gen(merge_MNA)
+
+gen MNA_A = q3045
+recode MNA_A (3=2)
+gen MNA_B = q3046
+gen MNA_C = 0
+replace MNA_C = 1 if q2041_movement==1
+replace MNA_C = 2 if q2046_going==1
+gen MNA_D = q3047
+gen MNA_E = 2
+replace MNA_E = 0 if d_lifetime_severity == 3
+
+gen MNA_F = bmi_cont
+recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3)
+gen MNA_cont = MNA_A + MNA_B + MNA_C + MNA_D + MNA_E + MNA_F
+gen MNA = MNA_cont
+recode MNA (0/7 = 2) (8/11 = 1) (12/14 = 0)
+
+label variable MNA_cont "Mini Nutritional Assessment-based continuous score (c2019_w1)"
+label variable MNA "Mini Nutritional Assessment-based categorical score (c2019_w1)"
+label define MNA 0 "Normal nutritional status (12-14)" 1 "At risk of malnutrition (8-11)" 2 "Malnourished (0-7)"
+label values MNA MNA
+```
+
+<!--# TODO: Leer texto "Otras consideraciones a continuación -->
+
+<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook MNA
+```
+
+<!--# TODO: Leer párrafos a continuación -->
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+```{stata save-data}
+* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
+* TODO: Borrar `subsample_pre interview_pre` si no procede (dejar sólo para Cohorte 2019, Ola 1)
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre MNA MNA_cont
+
+* Cohorte 2019, ola 1:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_MNA.dta", replace version(13)
+
+```
+<br>
+
+# Contact person:
+
+<!--# TODO: Leer párrafo a continuación -->
+
+
+<!--# TODO: Borrar párrafo anterior -->
+
+<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y '<prefijo>' y '<teléfono>' -->
+
+-   Name: Jesús Victor Sierralaya Baldeón
+-   e-mail: [\<jesus.sierralaya\@inv.uam.es\>](mailto:jesus.sierralaya@inv.uam.es){.email}
+-   Phone number: (+34) 91 497 58 09
+
+<br>
+
+<!--# TODO: Completar / eliminar "original version" según corresponda -->
+
+Original version:
+
+-   Name: Darío Moreno Agostino
+-   e-mail: [\<dario.moreno\@uam.es\>](mailto:dario.moreno@uam.es){.email}
+-   Phone number: (+34) 91 497 53 82
+
+# References
+
+<!--# TODO: Leer párrafo a continuación -->
+
+<!--# TODO: Borrar párrafo anterior -->
+
+::: {#refs}
+Kaiser, M., Bauer, J. M., Ramsch, C., Uter, W., Guigoz, Y., Cederholm, T., ... & Tsai, A. C. (2009). Validation of the Mini Nutritional Assessment Short-Form (MNA®-SF): A practical tool for identification of nutritional status. JNHA-The Journal of Nutrition, Health and Aging, 13(9), 782-788. 
+:::
+
+\newpage
+
+<!--# TODO: Leer párrafos a continuación -->
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
