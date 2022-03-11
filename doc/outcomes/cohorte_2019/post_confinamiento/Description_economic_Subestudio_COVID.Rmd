@@ -53,7 +53,11 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 <!--# TODO: Leer párrafo a continuación -->
 
-Por favor, incluye aquí una breve descripción de la variable o constructo que estás trabajando. Qué significa o qué evalúa esa variable y por qué es importante.
+### Qué significa 
+
+### Qué evalúa 
+
+### Por qué es importante.
 
 <!--# TODO: Borrar párrafo anterior -->
 
