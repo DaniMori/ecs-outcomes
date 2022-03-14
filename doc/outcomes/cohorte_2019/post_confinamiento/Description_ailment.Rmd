@@ -1,0 +1,197 @@
+---
+title: "Edad con Salud -- cohort 2019 -- COVID substudy -- 'Ailment'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
++--------------------+-------------------------------------+-------------+-----------------------------+
+| Main variable name | Label                               | Format      | Code                        |
++:===================+:====================================+:============+:============================+
+| infected           | (Likely) infected with              | dichotomous | 0 = No;                     |
+|                    | COVID-19 (c2019_wCOVID)             |             |                             |
+|                    |                                     |             | 1 = Yes                     |
++--------------------+-------------------------------------+-------------+-----------------------------+
+| severity_raw       | Severity of COVID-19                | ordinal     | 0 = Not infected;           |
+|                    | infection (c2019_wCOVID)            |             |                             |
+|                    |                                     |             | 1 = Only infected;          |
+|                    |                                     |             |                             |
+|                    |                                     |             | 2 = Hospitalized;           |
+|                    |                                     |             |                             |
+|                    |                                     |             | 3 = Hospitalized with O2;   |
+|                    |                                     |             |                             |
+|                    |                                     |             | 4 = Admitted in ICU         |
++--------------------+-------------------------------------+-------------+-----------------------------+
+| severity           | Severity of COVID-19 infection,     | ordinal     | 0 = Not infected;           |
+|                    | recoded (c2019_wCOVID)              |             |                             |
+|                    |                                     |             | 1 = Infected;               |
+|                    |                                     |             |                             |
+|                    |                                     |             | 2 = Infected & hospitalized |
++--------------------+-------------------------------------+-------------+-----------------------------+
+| rel_isolated       | Co-habited/ing with relative        | dichotomous | 0 = No;                     |
+|                    | isolated by COVID-19 (c2019_wCOVID) |             |                             |
+|                    |                                     |             | 1 = Yes                     |
++--------------------+-------------------------------------+-------------+-----------------------------+
+| rel_concerned      | Concerned about relative/friend     | dichotomous | 0 = No;                     |
+|                    | infected by COVID-19 (c2019_wCOVID) |             |                             |
+|                    |                                     |             | 1 = Yes                     |
++--------------------+-------------------------------------+-------------+-----------------------------+
+| rel_deceased       | Friend/familiar/acquantied deceased | dichotomous | 0 = No;                     |
+|                    | by COVID-19 (c2019_wCOVID)          |             |                             |
+|                    |                                     |             | 1 = Yes                     |
++--------------------+-------------------------------------+-------------+-----------------------------+
+
+# Variable description
+
+The following variables are related to the ailment caused by
+the COVID-19 pandemic:
+
+* **infected**: Self-reported response of confirmed or likely infection by
+  COVID-19, diagnosed by a physician. (**IMPORTANT:** Likely diagnosis of
+  COVID-19, as may be estimated by the checklist of compatible symptoms in
+  item section COVID2 is not contemplated in this variable.)
+
+* **severity_raw**: Original variable of severity of the COVID-19 infection,
+  from 0 (no infection) to 4 (hospitalization with oxygen and ICU-admission
+  and artificial breathing).
+
+* **severity**: Severity of the COVID-19 infection, from 0 (no infection)
+  to 2 (hospitalization). This variable collapses categories 2 to 4 of variable
+  `severity_raw` into a single category (2).
+
+* **rel_isolated**: Self-resported response of whether the participant lives or
+  has lived with a person isolated at home due to COVID-19 infection.
+
+* **rel_concerned**: Self-resported response of whether the participant is or
+  has been especially concerned about a relative or friend infected with
+  COVID-19.
+
+* **rel_deceased**: Self-resported response of whether any participant’s
+  relative, friend, or acquaintance, has passed away due to COVID-19 infection.
+
+# Explanation of how the variables were created
+
+* **infected**: Item `COVID1` recoded as `0` (*No*) or `1` (*Yes*).
+
+* **severity_raw**: Affirmative responses to items `COVID1`, `COVID1B`,
+  `COVID1C_1`, and `COVID1C_2` are summed up.
+
+* **severity**: From `severity_raw`, response categories `2` to `4` are
+  collapsed into category `2` (= *Hospitalized*).
+
+* **rel_isolated**: Item COVID3 recoded as `0` (*No*) or `1` (*Yes*).
+
+* **rel_concerned**: Item COVID4 recoded as `0` (*No*) or `1` (*Yes*).
+
+* **rel_deceased**: Item COVID5 recoded as `0` (*No*) or `1` (*Yes*).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2019, ola post-confinamiento:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+```
+
+```{stata generate-outcomes, echo=TRUE}
+* Recode COVID item responses ("No" responses as 0)
+recode COVID1 COVID1B COVID1C_1 COVID1C_2 COVID3 COVID4 COVID5 (2=0)
+
+* Label definition for dichotomous variables
+label define BOOL_LABELS 0 "No" 1 "Yes"
+
+* infected:
+gen infected = COVID1
+label values infected BOOL_LABELS
+label variable infected "(Likely) infected with COVID-19 (c2019_wCOVID)"
+
+* severity_raw:
+egen severity_raw = rowtotal(COVID1 COVID1B COVID1C_1 COVID1C_2)
+replace severity_raw=. if COVID1 == .
+label define dSeverityRaw 0 "Not infected" 1 "Only infected" 2 "Hospitalized" 3 "Hospitalized with O2" 4 "Admitted in ICU"
+label values severity_raw dSeverityRaw
+label variable severity_raw "Severity of COVID-19 infection (c2019_wCOVID)"
+
+* severity:
+gen severity = severity_raw
+recode severity (3=2) (4=2)
+label define dSeverity 0 "Not infected" 1 "Infected" 2 "Infected & hospitalized"
+label values severity dSeverity
+label variable severity "Severity of COVID-19 infection, recoded (c2019_wCOVID)"
+
+* rel_isolated:
+gen rel_isolated = COVID3
+label values rel_isolated BOOL_LABELS
+label variable rel_isolated "Co-habited/ing with relative isolated by COVID-19 (c2019_wCOVID)"
+
+* rel_concerned:
+gen rel_concerned = COVID4
+label values rel_concerned BOOL_LABELS
+label variable rel_concerned "Concerned about relative/friend infected by COVID-19 (c2019_wCOVID)"
+
+* rel_deceased:
+gen rel_deceased = COVID5
+label values rel_deceased BOOL_LABELS
+label variable rel_deceased "Friend/familiar/acquantied deceased by COVID-19 (c2019_wCOVID)"
+```
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook infected severity_raw severity rel_isolated rel_concerned rel_deceased
+```
+
+```{stata save-data}
+keep ID_ECS ESTADO_ENTREVISTA infected severity_raw severity rel_isolated rel_concerned rel_deceased
+
+* Cohorte 2019, ola post-confinamiento:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_ailment.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo
+-   e-mail: [\<daniel.morillo\@cibersam.es\>](mailto:daniel.morillo@cibersam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+# References
+
+(None)
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
