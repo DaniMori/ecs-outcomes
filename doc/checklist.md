@@ -12,7 +12,7 @@
 - [ ] El documento está completamente en inglés
 
 - [ ] Encabezado cumple formato
-  "Edad con Salud - [ ] cohort [cohort_id] - [ ] wave [wave_id]"
+  "Edad con Salud - cohort [cohort_id] - wave [wave_id]"
 
 - [ ] Subencabezado cumple formato "[variable(s) domain ID]"
 
@@ -25,7 +25,7 @@
 
 - [ ] Las etiquetas coinciden con "Outcome dataset"
 
-- [ ] Las etiquetas tienen sufijo "(c<cohorte>_w<ola>)"
+- [ ] Las etiquetas tienen sufijo "(c\<cohorte\>_w\<ola\>)"
 
 - [ ] Todas las variables tienen formato (Format)
 
@@ -93,7 +93,7 @@
 - [ ] "Outcome dataset" existe
 
 - [ ] El nombre de archivo cumple el formato
-  "Outcome_[nombrevariable]_[peculiaridad].dat"
+  "Outcome_[nombrevariable]_[peculiaridad].dta"
 
 - [ ] [nombrevariable] y [peculiaridad] coinciden con los valores en el nombre de
   archivo del "Outcome description"
@@ -103,7 +103,10 @@
 - [ ] "Outcome dataset" está en formato Stata 13 (comando `dtaversion`)
 
 - [ ] El número de casos en el dataset coincide con el número de casos en la BDD
-  maestra correspondiente (para C2019_W1 3,002 casos)
+  maestra correspondiente (para C2019_W1 3,002 casos; para C2019_wCOVID, 1854 casos)
+
+- [ ] El número de casos válidos en el dataset coincide con el número de casos
+  validos esperables en la BDD maestra correspondiente (para C2019_wCOVID, 1166 casos)
 
 - [ ] Todas las variables en la tabla en "Outcome description" están en
   "Outcome dataset"
@@ -127,8 +130,8 @@
   coinciden con los valores resultantes de ejecutar la sintaxis en
   "Outcome description"
 
-- [ ] Se encuentran las siguientes variables de apoyo: `q0007a_result`, `ID_ECS`,
-  `proxy`.
+- [ ] Se encuentran las variables de apoyo en el dataset: `q0007a_result`, `ID_ECS`,
+  `proxy` (para c2019_w1); `ID_ECS` y `ESTADO_ENTREVISTA` (para c2019_wCOVID).
 
 - [ ] Para las variables de C2019_W1, se encuentran las variables `subsample_pre` y
   `interview_pre`.
