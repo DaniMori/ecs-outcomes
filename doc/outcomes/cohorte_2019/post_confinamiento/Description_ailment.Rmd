@@ -132,6 +132,7 @@ label define BOOL_LABELS 0 "No" 1 "Yes"
 gen infected = COVID1
 label values infected BOOL_LABELS
 label variable infected "(Likely) infected with COVID-19 (c2019_wCOVID)"
+replace infected=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 
 * severity_raw:
 egen severity_raw = rowtotal(COVID1 COVID1B COVID1C_1 COVID1C_2)
@@ -139,6 +140,7 @@ replace severity_raw=. if COVID1 == .
 label define dSeverityRaw 0 "Not infected" 1 "Only infected" 2 "Hospitalized" 3 "Hospitalized with O2" 4 "Admitted in ICU"
 label values severity_raw dSeverityRaw
 label variable severity_raw "Severity of COVID-19 infection (c2019_wCOVID)"
+replace severity_raw=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 
 * severity:
 gen severity = severity_raw
@@ -146,21 +148,25 @@ recode severity (3=2) (4=2)
 label define dSeverity 0 "Not infected" 1 "Infected" 2 "Infected & hospitalized"
 label values severity dSeverity
 label variable severity "Severity of COVID-19 infection, recoded (c2019_wCOVID)"
+replace severity=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 
 * rel_isolated:
 gen rel_isolated = COVID3
 label values rel_isolated BOOL_LABELS
 label variable rel_isolated "Co-habited/ing with relative isolated by COVID-19 (c2019_wCOVID)"
+replace rel_isolated=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 
 * rel_concerned:
 gen rel_concerned = COVID4
 label values rel_concerned BOOL_LABELS
 label variable rel_concerned "Concerned about relative/friend infected by COVID-19 (c2019_wCOVID)"
+replace rel_concerned=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 
 * rel_deceased:
 gen rel_deceased = COVID5
 label values rel_deceased BOOL_LABELS
 label variable rel_deceased "Friend/familiar/acquantied deceased by COVID-19 (c2019_wCOVID)"
+replace rel_deceased=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
 ```
 
 <br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
