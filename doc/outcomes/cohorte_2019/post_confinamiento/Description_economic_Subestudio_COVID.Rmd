@@ -30,9 +30,9 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 +---------------+------------------------------------------------------------------------------+-------------+---------------------+
 | Variable name | Label                                                                        | Format      | Code                |
 +===============+==============================================================================+=============+=====================+
-| quietness     | Quietness at home (c2019_wCOVID)                                             | Dichotomous | 0 = No              |
+| quietness     | Quietness at home (c2019_wCOVID)                                             | Dichotomous | 0 = Yes             |
 |               |                                                                              |             |                     |
-|               |                                                                              |             | 1 = Yes             |
+|               |                                                                              |             | 1 = No              |
 +---------------+------------------------------------------------------------------------------+-------------+---------------------+
 | internet      | Internet connection at home (c2019_wCOVID)                                   | Dichotomous | 0 = No              |
 |               |                                                                              |             |                     |
@@ -53,28 +53,27 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 The following variables are related to characteristics of the house of the participant and the changes in the economy caused by the COVID-19 pandemic:
 
-* **quietness**: Self-reported response of whether there is a lot of noise in the house and it does not let them rest.
+-   **quietness**: Self-reported response of whether there is a lot of noise in the house and it does not let them rest.
 
-* **internet**: Self-reported response of whether the participant's home has internet access. 
+-   **internet**: Self-reported response of whether the participant's home has internet access.
 
-* **home_score**: Total of items related to the size of the house and if it has a view to the outside.
+-   **home_score**: Total of items related to the size of the house and if it has a view to the outside.
 
+-   **economy**: Self-reported response of whether the economy has worsened due to COVID-19.
 
-* **economy**: Self-reported response of whether the economy has worsened due to COVID-19.
-
-* **unemployment**: Self-reported response of whether the participant is unemployed indefinitely or temporarily due to COVID-19
+-   **unemployment**: Self-reported response of whether the participant is unemployed indefinitely or temporarily due to COVID-19
 
 # Explanation of how the variables were created
 
-* **quietness**: Reversed item `ECON1_1` recoded as  `0` (*Yes*) or `1` (*No*).
+-   **quietness**: Reversed item `ECON1_1` recoded as `0` (*Yes*) or `1` (*No*).
 
-* **internet**: Item `ECON1_2` recoded as  `0` (*No*) or `1` (*Yes*).
+-   **internet**: Item `ECON1_2` recoded as `0` (*No*) or `1` (*Yes*).
 
-* **home_score**: Standardization of the sum of the standardized scores `ECON1_3, ECON1_4, ECON1_5, ECON2 and ECON3`
+-   **home_score**: Standardization of the sum of the standardized scores `ECON1_3, ECON1_4, ECON1_5, ECON2 and ECON3`
 
-* **economy**: Item `ECON4` recoded as  `0` (*No*) or `1` (*Yes*).
+-   **economy**: Item `ECON4` recoded as `0` (*No*) or `1` (*Yes*).
 
-* **unemployment**: Item `ECON5` recoded as  `0` (*No*) or `1` (*Yes*).
+-   **unemployment**: Item `ECON5` recoded as `0` (*No*) or `1` (*Yes*).
 
 # Syntax used to create the variable (Stata 16)
 
@@ -160,7 +159,6 @@ label values unemployment BOOL_LABELS
 codebook quietness internet home_score economy unemployment
 ```
 
-
 ```{stata save-data}
 keep ID_ECS ESTADO_ENTREVISTA quietness internet home_score economy unemployment
 
@@ -173,17 +171,17 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 # Contact person:
 
 -   Name: Jesús Victor Sierralaya Baldeón
--   e-mail: [\ jesus.sierralaya\@inv.uam.es](mailto:jesus.sierralaya@inv.uam.es){.email}
+-   e-mail: [ jesus.sierralaya\@inv.uam.es](mailto:jesus.sierralaya@inv.uam.es){.email}
 -   Phone number: (+34) 91 497 58 09
 
 <br>
 
 <!--# TODO: Completar / eliminar "original version" según corresponda -->
 
-\ Original version:
+ Original version:
 
 -   Name: Daniel Morillo
--   e-mail: [\ daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+-   e-mail: [ daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
 -   Phone number: (+34) 91 497 58 16
 
 # References
