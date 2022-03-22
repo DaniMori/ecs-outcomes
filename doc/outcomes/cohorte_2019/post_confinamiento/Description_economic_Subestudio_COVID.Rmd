@@ -15,7 +15,6 @@ STATA_PATH <- r"(C:\Stata 16\Stata 16.exe)"
 options(width = 88) # Ancho de salida de texto en R
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-  ## TODO: Descomentar si hace falta
   engine.path = list(stata = STATA_PATH),
   echo        = FALSE, #   - No muestra la sintaxis en el documento
   results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
@@ -27,27 +26,27 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
-| Variable name | Label                                                                        | Format      | Code                |
-+===============+==============================================================================+=============+=====================+
-| quietness     | Quietness at home (c2019_wCOVID)                                             | Dichotomous | 0 = Yes             |
-|               |                                                                              |             |                     |
-|               |                                                                              |             | 1 = No              |
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
-| internet      | Internet connection at home (c2019_wCOVID)                                   | Dichotomous | 0 = No              |
-|               |                                                                              |             |                     |
-|               |                                                                              |             | 1 = Yes             |
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
-| home_score    | Home score (measure of size and whether it is outward facing) (c2019_wCOVID) | Dichotomous | standardized (0, 1) |
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
-| economy       | Economic situation worsened due to COVID-19 measures (c2019_wCOVID)          | Dichotomous | 0 = No              |
-|               |                                                                              |             |                     |
-|               |                                                                              |             | 1 = Yes             |
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
-| unemployment  | (Temporally) unemployed due to COVID-19 measure (c2019_wCOVID)               | Dichotomous | 0 = No              |
-|               |                                                                              |             |                     |
-|               |                                                                              |             | 1 = Yes             |
-+---------------+------------------------------------------------------------------------------+-------------+---------------------+
++---------------+---------------------------------------------------------------------+-------------+---------------------+
+| Variable name | Label                                                               | Format      | Code                |
++===============+=====================================================================+=============+=====================+
+| quietness     | Quietness at home (c2019_wCOVID)                                    | Dichotomous | 0 = Yes             |
+|               |                                                                     |             |                     |
+|               |                                                                     |             | 1 = No              |
++---------------+---------------------------------------------------------------------+-------------+---------------------+
+| internet      | Internet connection at home (c2019_wCOVID)                          | Dichotomous | 0 = No              |
+|               |                                                                     |             |                     |
+|               |                                                                     |             | 1 = Yes             |
++---------------+---------------------------------------------------------------------+-------------+---------------------+
+| home_score    | Home score (c2019_wCOVID)                                           | Dichotomous | standardized (0, 1) |
++---------------+---------------------------------------------------------------------+-------------+---------------------+
+| economy       | Economic situation worsened due to COVID-19 measures (c2019_wCOVID) | Dichotomous | 0 = No              |
+|               |                                                                     |             |                     |
+|               |                                                                     |             | 1 = Yes             |
++---------------+---------------------------------------------------------------------+-------------+---------------------+
+| unemployment  | (Temporally) unemployed due to COVID-19 measure (c2019_wCOVID)      | Dichotomous | 0 = No              |
+|               |                                                                     |             |                     |
+|               |                                                                     |             | 1 = Yes             |
++---------------+---------------------------------------------------------------------+-------------+---------------------+
 
 # Variable description
 
@@ -175,8 +174,6 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 -   Phone number: (+34) 91 497 58 09
 
 <br>
-
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
 
  Original version:
 
