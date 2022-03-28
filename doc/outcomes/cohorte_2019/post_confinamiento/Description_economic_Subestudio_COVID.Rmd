@@ -29,7 +29,7 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 +---------------+---------------------------------------------------------------------+-------------+---------------------+
 | Variable name | Label                                                               | Format      | Code                |
 +===============+=====================================================================+=============+=====================+
-| quietness     | Quietness at home (c2019_wCOVID)                                    | Dichotomous | 0 = Yes             |
+| noise         | Noise at home (c2019_wCOVID)                                        | Dichotomous | 0 = Yes             |
 |               |                                                                     |             |                     |
 |               |                                                                     |             | 1 = No              |
 +---------------+---------------------------------------------------------------------+-------------+---------------------+
@@ -52,7 +52,7 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 The following variables are related to characteristics of the house of the participant and the changes in the economy caused by the COVID-19 pandemic:
 
--   **quietness**: Self-reported response of whether there is a lot of noise in the house and it does not let them rest.
+-   **noise**: Self-reported response of whether there is a lot of noise in the house and it does not let them rest.
 
 -   **internet**: Self-reported response of whether the participant's home has internet access.
 
@@ -64,7 +64,7 @@ The following variables are related to characteristics of the house of the parti
 
 # Explanation of how the variables were created
 
--   **quietness**: Reversed item `ECON1_1` recoded as `0` (*Yes*) or `1` (*No*).
+-   **noise**: Reversed item `ECON1_1` recoded as `0` (*Yes*) or `1` (*No*).
 
 -   **internet**: Item `ECON1_2` recoded as `0` (*No*) or `1` (*Yes*).
 
@@ -83,10 +83,10 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudi
 
 ```{stata generate-outcomes, echo=TRUE}
 * Generate variables from questionnaire and recoding
-gen quietness = ECON1_1 //Reversed item
-replace quietness = 0 if quietness == 1
-replace quietness = 1 if quietness == 2
-replace quietness = . if ECON1_1 == 9
+gen noise = ECON1_1 //Reversed item
+replace noise = 0 if noise == 1
+replace noise = 1 if noise == 2
+replace noise = . if ECON1_1 == 9
 
 gen internet = ECON1_2
 replace internet = 0 if internet == 2
@@ -137,8 +137,8 @@ egen float home_score = std(home_score_filtro), mean(0) std(1)
 * Labels 
 label define BOOL_LABELS 0 "No" 1 "Yes"
 
-label variable quietness "Quietness at home (c2019_wCOVID)"
-label values quietness BOOL_LABELS
+label variable noise "Noise at home (c2019_wCOVID)"
+label values noise BOOL_LABELS
 
 label variable internet "Internet connection at home (c2019_wCOVID)"
 label values internet BOOL_LABELS
@@ -155,11 +155,11 @@ label values unemployment BOOL_LABELS
 <br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
-codebook quietness internet home_score economy unemployment
+codebook noise internet home_score economy unemployment
 ```
 
 ```{stata save-data}
-keep ID_ECS ESTADO_ENTREVISTA quietness internet home_score economy unemployment
+keep ID_ECS ESTADO_ENTREVISTA noise internet home_score economy unemployment
 
 * Cohorte 2019, ola post-confinamiento:
 saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_economic.dta", replace version(13)
