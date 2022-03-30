@@ -1,0 +1,155 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'MMSE'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
+##       o eliminar linea 34:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++------------------------+---------------------------------------------------+-------------+-------------+
+| **Main variable name** | **Label**                                         | **Format**  | **Code**    |
++:=======================+:==================================================+:============+:============+
+| Sum_MMSEc              | Rounded and corrected MMSE total score (c2019_w1) | Discrete    | 0-30        |
++------------------------+---------------------------------------------------+-------------+-------------+
+
+# Variable description
+
+The Mini Mental State Examination (MMSE) is effective as a screening tool for cognitive impairment with older, community dwelling, hospitalized and institutionalized adults, being able to separate patients with cognitive impairment from those without it, and to measure changes in cognitive status that may benefit from intervention. It is an 11-question measure that tests five areas of cognitive function: orientation, registration, attention and calculation, memory, and language. The maximum score is 30. A score of 23 or lower is indicative of cognitive impairment.
+
+# Explanation of how the variables were created
+
+The total score of MMSE was calculated as the sum of items from q1038a to q1048, ranging from 0 to 30 (higher scores, better cognition).
+
+There are some items which can contain "Not Applicable" (NA) [999], if respondent has no education or whether has some physical impairment preventing them from answering (e.g., blindness). For these people, we first created a variable indicating whether the respondent had some NA (i.e. q1041, q1043, q1045, q1046, q1047, q1048. Then, we recoded NA answers (999) into missing values. We summed up all the items for people with no NA and for people with special conditions. Then we calculated the corrected score using with the following formula: (sum_MMSE_v2\*30)/ (30+d1+d2+d3+d4+d5+d6), being d1=-5 if q1041=NA d2=-2 if q1043=NA d3=-3 if q1045=NA d4=-1 if q1046=NA d5=-1 if q1047=NA d6=-1 if q1048=NA Finally, we rounded these corrected scores to the nearest unit.
+
+# Syntax used to create the variable (Stata 13)
+
+```{stata load-data}
+
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+/* Uncomment the following line to check frequencies */
+/* tab1 q1038a q1038b q1038c q1038d q1038e q1039a q1039b q1039c q1039d q1039e q1040 q1041 q1042 q1043 q1044 q1045 q1046 q1047 q1048, nol */
+
+/* Generating a variable for people with NA in any of the MMSE items */
+gen na_mmse=0
+replace na_mmse=1 if (q1041==999 | q1043==999 | q1045==999 | q1046==999 | q1047==999 | q1048==999)
+replace na_mmse=. if (q1038==2  | q0007a_result!=1)
+label variable na_mmse "Individuals with NA answers in MMSE"
+
+/* Converting 999 (NA) values in missing data */
+recode q1041 q1043 q1045 q1046 q1047 q1048 (999=.)
+
+/* Sum of MMSE items for individuals without NA answers (all items were applied) */
+egen sum_MMSE_v1=rowtotal(q1038a q1038b q1038c q1038d q1038e q1039a q1039b q1039c q1039d q1039e q1040 q1041 q1042 q1043 q1044 q1045 q1046 q1047 q1048) if na_mmse==0, missing 
+label variable sum_MMSE_v1 "MMSE total score for individuals with no NA answers"
+
+/* Sum of MMSE items for individuals with NA answers */
+egen sum_MMSE_v2=rowtotal(q1038a q1038b q1038c q1038d q1038e q1039a q1039b q1039c q1039d q1039e q1040 q1041 q1042 q1043 q1044 q1045 q1046 q1047 q1048) if na_mmse==1, missing
+label variable sum_MMSE_v2 "MMSE total score for individuals with NA answers"
+
+/* Variables to correct total scores in case of NA answers */
+gen d1=0
+replace d1=-5 if (q1041==999)
+gen d2=0
+replace d2=-2 if (q1043==999)
+gen d3=0
+replace d3=-3 if (q1045==999)
+gen d4=0
+replace d4=-1 if (q1046==999)
+gen d5=0
+replace d5=-1 if (q1047==999)
+gen d6=0
+replace d6=-1 if (q1048==999)
+
+/* Corrected MMSE total score */
+gen sum_MMSE_v3=.
+replace sum_MMSE_v3= sum_MMSE_v1
+replace sum_MMSE_v3= (sum_MMSE_v2*30)/ (30+d1+d2+d3+d4+d5+d6) if na_mmse==1
+label variable sum_MMSE_v3 "Crude and corrected MMSE total score "   
+
+gen sum_MMSEc=round(sum_MMSE_v3)
+label variable sum_MMSEc "Rounded and corrected MMSE total score (c2019_w1)"   
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+sum sum_MMSEc, detail
+
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre sum_MMSEc
+
+*Cohorte 2019, linea base:
+
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_MMSE.dta", replace version(13)
+
+```
+
+# Contact person:
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+Original version:
+
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya\@sjd.es](mailto:beatriz.olaya@sjd.es){.email}
+-   Phone number: +34 93 640 63 50 (ext: 1-2540)
+
+# References
+
+Folstein, M., Folstein, S.E., McHugh, P.R. (1975). "Mini-Mental State" a Practical Method for Grading the Cognitive State of Patients for the Clinician. Journal of Psychiatric Research, 12(3); 189-198.
+
+Lobo A, Saz P, Marcos G, Grupo de Trabajo ZARADEMP. MMSE: Examen Cognoscitivo Mini-Mental. Madrid: TEA Ediciones; 2002.
+
+López Miquel, J., Martí Agustí, G. (2011). Mini-Examen Cognoscitivo (MEC) Mini-Mental State Examination (MMSE). Rev Esp Med Legal, 37(3):122-127
+
+<https://www.mountsinai.on.ca/care/psych/on-call-resources/on-call-resources/mmse.pdf>
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

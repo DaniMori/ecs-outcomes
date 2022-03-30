@@ -1,0 +1,228 @@
+---
+title: "Edad con Salud -- cohort 2019 -- COVID substudy -- 'Depression ICD10'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+#bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y aÃ±adir cita(s) o borrar campo
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el cÃ³digo:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuraciÃ³n de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de cÃ³digo:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el cÃ³digo de Stata de 'chunks' anteriores
+  comment     = ''     #   - No aÃ±ade ningÃºn prefijo a los resultados
+)
+```
+
+# Variable information
+
++------------------------+-------------------------------------------------------+------------+---------------------------------+
+| **Main variable name** | **Label**                                             | **Format** | **Code**                        | 
++:=======================+:======================================================+:===========+:================================+
+| depression_30d         | 30 days depression (c2019_wCOVID)                     | Binary     | 0=No;1=Yes                      |
++------------------------+-------------------------------------------------------+------------+---------------------------------+
+| d_30d_severity         | Severity of 30 days depressive episode (c2019_wCOVID) | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
++------------------------+-------------------------------------------------------+------------+---------------------------------+
+
+# Variable description
+  
+Depression has become a major public health issue as it is one of the main causes of disability worldwide, with an even greater impact on developed countries. According to The ICD-10 Classification of Mental and Behavioural Disorders, Diagnostic criteria for research (World Health Organization, 1993), the main characteristics of depression are the presence of a sustained depressed mood, the loss of interest or pleasure in activities normally pleasurable and/or the decreased energy or increased fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria for research proposes several contributing factors that can be present or absent: loss of confidence and self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or suicide, diminished ability to think or concentrate, change in psychomotor activity, sleep disturbance, and changes in appetite with the corresponding weight change. Moreover, the classification proposes a three-level gradient of severity depending on the amount of criteria present in each case, from mild to severe. In order to address these criteria and be able to assess the lifetime presence or absence of a depressive episode, as well as its severity, we used an adapted version of the Composite International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by trained lay interviewers for the assessment of mental disorders according to the definitions and criteria of ICD-10. It is intended for use in epidemiological and cross-cultural studies, as well as for clinical and research purposes.
+ 
+# Explanation of how the variables were created
+
+Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode in the previous 30 days (point prevalence). We also included a severity variable, according to the ICD-10 criteria.
+
+# Syntax used to create the variable (Stata 13)
+
+```{stata load-data}
+
+* Cohorte 2019, ola postconfinamiento:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+*Previous recoding of the symptomatology questions (ojo hay que cambiar 9 por 999 en NS/NC ítem SM8_8 en BBDD maestra y posteriormente eliminar “(9=.)” de la siguiente línea de sintaxis)
+recode SM8_1-SM8_10 (1=1) (999 =.) (9=.) (2=0)
+
+***Depressive episode (F32)
+
+*G1 criterion: "The depressive episode should last for at least 2 weeks"
+gen d_crit_g1 = .
+replace d_crit_g1 = 0 if SM4!=1
+replace d_crit_g1 = 1 if SM4==1
+label variable d_crit_g1 "G1 criterion for depression"
+
+***Mild depressive episode (F32.0)
+
+*A criterion: "The general criteria for depressive episode must be met"
+gen d_crit_a = .
+replace d_crit_a = 0 if d_crit_g1!=1
+replace d_crit_a = 1 if d_crit_g1==1
+label variable d_crit_a "A criterion for depression"
+
+*B criterion: "At least two of the following three symptoms must be present"
+
+*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks".
+gen d_b1 = 0
+replace d_b1 = 1 if SM4==1 
+replace d_b1 = . if SM4==. 
+label variable d_b1 "B1 criterion for depression"
+
+*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+gen d_b2 = 0
+replace d_b2 = 1 if SM_3==1 
+replace d_b2 = . if SM_3==.
+label variable d_b2 "B2 criterion for depression"
+
+*B3: "Decreased energy or increased fatigability"
+gen d_b3 = 0
+replace d_b3 = 1 if SM8_6==1
+replace d_b3 = . if SM8_6==.
+label variable d_b3 "B3 criterion for depression"
+
+*Sum of depressive screening symptoms
+egen d_screentotal = rowtotal (d_b1-d_b3)
+label variable d_screentotal "Screening symptoms for depression"
+
+*To fulfil B criterion >=2 screening symptoms should be present.
+gen d_crit_b = .
+replace d_crit_b = 0 if d_screentotal<2
+replace d_crit_b = 1 if d_screentotal>=2
+label variable d_crit_b "B criterion for depression"
+
+*C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+
+*C1: "Loss of confidence and self-esteem"
+gen d_c1 = 0
+replace d_c1 = 1 if SM8_9==1
+replace d_c1 = . if SM8_9==.
+label variable d_c1 "C1 criterion for depression"
+
+*C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+gen d_c2 = 0
+replace d_c2 = 1 if SM8_7==1
+replace d_c2 = . if SM8_7==.
+label variable d_c2 "C2 criterion for depression"
+
+*C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+gen d_c3 = 0
+replace d_c3 = 1 if SM8_10==1 
+replace d_c3 = 1 if SM8_10==. 
+label variable d_c3 "C3 criterion for depression"
+
+*C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+gen d_c4 = 0
+replace d_c4 = 1 if SM8_8==1
+replace d_c4 = . if SM8_8==. 
+label variable d_c4 "C4 criterion for depression"
+
+*C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+gen d_c5 = 0
+replace d_c5 = 1 if (SM8_4==1) | (SM8_5==1)
+replace d_c5 = . if SM8_4==. & SM8_5==. 
+label variable d_c5 "C5 criterion for depression"
+
+*C6: "Sleep disturbance of any type"
+gen d_c6 = 0
+replace d_c6 = 1 if SM8_2==1 | SM8_3==1
+replace d_c6 = . if SM8_2==. & SM8_3==.
+label variable d_c6 "C6 criterion for depression"
+
+*C7: "Change in appetite (decrease or increase) with corresponding weight change"
+gen d_c7 = 0
+replace d_c7 = 1 if SM8_1==1 
+replace d_c7 = . if SM8_1==.
+label variable d_c7 "C7 criterion for depression"
+
+*Sum of depressive symptoms
+egen d_symtotal = rowtotal (d_c1-d_c7)
+label variable d_symtotal "Symptoms for depression"
+
+*Have the person skipped the depression module?
+egen serie_symp = rowtotal (SM8_1-SM8_10)
+gen d_skipped = 0
+recode SM_3 SM4 (1=1) (.=.) (else=0)
+replace d_skipped = 1 if SM_3==0 | SM4==0 | (SM5==1 & SM6==4 & SM7==4) | serie_symp<2
+
+
+***Severity of depressive episode
+
+*To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+gen d_30d_severity = .
+replace d_30d_severity = 0 if (d_crit_a==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)) & ESTADO_ENTREVISTA==1
+replace d_30d_severity = 1 if (d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))) & ESTADO_ENTREVISTA==1
+replace d_30d_severity = 2 if (d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))) & ESTADO_ENTREVISTA==1
+replace d_30d_severity = 3 if (d_crit_a==1 & (d_screentotal==3 & d_symtotal>=5)) & ESTADO_ENTREVISTA==1
+label variable d_30d_severity "Severity of depressive episode (c2019_wCOVID)"
+label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label values d_30d_severity severity
+
+***Depression in the previous 30 days 
+gen depression_30d= .
+replace depression_30d = 1 if d_30d_severity >=1 & ESTADO_ENTREVISTA==1 
+replace depression_30d = 0 if (d_30d_severity ==0 | d_skipped==1) & ESTADO_ENTREVISTA==1 
+label variable depression_30d "30 days depression (c2019_wCOVID)"
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+codebook depression_30d d_30d_severity
+
+```
+
+```{stata save-data}
+keep ID_ECS ESTADO_ENTREVISTA depression_30d d_30d_severity
+
+*Cohorte 2019, ola postconfinamiento:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depressionICD.dta", replace version(13)
+
+```
+
+# Contact person:
+
+- Name: Natalia Martín (adapted the algorithm for the COVID-19 substudy)
+- e-mail: [natalia.martinm@uam.es](mailto:natalia.martinm@uam.es){.email}
+
+- Name: Elvira Lara (revised the algorithm)
+- e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+- Phone number: (+34) 914974601
+
+<br>
+  
+  Original version:
+  
+- Name: Félix Caballero 
+- e-mail: [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
+
+# References
+
+:::{#refs}
+World Health Organization. (1993). The ICD-10 classification of mental and behavioural disorders: diagnostic criteria for research. Ed. World Health Organization: Geneva.
+:::
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

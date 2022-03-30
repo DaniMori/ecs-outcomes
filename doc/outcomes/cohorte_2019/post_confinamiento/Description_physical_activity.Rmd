@@ -1,0 +1,131 @@
+---
+title: "Edad con Salud -- cohort 2019 -- COVID substudy -- 'Physical activity'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+#bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y a?adir cita(s) o borrar campo
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+  
+# Variable information
+
++------------------------+------------------------------------------------------+------------+---------------------------------+
+| **Main variable name** | **Label**                                            | **Format** | **Code**                        |
++:=======================+:=====================================================+:===========+:================================+
+| physical               | Physical activity (c2019_wCOVID)                     | Ordinal    | 0=High;1=Moderate;2=Low         |
++------------------------+------------------------------------------------------+------------+---------------------------------+
+
+# Variable description
+  
+Physical activity has been assessed by means of an adapted version of the Global Physical Activity Questionnaire version 2 (GPAQ v2, World Health Organization, 2012). The GPAQ v2 has been developed by WHO for physical activity surveillance in countries. It collects information on physical activity participation in three settings (or domains) and sedentary behavior, comprising 16 questions. The three domains are: activity at work, travel to and from places, and recreational activities. The responses given by the participants have been converted to Metabolic Equivalent to Task (MET) values. Applying MET values to activity levels allows for calculating total physical activities. A detailed description of the calculation and categorization of the physical activity levels (low, moderate or high) is available at the GPAQ v2 guidelines in the WHO website. 
+
+# Explanation of how the variables were created
+
+Physical activity has been categorized as follows:
+.	High physical activity: vigorous-intensity activity on at least 3 days achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per week - or - 7 or more days of any combination of walking, moderate or vigorous intensity activities achieving a minimum of at least 3000 MET-minutes per week.
+.	Moderate physical activity: three or more days of vigorous-intensity activity of at least 20 minutes per day - or - five or more days of moderate-intensity activity or walking of at least 30 minutes per day - or - five or more days of any combination of walking, moderate or vigorous-intensity activities achieving a minimum of at least 600 MET-minutes per week.
+.	Low physical activity: a person not meeting any of the above-mentioned criteria.
+
+# Syntax used to create the variable (Stata 13)
+
+
+```{stata load-data}
+
+* Cohorte 2019, ola postconfinamiento:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+recode AF1A AF1B_H_1 AF1B_M_1 AF2A AF2B_H_1 AF2B_M_1 AF3A AF3B_H_1 AF3B_M_1 (. 99 =0) if ESTADO_ENTREVISTA == 1   
+gen AF1B_1=AF1B_H_1*60+AF1B_M_1
+gen AF2B_1=(AF2B_H_1*60+AF2B_M_1) / 30
+gen AF3B_1=(AF3B_H_1*60+AF3B_M_1) / 30 
+
+generate MET1=((AF1A*AF1B_1*8)+(AF2A*AF2B_1*4)+(AF3A*AF3B_1*4))
+sum MET1
+replace MET1=. if (AF1B_1>960|AF2B_1>960|AF3B_1>960)|(AF1A==0 & AF1B_1>0)| (AF2A==0 & AF2B_1>0)|(AF3A==0 & AF3B_1>0)
+
+/*More than 16 hours doing vigorous-intensity or moderate-intensity activities, is considered to be a missing value. The previous command aims to correct possible mistakes in the database*/
+
+generate physical=0 if ((AF1A>=3 & MET1>=1500 & AF1A != . ) | (((AF1A+AF2A+AF3A)>=7) & ((AF1A+AF2A+AF3A) != .) & (MET1>=3000) & MET1 != .))
+replace physical=1 if ((AF1A>=3 & AF1A != . & (AF1A*AF1B_1)>=60 & (AF1A*AF1B_1) != .)  | ((AF2A+AF3A)>=5 & (AF2A+AF3A) != . & ((AF2A*AF2B_1)+(AF3A*AF3B_1))>=150 & ((AF2A*AF2B_1)+(AF3A*AF3B_1)) != .) | ((AF1A+AF2A+AF3A)>=5 & (AF1A+AF2A+AF3A) != . & (MET1>=600))) & (physical!=0) 
+replace physical=2 if physical==.
+replace physical=. if MET1==. 
+label define dPhysical 0 "High" 1 "Moderate" 2 "Low"
+label values physical dPhysical
+label variable physical "Physical activity (c2019_wCOVID)"
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+codebook physical 
+
+```
+
+```{stata save-data}
+keep ID_ECS ESTADO_ENTREVISTA physical
+
+*Cohorte 2019, ola postconfinamiento:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_physicalactivity.dta", replace version(13)
+
+```
+
+# Contact person:
+
+- Name: Natalia Martin (adapted the algorithm for the COVID-19 substudy)
+- e-mail: [natalia.martinm@uam.es](mailto:natalia.martinm@uam.es){.email}
+
+- Name: Elvira Lara (revised the algorithm)
+- e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+- Phone number: (+34) 914974601
+
+- Name: Daniel Morillo (revised the algorithm)
+- e-mail: [daniel.morillo@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+- Phone number: (+34) 914975816
+
+<br>
+
+Original version:
+
+- Name: Felix Caballero 
+- e-mail: [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
+
+# References
+
+:::{#refs}
+World Health Organization (2012). Global Physical Activity Questionnaire (GPAQ) Analysis Guide. Geneva, Switzerland: WHO. Available from: 
+http://www.who.int/chp/steps/GPAQ%20Instrument%20and%20Analysis%20Guide%20v2.pdf
+:::
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

@@ -1,0 +1,126 @@
+---
+title: "Edad con Salud -- cohort 2019 -- COVID substudy -- 'Disability'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+#bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el cÃ³digo:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuraciÃ³n de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de cÃ³digo:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el cÃ³digo de Stata de 'chunks' anteriores
+  comment     = ''     #   - No aÃ±ade ningÃºn prefijo a los resultados
+)
+```
+  
+
+# Variable information
+
++------------------------+------------------------------------------------------+------------+-------------+
+| **Main variable name** | **Label**                                            | **Format** | **Code**    |
++:=======================+:=====================================================+:===========+:============+
+| whodas12               | Disability (c2019_wCOVID)                            | Continuous | 0-100       |
++------------------------+------------------------------------------------------+------------+-------------+
+  
+# Variable description
+  
+The level of functional impairment has been assessed using the 12-item interviewer administered version of the World Health Organization (WHO) Disability Assessment Schedule version II (WHODAS 2.0). This instrument is grounded in the conceptual framework of the International Classification of Functioning, Disability and Health (ICF) and places health and disability on a continuum, with disability defined as "a decrement in each functioning domain". Participants were asked to report the level of difficulty they had in doing various activities during the previous 30 days using a five-point scale (none=1, mild=2, moderate=3, severe=4, extreme/cannot do=5). The global score ranges from 0 to 100, with higher scores indicating greater disability. 
+
+# Explanation of how the variables were created
+
+The WHODAS items were selected and their scoring was determined according to the World Health Organization guidelines. A score in this questionnaire were also obtained for the participants who have answered at least to the 80% of the items (at least, 10 out of the 12 items). In those cases with one or two missing values in these twelve items, the score were obtained based on the items completed, replacing the missing values by the mean on the remaining items.
+
+# Syntax used to create the variable (Stata 13)
+
+
+```{stata load-data}
+
+* Cohorte 2019, ola postconfinamiento:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+gen S1=SF2_1
+gen S2=SF2_2
+gen S3=SF2_3
+gen S4=SF2_4
+gen S5=SF2_5
+gen S6=SF2_6
+gen S7=SF2_7
+gen S8=SF2_8
+gen S9=SF2_9
+gen S10=SF2_10
+gen S11=SF2_11
+gen S12=SF2_12
+recode S1 S2 S3 S4 S5 S6 S7 S8 S9 S10 S11 S12 (9=.) 
+recode S1 S3 S5 S6 S7 S9 (1=0) (2=1) (3=2) (4=3) (5=4)
+recode S2 S4 S8 S10 S11 S12 (1=0) (2=1) (3=1) (4=2) (5=2)
+egen missing=rowmiss(S1-S12)
+egen part1=rowmean(S1 S3 S5 S6 S7 S9) if missing <=2
+egen part2=rowmean(S2 S4 S8 S10 S11 S12) if missing <=2
+gen whodas12=(part1*25+part2*50)/2 if ESTADO_ENTREVISTA==1 | ESTADO_ENTREVISTA==9
+label variable whodas12 "Disability (c2019_wCOVID)"
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+codebook whodas12 
+
+```
+
+```{stata save-data}
+keep ID_ECS ESTADO_ENTREVISTA whodas12
+
+*Cohorte 2019, ola postconfinamiento:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_disability.dta", replace version(13)
+
+```
+
+# Contact person:
+
+- Name: Natalia Martín (adapted the algorithm for the COVID-19 substudy)
+- e-mail: [natalia.martinm@uam.es](mailto:natalia.martinm@uam.es){.email}
+
+- Name: Elvira Lara (revised the algorithm)
+- e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+- Phone number: (+34) 914974601
+
+<br>
+  
+  Original version:
+  
+- Name: Félix Caballero 
+- e-mail: [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
+
+# References
+
+:::{#refs}
+World Health Organization (2010).Measuring health and disability: manual for WHO Disability Assessment Schedule (WHODAS 2.0).Edited by T.B. Üstün, N. Kostanjsek, S. Chatterji and J. Rehm. World Health Organization Disability Assessment Schedule II (WHODAS-II). Available at http://whqlibdoc.who.int/publications/2010/9789241547598_eng.pdf
+:::
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

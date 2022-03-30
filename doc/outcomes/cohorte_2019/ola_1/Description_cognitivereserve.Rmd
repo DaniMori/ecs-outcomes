@@ -1,0 +1,129 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'COGNITIVE RESERVE'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
+##       o eliminar linea 34:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+## TODO: Descomentar si hace falta
+# engine.path = list(stata = STATA_PATH),
+echo        = FALSE, #   - No muestra la sintaxis en el documento
+results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++------------------------+------------------------------------------+------------+----------+
+| **Main variable name** | **Label**                                | **Format** | **Code** |
++:=======================+:=========================================+:===========+:=========+
+| t_CR                   | cognitive reserve total score (c2019_w1) | Discrete   | 0-25     |
++------------------------+------------------------------------------+------------+----------+
+
+# Variable description
+
+Cognitive reserve is the ability of the cognitive paradigm underlying a task to sustain disruption and still operate effectively. Alternately, this could consist of the ability to use alternate paradigms to approach a problem when the more standard approach is no longer operational. The concept of cognitive reserve provides a ready explanation for why many studies have demonstrated that higher levels of intelligence and of educational and occupational attainment are good predictors of which individuals can sustain greater brain damage before demonstrating functional deficit. Rather than positing that these individuals' brains are grossly anatomically different than those with less reserve (e.g., they have more synapses), the cognitive reserve hypothesis posits that they process tasks in a more efficient manner.
+
+# Explanation of how the variables were created
+
+We have included the cognitive questionnaire from Rami et al (2011), which is composed by the following items: q1016_highest, q1052, q1501b, q1053, q1051, q1054, q1055, q1050. Transformations were set to allow only valid values for q1016_highest, q1050a and  q1050b. We have created a composite score by adding the values of the items, with higher scores indicating better cognitive reserve. Values may range from 0 to 25. Note: we have not included the value 1 in level_edu, because we don´t have this category (Lee y escribe de manera autodidacta) in our variable q1016_highest. Instead, we have "no formal education" or "primary studies incompleted."
+
+# Syntax used to create the variable (Stata 13)
+
+```{stata load-data}
+
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+/* Level of education */
+recode q1016_highest (0=0) (1=2) (2=3) (3/4=4) (5/6=5) (else=.), gen (level_edu)
+label variable level_edu "highest level of education at wave 1"
+label define dEdu 0 "No education" 2 "Basic" 3 "Primary" 4 "Secondary" 5 "Tertiary"
+label values level_edu dEdu
+
+/* Parents´ level of education */
+recode q1050a (0=0) (1=1) (2=1) (3/6=2) (else=.), gen (edu_father)
+recode q1050b (0=0) (1=1) (2=1) (3/6=2) (else=.), gen (edu_mother)
+gen edu_parent=max(edu_father, edu_mother)
+
+label define dEduP 0 "No education" 1 "Basic or primary" 2 "Secondary" 
+label values edu_parent dEduP
+label variable edu_parent "Highest education level of either parent"
+
+/* Occupation */
+gen occupation=.
+replace occupation=0 if q1501b==0 
+replace occupation=1 if q1501b==1 
+replace occupation=2 if q1501b==2 
+replace occupation=3 if q1501b==3 
+replace occupation=4 if q1501b==4 
+label variable occupation "Occupational level"
+label define dOccupation 0 "Not qualified" 1 "Manual qualification" 2 "Not manual qualification" 3 "Professional" 4 "Manager"
+label values occupation dOccupation
+
+/* cognitive reserve */
+egen t_CR =rowtotal(level_edu edu_parent q1051 q1052 occupation q1053 q1054 q1055) if proxy==2
+label variable t_CR "cognitive reserve total score (c2019_w1)"
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+sum t_CR, detail
+
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre t_CR
+
+*Cohorte 2019, linea base:
+
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_cognitivereserve.dta", replace version(13)
+
+
+```
+
+# Contact person:
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+# References
+
+Stern Y. What is cognitive reserve? Theory and research application of the reserve concept. J Int Neuropsychol Soc. 2002 Mar;8(3):448-60.
+
+Rami L, Valls-Pedret C, Bartres-Faz D, Caprile C, Sole-Padulles C, Castellvi M, Olives J, Bosch B, Molinuevo JL. Cuestionario de reserva cognitiva. Valores obtenidos en población anciana sana y con enfermedad de Alzheimer. Revista de Neurología 2011;52:195-201.
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

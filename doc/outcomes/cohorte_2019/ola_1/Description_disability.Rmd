@@ -1,0 +1,177 @@
+---
+title: "Edad con Salud -- cohort 2019 -- Wave 1 -- 'DISABILITY'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
+##       o eliminar linea 34:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+## TODO: Descomentar si hace falta
+# engine.path = list(stata = STATA_PATH),
+echo        = FALSE, #   - No muestra la sintaxis en el documento
+results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++------------------------+---------------------------------------------------------------+------------+------------+
+| **Main variable name** | **Label**                                                     | **Format** | **Code**   |
++:=======================+:==============================================================+:===========+:===========+
+| whodas12               | disability whodas 12 (c2019_w1)                               | Continuous | 0-100      |
++------------------------+---------------------------------------------------------------+------------+------------+
+| adl                    | difficulties with activities of daily living (c2019_w1)       | Binary     | 0=no;1=yes |
++------------------------+---------------------------------------------------------------+------------+------------+
+| iadl                   | difficulties with instrumental act of daily living (c2019_w1) | Binary     | 0=no;1=yes |
++------------------------+---------------------------------------------------------------+------------+------------+
+
+# Variable description
+
+The level of functional impairment has been assessed using the 12-item interviewer administered version of the World Health Organization (WHO) Disability Assessment Schedule version II (WHODAS 2.0). This instrument is grounded in the conceptual framework of the International Classification of Functioning, Disability and Health (ICF) and places health and disability on a continuum, with disability defined as "a decrement in each functioning domain". Participants were asked to report the level of difficulty they had in doing various activities during the previous 30 days using a five-point scale (none=1, mild=2, moderate=3, severe=4, extreme/cannot do=5). The global score ranges from 0 to 100, with higher scores indicating greater disability.
+Level of independence was measured by means of Activities of Daily Living (ADLs) and Instrumental Activities of Daily Living (IADLs). ADLs describes a set of daily self-care activities and assesses the need for help with personal care activities such as eating, bathing, and dressing; while, IADLs describes somewhat higher-level functioning considered necessary to live independently, assessing the need for help with routine needs such as using transportation, housekeeping, and preparing food. An individual's ability to perform ADLs is typically considered normal functional status, with an inability to perform ADLs suggesting disability.
+
+# Explanation of how the variables were created
+
+The WHODAS items were selected and their scoring was determined according to the World Health Organization guidelines. A score in this questionnaire will be also obtained for the participants who have answered at least to the 80% of the items (at least, 10 out of the 12 items). In those cases with one or two missing values in these twelve items, the score will be obtained based on the items completed, replacing the missing values by the mean on the remaining items. ADL and IADL items are scored on a 5 category scale, with 1 indicating no and 5 indicating extreme difficulty. If the person has severe or extreme difficulty at least on one item, the overall score will take 1.
+
+# Syntax used to create the variable (Stata 13)
+
+```{stata load-data}
+
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+/*WHODAS-12 questionnaire*/
+
+gen S1=q2028_stand
+gen S2=q2032_hh_resp
+gen S3=q2011_learn
+gen S4=q2033_activ
+gen S5=q2047_affect
+gen S6=q2035_concent
+gen S7=q2036_walk
+gen S8=q2037_wash
+gen S9=q2038_dress
+gen S10=q2015_strang
+gen S11=q2014_friend
+gen S12=q2039_daily
+recode S1 S2 S3 S4 S5 S6 S7 S8 S9 S10 S11 S12 (888=.) 
+recode S1 S3 S5 S6 S7 S9 (1=0) (2=1) (3=2) (4=3) (5=4)
+recode S2 S4 S8 S10 S11 S12 (1=0) (2=1) (3=1) (4=2) (5=2)
+egen missing=rowmiss(S1-S12)
+egen part1=rowmean(S1 S3 S5 S6 S7 S9) if missing <=2
+egen part2=rowmean(S2 S4 S8 S10 S11 S12) if missing <=2
+gen whodas12=(part1*25+part2*50)/2
+label variable whodas12 "disability WHODAS 12 (c2019_w1)"
+
+/*ADL and IADL*/
+
+gen dq2025=q2025_sitting
+gen dq2026=q2026_walk
+gen dq2027=q2027_stand
+gen dq2028=q2028_stand
+gen dq2029=q2029_climb
+gen dq2030=q2030_crouch
+gen dq2031=q2031_pickup
+gen dq2032=q2032_hh_resp
+gen dq2033=q2033_activ
+gen dq2034=q2034_reach
+gen dq2035=q2035_concent
+gen dq2036=q2036_walk
+gen dq2037=q2037_wash
+gen dq2038=q2038_dress
+gen dq2039=q2039_daily
+gen dq2040=q2040_carry
+gen dq2041=q2041_movement
+gen dq2042=q2042_eating
+gen dq2043=q2043_arising
+gen dq2044=q2044_toilet
+gen dq2045=q2045_movement
+gen dq2046=q2046_going
+recode dq2025-dq2046 (1=0)(2=0)(3=0)(4=1)(5=1) (888=.)
+
+egen adlcounter=rowtotal(dq2025 dq2026 dq2027 dq2028 dq2029 dq2030 dq2031 dq2034 dq2035 dq2036 dq2037 dq2038 dq2040 dq2041 dq2042 dq2043 dq2044)
+egen missing_adl=rowmiss (dq2025 dq2026 dq2027 dq2028 dq2029 dq2030 dq2031 dq2034 dq2035 dq2036 dq2037 dq2038 dq2040 dq2041 dq2042 dq2043 dq2044)
+gen adl=1 if adlcounter>=1 & adlcounter<.
+replace adl=0 if adlcounter==0
+replace adl=. if missing_adl==17
+label variable adl "activities of daily living (c2019_w1)"
+
+egen iadlcounter=rowtotal(dq2032 dq2033 dq2039 dq2045 dq2046)
+egen missing_iadl=rowmiss (dq2032 dq2033 dq2039 dq2045 dq2046)
+gen iadl=1 if iadlcounter>=1 & iadlcounter<.
+replace iadl=0 if iadlcounter==0
+replace iadl=. if missing_iadl==5
+label variable iadl "instrumental act of daily living (c2019_w1)"
+
+label define dAdl 0 "No" 1 "Yes"
+label values adl iadl dAdl 
+
+```
+
+```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
+
+sum whodas12, detail
+codebook adl iadl
+
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre whodas12 adl iadl
+
+*Cohorte 2019, linea base:
+
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_disability.dta", replace version(13)
+
+
+```
+
+# Contact person:
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+Original version:
+
+-   Name: Félix Caballero 
+-   e-mail: [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
+-   Phone number: (+34) 914975088
+
+# References
+
+World Health Organization (2010).Measuring health and disability: manual for WHO Disability Assessment Schedule (WHODAS 2.0).Edited by T.B. Üstün, N. Kostanjsek, S. Chatterji and J. Rehm. World Health Organization Disability Assessment Schedule II (WHODAS-II). Available at http://whqlibdoc.who.int/publications/2010/9789241547598_eng.pdf
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
