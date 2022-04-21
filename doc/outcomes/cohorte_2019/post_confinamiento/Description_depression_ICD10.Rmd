@@ -62,7 +62,7 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudi
 ```{stata generate-outcomes, echo=TRUE}
 
 *Previous recoding of the symptomatology questions (ojo hay que cambiar 9 por 999 en NS/NC ítem SM8_8 en BBDD maestra y posteriormente eliminar “(9=.)” de la siguiente línea de sintaxis)
-recode SM8_1-SM8_10 (1=1) (999 =.) (9=.) (2=0)
+recode SM8_1-SM8_10 (1=1) (999 =.) (2=0)
 
 ***Depressive episode (F32)
 
@@ -195,7 +195,7 @@ codebook depression_30d d_30d_severity
 keep ID_ECS ESTADO_ENTREVISTA depression_30d d_30d_severity
 
 *Cohorte 2019, ola postconfinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depressionICD.dta", replace version(13)
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 
 ```
 
@@ -204,13 +204,15 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 - Name: Natalia Martín (adapted the algorithm for the COVID-19 substudy)
 - e-mail: [natalia.martinm@uam.es](mailto:natalia.martinm@uam.es){.email}
 
-- Name: Elvira Lara (revised the algorithm)
+<br>
+
+- Name: Elvira Lara (updated the algorithm)
 - e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
 - Phone number: (+34) 914974601
 
 <br>
   
-  Original version:
+Original version:
   
 - Name: Félix Caballero 
 - e-mail: [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}

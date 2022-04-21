@@ -47,9 +47,12 @@ Physical activity has been assessed by means of an adapted version of the Global
 # Explanation of how the variables were created
 
 Physical activity has been categorized as follows:
-.	High physical activity: vigorous-intensity activity on at least 3 days achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per week - or - 7 or more days of any combination of walking, moderate or vigorous intensity activities achieving a minimum of at least 3000 MET-minutes per week.
-.	Moderate physical activity: three or more days of vigorous-intensity activity of at least 20 minutes per day - or - five or more days of moderate-intensity activity or walking of at least 30 minutes per day - or - five or more days of any combination of walking, moderate or vigorous-intensity activities achieving a minimum of at least 600 MET-minutes per week.
-.	Low physical activity: a person not meeting any of the above-mentioned criteria.
+
+*	High physical activity: vigorous-intensity activity on at least 3 days achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per week - or - 7 or more days of any combination of walking, moderate or vigorous intensity activities achieving a minimum of at least 3000 MET-minutes per week.
+
+*	Moderate physical activity: three or more days of vigorous-intensity activity of at least 20 minutes per day - or - five or more days of moderate-intensity activity or walking of at least 30 minutes per day - or - five or more days of any combination of walking, moderate or vigorous-intensity activities achieving a minimum of at least 600 MET-minutes per week.
+
+*	Low physical activity: a person not meeting any of the above-mentioned criteria.
 
 # Syntax used to create the variable (Stata 13)
 
@@ -91,10 +94,10 @@ codebook physical
 ```
 
 ```{stata save-data}
-keep ID_ECS ESTADO_ENTREVISTA physical
+keep ID_ECS ESTADO_ENTREVISTA physical 
 
 *Cohorte 2019, ola postconfinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_physicalactivity.dta", replace version(13)
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_physical_activity.dta", replace version(13)
 
 ```
 
@@ -103,9 +106,13 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 - Name: Natalia Martin (adapted the algorithm for the COVID-19 substudy)
 - e-mail: [natalia.martinm@uam.es](mailto:natalia.martinm@uam.es){.email}
 
+<br>
+
 - Name: Elvira Lara (revised the algorithm)
 - e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
 - Phone number: (+34) 914974601
+
+<br>
 
 - Name: Daniel Morillo (revised the algorithm)
 - e-mail: [daniel.morillo@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
