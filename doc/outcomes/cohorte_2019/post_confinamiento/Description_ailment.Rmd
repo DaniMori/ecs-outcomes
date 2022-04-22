@@ -6,6 +6,9 @@ output:
 bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
 # nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -34,85 +37,71 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| Main variable name | Label                               | Format      | Code                        |
-+:===================+:====================================+:============+:============================+
-| infected           | (Likely) infected with              | dichotomous | 0 = No;                     |
-|                    | COVID-19 (c2019_wCOVID)             |             |                             |
-|                    |                                     |             | 1 = Yes                     |
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| severity_raw       | Severity of COVID-19                | ordinal     | 0 = Not infected;           |
-|                    | infection (c2019_wCOVID)            |             |                             |
-|                    |                                     |             | 1 = Only infected;          |
-|                    |                                     |             |                             |
-|                    |                                     |             | 2 = Hospitalized;           |
-|                    |                                     |             |                             |
-|                    |                                     |             | 3 = Hospitalized with O2;   |
-|                    |                                     |             |                             |
-|                    |                                     |             | 4 = Admitted in ICU         |
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| severity           | Severity of COVID-19 infection,     | ordinal     | 0 = Not infected;           |
-|                    | recoded (c2019_wCOVID)              |             |                             |
-|                    |                                     |             | 1 = Infected;               |
-|                    |                                     |             |                             |
-|                    |                                     |             | 2 = Infected & hospitalized |
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| rel_isolated       | Co-habited/ing with relative        | dichotomous | 0 = No;                     |
-|                    | isolated by COVID-19 (c2019_wCOVID) |             |                             |
-|                    |                                     |             | 1 = Yes                     |
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| rel_concerned      | Concerned about relative/friend     | dichotomous | 0 = No;                     |
-|                    | infected by COVID-19 (c2019_wCOVID) |             |                             |
-|                    |                                     |             | 1 = Yes                     |
-+--------------------+-------------------------------------+-------------+-----------------------------+
-| rel_deceased       | Friend/familiar/acquantied deceased | dichotomous | 0 = No;                     |
-|                    | by COVID-19 (c2019_wCOVID)          |             |                             |
-|                    |                                     |             | 1 = Yes                     |
-+--------------------+-------------------------------------+-------------+-----------------------------+
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| Main variable name | Label                                                               | Format       | Code                        |
++:===================+:====================================================================+:=============+:============================+
+| infected           | (Likely) infected with COVID-19 (c2019_wCOVID)                      | dichotomous  | 0 = No;                     |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Yes                     |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| severity_raw       | Severity of COVID-19 infection (c2019_wCOVID)                       | ordinal      | 0 = Not infected;           |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Only infected;          |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 2 = Hospitalized;           |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 3 = Hospitalized with O2;   |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 4 = Admitted in ICU         |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| severity           | Severity of COVID-19 infection, recoded (c2019_wCOVID)              | ordinal      | 0 = Not infected;           |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Infected;               |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 2 = Infected & hospitalized |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| rel_isolated       | Co-habited/ing with relative isolated by COVID-19 (c2019_wCOVID)    | dichotomous  | 0 = No;                     |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Yes                     |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| rel_concerned      | Concerned about relative/friend infected by COVID-19 (c2019_wCOVID) | dichotomous  | 0 = No;                     |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Yes                     |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
+| rel_deceased       | Friend/familiar/acquantied deceased by COVID-19 (c2019_wCOVID)      | dichotomous  | 0 = No;                     |
+|                    |                                                                     |              |                             |
+|                    |                                                                     |              | 1 = Yes                     |
++--------------------+---------------------------------------------------------------------+--------------+-----------------------------+
 
 # Variable description
 
-The following variables are related to the ailment caused by
-the COVID-19 pandemic:
+The following variables are related to the ailment caused by the COVID-19 pandemic:
 
-* **infected**: Self-reported response of confirmed or likely infection by
-  COVID-19, diagnosed by a physician. (**IMPORTANT:** Likely diagnosis of
-  COVID-19, as may be estimated by the checklist of compatible symptoms in
-  item section COVID2 is not contemplated in this variable.)
+-   **infected**: Self-reported response of confirmed or likely infection by COVID-19, diagnosed by a physician. (**IMPORTANT:** Likely diagnosis of COVID-19, as may be estimated by the checklist of compatible symptoms in item section COVID2 is not contemplated in this variable.)
 
-* **severity_raw**: Original variable of severity of the COVID-19 infection,
-  from 0 (no infection) to 4 (hospitalization with oxygen and ICU-admission
-  and artificial breathing).
+-   **severity_raw**: Original variable of severity of the COVID-19 infection, from 0 (no infection) to 4 (hospitalization with oxygen and ICU-admission and artificial breathing).
 
-* **severity**: Severity of the COVID-19 infection, from 0 (no infection)
-  to 2 (hospitalization). This variable collapses categories 2 to 4 of variable
-  `severity_raw` into a single category (2).
+-   **severity**: Severity of the COVID-19 infection, from 0 (no infection) to 2 (hospitalization). This variable collapses categories 2 to 4 of variable `severity_raw` into a single category (2).
 
-* **rel_isolated**: Self-resported response of whether the participant lives or
-  has lived with a person isolated at home due to COVID-19 infection.
+-   **rel_isolated**: Self-resported response of whether the participant lives or has lived with a person isolated at home due to COVID-19 infection.
 
-* **rel_concerned**: Self-resported response of whether the participant is or
-  has been especially concerned about a relative or friend infected with
-  COVID-19.
+-   **rel_concerned**: Self-resported response of whether the participant is or has been especially concerned about a relative or friend infected with COVID-19.
 
-* **rel_deceased**: Self-resported response of whether any participant’s
-  relative, friend, or acquaintance, has passed away due to COVID-19 infection.
+-   **rel_deceased**: Self-resported response of whether any participant's relative, friend, or acquaintance, has passed away due to COVID-19 infection.
 
 # Explanation of how the variables were created
 
-* **infected**: Item `COVID1` recoded as `0` (*No*) or `1` (*Yes*).
+-   **infected**: Item `COVID1` recoded as `0` (*No*) or `1` (*Yes*).
 
-* **severity_raw**: Affirmative responses to items `COVID1`, `COVID1B`,
-  `COVID1C_1`, and `COVID1C_2` are summed up.
+-   **severity_raw**: Affirmative responses to items `COVID1`, `COVID1B`, `COVID1C_1`, and `COVID1C_2` are summed up.
 
-* **severity**: From `severity_raw`, response categories `2` to `4` are
-  collapsed into category `2` (= *Hospitalized*).
+-   **severity**: From `severity_raw`, response categories `2` to `4` are collapsed into category `2` (= *Hospitalized*).
 
-* **rel_isolated**: Item COVID3 recoded as `0` (*No*) or `1` (*Yes*).
+-   **rel_isolated**: Item COVID3 recoded as `0` (*No*) or `1` (*Yes*).
 
-* **rel_concerned**: Item COVID4 recoded as `0` (*No*) or `1` (*Yes*).
+-   **rel_concerned**: Item COVID4 recoded as `0` (*No*) or `1` (*Yes*).
 
-* **rel_deceased**: Item COVID5 recoded as `0` (*No*) or `1` (*Yes*).
+-   **rel_deceased**: Item COVID5 recoded as `0` (*No*) or `1` (*Yes*).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -187,7 +176,7 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 # Contact person:
 
 -   Name: Daniel Morillo
--   e-mail: [\<daniel.morillo\@cibersam.es\>](mailto:daniel.morillo@cibersam.es){.email}
+-   e-mail: [\<daniel.morillo\@cibersam.es>](mailto:daniel.morillo@cibersam.es){.email}
 -   Phone number: (+34) 91 497 58 16
 
 # References

@@ -1,0 +1,171 @@
+---
+title: "Edad con Salud -- cohort 2019 -- COVID substudy -- 'Sleep'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:\Stata 16\Stata 16.exe)"
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+```
+
+# Variable information
+
++--------------------+----------------------------------------------------------+------------+------------------+
+| Main variable name | Label                                                    | Format     | Code             |
++:===================+:=========================================================+:===========+:=================+
+| sleeping_time      | Average time slept last 30 days, in hours (c2019_wCOVID) | continuous | 0-24             |
++--------------------+----------------------------------------------------------+------------+------------------+
+| sleep_how          | How participant slept last 30 days (c2019_wCOVID)        | ordinal    | 1 = Very poorly; |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 2 = Poorly;      |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 3 = Moderately;  |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 4 = Well;        |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 5 = Very well    |
++--------------------+----------------------------------------------------------+------------+------------------+
+| sleep_quality      | General sleep quality last month (c2019_wCOVID)          | ordinal    | 1 = Very bad;    |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 2 = Bad;         |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 3 = Good;        |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 4 = Very good    |
++--------------------+----------------------------------------------------------+------------+------------------+
+| sleep_change       | Change in sleep quality last 30 days (c2019_wCOVID)      | ordinal    | -1 = Worse;      |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 0 = Equally;     |
+|                    |                                                          |            |                  |
+|                    |                                                          |            | 1 = Better       |
++--------------------+----------------------------------------------------------+------------+------------------+
+
+# Variable description
+
+-   **sleeping_time** is the reported average number of hours slept the previous 30 days, in the post-lockdown interview.
+
+-   **sleep_how** is the response to how the participant perceives their sleep on average in the 30 days prior to the post-lockdown interview.
+
+-   **sleep_quality** is the response to how the participant perceives their general sleep quality in the 30 days prior to the post-lockdown interview.
+
+-   **sleep_change** is the response to whether the participant perceives that their sleep quality has changed 30 days prior to the post-lockdown interview.
+
+# Explanation of how the variables were created
+
+-   **sleeping_time**: drops missing response codes (= 999), collapses the hours (SUENO1A) and minutes (SUENO1A_MIN) of sleep reported, and computes the equivalent amount in hours.
+
+-   **sleep_how**: inverts the scale, so the lower end means worse and the upper end better sleep.
+
+-   **sleep_quality**: inverts the scale, so the lower end means worse and the upper end better sleep.
+
+-   **sleep_change**: changes the scale values, so 0 means no change, -1 means change for the worse, and 1 change for the better.
+
+# Syntax used to create the variable (Stata 16)
+
+```{stata load-data}
+* Cohorte 2019, ola post-confinamiento:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+```
+
+```{stata generate-outcomes, echo=TRUE}
+* Label definition for ordinal variables
+label define HOW_SLEEP_LABELS 1 "Very poorly" 2 "Poorly" 3 "Moderately" 4 "Well" 5 "Very well"
+label define QUALITY_LABELS 1 "Very bad" 2 "Bad" 3 "Good" 4 "Very good"
+label define CHANGE_SLEEP_LABELS -1 "Worse" 0 "Equality" 1 "Better"
+
+//// SLEEPING_TIME
+gen sl_hour_1 = SUENO1A
+replace sl_hour_1 = . if sl_hour_1 == 999
+replace sl_hour_1=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
+gen sl_min_1 = SUENO1A_MIN
+replace sl_min_1 = . if sl_min_1 == 999
+replace sl_min_1=. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
+* From sexagesimal to centesimal 
+gen sl_min_2 = sl_min_1/60
+* Union of hours with minutes
+gen slepping_time = sl_hour_1 + sl_min_2
+* Label
+label variable slepping_time "Average time slept last 30 days, in hours (c2019_wCOVID)"
+
+//// SLEEP_HOW
+gen sleep_how = 6 - SUE2
+replace sleep_how =. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
+* Label
+label values sleep_how HOW_SLEEP_LABELS
+label variable sleep_how "How participant slept last 30 days (c2019_wCOVID)"
+
+//// SLEEP_QUALITY
+gen sleep_quality_1 = SUE3
+replace sleep_quality_1 = . if sleep_quality_1 == 9
+gen sleep_quality = 5 - sleep_quality_1
+replace sleep_quality =. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
+* Label
+label values sleep_quality QUALITY_LABELS
+label variable sleep_quality "General sleep quality last month (c2019_wCOVID)"
+
+//// SLEEP_CHANGE
+gen sleep_change = SUE4
+replace sleep_change = -1 if sleep_change == 2
+replace sleep_change = 0 if sleep_change == 3
+replace sleep_change =. if ESTADO_ENTREVISTA != 1 & ESTADO_ENTREVISTA != 9
+* Label
+label values sleep_change CHANGE_SLEEP_LABELS
+label variable sleep_change "Change in sleep quality last 30 days (c2019_wCOVID)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
+codebook slepping_time sleep_how sleep_quality sleep_change
+```
+
+```{stata save-data}
+keep ID_ECS ESTADO_ENTREVISTA slepping_time sleep_how sleep_quality sleep_change
+
+* Cohorte 2019, ola post-confinamiento:
+saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_sleep.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Jesús Victor Sierralaya Baldeón
+-   e-mail: [ jesus.sierralaya\@inv.uam.es](mailto:jesus.sierralaya@inv.uam.es){.email}
+-   Phone number: (+34) 91 497 58 09
+
+<br>
+
+ Original version:
+
+-   Name: Daniel Morillo
+-   e-mail: [ daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+# References
+
+(None)
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
