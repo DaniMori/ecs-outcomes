@@ -57,7 +57,7 @@ Depression has become a major public health issue as it is one of the main cause
 
 # Explanation of how the variables were created
 
-Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable depression_lifetime) and in the previous 12 months (point prevalence; variable depression_12m). More precisely, the following criteria should be fulfilled: i) The depressive episode should last for at least 2 weeks; ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual’s life; iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder; iv) The general criteria for depressive episode must be met; v) At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy; vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7). We also included a severity variable according to the ICD-10 criteria for both lifetime prevalence (variable d_lifetime_severity) and 12 months prevalence (variable d_12m_severity), based upon the number of symptoms the participant met. An additional variable on 12 month depression symptomatology (variable depression_symptoms12m) was also created, where only v and vi were considered.
+Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable depression_lifetime) and in the previous 12 months (point prevalence; variable depression_12m). More precisely, the following criteria should be fulfilled: i) The depressive episode should last for at least 2 weeks; ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life; iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder; iv) The general criteria for depressive episode must be met; v) At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy; vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7). We also included a severity variable according to the ICD-10 criteria for both lifetime prevalence (variable d_lifetime_severity) and 12 months prevalence (variable d_12m_severity), based upon the number of symptoms the participant met. An additional variable on 12 month depression symptomatology (variable depression_symptoms12m) was also created, where only v and vi were considered.
 
 # Syntax used to create the variable (Stata 13)
 
@@ -75,18 +75,18 @@ recode q4220a-q4222v (1=1) (2=0) (888 999=.)
 
 ***Depressive episode (F32)
 
-*G1 criterion: “The depressive episode should last for at least 2 weeks”
+*G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen d_crit_g1 = .
 replace d_crit_g1 = 0 if q4211!=1 | q4213!=1
 replace d_crit_g1 = 1 if q4211==1 | q4213==1
 label variable d_crit_g1 "G1 criterion for depression"
 
-*G2 criterion: “There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual’s life”
+*G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
 gen d_crit_g2 = 1
 replace d_crit_g2 = 0 if q4233==1 | q4225_causemed2==1 
 label variable d_crit_g2 "G2 criterion for depression"
 
-*G3 criterion: “The episode is not attributable to psychoactive substance use or to any organic mental disorder”
+*G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
 gen d_crit_g3 = 0
 replace d_crit_g3 = 1 if (q4224a!=1 | q4224b!=1) | (q4224==1 & q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
 replace d_crit_g3 = . if q4224a==. & q4224b==. & q4224==. & q4225_causemed12==. & q4225_causemed23==. & q4225_causemed24==. & q4225_causemed25==. & q4225_causemed30==. & q4225_causemed31==.
@@ -94,27 +94,27 @@ label variable d_crit_g3 "G3 criterion for depression"
 
 ***Mild depressive episode (F32.0)
 
-*A criterion: “The general criteria for depressive episode must be met”
+*A criterion: "The general criteria for depressive episode must be met"
 gen d_crit_a = .
 replace d_crit_a = 0 if d_crit_g1!=1 | d_crit_g2!=1 | d_crit_g3!=1
 replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
 label variable d_crit_a "A criterion for depression"
 
-*B criterion: “At least two of the following three symptoms must be present”
+*B criterion: "At least two of the following three symptoms must be present"
 
-*B1: “Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks”.
+*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
 gen d_b1 = 0
 replace d_b1 = 1 if q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
 replace d_b1 = . if q4220a==. & q4220b==. & q4220c==. & q4220d==.
 label variable d_b1 "B1 criterion for depression"
 
-*B2: “Loss of interest or pleasure in activities that are normally pleasurable”
+*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
 gen d_b2 = 0
 replace d_b2 = 1 if q4220e==1 | q4220f==1
 replace d_b2 = . if q4220e==. & q4220f==.
 label variable d_b2 "B2 criterion for depression"
 
-*B3: “Decreased energy or increased fatigability”
+*B3: "Decreased energy or increased fatigability"
 gen d_b3 = 0
 replace d_b3 = 1 if q4222e==1
 replace d_b3 = . if q4222e==.
@@ -212,8 +212,8 @@ label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w
 ***Recent depression (previous 12 months)
 
 gen depression_12m = .
-replace depression_12m = 0 if depression_lifetime==0 | depression_lifetime==1 & q4227!=1
-replace depression_12m = 1 if depression_lifetime==1 & q4227==1
+replace depression_12m = 0 if depression_lifetime==0 | (depression_lifetime==1 & (q4227!=1 | q4227a!=1))
+replace depression_12m = 1 if depression_lifetime==1 & (q4227==1 | q4227a==1)
 label variable depression_12m "12 month depression (c2019_w1)"
 label values depression_12m yesno
 
