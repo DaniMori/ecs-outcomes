@@ -4,7 +4,6 @@ output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>', '@<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
 editor_options: 
   markdown: 
     wrap: 72
@@ -17,17 +16,9 @@ library(Statamarkdown)
 
 # Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
 
-## TODO: sustituir '<path\to\>' por la ubicación de Stata
-##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
-##       o eliminar linea 34:
-# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
-
-
 # Opciones de configuración de las salidas de R y Stata:
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-## TODO: Descomentar si hace falta
-# engine.path = list(stata = STATA_PATH),
 echo        = FALSE, #   - No muestra la sintaxis en el documento
 results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
 cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
@@ -37,19 +28,29 @@ collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
 
 # Variable information
 
-+------------------------+------------------------------------------------------+------------+---------------------------------+
-| **Main variable name** | **Label**                                            | **Format** | **Code**                        |
-+:=======================+:=====================================================+:===========+:================================+
-| depression_lifetime    | Lifetime depression (c2019_w1)                       | Binary     | 0=no;1=yes                      |
-+------------------------+------------------------------------------------------+------------+---------------------------------+
-| d_lifetime_severity    | Severity of lifetime depressive episode (c2019_w1)   | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-+------------------------+------------------------------------------------------+------------+---------------------------------+
-| depression_12m         | 12 month depression (c2019_w1)                       | Binary     | 0=no;1=yes                      |
-+------------------------+------------------------------------------------------+------------+---------------------------------+
-| depression_symptoms12m | 12 month depression symptomatology (c2019_w1)        | Binary     | 0=no;1=yes                      |
-+------------------------+------------------------------------------------------+------------+---------------------------------+
-| d_12m_severity         | Severity of 12 month depressive episode (c2019_w1)   | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-+------------------------+------------------------------------------------------+------------+---------------------------------+
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| **Main variable name**    | **Label**                                                                   | **Format** | **Code**                        |
++:==========================+:============================================================================+============+=================================+
+| depression_lifetime       | Lifetime depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_lifetime_severity       | Severity of lifetime depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| depression_12m            | 12 month depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| depression_symptoms12m    | 12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1) | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_12m_item                | 12 month depression one item (c2019_w1)                                     | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_12m_comparable          | 12 month depression comparable with COVID substudy (c2019_w1)               | 0=no;1=yes | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| depression_symptoms12m    | 12 month depression symptomatology (c2019_w1)                               | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_12m_severity            | Severity of 12 month depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_12m_severity_comparable | Severity of 12 month depressive episode comparable (c2019_w1)               | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
+| d_symptoms12m_comparable  | 12 month depression comparable with COVID substudy (c2019_w1)               | Binary     | 0=no;1=yes                      |
++---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 
 # Variable description
 
@@ -77,7 +78,7 @@ recode q4220a-q4222v (1=1) (2=0) (888 999=.)
 
 *G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen d_crit_g1 = .
-replace d_crit_g1 = 0 if q4211!=1 | q4213!=1
+replace d_crit_g1 = 0 if q4211!=1 & q4213!=1
 replace d_crit_g1 = 1 if q4211==1 | q4213==1
 label variable d_crit_g1 "G1 criterion for depression"
 
@@ -209,13 +210,39 @@ recode P4040 (1=1) (2=0) (888=.) (999=.), gen (depression_lifetime_proxy)
 label values depression_lifetime_proxy yesno
 label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w1)"
 
-***Recent depression (previous 12 months)
+*** 12 month depression
+
+* 12 month depression from lifetime diagnosis + q4227/q4227a items
 
 gen depression_12m = .
 replace depression_12m = 0 if depression_lifetime==0 | (depression_lifetime==1 & (q4227!=1 | q4227a!=1))
 replace depression_12m = 1 if depression_lifetime==1 & (q4227==1 | q4227a==1)
-label variable depression_12m "12 month depression (c2019_w1)"
+label variable depression_12m "12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1)"
 label values depression_12m yesno
+
+* 12 month depression from q4227/q4227a items
+
+gen d_12m_item = .
+replace d_12m_item = 1 if q4227==1 | q4227a==1
+replace d_12m_item = 0 if proxy==2 & (q4227!=1 | q4227a!=1)
+label values d_12m_item yesno
+label variable d_12m_item "12 month depression one item (c2019_w1)"
+
+* 12 months depression comparable with COVID substudy from lifetime diagnosis
+
+gen d_lifetime_severity_comparable = .
+replace d_lifetime_severity_comparable = 0 if d_crit_g1==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)
+replace d_lifetime_severity_comparable = 1 if d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))
+replace d_lifetime_severity_comparable = 2 if d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))
+replace d_lifetime_severity_comparable = 3 if d_crit_g1==1 & (d_screentotal==3 & d_symtotal>=5)
+label variable d_lifetime_severity_comparable "Severity of lifetime depressive episode comparable (c2019_w1)"
+label values d_lifetime_severity_comparable severity
+
+gen d_12m_comparable = .
+replace d_12m_comparable = 1 if d_lifetime_severity_comparable>=1 & (q4227==1 | q4227a==1)
+replace d_12m_comparable = 0 if proxy==2 & (d_lifetime_severity_comparable ==0 | d_skipped==1) | (d_lifetime_severity_comparable>=1 & (q4227!=1 | q4227a!=1))
+label variable d_12m_comparable "12 month depression comparable with COVID substudy (c2019_w1)"
+label values d_12m_comparable yesno
 
 ***Symptoms recent depression (previous 12 months)
 *Previous recoding of the symptomatology questions
@@ -342,23 +369,39 @@ replace d_12m_severity = 3 if d_crit_a_12m==1 & (d_screentotal_12m==3 & d_symtot
 label variable d_12m_severity "Severity of 12 month depressive episode (c2019_w1)"
 label values d_12m_severity severity
 
-***Recent depression symptomatology prevalence
+***12 month depression symptomatology 
 gen depression_symptoms12m = .
 replace depression_symptoms12m = 1 if d_12m_severity >=1
 replace depression_symptoms12m = 0 if proxy==2 & (d_12m_severity ==0 | d_skipped_12m==1)
 label values depression_symptoms12m yesno
 label variable depression_symptoms12m "12 month depression symptomatology (c2019_w1)"
 
+* 12 months depression comparable with COVID substudy from 12 month diagnosis
+
+gen d_12m_severity_comparable = .
+replace d_12m_severity_comparable = 0 if d_crit_g1_12m==0 | d_crit_b_12m==0 | (d_screentotal_12m==2 & d_symtotal_12m<2) | (d_screentotal_12m==3 & d_symtotal_12m==0)
+replace d_12m_severity_comparable = 1 if d_crit_g1_12m==1 & ((d_screentotal_12m==2 & d_symtotal_12m>=2) | (d_screentotal_12m==3 & d_symtotal_12m>=1))
+replace d_12m_severity_comparable = 2 if d_crit_g1_12m==1 & ((d_screentotal_12m==2 & d_symtotal_12m>=4) | (d_screentotal_12m==3 & d_symtotal_12m>=3))
+replace d_12m_severity_comparable = 3 if d_crit_g1_12m==1 & (d_screentotal_12m==3 & d_symtotal_12m>=5)
+label variable d_12m_severity_comparable "Severity of 12 month depressive episode comparable (c2019_w1)"
+label values d_12m_severity_comparable severity
+
+gen d_symptoms12m_comparable = .
+replace d_symptoms12m_comparable = 1 if d_12m_severity_comparable>=1 
+replace d_symptoms12m_comparable = 0 if proxy==2 & (d_12m_severity_comparable ==0 | d_skipped_12m==1) 
+label variable d_symptoms12m_comparable "12 month depression comparable with COVID substudy (c2019_w1)"
+label values d_symptoms12m_comparable yesno
+
 ```
 
 ```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
 
-codebook depression_lifetime depression_lifetime_proxy depression_12m depression_symptoms12m 
+codebook depression_lifetime depression_lifetime_proxy depression_12m d_12m_item d_12m_comparable depression_symptoms12m d_symptoms12m_comparable
 
 ```
 
 ```{stata save-data}
-keep ID_ECS q0007a_result proxy subsample_pre interview_pre depression_lifetime d_lifetime_severity depression_lifetime_proxy depression_12m depression_symptoms12m d_12m_severity 
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre depression_lifetime d_lifetime_severity depression_lifetime_proxy depression_12m depression_12m d_12m_item d_12m_comparable depression_symptoms12m d_12m_severity d_12m_severity_comparable d_symptoms12m_comparable 
 
 *Cohorte 2019, linea base:
 
