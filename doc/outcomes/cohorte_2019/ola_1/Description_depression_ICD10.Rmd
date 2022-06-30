@@ -19,10 +19,10 @@ library(Statamarkdown)
 # Opciones de configuración de las salidas de R y Stata:
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-echo        = FALSE, #   - No muestra la sintaxis en el documento
-results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
-cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
 )
 ```
 
@@ -77,59 +77,103 @@ recode q4220a-q4222v (1=1) (2=0) (888 999=.)
 ***Depressive episode (F32)
 
 *G1 criterion: "The depressive episode should last for at least 2 weeks"
+* The criterion is _negative_ when both q4211 and q4213 are "NO" (=2);
+* *HOWEVER*, the interview skips one item or the other, so both items are
+* *NEVER* going to be equal to 2, only one of them can be
+* (the other will be missing). Therefore, the criterion is negative when one
+* of the items is 2 and positive when one of the items is 1
+* (and missing otherwise)
 gen d_crit_g1 = .
-replace d_crit_g1 = 0 if q4211!=1 & q4213!=1
+replace d_crit_g1 = 0 if q4211==2 | q4213==2
 replace d_crit_g1 = 1 if q4211==1 | q4213==1
 label variable d_crit_g1 "G1 criterion for depression"
 
 *G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
-gen d_crit_g2 = 1
-replace d_crit_g2 = 0 if q4233==1 | q4225_causemed2==1 
+* See explanation in "criterion G1" (lines 80-85)
+gen d_crit_g2 = .
+replace d_crit_g2 = 0 if q4233==1 | q4225_causemed2==1
+replace d_crit_g2 = 1 if q4233==2 | q4225_causemed2==2
 label variable d_crit_g2 "G2 criterion for depression"
 
 *G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
-gen d_crit_g3 = 0
-replace d_crit_g3 = 1 if (q4224a!=1 | q4224b!=1) | (q4224==1 & q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
-replace d_crit_g3 = . if q4224a==. & q4224b==. & q4224==. & q4225_causemed12==. & q4225_causemed23==. & q4225_causemed24==. & q4225_causemed25==. & q4225_causemed30==. & q4225_causemed31==.
+* The criterion is _positive_ when at least some episode cannot be attributable
+* to physical causes (either none of the episodes can be attributable to
+* physical causes, i.e. q224a is "No", or the episodes were not *ALWAYS*
+* attributable to physical causes, i.e. q224b is "No").
+* When a physician was consulted, first it is assumed that the causes were
+* _non-physical_ (for simplicity, as these contemplates negative AND missing
+* responses) and thus the criterion is fulfilled, and then the cases where the
+* physical causes were attributed are discarded.
+gen d_crit_g3 = .
+replace d_crit_g3 = 1 if (q4224a==2 | q4224b==2) | q4224==1
+replace d_crit_g3 = 0 if (q4224a==1 & q4224b==1) | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 label variable d_crit_g3 "G3 criterion for depression" 
 
 ***Mild depressive episode (F32.0)
 
 *A criterion: "The general criteria for depressive episode must be met"
+* The criterion is _positive_ when all the three G1-G3 criteria are met.
+* When *ANY* of them is known to be unmet (= 0), then the general criteria is
+* known NOT to be met, as the value of the other two don´t matter.
 gen d_crit_a = .
-replace d_crit_a = 0 if d_crit_g1!=1 | d_crit_g2!=1 | d_crit_g3!=1
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
 replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
 label variable d_crit_a "A criterion for depression"
 
 *B criterion: "At least two of the following three symptoms must be present"
 
 *B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
-gen d_b1 = 0
+* The rationale here is the following: When ANY of the responses is
+* positive (= 1) the symptom is _positive_. When there is a negative AND a
+* missing response (in the first two items), the symptom should be missing,
+* according to this criterion. *HOWEVER*, according to the skip logic in the
+* questionnaire, it seems that a negative response in the first item skips the
+* second one (presumably, assuming also a negative response), so this pattern
+* should be understood as a _negative symptom_. Something similar happens when
+* the first response is missing (DK or Refuse) and the second one is negative.
+* Thus, we assume that ANY negative response in one of these two items implies
+* a negative symptom (in principle); the same happens with the other two items
+* (q4220c and q4220d). Thus, to have a _negative symptom_,
+* both *ONE OF THE FIRST TWO ITEMS AND ONE OF THE LAST TWO ONES* must
+* have a negative response.
+gen d_b1 = .
+replace d_b1 = 0 if (q4220a==0 | q4220b==0) & (q4220c==0 | q4220d==0)
 replace d_b1 = 1 if q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
-replace d_b1 = . if q4220a==. & q4220b==. & q4220c==. & q4220d==.
 label variable d_b1 "B1 criterion for depression"
+* # SAME RESULT!
 
 *B2: "Loss of interest or pleasure in activities that are normally pleasurable"
-gen d_b2 = 0
+gen d_b2 = .
 replace d_b2 = 1 if q4220e==1 | q4220f==1
-replace d_b2 = . if q4220e==. & q4220f==.
+replace d_b2 = 0 if q4220e==0 & q4220f==0
 label variable d_b2 "B2 criterion for depression"
+* # SAME RESULT!
 
 *B3: "Decreased energy or increased fatigability"
-gen d_b3 = 0
+gen d_b3 = .
 replace d_b3 = 1 if q4222e==1
-replace d_b3 = . if q4222e==.
+replace d_b3 = 0 if q4222e==0
 label variable d_b3 "B3 criterion for depression"
+* # SAME RESULT!
 
 *Sum of depressive screening symptoms
-egen d_screentotal = rowtotal (d_b1-d_b3)
+* The ", missing" option must be appended, to prevent that the sum of symptoms
+* is computed when all the values are missing. Also, it is crucial to know
+* whether there are enough missing values to prevent computing whether the total
+* sum of screening symptoms is more than 1 or less than 2.
+egen d_screentotal = rowtotal (d_b1-d_b3), missing
+egen d_screenmissing = rowmiss (d_b1-d_b3)
 label variable d_screentotal "Screening symptoms for depression"
 
 *To fulfil B criterion >=2 screening symptoms should be present.
+* To make sure the criterion is NOT met, there must be less than two positive
+* AND missing symptoms. To make sure the criterion IS met, there must be
+* _at least_ two symptoms. In any other case, this criterion is _unknown_.
 gen d_crit_b = .
-replace d_crit_b = 0 if d_screentotal<2
-replace d_crit_b = 1 if d_screentotal>=2 
+replace d_crit_b = 0 if (d_screentotal + d_screenmissing) < 2
+replace d_crit_b = 1 if d_screentotal >= 2 & d_screentotal != .
 label variable d_crit_b "B criterion for depression"
+* ## TODO; CONTINUE HERE!!!
 
 *C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
@@ -405,7 +449,7 @@ keep ID_ECS q0007a_result proxy subsample_pre interview_pre depression_lifetime 
 
 *Cohorte 2019, linea base:
 
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
+saveold "Outcome_depression_ICD10_ALT.dta", replace version(13)
 
 ```
 
