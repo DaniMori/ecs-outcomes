@@ -31,17 +31,18 @@ opts_chunk$set( # Para todos los 'chunks' de código:
 +---------------------+------------------------------------------+------------+----------------------+
 | Main variable name  | Label                                    | Format     | Code                 |
 +:====================+:=========================================+:===========+:=====================+
-| **health_abb_post** | Abbreviated health status (c2019_wCOVID) | continuous | (standardized)       |
+| **health_abb**      | Abbreviated health status (c2019_wCOVID) | continuous | (standardized)       |
 +---------------------+------------------------------------------+------------+----------------------+
 
 # Variable description
 
-`health_abb_post` is an abbreviated (standardized) health status score,
+`health_abb` is an abbreviated (standardized) health status score,
 with higher values meaning better health.
 Health status was assessed with a subset of items from the Whodas questionnaire.
 For each question, the responses were recorded on a five-point scale
 ranging from 1 (no difficulty/problem) to 5 (extreme difficulty/inability).
-A composite health status score was derived using the Partial Credit Model.
+A composite health status score was derived using the Partial Credit Model
+[@wilson_improving_2006].
 
 # Explanation of how the variables were created
 
@@ -51,10 +52,11 @@ and person abilities (individual health levels) in a Partial Credit Model.
 A total of 14 items have been included;
 these were chosen because the corresponding ones are part of the total
 pool of items used when computing the "Global health status" variable in the
-main "Edad con Salud" study.
+main "Edad con Salud" study [@salomon_quantifying_2003].
 
 The method employed to generate the global score was based on
-a Partial Credit Model, using R package `mirt` v1.31.6 to estimate
+a Partial Credit Model [@wilson_improving_2006],
+using R package `mirt` v1.31.6 [@chalmers_mirt_2012] to estimate
 the person ability estimate for each participant, based on maximum likelihood.
 
 **Please note:** The metric of an IRT model latent scores is "arbitrary";
@@ -128,12 +130,12 @@ attr(hs_scores, "label") <- "Abbreviated health status (c2019_wCOVID)"
 
 output <- survey_data               |>
   select(ID_ECS, ESTADO_ENTREVISTA) |>
-  add_column(health_abb_post = hs_scores)
+  add_column(health_abb = hs_scores)
 ```
 
 **Model fit statistics:**
 
-```{r model-fit, results='asis', echo=FALSE}
+```{r model-fit, results='asis'}
 # Goodness of fit statistics:
 hs_irt_model                                         |>
   M2(na.rm = TRUE)                                   |>
@@ -146,22 +148,22 @@ hs_irt_model                                         |>
 
 **Variable descriptive statistics:**
 
-```{r descriptives, results='asis', echo=FALSE}
-output                    |>
-  select(health_abb_post) |>
+```{r descriptives, results='asis'}
+output               |>
+  select(health_abb) |>
   tbl_summary(
-  type = health_abb_post ~ "continuous2",
+  type = health_abb ~ "continuous2",
   statistic = all_continuous2() ~ c(
-    "{mean} ({sd})", 
-    "{median} ({p25}, {p75})", 
-    "{min}, {max}"
-  )
+      "{mean} ({sd})", 
+      "{median} ({p25}, {p75})", 
+      "{min}, {max}"
+    )
   )
 ```
 
 <br>
 
-```{r save-data}
+```{r save-data, echo=FALSE}
 output |> write_dta(
   file.path(
     read_ecs_folder("DOC"),
@@ -194,22 +196,6 @@ For the original document, please refer to:
 # References
 
 ::: {#refs}
-Chalmers, R. P. (2012).
-mirt: A Multidimensional Item Response Theory Package for the R Environment.
-Journal of Statistical Software, 48(1), 1-29.
-https://doi.org/10.18637/jss.v048.i06
-
-Salomon JA, Mathers CD, Chatterji S, Sadana R, Üstün TB, Murray CJL (2003).
-Quantifying individual levels of health:
-definitions, concepts, and measurement levels.
-In: Murray CJL, Evans DB, editors.
-Health systems performance assessment: debates, methods, empiricism.
-Geneva: World Health Organization. pp: 301-318.
-
-Wilson M, Allen DD, Li JC (2006).
-Improving measurement in health education and health behavior research using
-item response modeling: comparison with the clasical test theory approach.
-Health Education Research, 21 (Suppl 1): i19-i32.
 :::
 
 \newpage
