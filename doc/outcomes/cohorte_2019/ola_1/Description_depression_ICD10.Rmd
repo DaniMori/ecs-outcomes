@@ -60,6 +60,28 @@ Depression has become a major public health issue as it is one of the main cause
 
 Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable depression_lifetime) and in the previous 12 months (point prevalence; variable depression_12m). More precisely, the following criteria should be fulfilled: i) The depressive episode should last for at least 2 weeks; ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life; iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder; iv) The general criteria for depressive episode must be met; v) At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy; vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7). We also included a severity variable according to the ICD-10 criteria for both lifetime prevalence (variable d_lifetime_severity) and 12 months prevalence (variable d_12m_severity), based upon the number of symptoms the participant met. An additional variable on 12 month depression symptomatology (variable depression_symptoms12m) was also created, where only v and vi were considered.
 
+## Criteria for the changes
+
+- Take into account the *strict* skip logic (i.e. filters) in the questionnaire
+
+- Consider the tri-state logic necessary for the diagnoses (i.e. missing values)
+
+- Always generate the new variables as _missing_ first, then compute the
+  non-missing values, for algorithmic consistency
+  
+- Always _negative_ diagnosis / symptom first, then _positive_, for algorithmic
+  consistency (unless indicated otherwise)
+  
+- Check that the _total number of positive/negative cases_ is coincident with
+  the number generated, so that the order of computing positive/negative cases
+  is indifferent
+  
+- The "# SAME RESULT" comment has been added when _the resulting values are_
+  _coincident for all the cases_, between the current version and this one.
+  This does not mean necessarily that the resulting computations are equivalent
+  (i.e., there could be combinations of values that give different results,
+  but do not appear in the C2019W1 dataset)
+
 # Syntax used to create the variable (Stata 13)
 
 ```{stata load-data}
@@ -140,21 +162,21 @@ gen d_b1 = .
 replace d_b1 = 0 if (q4220a==0 | q4220b==0) & (q4220c==0 | q4220d==0)
 replace d_b1 = 1 if q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
 label variable d_b1 "B1 criterion for depression"
-* # SAME RESULT!
+* # SAME RESULT
 
 *B2: "Loss of interest or pleasure in activities that are normally pleasurable"
 gen d_b2 = .
-replace d_b2 = 1 if q4220e==1 | q4220f==1
 replace d_b2 = 0 if q4220e==0 & q4220f==0
+replace d_b2 = 1 if q4220e==1 | q4220f==1
 label variable d_b2 "B2 criterion for depression"
-* # SAME RESULT!
+* # SAME RESULT
 
 *B3: "Decreased energy or increased fatigability"
 gen d_b3 = .
-replace d_b3 = 1 if q4222e==1
 replace d_b3 = 0 if q4222e==0
+replace d_b3 = 1 if q4222e==1
 label variable d_b3 "B3 criterion for depression"
-* # SAME RESULT!
+* # SAME RESULT
 
 *Sum of depressive screening symptoms
 * The ", missing" option must be appended, to prevent that the sum of symptoms
@@ -173,81 +195,143 @@ gen d_crit_b = .
 replace d_crit_b = 0 if (d_screentotal + d_screenmissing) < 2
 replace d_crit_b = 1 if d_screentotal >= 2 & d_screentotal != .
 label variable d_crit_b "B criterion for depression"
-* ## TODO; CONTINUE HERE!!!
 
 *C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
 *C1: "Loss of confidence and self-esteem"
-gen d_c1 = 0
+* When ANY of the responses is positive (= 1) the symptom is _positive_.
+* When the second is _negative_, the third one is skipped so only
+* the first two ones have to be considered for a _negative_ symptom.
+gen d_c1 = .
+replace d_c1 = 0 if q4222k==0 & q4222l==0
 replace d_c1 = 1 if q4222k==1 | q4222l==1 | q4222m==1
-replace d_c1 = . if q4222k==. & q4222l==. & q4222m==.
 label variable d_c1 "C1 criterion for depression"
 
 *C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
-gen d_c2 = 0
+gen d_c2 = .
+replace d_c2 = 0 if q4222n==0
 replace d_c2 = 1 if q4222n==1
-replace d_c2 = . if q4222n==.
 label variable d_c2 "C2 criterion for depression"
+* # SAME RESULT
 
 *C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
-gen d_c3 = 0
+* When ANY of the responses is positive (= 1) the symptom is _positive_.
+* When the third is _negative_, the fourth and fifth ones are skipped so only
+* the first three ones have to be considered for a _negative_ symptom.
+* *NOTE*: Consider whether _ONLY_ `q4222r` (and not `q4222s`) indicates
+* _recurrent_ thoughts of death?
+gen d_c3 = .
+replace d_c3 = 0 if q4222r==0 & q4222s==0 & q4222t==0
 replace d_c3 = 1 if q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
-replace d_c3 = 1 if q4222r==. & q4222s==. & q4222t==. & q4222u==. & q4222v==.
 label variable d_c3 "C3 criterion for depression"
 
 *C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
-gen d_c4 = 0
+gen d_c4 = .
+replace d_c4 = 0 if q4222h==0 & q4222i==0 & q4222j==0
 replace d_c4 = 1 if q4222h==1 | q4222i==1 | q4222j==1
-replace d_c4 = . if q4222h==. & q4222i==. & q4222j==.
 label variable d_c4 "C4 criterion for depression"
 
 *C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
-gen d_c5 = 0
+gen d_c5 = .
+replace d_c5 = 0 if q4222f==0 & q4222fa==0 & q4222g==0 & q4222ga==0
 replace d_c5 = 1 if (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
-replace d_c5 = . if q4222f==. & q4222fa==. & q4222g==. & q4222ga==.
 label variable d_c5 "C5 criterion for depression"
 
 *C6: "Sleep disturbance of any type"
-gen d_c6 = 0
+gen d_c6 = .
+replace d_c6 = 0 if q4222c==0 & q4222d==0
 replace d_c6 = 1 if q4222c==1 | q4222d==1
-replace d_c6 = . if q4222c==. & q4222d==.
 label variable d_c6 "C6 criterion for depression"
 
 *C7: "Change in appetite (decrease or increase) with corresponding weight change"
-gen d_c7 = 0
+gen d_c7 = .
+replace d_c7 = 0 if q4222a==0 | q4222b==0
 replace d_c7 = 1 if q4222a==1 & q4222b==1
-replace d_c7 = . if q4222a==. & q4222b==.
 label variable d_c7 "C7 criterion for depression"
 
 *Sum of depressive symptoms
-egen d_symtotal = rowtotal (d_c1-d_c7)
+* The ", missing" option must be appended, to prevent that the sum of symptoms
+* is computed when all the values are missing. Also, it is crucial to know
+* whether there are enough missing values to prevent computing whether the total
+* sum of screening symptoms is at least 1 or less than 1.
+egen d_symtotal = rowtotal (d_c1-d_c7), missing
+egen d_symmissing = rowmiss (d_b1-d_b3)
 label variable d_symtotal "Symptoms for depression"
+label variable d_symmissing "Missing symptoms for depression"
 
-*Have the person skipped the lifetime depression module?
-egen serie_symp = rowtotal (q4220a-q4222v)
-gen d_skipped = 0
-recode q4202 q4211 q4213 q4218 (1=1) (.=.) (else=0)
-replace d_skipped = 1 if q4202==0 | q4211==0 | q4213==0 | (q4214==1 & q4215==4 & q4216==4) | q4218==0 | (q4220a!=1 & q4220b!=1 & q4220c!=1 & q4220d!=1 & q4220e!=1 & q4220f!=1) | serie_symp<2
+*Has the person skipped the lifetime depression module?
+* The criterion was stated as "all the responses in the lifetime depression
+* module are missing". However, this criterion is not strictly reliable as it is
+* _not impossible_ that someone does not skip the module but decides to omit
+* _all the responses_. The only input to the "lifetime depression" module is
+* from item Q4218 (there are no filters that redirect to any Q4220* or Q4222*
+* item), and the response in this item must be _positive_ (=1) to enter the
+* module; otherwise the module is skipped.
+* Also, the whole "depression" module can be skipped if any of the following
+* items has a response different from _positive_ (=1): Q4202, Q4211, Q4213, or
+* filter F4217 (which implies Q4214==1 AND Q4215==4 AND Q4216==4).
+* _NOTE_: This criterion considers the module "skipped" for the participants
+* that have been prompted with at least one of these items. If they haven´t,
+* their value will be missing (as they have skipped the whole CIDI section
+* altogether, e.g. proxy interviews).
+gen d_skipped = .
+replace d_skipped = q4202!=1 if q4202!=.
+replace d_skipped = q4211!=1 if q4211!=.
+replace d_skipped = q4213!=1 if q4213!=.
+replace d_skipped = q4218!=1 if q4218!=.
+replace d_skipped = q4214==1 & q4215==4 & q4216==4 if q4214!=. & q4215!=. & q4216!=.
+* # NOTE: This variable is NEVER used in the "lifetime depression" algorithm (but is used in other(s))
 
 ***Severity of depressive episode
 
 *To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+* In this version, we include the possibility that there are enough missing
+* values to prevent computing whether the total sum of symptoms (B + C criteria)
+* is equal to 3 or higher, or lower than 3. This happens when the total number
+* of (symptoms + missing) is equal to or higher than 3 (and no other criterion
+* is met). Therefore, the "missings" are first computed, and then the "severity"
+* is computed, in increasing order, such that each severity level overrides the
+* previous one.
+* Then, to compute the final level of severity, this initial "severity" is
+* combined with the B criterion (to obtain the "mild" or "moderate" severity),
+* or with the criterion of having the three B screening symptoms (for the
+* "severe" level). These are also computed in increasing order, so that each
+* level overrides the previous one.
+gen d_lifetime_severity_total = .
+replace d_lifetime_severity_total = 0 if d_screentotal + d_screenmissing + d_symtotal + d_symmissing < 3
+replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal >= 3
+replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6
+replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8
+
 gen d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)
-replace d_lifetime_severity = 1 if d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))
-replace d_lifetime_severity = 2 if d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))
-replace d_lifetime_severity = 3 if d_crit_a==1 & (d_screentotal==3 & d_symtotal>=5)
+replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1
+replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2
+replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_lifetime_severity severity
+* # TWO ORIGINALLY "0" ARE NOW "1" (Mild)!!
 
-***Lifetime depression prevalence
+*CIDI initial screening test
+* This part sorts out the respondents that have given three negative responses
+* to the initial screening test (items Q4200-Q4202). Note that when DK/Refuse
+* responses have been given, although the rest of the CIDI module is omitted,
+* a positive diagnostic of depression cannot be discarded, because it is unknown
+* whether the screening is positive (at least one response is positive) and thus
+* depression must be assessed, or not.
+gen d_screening=.
+replace d_screening=0 if q4200==2 & q4201==2 & q4202==2
+replace d_screening=1 if q4200==1 | q4201==1 | q4202==1
+
+***Lifetime depression diagnostic
 gen depression_lifetime = .
-replace depression_lifetime = 1 if d_lifetime_severity >=1 
-replace depression_lifetime = 0 if proxy==2 & (d_lifetime_severity ==0 | d_skipped==1)
+replace depression_lifetime = 0 if d_lifetime_severity ==0 | d_screening==0
+replace depression_lifetime = 1 if d_lifetime_severity >=1 & d_lifetime_severity !=. & d_screening==1
 label define yesno 0 "No" 1 "Yes"
 label values depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
+
 
 *** Lifetime depression prevalence for proxy participants
 recode P4040 (1=1) (2=0) (888=.) (999=.), gen (depression_lifetime_proxy)
@@ -449,7 +533,8 @@ keep ID_ECS q0007a_result proxy subsample_pre interview_pre depression_lifetime 
 
 *Cohorte 2019, linea base:
 
-saveold "Outcome_depression_ICD10_ALT.dta", replace version(13)
+* Changed to avoid overwriting (dataset written in the same folder as the doc)
+saveold "Outcome_depression_ICD10.dta", replace version(13)
 
 ```
 
