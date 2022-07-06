@@ -109,6 +109,7 @@ gen d_crit_g1 = .
 replace d_crit_g1 = 0 if q4211==2 | q4213==2
 replace d_crit_g1 = 1 if q4211==1 | q4213==1
 label variable d_crit_g1 "G1 criterion for depression"
+* # MISSING WERE ORIGINALLY 0's
 
 *G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
 * See explanation in "criterion G1" (lines 80-85)
@@ -116,6 +117,7 @@ gen d_crit_g2 = .
 replace d_crit_g2 = 0 if q4233==1 | q4225_causemed2==1
 replace d_crit_g2 = 1 if q4233==2 | q4225_causemed2==2
 label variable d_crit_g2 "G2 criterion for depression"
+* # MISSING WERE ORIGINALLY 1's
 
 *G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
 * The criterion is _positive_ when at least some episode cannot be attributable
@@ -123,13 +125,31 @@ label variable d_crit_g2 "G2 criterion for depression"
 * physical causes, i.e. q224a is "No", or the episodes were not *ALWAYS*
 * attributable to physical causes, i.e. q224b is "No").
 * When a physician was consulted, first it is assumed that the causes were
-* _non-physical_ (for simplicity, as these contemplates negative AND missing
-* responses) and thus the criterion is fulfilled, and then the cases where the
-* physical causes were attributed are discarded.
+* _non-physical_ and thus the criterion is fulfilled (for simplicity, as this
+* contemplates negative AND missing responses), and then the cases where
+* physical causes are attributed are discarded.
 gen d_crit_g3 = .
 replace d_crit_g3 = 1 if (q4224a==2 | q4224b==2) | q4224==1
 replace d_crit_g3 = 0 if (q4224a==1 & q4224b==1) | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 label variable d_crit_g3 "G3 criterion for depression" 
+* # Contingency between "original" (columns) and newly computed values:
+* #
+* #         G3 |
+* #  criterion |
+* #        for |          d_crit_g3_org
+* # depression |         0          1          . |     Total
+* # -----------+---------------------------------+----------
+* #          0 |         6         23          0 |        29 
+* #          1 |         0        238          0 |       238 
+* #          . |         0          5      2,730 |     2,735 
+* # -----------+---------------------------------+----------
+* #      Total |         6        266      2,730 |     3,002 
+* # 
+* # 5 cases (4 DK, 1 Refuse) in q4224a go into "1" in the original version and
+* # to "missing" in this version
+* # The 23 cases are due to the fact that both q4224a and q4224b are "missing"
+* # when q4224 is "1", and thus they are different from "1" and the first
+* # replacement criterion (in the original algorithm) is always true.
 
 ***Mild depressive episode (F32.0)
 
@@ -141,6 +161,9 @@ gen d_crit_a = .
 replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
 replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
 label variable d_crit_a "A criterion for depression"
+* # MISSING WERE ORIGINALLY 0's (in spite of the differences among the results
+* # in B3, there are no differences in the cases with "0"´s or "1"´s, curiously,
+* # although this result is probably sample-dependent)
 
 *B criterion: "At least two of the following three symptoms must be present"
 
@@ -169,7 +192,7 @@ gen d_b2 = .
 replace d_b2 = 0 if q4220e==0 & q4220f==0
 replace d_b2 = 1 if q4220e==1 | q4220f==1
 label variable d_b2 "B2 criterion for depression"
-* # SAME RESULT
+* # 3 MISSING WERE ORIGINALLY 0's
 
 *B3: "Decreased energy or increased fatigability"
 gen d_b3 = .
@@ -186,6 +209,7 @@ label variable d_b3 "B3 criterion for depression"
 egen d_screentotal = rowtotal (d_b1-d_b3), missing
 egen d_screenmissing = rowmiss (d_b1-d_b3)
 label variable d_screentotal "Screening symptoms for depression"
+* # MISSING WERE ORIGINALLY 0's
 
 *To fulfil B criterion >=2 screening symptoms should be present.
 * To make sure the criterion is NOT met, there must be less than two positive
@@ -195,6 +219,7 @@ gen d_crit_b = .
 replace d_crit_b = 0 if (d_screentotal + d_screenmissing) < 2
 replace d_crit_b = 1 if d_screentotal >= 2 & d_screentotal != .
 label variable d_crit_b "B criterion for depression"
+* # MISSING WERE ORIGINALLY 0's
 
 *C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
@@ -206,6 +231,7 @@ gen d_c1 = .
 replace d_c1 = 0 if q4222k==0 & q4222l==0
 replace d_c1 = 1 if q4222k==1 | q4222l==1 | q4222m==1
 label variable d_c1 "C1 criterion for depression"
+* # SAME RESULT
 
 *C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
 gen d_c2 = .
@@ -224,30 +250,35 @@ gen d_c3 = .
 replace d_c3 = 0 if q4222r==0 & q4222s==0 & q4222t==0
 replace d_c3 = 1 if q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
 label variable d_c3 "C3 criterion for depression"
+* # 2 MISSING WERE ORIGINALLY 0's, 2730 were originally 1's
 
 *C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
 gen d_c4 = .
 replace d_c4 = 0 if q4222h==0 & q4222i==0 & q4222j==0
 replace d_c4 = 1 if q4222h==1 | q4222i==1 | q4222j==1
 label variable d_c4 "C4 criterion for depression"
+* # 2 MISSING WERE ORIGINALLY 0's
 
 *C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
 gen d_c5 = .
 replace d_c5 = 0 if q4222f==0 & q4222fa==0 & q4222g==0 & q4222ga==0
 replace d_c5 = 1 if (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
 label variable d_c5 "C5 criterion for depression"
+* # 3 MISSING WERE ORIGINALLY 0's
 
 *C6: "Sleep disturbance of any type"
 gen d_c6 = .
 replace d_c6 = 0 if q4222c==0 & q4222d==0
 replace d_c6 = 1 if q4222c==1 | q4222d==1
 label variable d_c6 "C6 criterion for depression"
+* # 1 MISSING WAS ORIGINALLY a 0
 
 *C7: "Change in appetite (decrease or increase) with corresponding weight change"
 gen d_c7 = .
 replace d_c7 = 0 if q4222a==0 | q4222b==0
 replace d_c7 = 1 if q4222a==1 & q4222b==1
 label variable d_c7 "C7 criterion for depression"
+* # 5 MISSING WERE ORIGINALLY 0's
 
 *Sum of depressive symptoms
 * The ", missing" option must be appended, to prevent that the sum of symptoms
@@ -258,6 +289,7 @@ egen d_symtotal = rowtotal (d_c1-d_c7), missing
 egen d_symmissing = rowmiss (d_b1-d_b3)
 label variable d_symtotal "Symptoms for depression"
 label variable d_symmissing "Missing symptoms for depression"
+* # 1 MISSING WAS ORIGINALLY a 0, 2730 were originally 1's in `d_symtotal`
 
 *Has the person skipped the lifetime depression module?
 * The criterion was stated as "all the responses in the lifetime depression
@@ -280,7 +312,10 @@ replace d_skipped = q4211!=1 if q4211!=.
 replace d_skipped = q4213!=1 if q4213!=.
 replace d_skipped = q4218!=1 if q4218!=.
 replace d_skipped = q4214==1 & q4215==4 & q4216==4 if q4214!=. & q4215!=. & q4216!=.
-* # NOTE: This variable is NEVER used in the "lifetime depression" algorithm (but is used in other(s))
+* # NOTE: This variable is NEVER used in this version of the
+* # "lifetime depression" algorithm (but is used in other(s)). Instead, the
+* # variable `d_screening` (see lines 351-360) is used in the lifetime
+* # depression diagnostic (variable `depression_lifetime`, lines 362-368)
 
 ***Severity of depressive episode
 
@@ -311,7 +346,7 @@ replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_s
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_lifetime_severity severity
-* # TWO ORIGINALLY "0" ARE NOW "1" (Mild)!!
+* # 2527 MISSING WERE ORIGINALLY 0's
 
 *CIDI initial screening test
 * This part sorts out the respondents that have given three negative responses
@@ -331,6 +366,8 @@ replace depression_lifetime = 1 if d_lifetime_severity >=1 & d_lifetime_severity
 label define yesno 0 "No" 1 "Yes"
 label values depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
+* # 96 MISSING WERE ORIGINALLY 0's, 1 MISSING WAS ORIGINALLY A 1, AND 3 "1"'s
+* # WERE "0"'s
 
 
 *** Lifetime depression prevalence for proxy participants
