@@ -3,11 +3,9 @@ title: Revisión de la variable "Lifetime Depression (CIE-10)" de Chorte 2019, O
 date: "`r lubridate::today()`"
 output:
   html_document:
-    toc: yes
-    toc_float: yes
-editor_options:
-  markdown:
-    wrap: 72
+    toc:           yes
+    toc_float:     yes
+    code_download: yes
 ---
 
 ```{r setup, include=FALSE}
