@@ -1035,9 +1035,9 @@ replace depression_lifetime_org = 0 if proxy==2 & (d_lifetime_severity_org ==0 |
 label values depression_lifetime_org yesno
 ```
 
-# Comparación de resultados
+### Comparación de resultados
 
-## Contingencia entre los resultados de ambos algoritmos
+#### Contingencia entre los resultados de ambos algoritmos
 
 ```{stata contingency-final}
 tab depression_lifetime_org depression_lifetime, missing
@@ -1045,13 +1045,975 @@ tab depression_lifetime_org depression_lifetime, missing
 
 (Mismo resultado que en la versión desglosada)
 
-## Frecuencias absolutas y relativas en la muestra de ambas variables
+#### Frecuencias absolutas y relativas en la muestra de ambas variables
 
 ```{stata freqs}
 tab depression_lifetime_org
 tab depression_lifetime
 ```
 
+El porcentaje de casos con depresión que se obtiene con el algoritmo revisado
+es menor (1,81%) que con el algoritmo original.
+El total de casos con valores válidos es menor que el obtenido originalmente,
+en parte debido al número de valores perdidos en el número total de síntomas.
+
+# Versión "liberal (específica)" en la asignación del diagnóstico
+
+Esta versión es menos conservadora a la hora de asignar un diagnóstico de
+depresión cuando hay falta de información (respuestas "DK" o "Refuse").
+Concretamente, en los casos en los que se han dado respuestas no válidas,
+se parte del supuesto de que el criterio diagnóstico en cuestión **NO**
+se cumple.
+De esta manera, se tiende únicamente a diagnosticar depresión cuando hay
+información suficiente como para determinar que se da el diagnóstico
+(i.e., maximiza la _especificidad_).
+
+## Criterios seguidos para la codificación
+
+Se han utilizado los siguientes criterios para hacer los cambios en el algoritmo
+de cálculo de la variable:
+
+- Tener en cuenta los filtros en el cuestionario como respuestas _negativas_;
+  es decir, asumir que si un ítem ha sido saltado,
+  considerar de que su "valor diagnóstico" va a ser negativo.
+
+- Por consistencia, generar siempre las variables nuevas como "missing"
+  en primer lugar, y después calcular los valores no perdidos
+  (esto se utiliza para los síntomas; para los criterios diagnósticos no ya que
+  es más sencillo generar primero los "missing" y después rellenar con los
+  valores válidos).
+
+- Asegurar que tanto los valores positivos como negativos se calculan de manera
+  estricta. Es decir, que no se codifican inicialmente casos como negativos para
+  después recodificarlos como positivos (a no ser que se indique otra cosa).
+
+## Sintaxis desglosada (Stata 13)
+
+En este apartado se muestra la sintaxis por bloques, mostrando el resultado del
+cálculo de cada variable auxiliar utilizada para el cálculo final.
+
+En cada bloque de código se hace el cálculo tanto de la versión original como
+de la revisada de cada variable.
+Para evitar el solapamiento de las variables y errores en la ejecución,
+a las versiones originales se les ha añadido el sufijo `_org`.
+Después, se muestra para cada par de variables (original y revisada)
+la tabla de contingencia entre los valores de ambas, permitiendo así examinar
+las discrepancias entre ambas formas de hacer el cálculo, si las hay.
+(Fijarse que cuando todos los valores fuera de la diagonal son ceros,
+todos los casos coinciden entre las dos versiones.)
+En algunas ocasiones, se muestran otras tablas de contingencia para explorar
+la relación entre las variables generadas y las variables "en bruto".
+
+```{stata load-data-2, include=FALSE}
+* Cohorte 2019, linea base:
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta", clear
+```
+
+En el algoritmo original, las preguntas de sintomatología se recodifican
+como 0/1 (o "missing").
+Dado que los "DK"/"Refuse" se deben considerar como "ausencia de síntoma" es
+necesario tratarlos como "0".
+Dado que el tratamiento es diferente entre el algoritmo original y el revisado,
+creo nuevas variables con el sufijo `_alt` para el algoritmo original,
+y así evitar sobreescribir sus valores.
+
+```{stata initial-recoding-2}
+gen q4220a_alt = q4220a
+gen q4220b_alt = q4220b
+gen q4220c_alt = q4220c
+gen q4220d_alt = q4220d
+gen q4220e_alt = q4220e
+gen q4220f_alt = q4220f
+gen q4222a_alt = q4222a
+gen q4222b_alt = q4222b
+gen q4222c_alt = q4222c
+gen q4222d_alt = q4222d
+gen q4222e_alt = q4222e
+gen q4222f_alt = q4222f
+gen q4222fa_alt = q4222fa
+gen q4222g_alt = q4222g
+gen q4222ga_alt = q4222ga
+gen q4222h_alt = q4222h
+gen q4222i_alt = q4222i
+gen q4222j_alt = q4222j
+gen q4222k_alt = q4222k
+gen q4222l_alt = q4222l
+gen q4222m_alt = q4222m
+gen q4222n_alt = q4222n
+gen q4222o_alt = q4222o
+gen q4222p_alt = q4222p
+gen q4222q_alt = q4222q
+gen q4222r_alt = q4222r
+gen q4222s_alt = q4222s
+gen q4222t_alt = q4222t
+gen q4222u_alt = q4222u
+gen q4222v_alt = q4222v
+
+*Previous recoding of the symptomatology questions
+recode q4220a_alt-q4222v_alt (1=1) (2=0) (888 999=.)
+```
+
+### Criterio A
+
+Se ha de cumplir el criterio general para un episodio depresivo.
+Este criterio implica que han de darse **todos** los tres criterios G
+a continuación.
+
+#### Criterio G1
+
+El criterio es _negativo_ cuando tanto `q4211` como `q4213` son distintos a "1".
+**SIN EMBARGO**, la entrevista salta uno de los dos ítems o el otro, de forma
+que **SIEMPRE** se va a dar el caso de uno de ellos va a ser "missing".
+Por lo tanto, el criterio es _positivo_ cuando uno de los dos ítems es "1",
+"missing" cuando ambos criterios son "missing", y _negativo_ en otro caso.
+
+```{stata criterion-g1-2}
+*G1 criterion: "The depressive episode should last for at least 2 weeks"
+
+* # Original:
+gen d_crit_g1_org = .
+replace d_crit_g1_org = 0 if q4211!=1 & q4213!=1
+replace d_crit_g1_org = 1 if q4211==1 | q4213==1
+
+* # Revision:
+gen d_crit_g1 = q4211==1 | q4213==1
+replace d_crit_g1 = . if q4211==. & q4213==.
+
+tab d_crit_g1_org d_crit_g1, missing
+```
+
+Todos los "missing" se codifican como "0" en el algoritmo original.
+
+#### Criterio G2
+
+La explicación de cómo se ha implementado es similar a la del
+[criterio G1](#criterio-g1);
+la única diferencia es que si `q4225_causemed2` no se ha seleccionado, su valor
+puede ser "0" o "missing", por lo que solamente se tiene en cuenta `q4233`
+para determinar si el valor de este criterio es "missing".
+
+```{stata criterion-g2-2}
+*G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
+
+* # Original:
+gen d_crit_g2_org = 1
+replace d_crit_g2_org = 0 if q4233==1 | q4225_causemed2==1
+
+* # Revision:
+gen d_crit_g2 = q4233!=1 & q4225_causemed2!=1
+replace d_crit_g2 = . if q4233==.
+
+tab d_crit_g2_org d_crit_g2, missing
+```
+
+Todos los "missing" se codifican como "1" en el algoritmo original.
+
+#### Criterio G3
+
+El criterio es _positivo_ cuando hay al menos algún episodio que no puede ser
+atribuido a causas físicas (es decir, o bien ningún episodio puede ser atribuido
+a causas físicas, i.e. `q4224a` es "No", o bien los episodios **NO SIEMPRE**
+fueron atribuibles a cusas físicas, i.e. `q4224b` es "No").
+Cuando se consultó a un médico, se considera el caso de que se dio _ALGUNA_
+las causas físicas (en cuyo caso no se cumple el criterio),
+o bien no se dió ninguna.
+En este último caso, es necesario considerar que la "causa médica" es
+"distinta de 1", ya que se dan casos en los que está codificada como "0" y otros
+en los que está codificada como "missing".
+Además, si se consultó con un médico, los valores tanto de `q4224a` como de
+`q4224b` son ambos "missing", por lo que el único caso para considerar este
+criterio como "missing" es cuando estos tres ítems son missing.
+
+```{stata criterion-g3-2}
+*G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+
+* # Original:
+gen d_crit_g3_org = 0
+replace d_crit_g3_org = 1 if (q4224a!=1 | q4224b!=1) | (q4224==1 & q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
+replace d_crit_g3_org = . if q4224a==. & q4224b==. & q4224==. & q4225_causemed12==. & q4225_causemed23==. & q4225_causemed24==. & q4225_causemed25==. & q4225_causemed30==. & q4225_causemed31==.
+
+* # Revision:
+gen d_crit_g3 = (q4224a==2 | q4224b==2) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
+replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
+
+tab d_crit_g3_org d_crit_g3, missing
+tab q4224a d_crit_g3_org, missing
+```
+
+Hay 28 casos "0" que originalmente se codifican como "1";
+5 de ellos corresponden a respuestas "DK" o "Refuse" en `q4224a`
+(ver segunda tabla).
+Otros 23 casos corresponden a casos en los que `q4224==1`;
+cuando se da esta condición, tanto `q4224a` como `q4224b` son "missing"
+(y por tanto distintos de "1") por lo que
+se cumple siempre la condición del primer criterio de reemplazo,
+haciendo que los valores de las causas médicas sean irrelevantes.
+
+#### Cálculo final del criterio A
+
+El criterio es _positivo_ cuando se cumplen **los tres** criterios G1-G3.
+Cuando **alguno** de ellos no se cumple (== "0"), entonces el criterio general
+**NO** se cumple (i.e. los otros dos no importan).
+Generamos por tanto todos los valores primero como "missing",
+y después asignamos los valores de verdad en función de estos criterios.
+
+```{stata criterion-a-2}
+***Mild depressive episode (F32.0)
+
+*A criterion: "The general criteria for depressive episode must be met"
+
+* # Original:
+gen d_crit_a_org = .
+replace d_crit_a_org = 0 if d_crit_g1_org!=1 | d_crit_g2_org!=1 | d_crit_g3_org!=1
+replace d_crit_a_org = 1 if d_crit_g1_org==1 & d_crit_g2_org==1 & d_crit_g3_org==1
+
+* # Revision:
+gen d_crit_a = .
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
+replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
+
+tab d_crit_a_org d_crit_a, missing
+```
+
+Los valores "missing" se codifican como "0" en el algoritmo original.
+Debido a las diferencias entre los resultados en G3,
+hay diferencias en 21 casos que originalmente son codificados como "1" y
+en la revisión como "0".
+
+### Criterio B
+
+Se ha de cumplir el criterio B, consistente en que se den _al menos_ dos de los
+tres síntomas B a continuación.
+
+#### Criterio B1
+
+La explicación para el cálculo es la siguiente: Cuando **ALGUNA** de
+las respuestas es _positiva_, el sínoma es positivo.
+Cuando hay alguna respuesta "missing" en `q4220b` o `q4220d` se puede deber a
+algún salto debido al filtro en `q4220a` o `q4220c`, respectivamente.
+Por lo tanto, para tener en cuenta si la respuesta es "missing" solamente hay
+que considerar si `q4220a` Y `q4220c` son "missing".
+Pero dado que si hay alguna respuesta en `q4220a` tiene que haberla
+necesariamente en `q4220c` también,
+basta con comprobar si `q4220a` es "missing".
+
+```{stata criterion-b1-2}
+*B criterion: "At least two of the following three symptoms must be present"
+
+*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+
+* # Original:
+gen d_b1_org = 0
+replace d_b1_org = 1 if q4220a_alt==1 | q4220b_alt==1 | q4220c_alt==1 | q4220d_alt==1
+replace d_b1_org = . if q4220a_alt==. & q4220b_alt==. & q4220c_alt==. & q4220d_alt==.
+
+* # Revision:
+gen d_b1 = q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
+replace d_b1 = . if q4220a==.
+
+tab d_b1_org d_b1, missing
+```
+
+Se obtienen los mismos resultados.
+
+#### Criterio B2
+
+La explicación es similar a la del criterio B1
+(salvo porque en este caso no hay filtros,
+por lo que no importa si `q4220f` es o no "missing").
+
+```{stata criterion-b2-2}
+*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+
+* # Original:
+gen d_b2_org = 0
+replace d_b2_org = 1 if q4220e_alt==1 | q4220f_alt==1
+replace d_b2_org = . if q4220e_alt==. & q4220f_alt==.
+
+* # Revision:
+gen d_b2 = q4220e==1 | q4220f==1
+replace d_b2 = . if q4220e==.
+
+tab d_b2_org d_b2, missing
+```
+
+Se obtienen los mismos resultados.
+
+#### Criterio B3
+
+```{stata criterion-b3-2}
+*B3: "Decreased energy or increased fatigability"
+
+* # Original:
+gen d_b3_org = 0
+replace d_b3_org = 1 if q4222e_alt==1
+replace d_b3_org = . if q4222e_alt==.
+
+* # Revision:
+gen d_b3 = q4222e==1 if q4222e!=.
+
+tab d_b3_org d_b3, missing
+```
+
+Tres casos "0" se codifican como "missing" en el algoritmo original,
+debido a la recodificación inicial de respuestas no válidas como "missing".
+
+#### Cálculo final del criterio B
+
+Se debe usar la opción `, missing` en `rowtotal`, para evitar que la suma de
+síntomas se calcule como "0" cuando todos los valores son "missing".
+
+La suma de síntomas debe ser inferior a 2 para determinar que
+NO se cumple el criterio B.
+En teoría habría que tener en cuenta si hay demasiados valores "missing"
+como para poder determinar si hay más o menos de 2 síntomas,
+pero se parte del supuesto de que los "missing" son negativos
+(salvo que **TODOS** los valores sean "missing",
+en cuyo caso se asume que el criterio está indefinido y se le asigna "missing").
+
+```{stata criterion-b-2}
+*Sum of depressive screening symptoms
+
+* # Original:
+
+egen d_screentotal_org = rowtotal (d_b1_org d_b2_org d_b3_org)
+
+gen d_crit_b_org = .
+replace d_crit_b_org = 0 if d_screentotal_org<2
+replace d_crit_b_org = 1 if d_screentotal_org>=2 
+
+
+* # Revision:
+
+egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
+
+gen d_crit_b = d_screentotal >= 2 if d_screentotal != .
+
+
+tab d_screentotal_org d_screentotal, missing
+tab d_crit_b_org d_crit_b, missing
+```
+
+En ambos casos, tanto en la variable auxiliar como en el criterio B, los
+"missing" siempre se codifican como "0" en el algoritmo original.
+Se debe a que cuando todos los valores son "missing" el número de síntomas
+que se cuenta en total es "0" en el algoritmo original.
+
+### Criterio C
+
+El criterio que se ha de cumplir para un diagnóstico _positivo_ de depresión,
+además del criterio B, es que la suma de síntomas B y C sea al menos de 4.
+
+#### Criterio C1
+
+Cuando **ALGUNA** de las respuestas es _positiva_, el síntoma es _positivo_.
+Cuando la respuesta a `q4222l` es _negativa_, el ítem `q4222m` se salta,
+por lo que solamente los dos primeros han de ser tenidos en cuenta para un
+síntoma "missing".
+
+```{stata criterion-c1-2}
+*C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+
+*C1: "Loss of confidence and self-esteem"
+
+* # Original:
+gen d_c1_org = 0
+replace d_c1_org = 1 if q4222k_alt==1 | q4222l_alt==1 | q4222m_alt==1
+replace d_c1_org = . if q4222k_alt==. & q4222l_alt==. & q4222m_alt==.
+
+* # Revision:
+gen d_c1 = q4222k==1 | q4222l==1 | q4222m==1
+replace d_c1 = . if q4222k==. & q4222l==.
+
+tab d_c1_org d_c1, missing
+```
+
+1 "0" es "missing" en el algoritmo original.
+
+#### Criterio C2
+
+```{stata criterion-c2-2}
+*C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+
+* # Original:
+gen d_c2_org = 0
+replace d_c2_org = 1 if q4222n_alt==1
+replace d_c2_org = . if q4222n_alt==.
+
+* # Revision:
+gen d_c2 = q4222n==1 if q4222n!=.
+
+tab d_c2_org d_c2, missing
+```
+
+Tres "0" son "missing" en el algoritmo original.
+
+#### Criterio C3
+
+Cuando **ALGUNA** de las respuestas es _positiva_ el síntoma es _positivo_.
+Cuando `q4222t` es _negativa_, los dos últimos ítems se saltan por lo que sólo
+las tres primeras respuestas se deben tener en cuenta para asignar un "missing".
+Pero dado que si hay alguna respuesta en `q4222r` tiene que haberla
+necesariamente en `q4222s` y `q4222t`,
+basta con comprobar si `q4222r` es "missing".
+
+(**NOTA**: ¿Es posible que convenga considerar que _SÓLO_ `q4222r`,
+y no `q4222s`, indica pensamientos de muerte **recurrentes**?)
+
+```{stata criterion-c3-2}
+*C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+
+* # Original:
+gen d_c3_org = 0
+replace d_c3_org = 1 if q4222r_alt==1 | q4222s_alt==1 | q4222t_alt==1 | q4222u_alt==1 | q4222v_alt==1
+replace d_c3_org = 1 if q4222r_alt==. & q4222s_alt==. & q4222t_alt==. & q4222u_alt==. & q4222v_alt==.
+
+* # Revision:
+gen d_c3 = q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+replace d_c3 = . if q4222r==.
+
+tab d_c3_org d_c3, missing
+```
+
+Los valores "missing" son "1" en el algoritmo original.
+
+#### Criterio C4
+
+La explicación es similar a la del criterio C3.
+
+```{stata criterion-c4-2}
+*C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+
+* # Original:
+gen d_c4_org = 0
+replace d_c4_org = 1 if q4222h_alt==1 | q4222i_alt==1 | q4222j_alt==1
+replace d_c4_org = . if q4222h_alt==. & q4222i_alt==. & q4222j_alt==.
+
+* # Revision:
+gen d_c4 = q4222h==1 | q4222i==1 | q4222j==1
+replace d_c4 = . if q4222h==.
+
+tab d_c4_org d_c4, missing
+```
+
+Un "0" es "missing" en el algoritmo original.
+
+#### Criterio C5
+
+La explicación es similar a la del criterio C3.
+
+```{stata criterion-c5-2}
+*C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+
+* # Original:
+gen d_c5_org = 0
+replace d_c5_org = 1 if (q4222f_alt==1 | q4222fa_alt==1) | (q4222g_alt==1 | q4222ga_alt==1)
+replace d_c5_org = . if q4222f_alt==. & q4222fa_alt==. & q4222g_alt==. & q4222ga_alt==.
+
+* # Revision:
+gen d_c5 = (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
+replace d_c5 = . if q4222f==.
+
+tab d_c5_org d_c5, missing
+```
+
+Un "0" es "missing" en el algoritmo original.
+
+#### Criterio C6
+
+La explicación es similar a la del criterio C3.
+
+```{stata criterion-c6-2}
+*C6: "Sleep disturbance of any type"
+
+* # Original:
+gen d_c6_org = 0
+replace d_c6_org = 1 if q4222c_alt==1 | q4222d_alt==1
+replace d_c6_org = . if q4222c_alt==. & q4222d_alt==.
+
+* # Revision:
+gen d_c6 = q4222c==1 | q4222d==1
+replace d_c6 = . if q4222c==.
+
+tab d_c6_org d_c6, missing
+```
+
+Un "0" es "missing" en el algoritmo original.
+
+#### Criterio C7
+
+La explicación es similar a la del criterio C3.
+
+```{stata criterion-c7-2}
+*C7: "Change in appetite (decrease or increase) with corresponding weight change"
+
+* # Original:
+gen d_c7_org = 0
+replace d_c7_org = 1 if q4222a_alt==1 & q4222b_alt==1
+replace d_c7_org = . if q4222a_alt==. & q4222b_alt==.
+
+* # Revision:
+gen d_c7 = q4222a==1 & q4222b==1
+replace d_c7 = . if q4222a==.
+
+tab d_c7_org d_c7, missing
+```
+
+Tres "0" son "missing" en el algoritmo original.
+
+#### Cálculo final del criterio C
+
+Se debe usar la opción `, missing` en `rowtotal`, para evitar que la suma de
+síntomas se calcule como "0" cuando todos los valores son "missing".
+
+```{stata criterion-symtotal-2}
+*Sum of depressive symptoms
+
+* # Original:
+egen d_symtotal_org = rowtotal (d_c1_org d_c2_org d_c3_org d_c4_org d_c5_org d_c6_org d_c7_org)
+
+* # Revision:
+egen d_symtotal = rowtotal (d_c1 d_c2 d_c3 d_c4 d_c5 d_c6 d_c7), missing
+
+tab d_symtotal_org d_symtotal, missing
+```
+
+2730 "missing" son "1" en el algoritmo original.
+Cuando los "missing" se codifican como "0" en el algoritmo original,
+o viceversa, no hay ningún problema, ya que el comando `rowtotal` los ingora
+para calcular la suma total por lo que da lo mismo si valen "0" o son "missing".
+El problema está en C3, donde los "missing" deberían ser o bien "missing" o "0".
+Esto hace que se esté contabilizando un síntoma de más para aquellos casos que
+no tienen datos en alguno de los ítems utilizados para calcular el criterio C3.
+
+### Salto del módulo de depresión al completo
+
+Este criterio está definido originalmente como
+_todas las respuestas en el módulo de 'lifetime depression' son "missing"_.
+Sin embargo, este criterio no es estrictamente confiable, dado que
+_no es imposible_ que alguien que **NO** haya saltado el módulo decida omitir
+("DK" o "Refuse") _todas las respuestas_.
+El único punto de entrada al módulo de 'lifetime depression' es el ítem `q4218`
+(no hay filtros que redirijan a ningún ítem `q4220*` ó `q4222*`), por lo que la
+respuesta a este ítem debe ser _positiva_ para entrar en el módulo;
+en otro caso, el módulo es saltado.
+Además, el módulo completo de depresión se puede saltar si alguno de los
+siguientes ítems tiene una respuesta que sea distinta de _positiva_:
+`q4202`, `q4211`, `q4213`, o el filtro F4217
+(lo cual implica `q4214==1` Y `q4215==4` Y `q4216==4`).
+
+(**NOTA**: Se ha considera que el modulo ha sido "saltado" por los participantes
+a los que se ha preguntado por al menos alguno de estos ítems.
+Si no lo han sido, su valor será "missing", i.e. se han saltado la sección CIDI
+al completo, e.g. por ser entrevistas "proxy".)
+
+```{stata skipped-2}
+*Has the person skipped the lifetime depression module?
+
+* # Original:
+egen serie_symp_org = rowtotal (q4220a_alt-q4222v_alt)
+gen d_skipped_org = 0
+recode q4202 q4211 q4213 q4218 (1=1) (.=.) (else=0)
+replace d_skipped_org = 1 if q4202==0 | q4211==0 | q4213==0 | (q4214==1 & q4215==4 & q4216==4) | q4218==0 | (q4220a_alt!=1 & q4220b_alt!=1 & q4220c_alt!=1 & q4220d_alt!=1 & q4220e_alt!=1 & q4220f_alt!=1) | serie_symp_org<2
+
+* # Revision:
+gen d_skipped = .
+replace d_skipped =                q4202!=1 if q4202!=.
+replace d_skipped = d_skipped==1 | q4211!=1 if q4211!=.
+replace d_skipped = d_skipped==1 | q4213!=1 if q4213!=.
+replace d_skipped = d_skipped==1 | q4218!=1 if q4218!=.
+replace d_skipped = d_skipped==1 | (q4214==1 & q4215==4 & q4216==4) if q4214!=.
+
+tab d_skipped_org d_skipped, missing
+```
+
+91 valores "mising" y 7 "0" se codifican como "1" en el algoritmo original.
+La diferencia se debe a las dos últimas condiciones del algoritmo original
+(` | (q4220a!=1 & q4220b!=1 & q4220c!=1 & q4220d!=1 & q4220e!=1 & q4220f!=1) | serie_symp<2`).
+De acuerdo a mi criterio, no deberían utilizarse para considerar si se ha
+saltado o no el módulo de depresión, ya que esos ítems están dentro del módulo
+y, aparte de utilizar información muy compleja que no deja claro por qué esos
+criterios se consdieran como saltos del módulo de depresión.
+Por otro lado, esta versión revisada da 91 "missing", que corresponden con los
+casos "proxy", lo cual pone de relieve también que el cálculo se ha hecho
+correctamente con los datos presentes en la BDD.
+
+(**NOTA**: En la versión revisada no se usa nunca esta variable para
+el diagnóstico de "lifetime depression". En su lugar, se usa la variable
+`d_screening`, ver apartado
+[Diagnóstico final de depresión](#Diagnóstico_final_de_depresión).)
+
+### Severidad
+
+Se calcula primero un criterio inicial de severidad considerando si la
+suma total de síntomas es menor que 4, igual o mayor que 4, 6 u 8.
+Esta severidad se obtiene en orden creciente,
+de forma que cada nivel de severidad sobreescribe el anterior.  
+
+Para calcular el nivel final de severidad, este criterio inicial de severidad es
+combinado con el criterio B (para obtener los niveles de severidad "leve"
+o "moderado"), o con el criterio de tener los tres síntomas B (para el nivel
+"grave"). Estos son calculados también en orden creciente, de forma que cada
+nivel sobreescribe al anterior.
+
+```{stata severity-2}
+***Severity of depressive episode
+
+*To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+
+* # Original:
+gen d_lifetime_severity_org = .
+replace d_lifetime_severity_org = 0 if d_crit_a_org==0 | d_crit_b==0 | (d_screentotal_org==2 & d_symtotal_org<2) | (d_screentotal_org==3 & d_symtotal_org==0)
+replace d_lifetime_severity_org = 1 if d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=2) | (d_screentotal==3 & d_symtotal_org>=1))
+replace d_lifetime_severity_org = 2 if d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=4) | (d_screentotal==3 & d_symtotal_org>=3))
+replace d_lifetime_severity_org = 3 if d_crit_a_org==1 & (d_screentotal_org==3 & d_symtotal_org>=5)
+
+* # Revision:
+
+gen d_lifetime_severity_total = .
+replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal <  4
+replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal >= 4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8 & d_screentotal!=. & d_symtotal !=.
+
+gen d_lifetime_severity = .
+replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+
+
+tab d_lifetime_severity_org d_lifetime_severity, missing
+```
+
+2510 valores "missing" son "0" en el algoritmo original, y hay otros 17 casos
+que tienen valores discrepantes de severidad
+(en los cuales también cambia el diagnóstico)
+
+### Diagnóstico final de depresión
+
+El cálculo es similar al algoritmo original, pero se tiene en cuenta solamente
+el valor de severidad de depresión calculado anteriormente,
+y si el módulo de depresión se ha saltado o no
+(en este caso, la variable `d_screening` no hace falta puesto que los resultados
+al añadirla no cambian, dado que ya se tienen en cuenta los casos negativos y
+positivos en la variable `d_skipped`).
+
+```{stata liferime-depression-2}
+* # Original:
+gen depression_lifetime_org = .
+replace depression_lifetime_org = 1 if d_lifetime_severity_org >=1 
+replace depression_lifetime_org = 0 if proxy==2 & (d_lifetime_severity_org ==0 | d_skipped_org==1)
+
+* # Revision:
+gen depression_lifetime = .
+replace depression_lifetime = 0 if d_lifetime_severity==0 | d_skipped==1
+replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=. & d_skipped==0
+
+tab depression_lifetime_org depression_lifetime, missing
+```
+
+17 respuestas "0" son "1" en el algoritmo original.
+Las discrepancias se deben, principalmente,
+a los criterios G3 y C3.
+Sería necesario modificar G3 para tener en cuenta los valores perdidos en
+`q4224a` y `q4224b` cuando no se alcanzan esos ítems,
+y codificar los "missing" en C3 como "missing" o "0".
+
+## Sintaxis completa (Stata 13)
+
+```{stata reload-data-2, include=FALSE}
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta", clear
+```
+
+### Revisión
+
+```{stata review-2, results='hide'}
+*Previous recoding of the symptomatology questions
+
+***Depressive episode (F32)
+
+*G1 criterion: "The depressive episode should last for at least 2 weeks"
+gen d_crit_g1 = q4211==1 | q4213==1
+replace d_crit_g1 = . if q4211==. & q4213==.
+label variable d_crit_g1 "G1 criterion for depression"
+
+*G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
+gen d_crit_g2 = q4233!=1 & q4225_causemed2!=1
+replace d_crit_g2 = . if q4233==.
+label variable d_crit_g2 "G2 criterion for depression"
+
+*G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+gen d_crit_g3 = (q4224a==2 | q4224b==2) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
+replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
+label variable d_crit_g3 "G3 criterion for depression" 
+
+***Mild depressive episode (F32.0)
+
+*A criterion: "The general criteria for depressive episode must be met"
+gen d_crit_a = .
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
+replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
+label variable d_crit_a "A criterion for depression"
+
+*B criterion: "At least two of the following three symptoms must be present"
+
+*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+gen d_b1 = q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
+replace d_b1 = . if q4220a==.
+label variable d_b1 "B1 criterion for depression"
+
+*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+gen d_b2 = q4220e==1 | q4220f==1
+replace d_b2 = . if q4220e==.
+label variable d_b2 "B2 criterion for depression"
+
+*B3: "Decreased energy or increased fatigability"
+gen d_b3 = q4222e==1 if q4222e!=.
+label variable d_b3 "B3 criterion for depression"
+
+*Sum of depressive screening symptoms
+egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
+label variable d_screentotal "Screening symptoms for depression"
+
+*To fulfil B criterion >=2 screening symptoms should be present.
+gen d_crit_b = d_screentotal >= 2 if d_screentotal != .
+label variable d_crit_b "B criterion for depression"
+
+*C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+
+*C1: "Loss of confidence and self-esteem"
+gen d_c1 = q4222k==1 | q4222l==1 | q4222m==1
+replace d_c1 = . if q4222k==. & q4222l==.
+label variable d_c1 "C1 criterion for depression"
+
+*C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+gen d_c2 = q4222n==1 if q4222n!=.
+label variable d_c2 "C2 criterion for depression"
+
+*C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+gen d_c3 = q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+replace d_c3 = . if q4222r==.
+label variable d_c3 "C3 criterion for depression"
+
+*C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+gen d_c4 = q4222h==1 | q4222i==1 | q4222j==1
+replace d_c4 = . if q4222h==.
+label variable d_c4 "C4 criterion for depression"
+
+*C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+gen d_c5 = (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
+replace d_c5 = . if q4222f==.
+label variable d_c5 "C5 criterion for depression"
+
+*C6: "Sleep disturbance of any type"
+gen d_c6 = q4222c==1 | q4222d==1
+replace d_c6 = . if q4222c==.
+label variable d_c6 "C6 criterion for depression"
+
+*C7: "Change in appetite (decrease or increase) with corresponding weight change"
+gen d_c7 = q4222a==1 & q4222b==1
+replace d_c7 = . if q4222a==.
+label variable d_c7 "C7 criterion for depression"
+
+*Sum of depressive symptoms
+egen d_symtotal = rowtotal (d_c1 d_c2 d_c3 d_c4 d_c5 d_c6 d_c7), missing
+label variable d_symtotal "Symptoms for depression"
+
+*Has the person skipped the lifetime depression module?
+gen d_skipped = .
+replace d_skipped =                q4202!=1 if q4202!=.
+replace d_skipped = d_skipped==1 | q4211!=1 if q4211!=.
+replace d_skipped = d_skipped==1 | q4213!=1 if q4213!=.
+replace d_skipped = d_skipped==1 | q4218!=1 if q4218!=.
+replace d_skipped = d_skipped==1 | (q4214==1 & q4215==4 & q4216==4) if q4214!=.
+
+***Severity of depressive episode
+
+*To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+gen d_lifetime_severity_total = .
+replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal <  4
+replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal >= 4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8 & d_screentotal!=. & d_symtotal !=.
+
+gen d_lifetime_severity = .
+replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
+label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label values d_lifetime_severity severity
+
+***Lifetime depression diagnostic
+gen depression_lifetime = .
+replace depression_lifetime = 0 if d_lifetime_severity==0 | d_skipped==1
+replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=. & d_skipped==0
+label define yesno 0 "No" 1 "Yes"
+label values depression_lifetime yesno
+label variable depression_lifetime "Lifetime depression (c2019_w1)"
+```
+
+### Algoritmo original
+
+```{stata original-2, results='hide'}
+*Previous recoding of the symptomatology questions
+recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+
+***Depressive episode (F32)
+
+*G1 criterion: "The depressive episode should last for at least 2 weeks"
+gen d_crit_g1_org = .
+replace d_crit_g1_org = 0 if q4211!=1 & q4213!=1
+replace d_crit_g1_org = 1 if q4211==1 | q4213==1
+label variable d_crit_g1_org "G1 criterion for depression"
+
+*G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
+gen d_crit_g2_org = 1
+replace d_crit_g2_org = 0 if q4233==1 | q4225_causemed2==1 
+label variable d_crit_g2_org "G2 criterion for depression"
+
+*G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+gen d_crit_g3_org = 0
+replace d_crit_g3_org = 1 if (q4224a!=1 | q4224b!=1) | (q4224==1 & q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
+replace d_crit_g3_org = . if q4224a==. & q4224b==. & q4224==. & q4225_causemed12==. & q4225_causemed23==. & q4225_causemed24==. & q4225_causemed25==. & q4225_causemed30==. & q4225_causemed31==.
+label variable d_crit_g3_org "G3 criterion for depression" 
+
+***Mild depressive episode (F32.0)
+
+*A criterion: "The general criteria for depressive episode must be met"
+gen d_crit_a_org = .
+replace d_crit_a_org = 0 if d_crit_g1_org!=1 | d_crit_g2_org!=1 | d_crit_g3_org!=1
+replace d_crit_a_org = 1 if d_crit_g1_org==1 & d_crit_g2_org==1 & d_crit_g3_org==1
+label variable d_crit_a_org "A criterion for depression"
+
+*B criterion: "At least two of the following three symptoms must be present"
+
+*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+gen d_b1_org = 0
+replace d_b1_org = 1 if q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
+replace d_b1_org = . if q4220a==. & q4220b==. & q4220c==. & q4220d==.
+label variable d_b1_org "B1 criterion for depression"
+
+*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+gen d_b2_org = 0
+replace d_b2_org = 1 if q4220e==1 | q4220f==1
+replace d_b2_org = . if q4220e==. & q4220f==.
+label variable d_b2_org "B2 criterion for depression"
+
+*B3: "Decreased energy or increased fatigability"
+gen d_b3_org = 0
+replace d_b3_org = 1 if q4222e==1
+replace d_b3_org = . if q4222e==.
+label variable d_b3_org "B3 criterion for depression"
+
+*Sum of depressive screening symptoms
+egen d_screentotal_org = rowtotal (d_b1_org-d_b3_org)
+label variable d_screentotal_org "Screening symptoms for depression"
+
+*To fulfil B criterion >=2 screening symptoms should be present.
+gen d_crit_b_org = .
+replace d_crit_b_org = 0 if d_screentotal_org<2
+replace d_crit_b_org = 1 if d_screentotal_org>=2 
+label variable d_crit_b_org "B criterion for depression"
+
+*C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+
+*C1: "Loss of confidence and self-esteem"
+gen d_c1_org = 0
+replace d_c1_org = 1 if q4222k==1 | q4222l==1 | q4222m==1
+replace d_c1_org = . if q4222k==. & q4222l==. & q4222m==.
+label variable d_c1_org "C1 criterion for depression"
+
+*C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+gen d_c2_org = 0
+replace d_c2_org = 1 if q4222n==1
+replace d_c2_org = . if q4222n==.
+label variable d_c2_org "C2 criterion for depression"
+
+*C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+gen d_c3_org = 0
+replace d_c3_org = 1 if q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+replace d_c3_org = 1 if q4222r==. & q4222s==. & q4222t==. & q4222u==. & q4222v==.
+label variable d_c3_org "C3 criterion for depression"
+
+*C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+gen d_c4_org = 0
+replace d_c4_org = 1 if q4222h==1 | q4222i==1 | q4222j==1
+replace d_c4_org = . if q4222h==. & q4222i==. & q4222j==.
+label variable d_c4_org "C4 criterion for depression"
+
+*C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+gen d_c5_org = 0
+replace d_c5_org = 1 if (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
+replace d_c5_org = . if q4222f==. & q4222fa==. & q4222g==. & q4222ga==.
+label variable d_c5_org "C5 criterion for depression"
+
+*C6: "Sleep disturbance of any type"
+gen d_c6_org = 0
+replace d_c6_org = 1 if q4222c==1 | q4222d==1
+replace d_c6_org = . if q4222c==. & q4222d==.
+label variable d_c6_org "C6 criterion for depression"
+
+*C7: "Change in appetite (decrease or increase) with corresponding weight change"
+gen d_c7_org = 0
+replace d_c7_org = 1 if q4222a==1 & q4222b==1
+replace d_c7_org = . if q4222a==. & q4222b==.
+label variable d_c7_org "C7 criterion for depression"
+
+*Sum of depressive symptoms
+egen d_symtotal_org = rowtotal (d_c1_org-d_c7_org)
+label variable d_symtotal_org "Symptoms for depression"
+
+*Have the person skipped the lifetime depression module?
+egen serie_symp_org = rowtotal (q4220a-q4222v)
+gen d_skipped_org = 0
+recode q4202 q4211 q4213 q4218 (1=1) (.=.) (else=0)
+replace d_skipped_org = 1 if q4202==0 | q4211==0 | q4213==0 | (q4214==1 & q4215==4 & q4216==4) | q4218==0 | (q4220a!=1 & q4220b!=1 & q4220c!=1 & q4220d!=1 & q4220e!=1 & q4220f!=1) | serie_symp_org<2
+
+***Severity of depressive episode
+
+*To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+gen d_lifetime_severity_org = .
+replace d_lifetime_severity_org = 0 if d_crit_a_org==0 | d_crit_b_org==0 | (d_screentotal_org==2 & d_symtotal_org<2) | (d_screentotal_org==3 & d_symtotal_org==0)
+replace d_lifetime_severity_org = 1 if d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=2) | (d_screentotal_org==3 & d_symtotal_org>=1))
+replace d_lifetime_severity_org = 2 if d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=4) | (d_screentotal_org==3 & d_symtotal_org>=3))
+replace d_lifetime_severity_org = 3 if d_crit_a_org==1 & (d_screentotal_org==3 & d_symtotal_org>=5)
+label variable d_lifetime_severity_org "Severity of lifetime depressive episode (c2019_w1)"
+*label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label values d_lifetime_severity_org severity
+
+***Lifetime depression prevalence
+gen depression_lifetime_org = .
+replace depression_lifetime_org = 1 if d_lifetime_severity_org >=1 
+replace depression_lifetime_org = 0 if proxy==2 & (d_lifetime_severity_org ==0 | d_skipped_org==1)
+*label define yesno 0 "No" 1 "Yes"
+label values depression_lifetime_org yesno
+label variable depression_lifetime_org "Lifetime depression (c2019_w1)"
+```
+
+### Comparación de resultados
+
+#### Contingencia entre los resultados de ambos algoritmos
+
+```{stata contingency-final-2}
+tab depression_lifetime_org depression_lifetime, missing
+```
+
+(Mismo resultado que en la versión desglosada)
+
+#### Frecuencias absolutas y relativas en la muestra de ambas variables
+
+```{stata freqs-2}
+tab depression_lifetime_org
+tab depression_lifetime
+```
+
+El porcentaje de casos con depresión que se obtiene con el algoritmo revisado
+es ligeramente (0,58%) menor que con el algoritmo original.
+El total de casos con valores válidos es menor que el obtenido originalmente,
+en parte debido al número de valores perdidos en el número total de síntomas.
 
 # Session info
 
