@@ -1,11 +1,15 @@
 ---
-title: Revisión de la variable "Lifetime Depression (CIE-10)" de Chorte 2019, Ola 1
+title: "Revisión de la variable \"Lifetime Depression (CIE-10)\" de Chorte 2019, Ola
+  1"
 date: "`r lubridate::today()`"
 output:
+  word_document:
+    toc: yes
+    toc_depth: '4'
   html_document:
-    toc:           yes
-    toc_float:     yes
-    toc_depth:       4
+    toc: yes
+    toc_float: yes
+    toc_depth: 4
     code_download: yes
 ---
 
