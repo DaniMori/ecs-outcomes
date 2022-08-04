@@ -2197,7 +2197,7 @@ replace d_crit_g3_rev1 = 0 if (q4224a==1 & q4224b==1) | (q4224==1 & (q4225_cause
 replace d_crit_g3_rev1 = 1 if (q4224a==2 | q4224b==2) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
 
 * # Revision 2:
-gen d_crit_g3 = (q4224a==2 | q4224b==2) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
+gen d_crit_g3 = (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
 replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
 
 tab d_crit_g3_rev1 d_crit_g3, missing
@@ -2445,20 +2445,44 @@ tab d_symtotal_rev1 d_symtotal, missing
 *Has the person skipped the lifetime depression module?
 
 * # Revision 1:
-gen d_skipped_rev1 = .
-replace d_skipped_rev1 =                q4202!=1 if q4202!=.
-replace d_skipped_rev1 = d_skipped_rev1==1 | q4211!=1 if q4211!=.
-replace d_skipped_rev1 = d_skipped_rev1==1 | q4213!=1 if q4213!=.
-replace d_skipped_rev1 = d_skipped_rev1==1 | q4218!=1 if q4218!=.
-replace d_skipped_rev1 = d_skipped_rev1==1 | (q4214==1 & q4215==4 & q4216==4) if q4214!=.
+
+* ## Generate filter variables first:
+gen  f4217_rev1     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
+egen f4221_sum_rev1 = rowtotal (q4220a_alt-q4220f_alt), missing
+egen f4223_sum_rev1 = rowtotal (q4220a_alt-q4222v_alt), missing
+
+* ## Compute the "skipped" variable:
+gen     d_skipped_rev1 = .
+replace d_skipped_rev1 =                     q4202!=1           if q4202!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | q4211!=1           if q4211!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | q4213!=1           if q4213!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | q4218!=1           if q4218!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | f4217==1           if f4217!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | f4221_sum_rev1 < 1 if f4221_sum_rev1!=.
+replace d_skipped_rev1 = d_skipped_rev1==1 | f4223_sum_rev1 < 2 if f4223_sum_rev1!=.
+
 
 * # Revision 2:
-gen d_skipped = .
-replace d_skipped =                q4202!=1 if q4202!=.
-replace d_skipped = d_skipped==1 | q4211!=1 if q4211!=.
-replace d_skipped = d_skipped==1 | q4213!=1 if q4213!=.
-replace d_skipped = d_skipped==1 | q4218!=1 if q4218!=.
-replace d_skipped = d_skipped==1 | (q4214==1 & q4215==4 & q4216==4) if q4214!=.
+
+* ## Previous recoding of the symptomatology questions
+* ##   (necessary for the filters)
+recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+
+* ## Generate filter variables first:
+gen  f4217     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
+egen f4221_sum = rowtotal (q4220a-q4220f), missing
+egen f4223_sum = rowtotal (q4220a-q4222v), missing
+
+* ## Compute the "skipped" variable:
+gen     d_skipped = .
+replace d_skipped =                q4202!=1      if q4202!=.
+replace d_skipped = d_skipped==1 | q4211!=1      if q4211!=.
+replace d_skipped = d_skipped==1 | q4213!=1      if q4213!=.
+replace d_skipped = d_skipped==1 | q4218!=1      if q4218!=.
+replace d_skipped = d_skipped==1 | f4217==1      if f4217!=.
+replace d_skipped = d_skipped==1 | f4221_sum < 1 if f4221_sum!=.
+replace d_skipped = d_skipped==1 | f4223_sum < 2 if f4223_sum!=.
+
 
 tab d_skipped_rev1 d_skipped, missing
 ```
@@ -2466,23 +2490,31 @@ tab d_skipped_rev1 d_skipped, missing
 ### Severidad
 
 ```{stata severity-3}
+
 ***Severity of depressive episode
 
 *To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
 
 * # Revision 1:
 
-gen d_lifetime_severity_total_rev1 = .
+*Total number of symptoms (B + C)
+gen     d_lifetime_severity_total_rev1 = .
 replace d_lifetime_severity_total_rev1 = 0 if d_screentotal_rev1 + d_screenmissing_rev1 + d_symtotal_rev1 + d_symmissing_rev1 < 4
 replace d_lifetime_severity_total_rev1 = 1 if d_screentotal_rev1 + d_symtotal_rev1 >= 4 & d_screentotal_rev1!=. & d_symtotal_rev1 !=.
 replace d_lifetime_severity_total_rev1 = 2 if d_screentotal_rev1 + d_symtotal_rev1 >= 6 & d_screentotal_rev1!=. & d_symtotal_rev1 !=.
 replace d_lifetime_severity_total_rev1 = 3 if d_screentotal_rev1 + d_symtotal_rev1 >= 8 & d_screentotal_rev1!=. & d_symtotal_rev1 !=.
 
-gen d_lifetime_severity_rev1 = .
-replace d_lifetime_severity_rev1 = 0 if d_crit_a_rev1==0 | d_crit_b_rev1==0 | d_lifetime_severity_total_rev1==0
-replace d_lifetime_severity_rev1 = 1 if d_crit_a_rev1==1 & d_crit_b_rev1==1 & d_lifetime_severity_total_rev1>=1 & d_lifetime_severity_total_rev1!=.
-replace d_lifetime_severity_rev1 = 2 if d_crit_a_rev1==1 & d_crit_b_rev1==1 & d_lifetime_severity_total_rev1>=2 & d_lifetime_severity_total_rev1!=.
-replace d_lifetime_severity_rev1 = 3 if d_crit_a_rev1==1 & d_screentotal_rev1==3 & d_lifetime_severity_total_rev1==3
+*CIDI initial screening test
+gen d_screening_rev1=.
+replace d_screening_rev1=0 if q4200==2 & q4201==2 & q4202==2
+replace d_screening_rev1=1 if q4200==1 | q4201==1 | q4202==1
+
+gen     d_lifetime_severity_rev1 = .
+replace d_lifetime_severity_rev1 = 0 if d_screening_rev1==0
+replace d_lifetime_severity_rev1 = 0 if d_screening_rev1==1 & d_crit_a_rev1==0 | d_crit_b_rev1==0      | d_lifetime_severity_total_rev1==0
+replace d_lifetime_severity_rev1 = 1 if d_screening_rev1==1 & d_crit_a_rev1==1 & d_crit_b_rev1==1      & d_lifetime_severity_total_rev1>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_rev1 = 2 if d_screening_rev1==1 & d_crit_a_rev1==1 & d_crit_b_rev1==1      & d_lifetime_severity_total_rev1>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_rev1 = 3 if d_screening_rev1==1 & d_crit_a_rev1==1 & d_screentotal_rev1==3 & d_lifetime_severity_total_rev1==3
 
 
 * # Revision 2:
@@ -2494,10 +2526,10 @@ replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6 & d_scr
 replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8 & d_screentotal!=. & d_symtotal !=.
 
 gen d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
-replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
 
 
 tab d_lifetime_severity_rev1 d_lifetime_severity, missing
@@ -2507,21 +2539,15 @@ tab d_lifetime_severity_rev1 d_lifetime_severity, missing
 
 ```{stata liferime-depression-3}
 * # Revision 1:
-
-gen d_screening=.
-replace d_screening=0 if q4200==2 & q4201==2 & q4202==2
-replace d_screening=1 if q4200==1 | q4201==1 | q4202==1
-
-***Lifetime depression diagnostic
-gen depression_lifetime_rev1 = .
-replace depression_lifetime_rev1 = 0 if d_lifetime_severity_rev1 ==0 | d_screening==0
-replace depression_lifetime_rev1 = 1 if d_lifetime_severity_rev1 >=1 & d_lifetime_severity_rev1 !=. & d_screening==1
+gen     depression_lifetime_rev1 = .
+replace depression_lifetime_rev1 = 0 if d_lifetime_severity_rev1==0
+replace depression_lifetime_rev1 = 1 if d_lifetime_severity_rev1>=1 & d_lifetime_severity_rev1 !=.
 
 
 * # Revision 2:
 gen depression_lifetime = .
-replace depression_lifetime = 0 if d_lifetime_severity==0 | d_skipped==1
-replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=. & d_skipped==0
+replace depression_lifetime = 0 if d_lifetime_severity==0
+replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
 
 tab depression_lifetime_rev1 depression_lifetime, missing
 ```
@@ -2532,11 +2558,12 @@ tab depression_lifetime_rev1 depression_lifetime, missing
 use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta", clear
 ```
 
+A continuación aparecen en orden inverso (la versión "conservadora" después)
+para evitar que la recodificación de los ítems afecte a la otra versión.
+
 ### Versión "liberal (específica)"
 
 ```{stata review-1-comp, results='hide'}
-*Previous recoding of the symptomatology questions
-
 ***Depressive episode (F32)
 
 *G1 criterion: "The depressive episode should last for at least 2 weeks"
@@ -2550,7 +2577,7 @@ replace d_crit_g2 = . if q4233==.
 label variable d_crit_g2 "G2 criterion for depression"
 
 *G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
-gen d_crit_g3 = (q4224a==2 | q4224b==2) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
+gen d_crit_g3 = (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
 replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
 label variable d_crit_g3 "G3 criterion for depression" 
 
@@ -2627,37 +2654,51 @@ egen d_symtotal = rowtotal (d_c1 d_c2 d_c3 d_c4 d_c5 d_c6 d_c7), missing
 label variable d_symtotal "Symptoms for depression"
 
 *Has the person skipped the lifetime depression module?
-gen d_skipped = .
-replace d_skipped =                q4202!=1 if q4202!=.
-replace d_skipped = d_skipped==1 | q4211!=1 if q4211!=.
-replace d_skipped = d_skipped==1 | q4213!=1 if q4213!=.
-replace d_skipped = d_skipped==1 | q4218!=1 if q4218!=.
-replace d_skipped = d_skipped==1 | (q4214==1 & q4215==4 & q4216==4) if q4214!=.
+
+* ## Previous recoding of the symptomatology questions
+* ##   (necessary for the filters)
+recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+
+* ## Generate filter variables first:
+gen  f4217     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
+egen f4221_sum = rowtotal (q4220a-q4220f), missing
+egen f4223_sum = rowtotal (q4220a-q4222v), missing
+
+* ## Compute the "skipped" variable:
+gen     d_skipped = .
+replace d_skipped =                q4202!=1      if q4202!=.
+replace d_skipped = d_skipped==1 | q4211!=1      if q4211!=.
+replace d_skipped = d_skipped==1 | q4213!=1      if q4213!=.
+replace d_skipped = d_skipped==1 | q4218!=1      if q4218!=.
+replace d_skipped = d_skipped==1 | f4217==1      if f4217!=.
+replace d_skipped = d_skipped==1 | f4221_sum < 1 if f4221_sum!=.
+replace d_skipped = d_skipped==1 | f4223_sum < 2 if f4223_sum!=.
+
 
 ***Severity of depressive episode
 
 *To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
 gen d_lifetime_severity_total = .
-replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal <  4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal <  4
 replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal >= 4 & d_screentotal!=. & d_symtotal !=.
 replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6 & d_screentotal!=. & d_symtotal !=.
 replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8 & d_screentotal!=. & d_symtotal !=.
 
 gen d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
-replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
-* label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+*label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_lifetime_severity severity
 
 ***Lifetime depression diagnostic
-gen depression_lifetime_rev2 = .
-replace depression_lifetime_rev2 = 0 if d_lifetime_severity==0 | d_skipped==1
-replace depression_lifetime_rev2 = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=. & d_skipped==0
-* label define yesno 0 "No" 1 "Yes"
-label values depression_lifetime_rev2 yesno
+gen     depression_lifetime_rev2 = .
+replace depression_lifetime_rev2 = 0 if d_lifetime_severity==0
+replace depression_lifetime_rev2 = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
+*label define yesno 0 "No" 1 "Yes"
+label values   depression_lifetime_rev2 yesno
 label variable depression_lifetime_rev2 "Lifetime depression (c2019_w1)"
 ```
 
@@ -2666,7 +2707,6 @@ label variable depression_lifetime_rev2 "Lifetime depression (c2019_w1)"
 ```{stata, include=FALSE}
 drop d_crit_g1-d_lifetime_severity
 ```
-
 
 ```{stata review-2-comp, results='hide'}
 *Previous recoding of the symptomatology questions
@@ -2720,9 +2760,10 @@ replace d_b3 = 0 if q4222e==0
 replace d_b3 = 1 if q4222e==1
 label variable d_b3 "B3 criterion for depression"
 
+
 *Sum of depressive screening symptoms
-egen d_screentotal = rowtotal (d_b1-d_b3), missing
-egen d_screenmissing = rowmiss (d_b1-d_b3)
+egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
+egen d_screenmissing = rowmiss (d_b1 d_b2 d_b3)
 label variable d_screentotal "Screening symptoms for depression"
 
 *To fulfil B criterion >=2 screening symptoms should be present.
@@ -2730,6 +2771,7 @@ gen d_crit_b = .
 replace d_crit_b = 0 if (d_screentotal + d_screenmissing) < 2
 replace d_crit_b = 1 if d_screentotal >= 2 & d_screentotal != .
 label variable d_crit_b "B criterion for depression"
+
 
 *C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
@@ -2781,37 +2823,43 @@ egen d_symmissing = rowmiss (d_c1-d_c7)
 label variable d_symtotal "Symptoms for depression"
 label variable d_symmissing "Missing symptoms for depression"
 
+
 *`d_skipped` is not used so its computations are skipped
+
 
 ***Severity of depressive episode
 
 *To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+
+*Total number of symptoms (B + C)
 gen d_lifetime_severity_total = .
 replace d_lifetime_severity_total = 0 if d_screentotal + d_screenmissing + d_symtotal + d_symmissing < 4
 replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal >= 4 & d_screentotal!=. & d_symtotal !=.
 replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal >= 6 & d_screentotal!=. & d_symtotal !=.
 replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal >= 8 & d_screentotal!=. & d_symtotal !=.
 
-gen d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0
-replace d_lifetime_severity = 1 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 2 if d_crit_a==1 & d_crit_b==1 & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 3 if d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
-*label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
-label values d_lifetime_severity severity
-
 *CIDI initial screening test
 gen d_screening=.
 replace d_screening=0 if q4200==2 & q4201==2 & q4202==2
 replace d_screening=1 if q4200==1 | q4201==1 | q4202==1
 
+gen d_lifetime_severity = .
+replace d_lifetime_severity = 0 if d_screening==0
+replace d_lifetime_severity = 0 if d_screening==1 & d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_screening==1 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_screening==1 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_screening==1 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
+*label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label values d_lifetime_severity severity
+
+
 ***Lifetime depression diagnostic
-gen depression_lifetime_rev1 = .
-replace depression_lifetime_rev1 = 0 if d_lifetime_severity ==0 | d_screening==0
-replace depression_lifetime_rev1 = 1 if d_lifetime_severity >=1 & d_lifetime_severity !=. & d_screening==1
+gen     depression_lifetime_rev1 = .
+replace depression_lifetime_rev1 = 0 if d_lifetime_severity==0
+replace depression_lifetime_rev1 = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
 *label define yesno 0 "No" 1 "Yes"
-label values depression_lifetime_rev1 yesno
+label values   depression_lifetime_rev1 yesno
 label variable depression_lifetime_rev1 "Lifetime depression (c2019_w1)"
 ```
 
