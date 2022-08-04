@@ -151,12 +151,12 @@ todos los casos coinciden entre las dos versiones.)
 En algunas ocasiones, se muestran otras tablas de contingencia para explorar
 la relación entre las variables generadas y las variables "en bruto".
 
-```{stata load-data, collectcode=TRUE, results='hide'}
+```{stata load-data, results='hide'}
 * Cohorte 2019, linea base:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta", clear
 ```
 
-```{stata initial-recoding, collectcode=TRUE}
+```{stata initial-recoding, results='hide'}
 *Previous recoding of the symptomatology questions
 recode q4220a-q4222v (1=1) (2=0) (888 999=.)
 ```
@@ -1160,7 +1160,7 @@ Dado que el tratamiento es diferente entre el algoritmo original y el revisado,
 creo nuevas variables con el sufijo `_alt` para el algoritmo original,
 y así evitar sobreescribir sus valores.
 
-```{stata initial-recoding-2}
+```{stata initial-recoding-2, results='hide'}
 gen q4220a_alt = q4220a
 gen q4220b_alt = q4220b
 gen q4220c_alt = q4220c
@@ -2114,7 +2114,7 @@ en parte debido al número de valores perdidos en el número total de síntomas.
 use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta", clear
 ```
 
-```{stata initial-recoding-3}
+```{stata initial-recoding-3, results='hide'}
 gen q4220a_alt = q4220a
 gen q4220b_alt = q4220b
 gen q4220c_alt = q4220c
