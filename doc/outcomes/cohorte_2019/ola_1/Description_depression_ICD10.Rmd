@@ -19,46 +19,73 @@ library(Statamarkdown)
 # Opciones de configuración de las salidas de R y Stata:
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-echo        = FALSE, #   - No muestra la sintaxis en el documento
-results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
-cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
 )
 ```
 
 # Variable information
 
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | **Main variable name**    | **Label**                                                                   | **Format** | **Code**                        |
-+:==========================+:============================================================================+============+=================================+
+|:--------------------------|:----------------------------------------------------------------------------|------------|---------------------------------|
 | depression_lifetime       | Lifetime depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_lifetime_severity       | Severity of lifetime depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | depression_12m            | 12 month depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | depression_symptoms12m    | 12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1) | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_12m_item                | 12 month depression one item (c2019_w1)                                     | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_12m_comparable          | 12 month depression comparable with COVID substudy (c2019_w1)               | 0=no;1=yes | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | depression_symptoms12m    | 12 month depression symptomatology (c2019_w1)                               | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_12m_severity            | Severity of 12 month depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_12m_severity_comparable | Severity of 12 month depressive episode comparable (c2019_w1)               | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 | d_symptoms12m_comparable  | 12 month depression comparable with COVID substudy (c2019_w1)               | Binary     | 0=no;1=yes                      |
-+---------------------------+-----------------------------------------------------------------------------+------------+---------------------------------+
 
 # Variable description
 
-Depression has become a major public health issue as it is one of the main causes of disability worldwide, with an even greater impact on developed countries. According to The ICD-10 Classification of Mental and Behavioural Disorders, Diagnostic criteria for research (World Health Organization, 1993), the main characteristics of depression are the presence of a sustained depressed mood, the loss of interest or pleasure in activities normally pleasurable and/or the decreased energy or increased fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria for research proposes several contributing factors that can be present or absent: loss of confidence and self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or suicide, diminished ability to think or concentrate, change in psychomotor activity, sleep disturbance, and changes in appetite with the corresponding weight change. Moreover, the classification proposes a three-level gradient of severity depending on the amount of criteria present in each case, from mild to severe. In order to address these criteria and be able to assess the lifetime presence or absence of a depressive episode, as well as its severity, we used an adapted version of the Composite International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by trained lay interviewers for the assessment of mental disorders according to the definitions and criteria of ICD-10. It is intended for use in epidemiological and cross-cultural studies, as well as for clinical and research purposes.
+Depression has become a major public health issue as it is one of the main
+causes of disability worldwide, with an even greater impact on developed
+countries. According to The ICD-10 Classification of Mental and Behavioural
+Disorders, Diagnostic criteria for research [@worldhealthorganization1992], the
+main characteristics of depression are the presence of a sustained depressed
+mood, the loss of interest or pleasure in activities normally pleasurable and/or
+the decreased energy or increased fatigability. In addition to these main
+criteria, the ICD-10 Diagnostic criteria for research proposes several
+contributing factors that can be present or absent: loss of confidence and
+self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or
+suicide, diminished ability to think or concentrate, change in psychomotor
+activity, sleep disturbance, and changes in appetite with the corresponding
+weight change. Moreover, the classification proposes a three-level gradient of
+severity depending on the amount of criteria present in each case, from mild to
+severe. In order to address these criteria and be able to assess the lifetime
+presence or absence of a depressive episode, as well as its severity, we used an
+adapted version of the Composite International Diagnostic Interview (CIDI 3.0),
+a comprehensive, fully-structured interview designed to be used by trained lay
+interviewers for the assessment of mental disorders according to the definitions
+and criteria of ICD-10. It is intended for use in epidemiological and
+cross-cultural studies, as well as for clinical and research purposes.
 
 # Explanation of how the variables were created
 
-Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable depression_lifetime) and in the previous 12 months (point prevalence; variable depression_12m). More precisely, the following criteria should be fulfilled: i) The depressive episode should last for at least 2 weeks; ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life; iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder; iv) The general criteria for depressive episode must be met; v) At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy; vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7). We also included a severity variable according to the ICD-10 criteria for both lifetime prevalence (variable d_lifetime_severity) and 12 months prevalence (variable d_12m_severity), based upon the number of symptoms the participant met. An additional variable on 12 month depression symptomatology (variable depression_symptoms12m) was also created, where only v and vi were considered.
+Information from the CIDI depression module was used for the creation of the
+depression variables. Algorithms based on the ICD-10 were used for the
+endorsement of depressive episode at some point in their lives (lifetime
+prevalence; variable depression_lifetime) and in the previous 12 months (point
+prevalence; variable depression_12m). More precisely, the following criteria
+should be fulfilled: i) The depressive episode should last for at least 2 weeks;
+ii) There have been no hypomanic or manic symptoms sufficient to meet the
+criteria for hypomanic or manic episode at any time in the individual's life;
+iii) The episode is not attributable to psychoactive substance use or to any
+organic mental disorder; iv) The general criteria for depressive episode must be
+met; v) At least two of the following three symptoms must be present: Depressed
+mood, loss of interest and decreased energy; vi) an additional symptom or
+symptoms should be present, to give a total of at least four (please see
+criteria C1-C7). We also included a severity variable according to the ICD-10
+criteria for both lifetime prevalence (variable d_lifetime_severity) and 12
+months prevalence (variable d_12m_severity), based upon the number of symptoms
+the participant met. An additional variable on 12 month depression
+symptomatology (variable depression_symptoms12m) was also created, where only v
+and vi were considered.
 
 # Syntax used to create the variable (Stata 13)
 
@@ -419,8 +446,8 @@ saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud 
 
 Original version:
 
--   Name: Dario Moreno Agostino 
--   e-mail: [d.moreno@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
 
 # References
 
