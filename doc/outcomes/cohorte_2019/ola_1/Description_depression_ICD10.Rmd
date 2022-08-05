@@ -4,6 +4,7 @@ output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 csl: "`r ecs.data::get_proj_csl_file()`"
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 editor_options: 
   markdown: 
     wrap: 72
@@ -451,8 +452,7 @@ Original version:
 
 # References
 
-:::{#refs}
-World Health Organization. (1993). The ICD-10 classification of mental and behavioural disorders: diagnostic criteria for research. Ed. World Health Organization: Geneva.
+::: {#refs}
 :::
 
 # Session info
