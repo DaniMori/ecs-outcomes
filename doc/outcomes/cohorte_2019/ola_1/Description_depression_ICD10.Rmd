@@ -29,97 +29,171 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-| **Main variable name**    | **Label**                                                                   | **Format** | **Code**                        |
-|:--------------------------|:----------------------------------------------------------------------------|------------|---------------------------------|
-| depression_lifetime       | Lifetime depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
-| d_lifetime_severity       | Severity of lifetime depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-| depression_12m            | 12 month depression (c2019_w1)                                              | Binary     | 0=no;1=yes                      |
-| depression_symptoms12m    | 12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1) | Binary     | 0=no;1=yes                      |
-| d_12m_item                | 12 month depression one item (c2019_w1)                                     | Binary     | 0=no;1=yes                      |
-| d_12m_comparable          | 12 month depression comparable with COVID substudy (c2019_w1)               | 0=no;1=yes | 0=no;1=yes                      |
-| depression_symptoms12m    | 12 month depression symptomatology (c2019_w1)                               | Binary     | 0=no;1=yes                      |
-| d_12m_severity            | Severity of 12 month depressive episode (c2019_w1)                          | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-| d_12m_severity_comparable | Severity of 12 month depressive episode comparable (c2019_w1)               | Ordinal    | 0=No;1=Mild;2=Moderate;3=Severe |
-| d_symptoms12m_comparable  | 12 month depression comparable with COVID substudy (c2019_w1)               | Binary     | 0=no;1=yes                      |
++--------------------------+------------------+-----------+----------------+
+| **Main variable name**   | **Label**        | **Format**| **Code**       |
++:=========================+:=================+===========+================+
+| depression_lifetime      | Lifetime         | Binary    | -   0=no;      |
+|                          | depression       |           | -   1=yes      |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_lifetime_severity      | Severity of      | Ordinal   | -   0=No;      |
+|                          | lifetime         |           | -   1=Mild;    |
+|                          | depressive       |           | -   2=Moderate;|
+|                          | episode          |           | -   3=Severe   |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| depression_12m           | 12 month         | Binary    | -   0=no;      |
+|                          | depression       |           | -   1=yes      |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| depression_symptoms12m   | 12 month         | Binary    | -   0=no;      |
+|                          | depression from  |           | -   1=yes      |
+|                          | lifetime         |           |                |
+|                          | diagnosis &      |           |                |
+|                          | q4227/q4227a     |           |                |
+|                          | items (c2019_w1) |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_12m_item               | 12 month         | Binary    | -   0=no;      |
+|                          | depression one   |           | -   1=yes      |
+|                          | item (c2019_w1)  |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_12m_comparable         | 12 month         | Binary    | -   0=no;      |
+|                          | depression       |           | -   1=yes      |
+|                          | comparable with  |           |                |
+|                          | COVID substudy   |           |                |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| depression_symptoms12m   | 12 month         | Binary    | -   0=no;      |
+|                          | depression       |           | -   1=yes      |
+|                          | symptomatology   |           |                |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_12m_severity           | Severity of 12   | Ordinal   | -   0=No;      |
+|                          | month depressive |           | -   1=Mild;    |
+|                          | episode          |           | -   2=Moderate;|
+|                          | (c2019_w1)       |           | -   3=Severe   |
++--------------------------+------------------+-----------+----------------+
+| d_12m_severity_comparable| Severity of 12   | Ordinal   | -   0=No;      |
+|                          | month depressive |           | -   1=Mild;    |
+|                          | episode          |           | -   2=Moderate;|
+|                          | comparable       |           | -   3=Severe   |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_symptoms12m_comparable | 12 month         | Binary    | -   0=no;      |
+|                          | depression       |           | -   1=yes      |
+|                          | comparable with  |           |                |
+|                          | COVID substudy   |           |                |
+|                          | (c2019_w1)       |           |                |
++--------------------------+------------------+-----------+----------------+
 
 # Variable description
 
 Depression has become a major public health issue as it is one of the main
 causes of disability worldwide, with an even greater impact on developed
 countries. According to The ICD-10 Classification of Mental and Behavioural
-Disorders, Diagnostic criteria for research [@worldhealthorganization1992], the
-main characteristics of depression are the presence of a sustained depressed
-mood, the loss of interest or pleasure in activities normally pleasurable and/or
-the decreased energy or increased fatigability. In addition to these main
-criteria, the ICD-10 Diagnostic criteria for research proposes several
-contributing factors that can be present or absent: loss of confidence and
-self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or
-suicide, diminished ability to think or concentrate, change in psychomotor
-activity, sleep disturbance, and changes in appetite with the corresponding
-weight change. Moreover, the classification proposes a three-level gradient of
-severity depending on the amount of criteria present in each case, from mild to
-severe. In order to address these criteria and be able to assess the lifetime
-presence or absence of a depressive episode, as well as its severity, we used an
-adapted version of the Composite International Diagnostic Interview (CIDI 3.0),
-a comprehensive, fully-structured interview designed to be used by trained lay
-interviewers for the assessment of mental disorders according to the definitions
-and criteria of ICD-10. It is intended for use in epidemiological and
-cross-cultural studies, as well as for clinical and research purposes.
+Disorders, Diagnostic criteria for research
+[@world_health_organization_icd-10_1992], the main characteristics of depression
+are the presence of a sustained depressed mood, the loss of interest or pleasure
+in activities normally pleasurable and/or the decreased energy or increased
+fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria
+for research proposes several contributing factors that can be present or
+absent: loss of confidence and self-esteem, feelings of self-reproach or guilt,
+recurrent thoughts of death or suicide, diminished ability to think or
+concentrate, change in psychomotor activity, sleep disturbance, and changes in
+appetite with the corresponding weight change. Moreover, the classification
+proposes a three-level gradient of severity depending on the amount of criteria
+present in each case, from mild to severe. In order to address these criteria
+and be able to assess the lifetime presence or absence of a depressive episode,
+as well as its severity, we used an adapted version of the Composite
+International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured
+interview designed to be used by trained lay interviewers for the assessment of
+mental disorders according to the definitions and criteria of ICD-10. It is
+intended for use in epidemiological and cross-cultural studies, as well as for
+clinical and research purposes.
 
 # Explanation of how the variables were created
 
 Information from the CIDI depression module was used for the creation of the
 depression variables. Algorithms based on the ICD-10 were used for the
 endorsement of depressive episode at some point in their lives (lifetime
-prevalence; variable depression_lifetime) and in the previous 12 months (point
-prevalence; variable depression_12m). More precisely, the following criteria
-should be fulfilled: i) The depressive episode should last for at least 2 weeks;
+prevalence; variable `depression_lifetime`) and in the previous 12 months (point
+prevalence; variable `depression_12m`). More precisely, the following criteria
+should be fulfilled:
+
+i)  The depressive episode should last for at least 2 weeks;
+
 ii) There have been no hypomanic or manic symptoms sufficient to meet the
-criteria for hypomanic or manic episode at any time in the individual's life;
+    criteria for hypomanic or manic episode at any time in the individual's
+    life;
+
 iii) The episode is not attributable to psychoactive substance use or to any
-organic mental disorder; iv) The general criteria for depressive episode must be
-met; v) At least two of the following three symptoms must be present: Depressed
-mood, loss of interest and decreased energy; vi) an additional symptom or
-symptoms should be present, to give a total of at least four (please see
-criteria C1-C7). We also included a severity variable according to the ICD-10
-criteria for both lifetime prevalence (variable d_lifetime_severity) and 12
-months prevalence (variable d_12m_severity), based upon the number of symptoms
-the participant met. An additional variable on 12 month depression
-symptomatology (variable depression_symptoms12m) was also created, where only v
-and vi were considered.
+     organic mental disorder;
+
+iv) The general criteria for depressive episode must be met;
+
+v)  At least two of the following three symptoms must be present: Depressed
+    mood, loss of interest and decreased energy;
+
+vi) an additional symptom or symptoms should be present, to give a total of at
+    least four (please see criteria C1-C7).
+
+We also included a severity variable according to the ICD-10 criteria for both
+lifetime prevalence (variable `d_lifetime_severity`) and 12 months prevalence
+(variable `d_12m_severity`), based upon the number of symptoms the participant
+met.
+
+There is also a section of the interview for directly diagnosing 12-month
+depression based on the symptomatology. However, errors in the filters (i.e.
+skip logic) of the interview lead to most of the participants not responding to
+this part of the interview when they should. Therefore, these variables have
+been dropped.
+
+The coding of this algorithm is very complex and required many different
+criteria to be taken into account. We have tried to make use of uniform coding
+criteria for implementing the computation of the different symptoms and
+diagnostic criteria, and also separating clearly the computation of the
+*positive*/*negative*/*missing* cases, to make the code the clearest possible.
+The following general principles have been followed when possible. When not, it
+is explicitly annotated in the syntax:
+
+-   All the filters are considered to be *negative* responses; that is, if an
+    item has been answered with "*Don't know*" (`888`) or "Refused" (`999`),
+    assume that the criterion is "not met" (=`0`). (Note though that this rule
+    is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
+    
+-   Only the variables that are kept in the final dataset are labelled.
+
+-   Set first all the cases to `0` (diagnostic "No")
+
+-   After that, recode the positive cases to `1` (diagnostic "Yes")
+
+-   Finally, recode the missing cases to `.` ("missing" value)
 
 # Syntax used to create the variable (Stata 13)
 
 ```{stata load-data}
-
 * Cohorte 2019, linea base:
 use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
 
-*Previous recoding of the symptomatology questions
-recode q4220a-q4222v (1=1) (2=0) (888 999=.) 
-
 ***Depressive episode (F32)
 
 *G1 criterion: "The depressive episode should last for at least 2 weeks"
-gen d_crit_g1 = .
-replace d_crit_g1 = 0 if q4211!=1 & q4213!=1
+gen     d_crit_g1 = 0
 replace d_crit_g1 = 1 if q4211==1 | q4213==1
-label variable d_crit_g1 "G1 criterion for depression"
+replace d_crit_g1 = . if q4211==. & q4213==.
 
 *G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
-gen d_crit_g2 = 1
-replace d_crit_g2 = 0 if q4233==1 | q4225_causemed2==1 
-label variable d_crit_g2 "G2 criterion for depression"
+gen     d_crit_g2 = 0
+replace d_crit_g2 = 1 if q4233!=1 & q4225_causemed2!=1
+replace d_crit_g2 = . if q4233==.
 
 *G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
-gen d_crit_g3 = 0
-replace d_crit_g3 = 1 if (q4224a!=1 | q4224b!=1) | (q4224==1 & q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
-replace d_crit_g3 = . if q4224a==. & q4224b==. & q4224==. & q4225_causemed12==. & q4225_causemed23==. & q4225_causemed24==. & q4225_causemed25==. & q4225_causemed30==. & q4225_causemed31==.
-label variable d_crit_g3 "G3 criterion for depression" 
+gen     d_crit_g3 = 0
+gen     d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
+replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
 
 ***Mild depressive episode (F32.0)
 
