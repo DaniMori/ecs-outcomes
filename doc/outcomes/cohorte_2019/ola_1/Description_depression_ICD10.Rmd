@@ -354,8 +354,9 @@ label define yesno 0 "No" 1 "Yes"
 label values depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
 
-*** Lifetime depression prevalence for proxy participants
-recode P4040 (1=1) (2=0) (888=.) (999=.), gen (depression_lifetime_proxy)
+
+***#VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants
+recode P4040 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
 label values depression_lifetime_proxy yesno
 label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w1)"
 
