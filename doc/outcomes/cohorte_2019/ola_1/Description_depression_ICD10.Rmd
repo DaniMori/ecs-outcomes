@@ -156,18 +156,26 @@ diagnostic criteria, and also separating clearly the computation of the
 The following general principles have been followed when possible. When not, it
 is explicitly annotated in the syntax:
 
--   All the filters are considered to be *negative* responses; that is, if an
-    item has been answered with "*Don't know*" (`888`) or "Refused" (`999`),
-    assume that the criterion is "not met" (=`0`). (Note though that this rule
-    is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
-    
--   Only the variables that are kept in the final dataset are labelled.
+- All the filters are considered to be *negative* responses; that is, if an
+  item has been answered with "*Don't know*" (`888`) or "Refused" (`999`),
+  assume that the criterion is "not met" (=`0`). (Note though that this rule
+  is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
+  
+- Only the variables that are kept in the final dataset are labelled.
 
--   Set first all the cases to `0` (diagnostic "No")
+- Set first all the cases to `.` ("Missing" value)
 
--   After that, recode the positive cases to `1` (diagnostic "Yes")
+- Finally, recode the negative cases to `0` (diagnostic "No")
 
--   Finally, recode the missing cases to `.` ("missing" value)
+- After that, recode the positive cases to `1` (diagnostic "Yes")
+
+- When the values need to be compared for unequality (operator `!=`) against a
+  valid value, it must be taken into account that a "missing" value gives a
+  `1` result instead of a missing in Stata.
+  Therefore, in order to avoid recoding "missing" values into valid ones,
+  the "missing" values must be excluded from the comparison.
+  This principle is used generally throughout the algorithm;
+  when used differently, it is explained in the syntax.
 
 # Syntax used to create the variable (Stata 13)
 
@@ -178,131 +186,170 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 
 ```{stata generate-outcomes, echo=TRUE}
 
-***Depressive episode (F32)
+***#VARIABLE `depression_lifetime`: Depressive episode (F32)
 
-*G1 criterion: "The depressive episode should last for at least 2 weeks"
-gen     d_crit_g1 = 0
-replace d_crit_g1 = 1 if q4211==1 | q4213==1
-replace d_crit_g1 = . if q4211==. & q4213==.
+*#G1 criterion: "The depressive episode should last for at least 2 weeks"
+gen     d_crit_g1 = .
+replace d_crit_g1 = 0 if (q4211!=1 & q4211!=.) | (q4213!=1 & q4213!=.)
+replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
 
-*G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
-gen     d_crit_g2 = 0
-replace d_crit_g2 = 1 if q4233!=1 & q4225_causemed2!=1
-replace d_crit_g2 = . if q4233==.
+*#G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
+gen     d_crit_g2 = .
+replace d_crit_g2 = 0 if q4233==1            | q4225_causemed2==1
+replace d_crit_g2 = 1 if q4233!=1 & q4233!=. & q4225_causemed2!=1
+*#NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
+*#      "missing", so only `q4233` is considered to determine whether this
+*#      criterion is "missing".
 
-*G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
-gen     d_crit_g3 = 0
-gen     d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
-replace d_crit_g3 = . if q4224==. & q4224a==. & q4224b==.
+*#G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+gen     d_crit_g3 = .
+replace d_crit_g3 = 0 if (q4224a==1              &  q4224b==1)             | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
+replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
 
-***Mild depressive episode (F32.0)
+***#Mild depressive episode (F32.0)
 
-*A criterion: "The general criteria for depressive episode must be met"
-gen d_crit_a = .
-replace d_crit_a = 0 if d_crit_g1!=1 | d_crit_g2!=1 | d_crit_g3!=1
+*#A criterion: "The general criteria for depressive episode must be met"
+gen     d_crit_a = .
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
 replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
-label variable d_crit_a "A criterion for depression"
 
-*B criterion: "At least two of the following three symptoms must be present"
 
-*B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
-gen d_b1 = 0
-replace d_b1 = 1 if q4220a==1 | q4220b==1 | q4220c==1 | q4220d==1
-replace d_b1 = . if q4220a==. & q4220b==. & q4220c==. & q4220d==.
-label variable d_b1 "B1 criterion for depression"
+*#B criterion: "At least two of the following three symptoms must be present"
 
-*B2: "Loss of interest or pleasure in activities that are normally pleasurable"
-gen d_b2 = 0
-replace d_b2 = 1 if q4220e==1 | q4220f==1
-replace d_b2 = . if q4220e==. & q4220f==.
-label variable d_b2 "B2 criterion for depression"
+*#B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+gen     d_b1 = .
+replace d_b1 = 0 if q4220a!=1 & q4220a!=. & q4220b!=1 & q4220c!=1 & q4220d!=1
+replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1 | q4220d==1
+*#NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview
+*#      skip logic in `q4220a` or `q4220c`, respectively. But if there is a
+*#      valid response in `q4220a` there must be one also in `q4220c`.
+*#      Therefore, only `q4220a` needs to be checked for missingness.
 
-*B3: "Decreased energy or increased fatigability"
-gen d_b3 = 0
+*#B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+gen     d_b2 = .
+replace d_b2 = 0 if q4220e!=1 & q4220e!=. & q4220f!=1
+replace d_b2 = 1 if q4220e==1             | q4220f==1
+
+*#B3: "Decreased energy or increased fatigability"
+gen     d_b3 = .
+replace d_b3 = 0 if q4222e!=1 & q4222e!=.
 replace d_b3 = 1 if q4222e==1
-replace d_b3 = . if q4222e==.
-label variable d_b3 "B3 criterion for depression"
 
-*Sum of depressive screening symptoms
-egen d_screentotal = rowtotal (d_b1-d_b3)
-label variable d_screentotal "Screening symptoms for depression"
+*#Sum of depressive screening symptoms
+egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
 
-*To fulfil B criterion >=2 screening symptoms should be present.
-gen d_crit_b = .
-replace d_crit_b = 0 if d_screentotal<2
-replace d_crit_b = 1 if d_screentotal>=2 
-label variable d_crit_b "B criterion for depression"
+*#To fulfil B criterion >=2 screening symptoms should be present.
+gen     d_crit_b = .
+replace d_crit_b = 0 if d_screentotal< 2
+replace d_crit_b = 1 if d_screentotal>=2 & d_screentotal!=.
 
-*C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
-*C1: "Loss of confidence and self-esteem"
-gen d_c1 = 0
-replace d_c1 = 1 if q4222k==1 | q4222l==1 | q4222m==1
-replace d_c1 = . if q4222k==. & q4222l==. & q4222m==.
-label variable d_c1 "C1 criterion for depression"
+*#C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
 
-*C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
-gen d_c2 = 0
+*#C1: "Loss of confidence and self-esteem"
+gen     d_c1 = .
+replace d_c1 = 0 if q4222k!=1 & q4222k!=. & q4222l!=1 & q4222l!=. & q4222m!=1
+replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1
+*#NOTE: When `q4222m` is "missing" it may be due to the interview
+*#      skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l` need to
+*#      be checked for missingness.
+
+*#C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+gen     d_c2 = .
+replace d_c2 = 0 if q4222n!=1 & q4222n!=.
 replace d_c2 = 1 if q4222n==1
-replace d_c2 = . if q4222n==.
-label variable d_c2 "C2 criterion for depression"
 
-*C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
-gen d_c3 = 0
-replace d_c3 = 1 if q4222r==1 | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
-replace d_c3 = 1 if q4222r==. & q4222s==. & q4222t==. & q4222u==. & q4222v==.
-label variable d_c3 "C3 criterion for depression"
+*#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+gen     d_c3 = .
+replace d_c3 = 0 if q4222r!=1 & q4222r!=. & q4222s!=1 & q4222t!=1 & q4222u!=1 & q4222v!=1
+replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+*#NOTE: When any of the two last items are "missing" it may be due to the
+*#      interview skip logic in `q4222t`. But if there is a valid response in
+*#      `q4222r` there must be one also in `q4222s` and `q4222t`.Therefore, only
+*#      `q4222r` needs to be checked for missingness.
 
-*C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
-gen d_c4 = 0
-replace d_c4 = 1 if q4222h==1 | q4222i==1 | q4222j==1
-replace d_c4 = . if q4222h==. & q4222i==. & q4222j==.
-label variable d_c4 "C4 criterion for depression"
+*#C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+gen     d_c4 = .
+replace d_c4 = 0 if q4222h!=1 & q4222h!=. & q4222i!=1 & q4222j!=1
+replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
+*#NOTE: When `q4222i` and `q4222j` are "missing" it may be due to the interview
+*#      skip logic in `q4222h`. Therefore, only `q4222h` needs to be checked
+*#      for missingness.
 
-*C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
-gen d_c5 = 0
-replace d_c5 = 1 if (q4222f==1 | q4222fa==1) | (q4222g==1 | q4222ga==1)
-replace d_c5 = . if q4222f==. & q4222fa==. & q4222g==. & q4222ga==.
-label variable d_c5 "C5 criterion for depression"
+*#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+gen     d_c5 = .
+replace d_c5 = 0 if q4222f!=1 & q4222f!=. & q4222fa!=1 & q4222g!=1 & q4222ga!=1
+replace d_c5 = 1 if q4222f==1             | q4222fa==1 | q4222g==1 | q4222ga==1
+*#NOTE: When the three last items are "missing" it may be due to the interview
+*#      skip logic in `q4222f`. Therefore, only `q4222f` needs to be checked
+*#      for missingness.
 
-*C6: "Sleep disturbance of any type"
-gen d_c6 = 0
-replace d_c6 = 1 if q4222c==1 | q4222d==1
-replace d_c6 = . if q4222c==. & q4222d==.
-label variable d_c6 "C6 criterion for depression"
+*#C6: "Sleep disturbance of any type"
+gen     d_c6 = .
+replace d_c6 = 0 if q4222c!=1 & q4222c!=.
+replace d_c6 = 1 if q4222c==1             | q4222d==1
+*#NOTE: When `q4222d` is "missing" it may be due to the interview skip logic in
+*#      `q4222c`. Therefore, only `q4222c` needs to be checked for missingness.
 
-*C7: "Change in appetite (decrease or increase) with corresponding weight change"
-gen d_c7 = 0
-replace d_c7 = 1 if q4222a==1 & q4222b==1
-replace d_c7 = . if q4222a==. & q4222b==.
-label variable d_c7 "C7 criterion for depression"
+*#C7: "Change in appetite (decrease or increase) with corresponding weight change"
+gen     d_c7 = .
+replace d_c7 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
+replace d_c7 = 1 if  q4222a==1              &  q4222b==1
 
-*Sum of depressive symptoms
-egen d_symtotal = rowtotal (d_c1-d_c7)
-label variable d_symtotal "Symptoms for depression"
+*#Sum of depressive symptoms
+egen d_symtotal = rowtotal (d_c1-d_c7), missing
 
-*Have the person skipped the lifetime depression module?
-egen serie_symp = rowtotal (q4220a-q4222v)
-gen d_skipped = 0
-recode q4202 q4211 q4213 q4218 (1=1) (.=.) (else=0)
-replace d_skipped = 1 if q4202==0 | q4211==0 | q4213==0 | (q4214==1 & q4215==4 & q4216==4) | q4218==0 | (q4220a!=1 & q4220b!=1 & q4220c!=1 & q4220d!=1 & q4220e!=1 & q4220f!=1) | serie_symp<2
 
-***Severity of depressive episode
+***#Has the person skipped the lifetime depression module?
 
-*To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
-gen d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_crit_a==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)
-replace d_lifetime_severity = 1 if d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))
-replace d_lifetime_severity = 2 if d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))
-replace d_lifetime_severity = 3 if d_crit_a==1 & (d_screentotal==3 & d_symtotal>=5)
+*#Depression symtoms recoded into 0/1 to compute the tally:
+recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+
+*#Filter variables:
+gen  f4217     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
+egen f4221_sum = rowtotal (q4220a-q4220f), missing
+egen f4223_sum = rowtotal (q4220a-q4222v), missing
+
+*#Variable "skipped" computation:
+gen     d_skipped = .
+replace d_skipped =                q4202!=1    if q4202!=.
+replace d_skipped = d_skipped==1 | q4211!=1    if q4211!=.
+replace d_skipped = d_skipped==1 | q4213!=1    if q4213!=.
+replace d_skipped = d_skipped==1 | q4218!=1    if q4218!=.
+replace d_skipped = d_skipped==1 | f4217==1    if f4217!=.
+replace d_skipped = d_skipped==1 | f4221_sum<1 if f4221_sum!=.
+replace d_skipped = d_skipped==1 | f4223_sum<2 if f4223_sum!=.
+
+
+***#Severity of depressive episode
+
+*#To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight.
+
+*#Severity according to total symptom tally (prior to applying
+*#  the "screening symtpoms" criterion):
+gen     d_lifetime_severity_total = .
+replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal< 4
+replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal>=4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal>=6 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal>=8 & d_screentotal!=. & d_symtotal !=.
+
+*#Final severity computation:
+gen     d_lifetime_severity = .
+replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_lifetime_severity severity
 
-***Lifetime depression prevalence
-gen depression_lifetime = .
-replace depression_lifetime = 1 if d_lifetime_severity >=1 
-replace depression_lifetime = 0 if proxy==2 & (d_lifetime_severity ==0 | d_skipped==1)
+
+***#Lifetime depression diagnostic variable:
+gen     depression_lifetime = .
+replace depression_lifetime = 0 if d_lifetime_severity==0
+replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
+
 label define yesno 0 "No" 1 "Yes"
 label values depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
