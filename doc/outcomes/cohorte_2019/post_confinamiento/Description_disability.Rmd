@@ -47,7 +47,7 @@ The level of functional impairment has been assessed using the 12-item interview
 
 # Explanation of how the variables were created
 
-The WHODAS items were selected and their scoring was determined according to the World Health Organization guidelines. A score in this questionnaire were also obtained for the participants who have answered at least to the 80% of the items (at least, 10 out of the 12 items). In those cases with one or two missing values in these twelve items, the score were obtained based on the items completed, replacing the missing values by the mean on the remaining items.
+The WHODAS items were selected and their scoring was determined according to the WHO guidelines. It follows an "item-response-theory" (IRT) based scoring where the summary score takes into account the levels of severity and weights of the items. First, the mean score across all items was calculated (per domain). Then, the summary scores were summed and converted into a metric ranging from 0 to 100. A score in this questionnaire was obtained for the participants who had answered to at least 80% of the items (i.e., at least 10 out of the 12 items). In those cases with one or two missing values, the score were obtained based on the items completed, replacing the missing values by the mean of the remaining items.
 
 # Syntax used to create the variable (Stata 13)
 
