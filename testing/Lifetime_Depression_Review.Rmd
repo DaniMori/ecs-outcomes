@@ -1712,7 +1712,7 @@ replace d_skipped = d_skipped==1 | f4223_sum < 2 if f4223_sum!=.
 tab d_skipped_org d_skipped, missing
 ```
 
-91 valores "mising" y 7 "0" se codifican como "1" en el algoritmo original.
+91 valores "mising" se codifican como "1" en el algoritmo original.
 Se debe presumiblemente a los casos "proxy", ya que originalmente no se tiene
 en cuenta si dan lugar o no a "missing".
 
