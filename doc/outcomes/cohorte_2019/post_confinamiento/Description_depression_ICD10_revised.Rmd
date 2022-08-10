@@ -113,31 +113,6 @@ depression |         0          1          . |     Total
 
 	 * 1541 perdidos se codifican como "0" en el algoritmo original.  
 
-* Original
-gen d_crit_a_org = .
-replace d_crit_a_org = 0 if d_crit_g1!=1
-replace d_crit_a_org = 1 if d_crit_g1==1
-label variable d_crit_a_org "A criterion for depression"
-
-* Revisión
-gen d_crit_a = d_crit_g1==1
-replace d_crit_a = . if d_crit_g1==.
-label variable d_crit_a "A criterion for depression"
-
-tab d_crit_a_org d_crit_a, mis
-
-         A |
- criterion |
-       for |    A criterion for depression
-depression |         0          1          . |     Total
------------+---------------------------------+----------
-         0 |       186          0      1,541 |     1,727 
-         1 |         0        127          0 |       127 
------------+---------------------------------+----------
-     Total |       186        127      1,541 |     1,854 
-
-	 * 1541 perdidos se codifican como "0" en el algoritmo original.
-	 
 *B criterion: "At least two of the following three symptoms must be present"
 
 *B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks".
@@ -537,20 +512,20 @@ d_skipped_ |            d_skipped
 
 * Original
 gen d_30d_severity_org = .
-replace d_30d_severity_org = 0 if (d_crit_a_org==0 | d_crit_b_org==0 | (d_screentotal_org==2 & d_symtotal_org<2) | (d_screentotal_org==3 & d_symtotal_org==0)) & ESTADO_ENTREVISTA==1
-replace d_30d_severity_org = 1 if (d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=2) | (d_screentotal_org==3 & d_symtotal_org>=1))) & ESTADO_ENTREVISTA==1
-replace d_30d_severity_org = 2 if (d_crit_a_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=4) | (d_screentotal_org==3 & d_symtotal_org>=3))) & ESTADO_ENTREVISTA==1
-replace d_30d_severity_org = 3 if (d_crit_a_org==1 & (d_screentotal_org==3 & d_symtotal_org>=5)) & ESTADO_ENTREVISTA==1
+replace d_30d_severity_org = 0 if (d_crit_g1_org==0 | d_crit_b_org==0 | (d_screentotal_org==2 & d_symtotal_org<2) | (d_screentotal_org==3 & d_symtotal_org==0)) & ESTADO_ENTREVISTA==1
+replace d_30d_severity_org = 1 if (d_crit_g1_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=2) | (d_screentotal_org==3 & d_symtotal_org>=1))) & ESTADO_ENTREVISTA==1
+replace d_30d_severity_org = 2 if (d_crit_g1_org==1 & ((d_screentotal_org==2 & d_symtotal_org>=4) | (d_screentotal_org==3 & d_symtotal_org>=3))) & ESTADO_ENTREVISTA==1
+replace d_30d_severity_org = 3 if (d_crit_g1_org==1 & (d_screentotal_org==3 & d_symtotal_org>=5)) & ESTADO_ENTREVISTA==1
 label variable d_30d_severity_org "Severity of depressive episode (c2019_wCOVID)"
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_30d_severity_org severity
 
 * Revisión
 gen d_30d_severity = .
-replace d_30d_severity = 0 if (d_crit_a==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)) 
-replace d_30d_severity = 1 if (d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))) 
-replace d_30d_severity = 2 if (d_crit_a==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))) 
-replace d_30d_severity = 3 if (d_crit_a==1 & (d_screentotal==3 & d_symtotal>=5))
+replace d_30d_severity = 0 if (d_crit_g1==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)) 
+replace d_30d_severity = 1 if (d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))) 
+replace d_30d_severity = 2 if (d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))) 
+replace d_30d_severity = 3 if (d_crit_g1==1 & (d_screentotal==3 & d_symtotal>=5))
 label variable d_30d_severity "Severity of depressive episode (c2019_wCOVID)"
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values d_30d_severity severity
