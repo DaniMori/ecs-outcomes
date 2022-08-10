@@ -410,13 +410,11 @@ label variable d_12m_comparable "12 month depression comparable with COVID subst
 ```
 
 ```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
-
-codebook depression_lifetime depression_lifetime_proxy depression_12m d_12m_item d_12m_comparable depression_symptoms12m d_symptoms12m_comparable
-
+codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_12m_comparable
 ```
 
 ```{stata save-data}
-keep ID_ECS q0007a_result proxy subsample_pre interview_pre depression_lifetime d_lifetime_severity depression_lifetime_proxy depression_12m depression_12m d_12m_item d_12m_comparable depression_symptoms12m d_12m_severity d_12m_severity_comparable d_symptoms12m_comparable 
+keep ID_ECS q0007a_result proxy subsample_pre interview_pre d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_12m_comparable
 
 *Cohorte 2019, linea base:
 
