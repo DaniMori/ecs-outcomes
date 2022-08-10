@@ -186,7 +186,7 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 
 ```{stata generate-outcomes, echo=TRUE}
 
-*# Value labels (defined for all the outcome variables dataset):
+*# Value labels (defined for all the outcome variables in the dataset):
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label define yesno    0 "No" 1 "Yes"
 
@@ -317,13 +317,16 @@ egen f4223_sum = rowtotal (q4220a-q4222v), missing
 
 *#Variable "skipped" computation:
 gen     d_skipped = .
-replace d_skipped =                q4202!=1    if q4202!=.
-replace d_skipped = d_skipped==1 | q4211!=1    if q4211!=.
-replace d_skipped = d_skipped==1 | q4213!=1    if q4213!=.
-replace d_skipped = d_skipped==1 | q4218!=1    if q4218!=.
-replace d_skipped = d_skipped==1 | f4217==1    if f4217!=.
-replace d_skipped = d_skipped==1 | f4221_sum<1 if f4221_sum!=.
-replace d_skipped = d_skipped==1 | f4223_sum<2 if f4223_sum!=.
+replace d_skipped = q4202!=1                   if q4202!=.
+replace d_skipped = q4211!=1    | d_skipped==1 if q4211!=.    
+replace d_skipped = q4213!=1    | d_skipped==1 if q4213!=.    
+replace d_skipped = q4218!=1    | d_skipped==1 if q4218!=.    
+replace d_skipped = f4217==1    | d_skipped==1 if f4217!=.    
+replace d_skipped = f4221_sum<1 | d_skipped==1 if f4221_sum!=.
+replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
+*#NOTE: For clarity, this recoding adds the criteria incrementally. This implies
+*#      that the new "truth values" (0/1resulting from each comparison) are
+*#      "logically added" (therefore the "OR" operation) to the current values.
 
 
 ***#Severity of depressive episode
@@ -344,8 +347,8 @@ replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0     
 replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
 replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
 replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 label values   d_lifetime_severity severity
+label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 
 
 ***#Lifetime depression diagnostic variable:
