@@ -132,10 +132,11 @@ diagnostic criteria, and also separating clearly the computation of the
 *positive*/*negative*/*missing* cases, to make the code the clearest possible.
 The following general principles have been followed when possible:
 
-- All the filters are considered to be *negative* responses; that is, if an
-  item has been answered with "*Don't know*" (`888`) or "Refused" (`999`),
-  it is assumed that the criterion is "not met" (=`0`). (Note though that this
-  rule is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
+- All the non-valid responses are considered to be *negative* responses;
+  that is, if an item has been answered with "*Don't know*" (`888`) or "Refused"
+  (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though
+  that this rule is reverted for the "exclusion criteria", i.e., criteria "G2"
+  and "G3").
   
 - Only the variables that are kept in the final dataset are labelled.
 
