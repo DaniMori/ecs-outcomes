@@ -32,54 +32,32 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 +--------------------------+------------------+-----------+----------------+
 | **Main variable name**   | **Label**        | **Format**| **Code**       |
 +:=========================+:=================+===========+================+
-| depression_lifetime      | Lifetime         | Binary    | -   0=no;      |
-|                          | depression       |           | -   1=yes      |
-|                          | (c2019_w1)       |           |                |
-+--------------------------+------------------+-----------+----------------+
 | d_lifetime_severity      | Severity of      | Ordinal   | -   0=No;      |
 |                          | lifetime         |           | -   1=Mild;    |
 |                          | depressive       |           | -   2=Moderate;|
 |                          | episode          |           | -   3=Severe   |
 |                          | (c2019_w1)       |           |                |
 +--------------------------+------------------+-----------+----------------+
-| depression_12m           | 12 month         | Binary    | -   0=no;      |
+| depression_lifetime      | Lifetime         | Binary    | -   0=no;      |
 |                          | depression       |           | -   1=yes      |
 |                          | (c2019_w1)       |           |                |
 +--------------------------+------------------+-----------+----------------+
-| depression_symptoms12m   | 12 month         | Binary    | -   0=no;      |
+| depression_lifetime_proxy| Lifetime         | Binary    | -   0=no;      |
+|                          | depression for   |           | -   1=yes      |
+|                          | proxy (c2019_w1) |           |                |
++--------------------------+------------------+-----------+----------------+
+| d_12m_item               | 12 month         | Binary    | -   0=no;      |
+|                          | depression, one  |           | -   1=yes      |
+|                          | item (c2019_w1)  |           |                |
++--------------------------+------------------+-----------+----------------+
+| depression_12m           | 12 month         | Binary    | -   0=no;      |
 |                          | depression from  |           | -   1=yes      |
 |                          | lifetime         |           |                |
 |                          | diagnosis &      |           |                |
 |                          | q4227/q4227a     |           |                |
 |                          | items (c2019_w1) |           |                |
 +--------------------------+------------------+-----------+----------------+
-| d_12m_item               | 12 month         | Binary    | -   0=no;      |
-|                          | depression one   |           | -   1=yes      |
-|                          | item (c2019_w1)  |           |                |
-+--------------------------+------------------+-----------+----------------+
 | d_12m_comparable         | 12 month         | Binary    | -   0=no;      |
-|                          | depression       |           | -   1=yes      |
-|                          | comparable with  |           |                |
-|                          | COVID substudy   |           |                |
-|                          | (c2019_w1)       |           |                |
-+--------------------------+------------------+-----------+----------------+
-| depression_symptoms12m   | 12 month         | Binary    | -   0=no;      |
-|                          | depression       |           | -   1=yes      |
-|                          | symptomatology   |           |                |
-|                          | (c2019_w1)       |           |                |
-+--------------------------+------------------+-----------+----------------+
-| d_12m_severity           | Severity of 12   | Ordinal   | -   0=No;      |
-|                          | month depressive |           | -   1=Mild;    |
-|                          | episode          |           | -   2=Moderate;|
-|                          | (c2019_w1)       |           | -   3=Severe   |
-+--------------------------+------------------+-----------+----------------+
-| d_12m_severity_comparable| Severity of 12   | Ordinal   | -   0=No;      |
-|                          | month depressive |           | -   1=Mild;    |
-|                          | episode          |           | -   2=Moderate;|
-|                          | comparable       |           | -   3=Severe   |
-|                          | (c2019_w1)       |           |                |
-+--------------------------+------------------+-----------+----------------+
-| d_symptoms12m_comparable | 12 month         | Binary    | -   0=no;      |
 |                          | depression       |           | -   1=yes      |
 |                          | comparable with  |           |                |
 |                          | COVID substudy   |           |                |
