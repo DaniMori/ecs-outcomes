@@ -361,23 +361,24 @@ recode P4040 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
 label values   depression_lifetime_proxy yesno
 label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w1)"
 
-*** 12 month depression
 
-* 12 month depression from lifetime diagnosis + q4227/q4227a items
-
-gen depression_12m = .
-replace depression_12m = 0 if depression_lifetime==0 | (depression_lifetime==1 & (q4227!=1 | q4227a!=1))
-replace depression_12m = 1 if depression_lifetime==1 & (q4227==1 | q4227a==1)
-label variable depression_12m "12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1)"
-label values depression_12m yesno
-
-* 12 month depression from q4227/q4227a items
-
-gen d_12m_item = .
+***# VARIABLE `d_12m_item`: 12-month depression criterion from q4227/q4227a items
+gen     d_12m_item = .
+replace d_12m_item = 0 if q4227!=1 & q4227a!=1 & proxy==2
 replace d_12m_item = 1 if q4227==1 | q4227a==1
-replace d_12m_item = 0 if proxy==2 & (q4227!=1 | q4227a!=1)
-label values d_12m_item yesno
-label variable d_12m_item "12 month depression one item (c2019_w1)"
+label values   d_12m_item yesno
+label variable d_12m_item "12 month depression, one item (c2019_w1)"
+
+
+***# VARIABLE `depression_12m`: 12-month depression (combining `depression_lifetime` + `d_12m_item`)
+gen     depression_12m = .
+replace depression_12m = 0 if depression_lifetime==0 | d_12m_item==0
+replace depression_12m = 1 if depression_lifetime==1 & d_12m_item==1
+label values   depression_12m yesno
+label variable depression_12m "12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1)"
+
+
+***# VARIABLE `d_12m_comparable`: 12 months depression comparable with COVID substudy from lifetime diagnosis
 
 * 12 months depression comparable with COVID substudy from lifetime diagnosis
 
