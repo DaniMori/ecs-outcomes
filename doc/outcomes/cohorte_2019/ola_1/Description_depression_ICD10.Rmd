@@ -125,7 +125,7 @@ skip logic) of the interview lead to most of the participants not responding to
 this part of the interview when they should. Therefore, these variables have
 been dropped.
 
-The coding of this algorithm is very complex and required many different
+The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
 criteria for implementing the computation of the different symptoms and
 diagnostic criteria, and also separating clearly the computation of the
@@ -392,6 +392,8 @@ label values   d_12m_comparable yesno
 label variable d_12m_comparable "12 month depression comparable with COVID substudy (c2019_w1)"
 ```
 
+<br>
+
 ```{stata descriptives, collectcode=FALSE, results='markup'}
 codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_12m_comparable
 ```
@@ -400,9 +402,7 @@ codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m
 keep ID_ECS q0007a_result proxy subsample_pre interview_pre d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_12m_comparable
 
 *Cohorte 2019, linea base:
-
 saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
-
 ```
 
 # Contact person:
