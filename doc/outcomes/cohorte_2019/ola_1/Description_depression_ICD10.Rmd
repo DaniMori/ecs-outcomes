@@ -186,6 +186,11 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 
 ```{stata generate-outcomes, echo=TRUE}
 
+*# Value labels (defined for all the outcome variables dataset):
+label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label define yesno    0 "No" 1 "Yes"
+
+
 ***#VARIABLE `depression_lifetime`: Depressive episode (F32)
 
 *#G1 criterion: "The depressive episode should last for at least 2 weeks"
@@ -341,23 +346,20 @@ replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1     
 replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
 
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
-label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
-label values d_lifetime_severity severity
+label values   d_lifetime_severity severity
 
 
 ***#Lifetime depression diagnostic variable:
 gen     depression_lifetime = .
 replace depression_lifetime = 0 if d_lifetime_severity==0
 replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
-
-label define yesno 0 "No" 1 "Yes"
-label values depression_lifetime yesno
+label values   depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
 
 
 ***#VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants
 recode P4040 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
-label values depression_lifetime_proxy yesno
+label values   depression_lifetime_proxy yesno
 label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w1)"
 
 *** 12 month depression
