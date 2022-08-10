@@ -118,7 +118,7 @@ depression variables. Algorithms based on the ICD-10 were used for the
 endorsement of depressive episode at some point in their lives (lifetime
 prevalence; variable `depression_lifetime`) and in the previous 12 months (point
 prevalence; variable `depression_12m`). More precisely, the following criteria
-should be fulfilled:
+must be fulfilled:
 
 i)  The depressive episode should last for at least 2 weeks;
 
@@ -137,10 +137,9 @@ v)  At least two of the following three symptoms must be present: Depressed
 vi) an additional symptom or symptoms should be present, to give a total of at
     least four (please see criteria C1-C7).
 
-We also included a severity variable according to the ICD-10 criteria for both
-lifetime prevalence (variable `d_lifetime_severity`) and 12 months prevalence
-(variable `d_12m_severity`), based upon the number of symptoms the participant
-met.
+We also included a severity variable according to the ICD-10 criteria for the
+lifetime prevalence (variable `d_lifetime_severity`) based upon
+the number of symptoms the participant met.
 
 There is also a section of the interview for directly diagnosing 12-month
 depression based on the symptomatology. However, errors in the filters (i.e.
@@ -163,11 +162,16 @@ is explicitly annotated in the syntax:
   
 - Only the variables that are kept in the final dataset are labelled.
 
-- Set first all the cases to `.` ("Missing" value)
+- First, all the cases are set to `.` ("Missing" value).
 
-- Finally, recode the negative cases to `0` (diagnostic "No")
+- Then, the negative cases are recoded to `0` (diagnostic "No").
 
-- After that, recode the positive cases to `1` (diagnostic "Yes")
+- Finally, the positive cases are recoded to `1` (diagnostic "Yes").
+
+- Unless stated otherwise, the cases are explicitly recoded to their final value
+  exclusively and exhaustively, such that the number of cases recoded to `0`/`1`
+  in each step must be exactly the same as the number of `0`/`1` cases finally
+  in the variable. This allows for an additional check of recoding errors.
 
 - When the values need to be compared for unequality (operator `!=`) against a
   valid value, it must be taken into account that a "missing" value gives a
@@ -176,6 +180,9 @@ is explicitly annotated in the syntax:
   the "missing" values must be excluded from the comparison.
   This principle is used generally throughout the algorithm;
   when used differently, it is explained in the syntax.
+  
+- When these principles are not strictly followed, an annotation is added right
+  below, explaining how it changes from them and why.
 
 # Syntax used to create the variable (Stata 13)
 
