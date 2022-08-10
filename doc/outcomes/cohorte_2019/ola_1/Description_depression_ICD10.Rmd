@@ -394,24 +394,19 @@ label values   depression_12m yesno
 label variable depression_12m "12 month depression from lifetime diagnosis + q4227/q4227a items (c2019_w1)"
 
 
-***# VARIABLE `d_12m_comparable`: 12 months depression comparable with COVID substudy from lifetime diagnosis
+***# VARIABLE `d_12m_comparable`: 12-month depression (comparable with COVID substudy) from lifetime diagnosis
 
-* 12 months depression comparable with COVID substudy from lifetime diagnosis
+*#Lifetime "comparable" (does not take into account exclusion criteria G2 and G3):
+gen     d_lifetime_comparable = .
+replace d_lifetime_comparable = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
+replace d_lifetime_comparable = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
 
-gen d_lifetime_severity_comparable = .
-replace d_lifetime_severity_comparable = 0 if d_crit_g1==0 | d_crit_b==0 | (d_screentotal==2 & d_symtotal<2) | (d_screentotal==3 & d_symtotal==0)
-replace d_lifetime_severity_comparable = 1 if d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=2) | (d_screentotal==3 & d_symtotal>=1))
-replace d_lifetime_severity_comparable = 2 if d_crit_g1==1 & ((d_screentotal==2 & d_symtotal>=4) | (d_screentotal==3 & d_symtotal>=3))
-replace d_lifetime_severity_comparable = 3 if d_crit_g1==1 & (d_screentotal==3 & d_symtotal>=5)
-label variable d_lifetime_severity_comparable "Severity of lifetime depressive episode comparable (c2019_w1)"
-label values d_lifetime_severity_comparable severity
-
-gen d_12m_comparable = .
-replace d_12m_comparable = 1 if d_lifetime_severity_comparable>=1 & (q4227==1 | q4227a==1)
-replace d_12m_comparable = 0 if proxy==2 & (d_lifetime_severity_comparable ==0 | d_skipped==1) | (d_lifetime_severity_comparable>=1 & (q4227!=1 | q4227a!=1))
+*#12-month "comparable", based on the intermediate "lifetime comparable" and the individual item:
+gen     d_12m_comparable = .
+replace d_12m_comparable = 0 if d_lifetime_comparable==0 | d_12m_item==0
+replace d_12m_comparable = 1 if d_lifetime_comparable==1 & d_12m_item==1
+label values   d_12m_comparable yesno
 label variable d_12m_comparable "12 month depression comparable with COVID substudy (c2019_w1)"
-label values d_12m_comparable yesno
-
 ```
 
 ```{stata descriptives, collectcode=FALSE, results='markup', echo=TRUE}
