@@ -333,10 +333,10 @@ replace d_skipped = d_skipped==1 | f4223_sum<2 if f4223_sum!=.
 *#Severity according to total symptom tally (prior to applying
 *#  the "screening symtpoms" criterion):
 gen     d_lifetime_severity_total = .
-replace d_lifetime_severity_total = 0 if d_screentotal + d_symtotal< 4
-replace d_lifetime_severity_total = 1 if d_screentotal + d_symtotal>=4 & d_screentotal!=. & d_symtotal !=.
-replace d_lifetime_severity_total = 2 if d_screentotal + d_symtotal>=6 & d_screentotal!=. & d_symtotal !=.
-replace d_lifetime_severity_total = 3 if d_screentotal + d_symtotal>=8 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 0 if (d_screentotal+d_symtotal)< 4
+replace d_lifetime_severity_total = 1 if (d_screentotal+d_symtotal)>=4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 2 if (d_screentotal+d_symtotal)>=6 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_screentotal!=. & d_symtotal !=.
 
 *#Final severity computation:
 gen     d_lifetime_severity = .
@@ -344,7 +344,6 @@ replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0     
 replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
 replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
 replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 label values   d_lifetime_severity severity
 
