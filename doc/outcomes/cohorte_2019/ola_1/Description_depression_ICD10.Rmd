@@ -152,9 +152,9 @@ The following general principles have been followed when possible:
   in the variable. This allows for an additional check of recoding errors.
 
 - When the values need to be compared for unequality (operator `!=`) against a
-  valid value, it must be taken into account that a "missing" value gives a
-  `1` result instead of a missing in Stata.
-  Therefore, in order to avoid recoding "missing" values into valid ones,
+  non-missing value, it must be taken into account that a "missing" value gives
+  a `1` result instead of a missing in Stata.
+  Therefore, in order to avoid recoding "missing" values into non-missing ones,
   the "missing" values must be excluded from the comparison.
   This principle is used generally throughout the algorithm;
   when used differently, it is explained in the syntax.
@@ -215,7 +215,7 @@ replace d_b1 = 0 if q4220a!=1 & q4220a!=. & q4220b!=1 & q4220c!=1 & q4220d!=1
 replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1 | q4220d==1
 *#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the
 *#       interview skip logic in `q4220a` or `q4220c`, respectively.
-*#       But if there is a valid response in `q4220a` there must be one
+*#       But if there is a response in `q4220a` there must be one
 *#       also in `q4220c`. Therefore, only `q4220a` needs to be checked
 *#       for missingness".
 
@@ -258,7 +258,7 @@ gen     d_c3 = .
 replace d_c3 = 0 if q4222r!=1 & q4222r!=. & q4222s!=1 & q4222t!=1 & q4222u!=1 & q4222v!=1
 replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
 *#"NOTE: When any of the two last items are 'missing' it may be due to
-*#       the interview skip logic in `q4222t`. But if there is a valid
+*#       the interview skip logic in `q4222t`. But if there is a
 *#       response in `q4222r` there must be one also in `q4222s` and
 *#       `q4222t`.Therefore, only `q4222r` needs to be checked for
 *#       missingness".
