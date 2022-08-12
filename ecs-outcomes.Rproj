@@ -15,4 +15,4 @@ LaTeX: pdfLaTeX
 AutoAppendNewline: Yes
 StripTrailingWhitespace: Yes
 
-ZoteroLibraries: "My Library","Edad con Salud"
+ZoteroLibraries: "Edad con Salud"
