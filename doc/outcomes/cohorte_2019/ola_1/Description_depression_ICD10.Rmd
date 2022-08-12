@@ -404,7 +404,7 @@ label variable d_12m_comparable "12 month depression comparable with COVID subst
 codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
 ```
 
-```{stata save-data, eval=FALSE}
+```{stata save-data}
 keep ID_ECS q0007a_result proxy subsample_pre interview_pre d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
 
 *Cohorte 2019, linea base:
