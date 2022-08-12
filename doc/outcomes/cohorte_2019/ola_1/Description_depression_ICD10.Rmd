@@ -298,7 +298,7 @@ egen d_symtotal = rowtotal (d_c1-d_c7), missing
 
 ***#"Has the person skipped the lifetime depression module?"
 
-*#"Depression symtoms recoded into 0/1 to compute the tally":
+*#"Depression symptoms recoded into 0/1 to compute the tally":
 recode q4220a-q4222v (1=1) (2=0) (888 999=.)
 
 *#"Filter variables":
@@ -345,7 +345,7 @@ replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3
 label values   d_lifetime_severity severity
 label variable d_lifetime_severity "Severity of lifetime depressive episode (c2019_w1)"
 *#"NOTE: The criteria are applied incrementally, such that if a case
-*#       fulfills the crieria for a higher severity level, it is first
+*#       fulfills the criteria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
 *#       severe one".
 
