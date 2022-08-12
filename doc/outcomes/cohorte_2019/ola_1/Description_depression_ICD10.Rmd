@@ -171,7 +171,6 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
-
 *# "Value labels (defined for all the outcome variables in the dataset)":
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label define yesno    0 "No" 1 "Yes"
@@ -194,11 +193,11 @@ replace d_crit_g2 = 1 if q4233!=1 & q4233!=. & q4225_causemed2!=1
 
 *#G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
 gen     d_crit_g3 = .
-replace d_crit_g3 = 0 if                            q4224b==1)             | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
+replace d_crit_g3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
 *#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
 *#       so only `q4224b` out of these two needs to be checked for considering
-*#       the criterion negative.
+*#       the criterion negative."
 
 ***#"Mild depressive episode (F32.0)"
 
@@ -387,8 +386,8 @@ label variable depression_12m "12 month depression from lifetime diagnosis + q42
 gen     d_lifetime_comparable = .
 replace d_lifetime_comparable = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
 replace d_lifetime_comparable = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-label values   d_lifetime_severity_comparable severity
-label variable d_lifetime_severity_comparable "Severity of lifetime depressive episode comparable (c2019_w1)"
+label values   d_lifetime_comparable severity
+label variable d_lifetime_comparable "Severity of lifetime depressive episode comparable (c2019_w1)"
 
 *#"12-month 'comparable', based on the intermediate 'lifetime comparable' and the individual item":
 gen     d_12m_comparable = .
