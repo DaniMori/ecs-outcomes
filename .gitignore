@@ -42,3 +42,4 @@ vignettes/*.pdf
 # Output from outcome variable documents (and other Rmd document outputs)
 *.docx
 *.html
+*.dta
