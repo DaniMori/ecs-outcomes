@@ -1,35 +1,14 @@
 ---
-title: "Edad con Salud -- cohort <cohort> -- <assessment> -- '<variable name(s)/domain>'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+title: "Edad con Salud -- cohort 2011 -- Wave 3 -- 'DEPRESION ICD-10'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
-bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
-
-<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
-
-**Aviso preliminar**
-
-Esta plantilla está diseñada para la generación de "variables outcome" del proyecto Edad con Salud. Su objetivo es ayudar a automatizar las tareas de procesamiento de datos del proyecto.
-
-Esta plantilla está basada en el documento [LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i). Sin embargo, **esta plantilla no sustituye a ese documento**. Por favor, lee dicho documento para conocer todas las instrucciones y convenciones del proceso de generación de variables outcome de Edad con Salud.
-
-<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
-
-<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
-
-**Consideraciones generales**
-
--   Puesto que nuestros datos son analizados por investigadores/as procedentes de distintas partes del mundo, **todos los documentos deben estar en inglés**.
-
--   El **nombre de este archivo** debe tener la siguiente estructura: "Description\_<variablename>\_<qualifiers>". En '<qualifiers>' se añadirá cualquier particularidad, en caso que exista/n variable/s generadas en base a distintos criterios (e.g., diagnóstico, versión reducida). Por favor, evita en los nombres los espacios (sustituir por "\_"), tildes, "ñ" y "Ñ". Por ejemplo: "Description_cognitivereserve".
-
--   Si se trata de una variable que ya estaba generada en evaluaciones anteriores/otras cohortes, puedes adaptar la información de ese documento. En ese caso, por favor, revisa cuidadosamente que la información contenida se ajusta a las particularidades de los datos.
-
-<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
 
 ```{r setup, include=FALSE}
 # Activar los paquetes que R necesita para ejecutar el código:
@@ -38,235 +17,342 @@ library(Statamarkdown)
 
 # Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
 
-## TODO: sustituir '<path\to\>' por la ubicación de Stata
-##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
-##       o eliminar siguiente linea:
-# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
-
-
 # Opciones de configuración de las salidas de R y Stata:
 
-options(width = 88) # Ancho de salida de texto en R
-
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-  ## TODO: Descomentar si hace falta
-  # engine.path = list(stata = STATA_PATH),
   echo        = FALSE, #   - No muestra la sintaxis en el documento
   results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
   cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
-  comment     = ''     #   - No añade ningún prefijo a los resultados
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
 )
 ```
 
 # Variable information
 
-<!--# TODO: Leer párrafos a continuación -->
-
-Aquí debes incluir una tabla con los datos principales de todas la/s variable/s finales generada/s. Esto es, el nombre de la/s variable/s (tal y como aparece/n en la base de datos), la/s etiqueta/s, el formato (discreta, continua, nominal, ordinal, binaria) y los valores posibles (e.g., rango para continuas, opciones de respuesta para variables categóricas).
-
-En esta tabla debes incluir la variable principal, así como las transformaciones pertinentes asociadas a esta variable, como ocurre con el ejemplo anterior. En el caso de que la/s variable/s generada/s que requiera/n la creación previa de otras variables, solo se incluirán aquellas que pueden resultar clave para entender o analizar la variable final. Por ejemplo, si creas una variable a partir de otra existente en la que eliminas casos con datos inválidos o modificas las etiquetas, no es necesario que incluyas esta información en este punto (tampoco en la base de datos). Los/as investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre qué variables incluir en este punto, por favor, pregunta a alguno de los/as compañeros responsables del proyecto.
-
-En la etiqueta de la/s variable/s generadas, por favor **incluye información acerca de la cohorte y la evaluación de la que se trata**. El patrón es un sufijo como (c<cohorte>\_w<ola>), donde <cohorte> puede tomar los valores 2011 o 2019, y <ola> puede tomar los valores: 1, 2, 3, 4, etc. (COVID para el subestudio COVID).
-
-**Ejemplos:** (c2011_w1), (c2019_w3), (c2019_wCOVID). "w1" se correspondería con la primera evaluación (línea base).
-
-<!--# TODO: Borrar párrafos anteriores -->
-
-+--------------------+------------------------------------------+-------------+----------------------+
-| Main variable name | Label                                    | Format      | Code                 |
-+:===================+:=========================================+:============+:=====================+
-| <var_name>         | <Etiqueta>                               | <Formato>   | <Categorías / Rango> |
-+--------------------+------------------------------------------+-------------+----------------------+
-| bmi_cont           | Body mass index, continuous (c2019_w1)   | Continuous  | 16-40                |
-+--------------------+------------------------------------------+-------------+----------------------+
-| bmi_cont_std       | Body mass index, standardized (c2019_w1) | Continuous  | standardized         |
-+--------------------+------------------------------------------+-------------+----------------------+
-| bmi                | Body mass index, categories (c2019_w1)   | Ordinal     | 1 Underweight;       |
-|                    |                                          |             |                      |
-|                    |                                          |             | 2 Normal weight;     |
-|                    |                                          |             |                      |
-|                    |                                          |             | 3 Overweight;        |
-|                    |                                          |             |                      |
-|                    |                                          |             | 4 Obese              |
-+--------------------+------------------------------------------+-------------+----------------------+
-
-<!--# TODO: Añadir variables outcome a la tabla -->
-
-<!--# TODO: Eliminar ejemplos -->
++----------------------------+----------------------------------------------------------------+------------+-----------------+
+| **Main variable name**     | **Label**                                                      | **Format** | **Code**        |
++:===========================+:===============================================================+============+=================+
+| d_lifetime_severity        | Severity of lifetime depressive episode (c2011_w3)             | Ordinal    | -   0=No;       |
+|                            |                                                                |            | -   1=Mild;     |
+|                            |                                                                |            | -   2=Moderate; |
+|                            |                                                                |            | -   3=Severe    |
++----------------------------+----------------------------------------------------------------+------------+-----------------+
+| depression_lifetime        | Lifetime depression (c2011_w3)                                 | Binary     | -   0=no;       |
+|                            |                                                                |            | -   1=yes       |
++----------------------------+----------------------------------------------------------------+------------+-----------------+
+| dep ression_lifetime_proxy | Lifetime depression for proxy (c2011_w3)                       | Binary     | -   0=no;       |
+|                            |                                                                |            | -   1=yes       |
++----------------------------+----------------------------------------------------------------+------------+-----------------+
+| d_12m_item                 | 12 month depression, one item (c2011_w3)                       | Binary     | -   0=no;       |
+|                            |                                                                |            | -   1=yes       |
++----------------------------+----------------------------------------------------------------+------------+-----------------+
+| depression_12m             | 12 month depression from lifetime diagnosis & q4227 (c2011_w3) | Binary     | -   0=no;       |
+|                            |                                                                |            | -   1=yes       |
++----------------------------+----------------------------------------------------------------+------------+-----------------+
 
 # Variable description
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Por favor, incluye aquí una breve descripción de la variable o constructo que estás trabajando. Qué significa o qué evalúa esa variable y por qué es importante.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Redactar descripción de variable(s) -->
+Depression has become a major public health issue as it is one of the main causes of disability worldwide, with an even greater impact on developed countries. According to The ICD-10 Classification of Mental and Behavioural Disorders, Diagnostic criteria for research [@world_health_organization_icd-10_1992], the main characteristics of depression are the presence of a sustained depressed mood, the loss of interest or pleasure in activities normally pleasurable and/or the decreased energy or increased fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria for research proposes several contributing factors that can be present or absent: loss of confidence and self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or suicide, diminished ability to think or concentrate, change in psychomotor activity, sleep disturbance, and changes in appetite with the corresponding weight change. Moreover, the classification proposes a three-level gradient of severity depending on the amount of criteria present in each case, from mild to severe. In order to address these criteria and be able to assess the lifetime presence or absence of a depressive episode, as well as its severity, we used an adapted version of the Composite International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by trained lay interviewers for the assessment of mental disorders according to the definitions and criteria of ICD-10. It is intended for use in epidemiological and cross-cultural studies, as well as for clinical and research purposes.
 
 # Explanation of how the variables were created
 
-<!--# TODO: Leer párrafos a continuación -->
+Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable `depression_lifetime`) and in the previous 12 months (point prevalence; variable `depression_12m`). More precisely, the following criteria must be fulfilled:
 
-Este apartado es complementario al siguiente. Trata de describir, de forma clara y concisa, cómo has generado la variable. El objetivo de esta sección es doble. Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no estar familiarizados con el código utilizado para generar la/s variable/s (e.g., R, Stata, SPSS, SAS). Por otro, facilitar la información suficiente para describir adecuadamente la/s variable/s en los artículos científicos.
+i)  The depressive episode should last for at least 2 weeks;
 
-Si se trata de variable/s que ya se había/n generado en ocasiones anteriores (e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales particularidades o modificaciones que realices (e.g., versión reducida, detección de errores).
+ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life;
 
-<!--# TODO: Borrar párrafos anteriores -->
+iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder;
 
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
+iv) The general criteria for depressive episode must be met;
+
+v)  At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy;
+
+vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7).
+
+We also included a severity variable according to the ICD-10 criteria for the lifetime prevalence (variable `d_lifetime_severity`) based upon the number of symptoms the participant met.
+
+The coding of this algorithm is very complex and requires many different criteria to be taken into account. We have tried to make use of uniform coding criteria for implementing the computation of the different symptoms and diagnostic criteria, and also separating clearly the computation of the *positive*/*negative*/*missing* cases, to make the code the clearest possible. The following general principles have been followed when possible:
+
+-   All the non-valid responses are considered to be *negative* responses; that is, if an item has been answered with "*Don't know*" (`888`) or "Refused" (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though that this rule is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
+
+-   Only the variables that are kept in the final dataset are labelled.
+
+-   First, all the cases are set to `.` ("Missing" value).
+
+-   Then, the negative cases are recoded to `0` (diagnostic "No").
+
+-   Finally, the positive cases are recoded to `1` (diagnostic "Yes").
+
+-   Unless stated otherwise, the cases are explicitly recoded to their final value exclusively and exhaustively, such that the number of cases recoded to `0`/`1` in each step must be exactly the same as the number of `0`/`1` cases finally in the variable. This allows for an additional check of recoding errors.
+
+-   When the values need to be compared for unequality (operator `!=`) against a non-missing value, it must be taken into account that a "missing" value gives a `1` result instead of a missing in Stata. Therefore, in order to avoid recoding "missing" values into non-missing ones, the "missing" values must be excluded from the comparison. This principle is used generally throughout the algorithm; when used differently, it is explained in the syntax.
+
+-   When these principles are not strictly followed, an annotation is added right below, explaining how it changes from them and why.
 
 # Syntax used to create the variable (Stata 15)
 
-<!--# TODO: Cambiar software y versión en el título según correponda a la sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Aquí debes copiar el algoritmo o código empleado para generar la/s variable/s. Es fundamental que revises minuciosamente esta sección. Cualquier investigador/a debería poder generar la/s variable/s y obtener los mismos resultados. Por favor, indica también el programa utilizado (e.g., Stata, R, SPSS, SAS), si bien ten en cuenta que el consenso es utilizar el programa Stata. Es recomendable incluir también una pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n, frecuencia absoluta y relativa, rango, media...).
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-
 * Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
+label define yesno    0 "No" 1 "Yes"
+
+
+***#"VARIABLE `depression_lifetime`: Depressive episode (F32)"
+
+*#G1 criterion: "The depressive episode should last for at least 2 weeks"
+gen     d_crit_g1 = .
+replace d_crit_g1 = 0 if (q4211!=1 & q4211!=.) | (q4213!=1 & q4213!=.)
+replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
+
+*#G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
+gen     d_crit_g2 = .
+replace d_crit_g2 = 0 if q4233==1            | q4225_causemed2_s2==1
+replace d_crit_g2 = 1 if q4233!=1 & q4233!=. & q4225_causemed2_s2!=1
+*#"NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
+*#       'missing', so only `q4233` is considered to determine whether
+*#       this criterion is 'missing'".
+
+*#G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+gen     d_crit_g3 = .
+replace d_crit_g3 = 0 if                            q4224b==1              | (q4224_s2==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30_s2==1 | q4225_causemed31_s2==1))
+replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224_s2==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30_s2!=1 & q4225_causemed31_s2!=1))
+*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
+*#       so only `q4224b` out of these two needs to be checked for considering
+*#       the criterion negative."
+
+***#"Mild depressive episode (F32.0)"
+
+*#A criterion: "The general criteria for depressive episode must be met"
+gen     d_crit_a = .
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
+replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
+
+
+*#B criterion: "At least two of the following three symptoms must be present"
+
+*#B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+gen     d_b1 = .
+replace d_b1 = 0 if q4220a!=1 & q4220a!=. & q4220b!=1 & q4220c!=1 & q4220d!=1
+replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1 | q4220d==1
+*#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the
+*#       interview skip logic in `q4220a` or `q4220c`, respectively.
+*#       But if there is a response in `q4220a` there must be one
+*#       also in `q4220c`. Therefore, only `q4220a` needs to be checked
+*#       for missingness".
+
+*#B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+gen     d_b2 = .
+replace d_b2 = 0 if q4220e!=1 & q4220e!=. & q4220f!=1
+replace d_b2 = 1 if q4220e==1             | q4220f==1
+
+*#B3: "Decreased energy or increased fatigability"
+gen     d_b3 = .
+replace d_b3 = 0 if q4222e!=1 & q4222e!=.
+replace d_b3 = 1 if q4222e==1
+
+*#"Sum of depressive screening symptoms"
+egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
+
+*#"To fulfil B criterion >=2 screening symptoms should be present".
+gen     d_crit_b = .
+replace d_crit_b = 0 if d_screentotal< 2
+replace d_crit_b = 1 if d_screentotal>=2 & d_screentotal!=.
+
+
+*#C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+
+*#C1: "Loss of confidence and self-esteem"
+gen     d_c1 = .
+replace d_c1 = 0 if q4222k!=1 & q4222k!=. & q4222l!=1 & q4222l!=. & q4222m!=1
+replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1
+*#"NOTE: When `q4222m` is "missing" it may be due to the interview
+*#       skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l`
+*#       need to be checked for missingness".
+
+*#C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+gen     d_c2 = .
+replace d_c2 = 0 if q4222n!=1 & q4222n!=.
+replace d_c2 = 1 if q4222n==1
+
+*#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+gen     d_c3 = .
+replace d_c3 = 0 if q4222r!=1 & q4222r!=. & q4222s!=1 & q4222t!=1 & q4222u!=1 & q4222v!=1
+replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+*#"NOTE: When any of the two last items are 'missing' it may be due to
+*#       the interview skip logic in `q4222t`. But if there is a
+*#       response in `q4222r` there must be one also in `q4222s` and
+*#       `q4222t`.Therefore, only `q4222r` needs to be checked for
+*#       missingness".
+
+*#C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+gen     d_c4 = .
+replace d_c4 = 0 if q4222h!=1 & q4222h!=. & q4222i!=1 & q4222j!=1
+replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
+*#"NOTE: When `q4222i` and `q4222j` are 'missing' it may be due to the
+*#       interview skip logic in `q4222h`. Therefore, only `q4222h` needs
+*#       to be checked for missingness".
+
+*#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+gen     d_c5 = .
+replace d_c5 = 0 if q4222f_s2!=1 & q4222f_s2!=. & q4222fa!=1 & q4222g_s2!=1 & q4222ga!=1
+replace d_c5 = 1 if q4222f_s2==1             | q4222fa==1 | q4222g_s2==1 | q4222ga==1
+*#"NOTE: When the three last items are 'missing' it may be due to the
+*#       interview skip logic in `q4222f`. Therefore, only `q4222f` needs
+*#       to be checked for missingness".
+
+*#C6: "Sleep disturbance of any type"
+gen     d_c6 = .
+replace d_c6 = 0 if q4222c!=1 & q4222c!=.
+replace d_c6 = 1 if q4222c==1             | q4222d==1
+*#"NOTE: When `q4222d` is 'missing' it may be due to the interview skip
+*#       logic in `q4222c`. Therefore, only `q4222c` is checked for
+*#       missingness".
+
+*#C7: "Change in appetite (decrease or increase) with corresponding weight change"
+gen     d_c7 = .
+replace d_c7 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
+replace d_c7 = 1 if  q4222a==1              &  q4222b==1
+
+*#"Sum of depressive symptoms"
+egen d_symtotal = rowtotal (d_c1-d_c7), missing
+
+
+***#"Has the person skipped the lifetime depression module?"
+
+*#"Depression symptoms recoded into 0/1 to compute the tally":
+recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+
+*#"Filter variables":
+gen  f4217     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
+egen f4221_sum = rowtotal (q4220a-q4220f), missing
+egen f4223_sum = rowtotal (q4220a-q4222v), missing
+
+*#"Variable "skipped" computation":
+gen     d_skipped = .
+replace d_skipped = q4202!=1                   if q4202!=.
+replace d_skipped = q4211!=1    | d_skipped==1 if q4211!=.    
+replace d_skipped = q4213!=1    | d_skipped==1 if q4213!=.    
+replace d_skipped = q4218!=1    | d_skipped==1 if q4218!=.    
+replace d_skipped = f4217==1    | d_skipped==1 if f4217!=.    
+replace d_skipped = f4221_sum<1 | d_skipped==1 if f4221_sum!=.
+replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
+*#"NOTE: For clarity, this recoding adds the criteria incrementally. This
+*#       implies that the new "truth values" (0/1resulting from each
+*#       comparison) are "logically added" (therefore the "OR" operation)
+*#       to the current values".
+
+
+***#"Severity of depressive episode"
+
+*#"To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight".
+
+*#"Severity according to total symptom tally (prior to applying the "screening symtpoms" criterion)":
+gen     d_lifetime_severity_total = .
+replace d_lifetime_severity_total = 0 if (d_screentotal+d_symtotal)< 4
+replace d_lifetime_severity_total = 1 if (d_screentotal+d_symtotal)>=4 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 2 if (d_screentotal+d_symtotal)>=6 & d_screentotal!=. & d_symtotal !=.
+replace d_lifetime_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_screentotal!=. & d_symtotal !=.
+*#"NOTE: The criteria are applied incrementally, such that if a case
+*#       fulfills the crieria for a higher severity level, it is first
+*#       encoded as the milder level and then recoded into the more
+*#       severe one".
+
+*#"Final severity computation":
+gen     d_lifetime_severity = .
+replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+label values   d_lifetime_severity severity
+label variable d_lifetime_severity "Severity of lifetime depressive episode (c2011_w3)"
+*#"NOTE: The criteria are applied incrementally, such that if a case
+*#       fulfills the criteria for a higher severity level, it is first
+*#       encoded as the milder level and then recoded into the more
+*#       severe one".
+
+
+***#"Lifetime depression diagnostic variable":
+gen     depression_lifetime = .
+replace depression_lifetime = 0 if d_lifetime_severity==0
+replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
+label values   depression_lifetime yesno
+label variable depression_lifetime "Lifetime depression (c2011_w3)"
+
+
+***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
+recode p4040_depression_s2 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
+label values   depression_lifetime_proxy yesno
+label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w3)"
+
+
+***#"VARIABLE `d_12m_item`: 12-month depression criterion from q4227 items"
+gen     d_12m_item = .
+replace d_12m_item = 0 if q4227!=1 & proxy==2
+replace d_12m_item = 1 if q4227==1
+label values   d_12m_item yesno
+label variable d_12m_item "12 month depression, one item (c2011_w3)"
+
+
+***#"VARIABLE `depression_12m`: 12-month depression (combining `depression_lifetime` + `d_12m_item`)"
+gen     depression_12m = .
+replace depression_12m = 0 if depression_lifetime==0 | d_12m_item==0
+replace depression_12m = 1 if depression_lifetime==1 & d_12m_item==1
+label values   depression_12m yesno
+label variable depression_12m "12 month depression from lifetime diagnosis + q4227 items (c2011_w3)"
+
+
 ```
 
-<!--# TODO: Leer texto "Otras consideraciones a continuación -->
+<br>
 
-**Otras consideraciones**
+```{stata descriptives, collectcode=FALSE, results='markup'}
+codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m
 
-    -   El **número de participantes (n) que debe aparecer en cada base de datos** debe ser correspondiente con aquella que aparece en la base de datos maestra u original. Para la **base de datos de la muestra completa serán 3002 participantes**. En el caso de la **muestra pre-confinamiento serán 1935 participantes**.
-
-    -   Es recomendable que revises los descriptivos de la/s variable/s generadas. De esta forma podrás detectar posibles errores (e.g., un porcentaje de datos perdidos que no responde a lo esperado; una prevalencia de x patología muy superior o inferior a lo que la evidencia científica señala).
-
-<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
-
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
-
-```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
-* TODO: Añadir estadísticos descriptivos de la(s) variable(s) generada(s)
+*Cohorte 2011, ola 3:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
 ```
 
-<!--# TODO: Leer párrafos a continuación -->
-
--   Variable/s de identificación
-
-**La variable de identificación que debes incluir para la cohorte 2019 es ID_ECS**. Para conocer la equivalencia y las particularidades de las distintas variables de identificación, por favor, revisa la tabla 1 en el documento [LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i).
-
--   Variable(s) generada(s)
-
-Debes incluir la variable principal, así como las transformaciones pertinentes asociadas a esta variable. En el caso de que la/s variable/s generada/s que requiera/n la creación previa de otras variables, solo se incluirán aquellas que pueden resultar clave para entender o analizar la variable final. Por ejemplo, si creas una variable a partir de otra existente en la que eliminas casos con datos inválidos o modificas las etiquetas, no es necesario que incluyas esta información en este punto (tampoco en el documento de descripción). Los/as investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre qué variables incluir en este punto, por favor, pregunta a alguno de los/as compañeros responsables del proyecto.
-
--   Variables de apoyo
-
-Puesto que en ocasiones no todos los individuos contactados participan en el estudio (porque no quieren, porque no pueden, porque no los encontramos...) y dado que no todos los participantes responden a todos los ítems, se incluirán las siguientes variables como apoyo para la interpretación de los resultados:
-
--   Variable estado de entrevista: q0007a_result El código 1 hace referencia a todas las personas que han participado en el estudio.
-
--   Variable proxy: proxy El código 1 hace referencia a los participantes que realizaron una entrevista proxy. Esto quiere decir que el individuo seleccionado no contestó las preguntas, sino que otra persona respondió en su lugar a una versión reducida del cuestionario. El código 2 hace referencia a los participantes que hicieron entrevista directa.
-
-Otras consideraciones:
-
--   Las bases de datos deben tener formato .dta (Stata)
-
--   El nombre de estos archivos debe tener la siguiente estructura: "Outcome_nombrevariable_particularidad". Se añadirá cualquier particularidad en caso que exista/n variable/s generadas en base a distintos criterios (e.g., diagnóstico, versión reducida).
-
-<!--# TODO: Borrar párrafos anteriores -->
+-   
 
 ```{stata save-data}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Borrar `subsample_pre interview_pre` si no procede (dejar sólo para Cohorte 2019, Ola 1)
-keep ID_ECS q0007a_result proxy subsample_pre interview_pre <variable(s) generada(s)>
+keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m 
 
-
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
 
 * Cohorte 2011, ola 3:
-* saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y '<prefijo>' y '<teléfono>' -->
-
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
+-   Name: Daniel Morillo
+-   e-mail: [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 914975816
 
 \< Original version:
 
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
 
 # References
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta información será igualmente útil para citar apropiadamente en nuestros artículos científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
 
 ::: {#refs}
 :::
 
 \newpage
-
-<!--# TODO: Leer párrafos a continuación -->
-
-He terminado de generar la/s variable/s.
-
-¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s, por favor, actualiza el documento
-
-    "Creación y revisión de variables_reparto y control
-    ubicado en
-    `Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Creación y revisión de variables_reparto y control.docx`"*
-
-\*Este documento hace referencia exclusiva a las variables de cohorte 2019.
-
-Así, el/la compañero/a al que le corresponda podrá examinar los distintos archivos y, sobre todo, el algoritmo. En caso de que se detecten inconsistencias, errores o surjan dudas, se te comunicará para proceder con su revisión.
-
-Finalmente, cuando todas las variables estén generadas y revisadas se creará una base de datos común con todas ellas y los datos sociodemográficos principales de los participantes.
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 # Session info
 
