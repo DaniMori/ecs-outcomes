@@ -29,52 +29,101 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
-| **Main variable name**     | **Label**                                                      | **Format** | **Code**        |
-+:===========================+:===============================================================+============+=================+
-| d_lifetime_severity        | Severity of lifetime depressive episode (c2011_w3)             | Ordinal    | -   0=No;       |
-|                            |                                                                |            | -   1=Mild;     |
-|                            |                                                                |            | -   2=Moderate; |
-|                            |                                                                |            | -   3=Severe    |
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
-| depression_lifetime        | Lifetime depression (c2011_w3)                                 | Binary     | -   0=no;       |
-|                            |                                                                |            | -   1=yes       |
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
-| dep ression_lifetime_proxy | Lifetime depression for proxy (c2011_w3)                       | Binary     | -   0=no;       |
-|                            |                                                                |            | -   1=yes       |
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
-| d_12m_item                 | 12 month depression, one item (c2011_w3)                       | Binary     | -   0=no;       |
-|                            |                                                                |            | -   1=yes       |
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
-| depression_12m             | 12 month depression from lifetime diagnosis & q4227 (c2011_w3) | Binary     | -   0=no;       |
-|                            |                                                                |            | -   1=yes       |
-+----------------------------+----------------------------------------------------------------+------------+-----------------+
++----------------------------+-------------------+-----------------+-----------------+
+| **Main variable name**     | **Label**         | **Format**      | **Code**        |
++:===========================+:==================+=================+=================+
+| d_lifetime_severity        | Severity of       | Ordinal         | -   0=No;       |
+|                            | lifetime          |                 | -   1=Mild;     |
+|                            | depressive        |                 | -   2=Moderate; |
+|                            | episode           |                 | -   3=Severe    |
+|                            | (c2011_w3)        |                 |                 |
++----------------------------+-------------------+-----------------+-----------------+
+| depression_lifetime        | Lifetime          | Binary          | -   0=no;       |
+|                            | depression        |                 | -   1=yes       |
+|                            | (c2011_w3)        |                 |                 |
++----------------------------+-------------------+-----------------+-----------------+
+| depression_lifetime_proxy  | Lifetime          | Binary          | -   0=no;       |
+|                            | depression for    |                 | -   1=yes       |
+|                            | proxy (c2011_w3)  |                 |                 |
++----------------------------+-------------------+-----------------+-----------------+
+| d_12m_item                 | 12 month          | Binary          | -   0=no;       |
+|                            | depression, one   |                 | -   1=yes       |
+|                            | item (c2011_w3)   |                 |                 |
++----------------------------+-------------------+-----------------+-----------------+
+| depression_12m             | 12 month          | Binary          | -   0=no;       |
+|                            | depression from   |                 | -   1=yes       |
+|                            | lifetime          |                 |                 |
+|                            | diagnosis & q4227 |                 |                 |
+|                            | (c2011_w3)        |                 |                 |
++----------------------------+-------------------+-----------------+-----------------+
 
 # Variable description
 
-Depression has become a major public health issue as it is one of the main causes of disability worldwide, with an even greater impact on developed countries. According to The ICD-10 Classification of Mental and Behavioural Disorders, Diagnostic criteria for research [@world_health_organization_icd-10_1992], the main characteristics of depression are the presence of a sustained depressed mood, the loss of interest or pleasure in activities normally pleasurable and/or the decreased energy or increased fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria for research proposes several contributing factors that can be present or absent: loss of confidence and self-esteem, feelings of self-reproach or guilt, recurrent thoughts of death or suicide, diminished ability to think or concentrate, change in psychomotor activity, sleep disturbance, and changes in appetite with the corresponding weight change. Moreover, the classification proposes a three-level gradient of severity depending on the amount of criteria present in each case, from mild to severe. In order to address these criteria and be able to assess the lifetime presence or absence of a depressive episode, as well as its severity, we used an adapted version of the Composite International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by trained lay interviewers for the assessment of mental disorders according to the definitions and criteria of ICD-10. It is intended for use in epidemiological and cross-cultural studies, as well as for clinical and research purposes.
+Depression has become a major public health issue as it is one of the main
+causes of disability worldwide, with an even greater impact on developed
+countries. According to The ICD-10 Classification of Mental and Behavioural
+Disorders, Diagnostic criteria for research
+[@world_health_organization_icd-10_1992], the main characteristics of depression
+are the presence of a sustained depressed mood, the loss of interest or pleasure
+in activities normally pleasurable and/or the decreased energy or increased
+fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria
+for research proposes several contributing factors that can be present or
+absent: loss of confidence and self-esteem, feelings of self-reproach or guilt,
+recurrent thoughts of death or suicide, diminished ability to think or
+concentrate, change in psychomotor activity, sleep disturbance, and changes in
+appetite with the corresponding weight change. Moreover, the classification
+proposes a three-level gradient of severity depending on the amount of criteria
+present in each case, from mild to severe. In order to address these criteria
+and be able to assess the lifetime presence or absence of a depressive episode,
+as well as its severity, we used an adapted version of the Composite
+International Diagnostic Interview (CIDI 3.0), a comprehensive, fully-structured
+interview designed to be used by trained lay interviewers for the assessment of
+mental disorders according to the definitions and criteria of ICD-10. It is
+intended for use in epidemiological and cross-cultural studies, as well as for
+clinical and research purposes.
 
 # Explanation of how the variables were created
 
-Information from the CIDI depression module was used for the creation of the depression variables. Algorithms based on the ICD-10 were used for the endorsement of depressive episode at some point in their lives (lifetime prevalence; variable `depression_lifetime`) and in the previous 12 months (point prevalence; variable `depression_12m`). More precisely, the following criteria must be fulfilled:
+Information from the CIDI depression module was used for the creation of the
+depression variables. Algorithms based on the ICD-10 were used for the
+endorsement of depressive episode at some point in their lives (lifetime
+prevalence; variable `depression_lifetime`) and in the previous 12 months (point
+prevalence; variable `depression_12m`). More precisely, the following criteria
+must be fulfilled:
 
 i)  The depressive episode should last for at least 2 weeks;
 
-ii) There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life;
+ii) There have been no hypomanic or manic symptoms sufficient to meet the
+    criteria for hypomanic or manic episode at any time in the individual's
+    life;
 
-iii) The episode is not attributable to psychoactive substance use or to any organic mental disorder;
+iii) The episode is not attributable to psychoactive substance use or to any
+     organic mental disorder;
 
 iv) The general criteria for depressive episode must be met;
 
-v)  At least two of the following three symptoms must be present: Depressed mood, loss of interest and decreased energy;
+v)  At least two of the following three symptoms must be present: Depressed
+    mood, loss of interest and decreased energy;
 
-vi) an additional symptom or symptoms should be present, to give a total of at least four (please see criteria C1-C7).
+vi) an additional symptom or symptoms should be present, to give a total of at
+    least four (please see criteria C1-C7).
 
-We also included a severity variable according to the ICD-10 criteria for the lifetime prevalence (variable `d_lifetime_severity`) based upon the number of symptoms the participant met.
+We also included a severity variable according to the ICD-10 criteria for the
+lifetime prevalence (variable `d_lifetime_severity`) based upon the number of
+symptoms the participant met.
 
-The coding of this algorithm is very complex and requires many different criteria to be taken into account. We have tried to make use of uniform coding criteria for implementing the computation of the different symptoms and diagnostic criteria, and also separating clearly the computation of the *positive*/*negative*/*missing* cases, to make the code the clearest possible. The following general principles have been followed when possible:
+The coding of this algorithm is very complex and requires many different
+criteria to be taken into account. We have tried to make use of uniform coding
+criteria for implementing the computation of the different symptoms and
+diagnostic criteria, and also separating clearly the computation of the
+*positive*/*negative*/*missing* cases, to make the code the clearest possible.
+The following general principles have been followed when possible:
 
--   All the non-valid responses are considered to be *negative* responses; that is, if an item has been answered with "*Don't know*" (`888`) or "Refused" (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though that this rule is reverted for the "exclusion criteria", i.e., criteria "G2" and "G3").
+-   All the non-valid responses are considered to be *negative* responses; that
+    is, if an item has been answered with "*Don't know*" (`888`) or "Refused"
+    (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though
+    that this rule is reverted for the "exclusion criteria", i.e., criteria "G2"
+    and "G3").
 
 -   Only the variables that are kept in the final dataset are labelled.
 
@@ -84,11 +133,22 @@ The coding of this algorithm is very complex and requires many different criteri
 
 -   Finally, the positive cases are recoded to `1` (diagnostic "Yes").
 
--   Unless stated otherwise, the cases are explicitly recoded to their final value exclusively and exhaustively, such that the number of cases recoded to `0`/`1` in each step must be exactly the same as the number of `0`/`1` cases finally in the variable. This allows for an additional check of recoding errors.
+-   Unless stated otherwise, the cases are explicitly recoded to their final
+    value exclusively and exhaustively, such that the number of cases recoded to
+    `0`/`1` in each step must be exactly the same as the number of `0`/`1` cases
+    finally in the variable. This allows for an additional check of recoding
+    errors.
 
--   When the values need to be compared for unequality (operator `!=`) against a non-missing value, it must be taken into account that a "missing" value gives a `1` result instead of a missing in Stata. Therefore, in order to avoid recoding "missing" values into non-missing ones, the "missing" values must be excluded from the comparison. This principle is used generally throughout the algorithm; when used differently, it is explained in the syntax.
+-   When the values need to be compared for unequality (operator `!=`) against a
+    non-missing value, it must be taken into account that a "missing" value
+    gives a `1` result instead of a missing in Stata. Therefore, in order to
+    avoid recoding "missing" values into non-missing ones, the "missing" values
+    must be excluded from the comparison. This principle is used generally
+    throughout the algorithm; when used differently, it is explained in the
+    syntax.
 
--   When these principles are not strictly followed, an annotation is added right below, explaining how it changes from them and why.
+-   When these principles are not strictly followed, an annotation is added
+    right below, explaining how it changes from them and why.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -339,7 +399,8 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 <br>
 
 -   Name: Daniel Morillo
--   e-mail: [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
+-   e-mail:
+    [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
 -   Phone number: (+34) 914975816
 
 \< Original version:
