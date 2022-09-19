@@ -103,7 +103,8 @@
 - [ ] "Outcome dataset" está en formato Stata 13 (comando `dtaversion`)
 
 - [ ] El número de casos en el dataset coincide con el número de casos en la BDD
-  maestra correspondiente (para C2019_W1 3,002 casos; para C2019_wCOVID, 1854 casos)
+  maestra correspondiente (para C2019_W1 3,002 casos; para C2019_wCOVID, 1854 casos;
+  para c2011_w3 1,577 casos)
 
 - [ ] El número de casos válidos en el dataset coincide con el número de casos
   validos esperables en la BDD maestra correspondiente (para C2019_wCOVID, 1166 casos)
