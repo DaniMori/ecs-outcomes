@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- Wave 3 -- 'DEPRESION ICD-10'"
+title: "Edad con Salud -- cohort 2011 -- Wave 3 -- 'Depression ICD-10'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
@@ -373,9 +373,6 @@ label variable depression_12m "12 month depression from lifetime diagnosis + q42
 
 ```{stata descriptives, collectcode=FALSE, results='markup'}
 codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m
-
-*Cohorte 2011, ola 3:
-use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
 ```
 
 -   
