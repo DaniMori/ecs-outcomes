@@ -376,7 +376,6 @@ codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m 
 
-
 * Cohorte 2011, ola 3:
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 ```
@@ -396,7 +395,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
     [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
 -   Phone number: (+34) 914975816
 
-\< Original version:
+Original version:
 
 -   Name: Dario Moreno Agostino
 -   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
