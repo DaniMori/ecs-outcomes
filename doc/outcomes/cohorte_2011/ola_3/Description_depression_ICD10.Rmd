@@ -365,8 +365,6 @@ replace depression_12m = 0 if depression_lifetime==0 | d_12m_item==0
 replace depression_12m = 1 if depression_lifetime==1 & d_12m_item==1
 label values   depression_12m yesno
 label variable depression_12m "12 month depression from lifetime diagnosis + q4227 items (c2011_w3)"
-
-
 ```
 
 <br>
@@ -374,8 +372,6 @@ label variable depression_12m "12 month depression from lifetime diagnosis + q42
 ```{stata descriptives, collectcode=FALSE, results='markup'}
 codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m
 ```
-
--   
 
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m 
