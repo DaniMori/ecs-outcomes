@@ -38,21 +38,21 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 |                        | episode         |                 | -   3=Severe    |
 |                        | (c2011_w3)      |                 |                 |
 +------------------------+-----------------+-----------------+-----------------+
-| depression_lifetime    | Lifetime        | Binary          | -   0=no;       |
-|                        | depression      |                 | -   1=yes       |
+| depression_lifetime    | Lifetime        | Binary          | -   0=No;       |
+|                        | depression      |                 | -   1=Yes       |
 |                        | (c2011_w3)      |                 |                 |
 +------------------------+-----------------+-----------------+-----------------+
-| dep                    | Lifetime        | Binary          | -   0=no;       |
-| ression_lifetime_proxy | depression for  |                 | -   1=yes       |
+| dep                    | Lifetime        | Binary          | -   0=No;       |
+| ression_lifetime_proxy | depression for  |                 | -   1=Yes       |
 |                        | proxy           |                 |                 |
 |                        | (c2011_w3)      |                 |                 |
 +------------------------+-----------------+-----------------+-----------------+
-| d_12m_item             | 12 month        | Binary          | -   0=no;       |
-|                        | depression, one |                 | -   1=yes       |
+| d_12m_item             | 12 month        | Binary          | -   0=No;       |
+|                        | depression, one |                 | -   1=Yes       |
 |                        | item (c2011_w3) |                 |                 |
 +------------------------+-----------------+-----------------+-----------------+
-| depression_12m         | 12 month        | Binary          | -   0=no;       |
-|                        | depression from |                 | -   1=yes       |
+| depression_12m         | 12 month        | Binary          | -   0=No;       |
+|                        | depression from |                 | -   1=Yes       |
 |                        | lifetime        |                 |                 |
 |                        | diagnosis +     |                 |                 |
 |                        | q4227 items     |                 |                 |
