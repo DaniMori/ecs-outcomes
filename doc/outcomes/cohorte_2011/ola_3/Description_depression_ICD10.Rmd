@@ -150,7 +150,7 @@ The following general principles have been followed when possible:
 -   When these principles are not strictly followed, an annotation is added
     right below, explaining how it changes from them and why.
 
-# Syntax used to create the variable (Stata 13)
+# Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
 * Cohorte 2011, ola 3:
