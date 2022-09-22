@@ -172,8 +172,9 @@ replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
 
 *#G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
 gen     d_crit_g2 = .
-replace d_crit_g2 = 0 if q4233==1            | q4225_causemed2_s2==1
-replace d_crit_g2 = 1 if q4233!=1 & q4233!=. & q4225_causemed2_s2!=1
+replace d_crit_g2 = 0 if (q4233_s2==1 & proxy==2)   | q4225_causemed2_s2==1
+replace d_crit_g2 = 1 if (q4233_s2!=1 & q4233_s2!=. & proxy==2) & q4225_causemed2_s2!=1
+
 *#"NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
 *#       'missing', so only `q4233` is considered to determine whether
 *#       this criterion is 'missing'".
