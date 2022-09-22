@@ -172,7 +172,7 @@ replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
 
 *#G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
 gen     d_crit_g2 = .
-replace d_crit_g2 = 0 if (q4233_s2==1 & proxy==2)   | q4225_causemed2_s2==1
+replace d_crit_g2 = 0 if (q4233_s2==1               & proxy==2) | q4225_causemed2_s2==1
 replace d_crit_g2 = 1 if (q4233_s2!=1 & q4233_s2!=. & proxy==2) & q4225_causemed2_s2!=1
 
 *#"NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
@@ -262,7 +262,7 @@ replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
 *#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
 gen     d_c5 = .
 replace d_c5 = 0 if q4222f_s2!=1 & q4222f_s2!=. & q4222fa!=1 & q4222g_s2!=1 & q4222ga!=1
-replace d_c5 = 1 if q4222f_s2==1             | q4222fa==1 | q4222g_s2==1 | q4222ga==1
+replace d_c5 = 1 if q4222f_s2==1                | q4222fa==1 | q4222g_s2==1 | q4222ga==1
 *#"NOTE: When the three last items are 'missing' it may be due to the
 *#       interview skip logic in `q4222f`. Therefore, only `q4222f` needs
 *#       to be checked for missingness".
