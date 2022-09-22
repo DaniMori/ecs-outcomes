@@ -7,7 +7,7 @@ csl: "`r ecs.data::get_proj_csl_file()`"
 bibliography: "`r ecs.data::get_proj_bib_file()`"
 editor_options: 
   markdown: 
-    wrap: 72
+    wrap: 80
 ---
 
 ```{r setup, include=FALSE}
@@ -29,33 +29,33 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+----------------------------+-------------------+-----------------+-----------------+
-| **Main variable name**     | **Label**         | **Format**      | **Code**        |
-+:===========================+:==================+=================+=================+
-| d_lifetime_severity        | Severity of       | Ordinal         | -   0=No;       |
-|                            | lifetime          |                 | -   1=Mild;     |
-|                            | depressive        |                 | -   2=Moderate; |
-|                            | episode           |                 | -   3=Severe    |
-|                            | (c2011_w3)        |                 |                 |
-+----------------------------+-------------------+-----------------+-----------------+
-| depression_lifetime        | Lifetime          | Binary          | -   0=no;       |
-|                            | depression        |                 | -   1=yes       |
-|                            | (c2011_w3)        |                 |                 |
-+----------------------------+-------------------+-----------------+-----------------+
-| depression_lifetime_proxy  | Lifetime          | Binary          | -   0=no;       |
-|                            | depression for    |                 | -   1=yes       |
-|                            | proxy (c2011_w3)  |                 |                 |
-+----------------------------+-------------------+-----------------+-----------------+
-| d_12m_item                 | 12 month          | Binary          | -   0=no;       |
-|                            | depression, one   |                 | -   1=yes       |
-|                            | item (c2011_w3)   |                 |                 |
-+----------------------------+-------------------+-----------------+-----------------+
-| depression_12m             | 12 month          | Binary          | -   0=no;       |
-|                            | depression from   |                 | -   1=yes       |
-|                            | lifetime          |                 |                 |
-|                            | diagnosis + q4227 |                 |                 |
-|                            | items (c2011_w3)  |                 |                 |
-+----------------------------+-------------------+-----------------+-----------------+
++---------------------------+-------------------+------------+-----------------+
+| **Main variable name**    | **Label**         | **Format** | **Code**        |
++:==========================+:==================+============+=================+
+| d_lifetime_severity       | Severity of       | Ordinal    | -   0=No;       |
+|                           | lifetime          |            | -   1=Mild;     |
+|                           | depressive        |            | -   2=Moderate; |
+|                           | episode           |            | -   3=Severe    |
+|                           | (c2011_w3)        |            |                 |
++---------------------------+-------------------+------------+-----------------+
+| depression_lifetime       | Lifetime          | Binary     | -   0=no;       |
+|                           | depression        |            | -   1=yes       |
+|                           | (c2011_w3)        |            |                 |
++---------------------------+-------------------+------------+-----------------+
+| depression_lifetime_proxy | Lifetime          | Binary     | -   0=no;       |
+|                           | depression for    |            | -   1=yes       |
+|                           | proxy (c2011_w3)  |            |                 |
++---------------------------+-------------------+------------+-----------------+
+| d_12m_item                | 12 month          | Binary     | -   0=no;       |
+|                           | depression, one   |            | -   1=yes       |
+|                           | item (c2011_w3)   |            |                 |
++---------------------------+-------------------+------------+-----------------+
+| depression_12m            | 12 month          | Binary     | -   0=no;       |
+|                           | depression from   |            | -   1=yes       |
+|                           | lifetime          |            |                 |
+|                           | diagnosis + q4227 |            |                 |
+|                           | items (c2011_w3)  |            |                 |
++---------------------------+-------------------+------------+-----------------+
 
 # Variable description
 
