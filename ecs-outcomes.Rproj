@@ -17,5 +17,6 @@ StripTrailingWhitespace: Yes
 
 MarkdownWrap: Column
 MarkdownWrapAtColumn: 80
+MarkdownCanonical: No
 
 ZoteroLibraries: "Edad con Salud"
