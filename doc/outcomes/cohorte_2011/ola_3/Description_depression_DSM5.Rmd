@@ -1,0 +1,137 @@
+---
+title: "Edad con Salud -- cohort 2011 -- Wave 3 -- 'Depression ICD-10'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+csl: "`r ecs.data::get_proj_csl_file()`"
+# bibliography: "`r ecs.data::get_proj_bib_file()`"
+bibliography: "../../../../www/Edad_con_salud_outcome_vars.bib"
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+# Opciones de configuración de las salidas de R y Stata:
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE   #   - Reutiliza el código de Stata de 'chunks' anteriores
+)
+```
+
+# Variable information
+
++---------------------------+----------------+------------+------------+
+| **Main variable name**    | **Label**      | **Format** | **Code**   |
++:==========================+:===============+============+============+
+| depression_lifetime_s2    | Lifetime       | Binary     | -   0=no;  |
+|                           | depression     |            | -   1=yes  |
+|                           | (c2011_w3)     |            |            |
++---------------------------+----------------+------------+------------+
+| depression_12m_s2         | 12 month       | Binary     | -   0=no;  |
+|                           | depression     |            | -   1=yes  |
+|                           | (c2011_w3)     |            |            |
++---------------------------+----------------+------------+------------+
+| depression_12treatment_s2 | Treatment for  | Binary     | -   0=no;  |
+|                           | depression in  |            | -   1=yes  |
+|                           | previous 12    |            |            |
+|                           | monts          |            |            |
+|                           | (c2011_w3)     |            |            |
++---------------------------+----------------+------------+------------+
+| depress_self_s2           | depression,    | Binary     | -   0=no;  |
+|                           | self reported  |            | -   1=yes  |
+|                           | (c2011_w3)     |            |            |
++---------------------------+----------------+------------+------------+
+
+# Variable description
+
+Depression is a common mental disorder, characterized by sadness, loss of
+interest or pleasure, feelings of guilt or low self-worth, disturbed sleep or
+appetite, feelings of tiredness, and poor concentration. Depression can be
+long-lasting or recurrent, substantially impairing an individual's ability to
+function at work or school or cope with daily life. At its most severe,
+depression can lead to suicide. When mild, people can be treated without
+medicines but when depression is moderate or severe they may need medication and
+professional talking treatments. Depression is a disorder that can be reliably
+diagnosed and treated by non-specialists as part of primary health care.
+Specialist care is needed for a small proportion of individuals with complicated
+depression or those who do not respond to first-line treatments.
+
+We used an adapted version of the Composite International Diagnostic Interview
+(CIDI 3.0), a comprehensive, fully-structured interview designed to be used by
+trained lay interviewers for the assessment of mental disorders according to the
+definitions and criteria of DSM-V [@americanpsychiatricassociation2013]. It is
+intended for use in epidemiological and cross-cultural studies as well as for
+clinical and research purposes. The diagnostic section of the interview is based
+on the World Health Organization's Composite International Diagnostic Interview.
+
+# Explanation of how the variables were created
+
+An algorithm based on the DSM-V was used for the endorsement of major depressive
+episode at some point in their lives (lifetime prevalence) and in the previous
+12 months (point prevalence). We also included a treatment variable for 12-month
+depression. These algorithms were created only for the non-proxy respondents.
+
+As for the proxy participants, original variables include `p4040_depression_s2`
+and `p4040a_age_s2`. A diagnosis of depression was endorsed if the participant
+answered "yes" to `p4040_depression_s2`, but not `997` in `p4040a_age_s2` (they
+affirmed they had never had depression). We also included a treatment code
+(`depress_12treatment_s2`) in those individuals who, apart from having reported
+depression, have received treatment for it in the previous 12 months.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 3:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
+```
+
+```{stata generate-outcomes, echo=TRUE}
+
+```
+
+<br>
+
+```{stata descriptives, collectcode=FALSE, results='markup'}
+codebook depression_lifetime_s2 depression_12m_s2 depression_12treatment_s2 depress_self_s2
+```
+
+```{stata save-data}
+keep ID_ECS q0007a_result proxy codebook depression_lifetime_s2 depression_12m_s2 depression_12treatment_s2 depress_self_s2
+
+* Cohorte 2011, ola 3:
+*saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_DSM5.dta", replace version(13)
+saveold "../../../../dat/Outcome_depression_DSM5.dta", replace version(13)
+*# TODO: Delete previous line and uncomment the `saveold` command to the proper
+*#       output path
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya\@pssjd.org](mailto:beatriz.olaya@pssjd.org)
+-   Phone number: (+34) 936406350 ext (1) 2546
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
