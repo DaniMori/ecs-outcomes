@@ -8,7 +8,7 @@ csl: "`r ecs.data::get_proj_csl_file()`"
 bibliography: "`r ecs.data::get_proj_bib_file()`"
 editor_options:
   markdown:
-    wrap: 72
+    wrap: 80
 ---
 
 ```{r setup, include=FALSE}
@@ -247,18 +247,18 @@ replace d_crit_b = 1 if d_screentotal==1 | d_screentotal==2
 
 *#C criterion: "Additional symptoms from the following list should be present, to give a total of at least five"
 
-*#C1: "Loss of confidence and self-esteem"
+*#C1: "Beliefs of low self-worth or excessive and inappropriate guilt that may be manifestly delusional"
 gen     d_c1 = .
-replace d_c1 = 0 if (q4222k!=1 & q4222k!=.) & (q4222l!=1 & q4222l!=.) & q4222m!=1
-replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1
+replace d_c1 = 0 if ((q4222k!=1 & q4222k!=.) & (q4222l!=1 & q4222l!=.) & q4222m!=1) | (q4222n!=1 & q4222n!=.)
+replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1 | q4222n==1
 *#"NOTE: When `q4222m` is "missing" it may be due to the interview
 *#       skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l`
 *#       need to be checked for missingness".
 
-*#C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+*#C2: "Hopelessness about the future."
 gen     d_c2 = .
-replace d_c2 = 0 if q4222n!=1 & q4222n!=.
-replace d_c2 = 1 if q4222n==1
+replace d_c2 = 0 if q4220d!=1 & q4220d!=.
+replace d_c2 = 1 if q4220d==1
 
 *#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_c3 = .
@@ -299,11 +299,11 @@ gen     d_c7 = .
 replace d_c7 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
 replace d_c7 = 1 if  q4222a==1              &  q4222b==1
 
-
 *#C8: "Decreased energy or increased fatigability"
 gen     d_c8 = .
 replace d_c8 = 0 if q4222e!=1 & q4222e!=.
 replace d_c8 = 1 if q4222e==1
+
 *#"Sum of depressive symptoms"
 egen d_symptot = rowtotal (d_c1-d_c8), missing
 
