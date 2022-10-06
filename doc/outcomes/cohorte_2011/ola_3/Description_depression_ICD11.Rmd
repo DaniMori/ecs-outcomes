@@ -34,13 +34,6 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 | **Main variable    | **Label**        | **Format**       | **Code**         |
 | name**             |                  |                  |                  |
 +:===================+:=================+==================+==================+
-| d\                 | Severity of      | Ordinal          | -   0=No;        |
-| \                  | lifetime         |                  | -   1=Mild;      |
-| \                  | depressive       |                  | -   2=Moderate;  |
-| \                  | episode          |                  | -   3=Severe     |
-| \                  | (c2011_w3)       |                  |                  |
-| _lifetime_severity |                  |                  |                  |
-+--------------------+------------------+------------------+------------------+
 | d                  | Lifetime         | Binary           | -   0=no;        |
 | epression_lifetime | depression       |                  | -   1=yes        |
 |                    | (c2011_w3)       |                  |                  |
