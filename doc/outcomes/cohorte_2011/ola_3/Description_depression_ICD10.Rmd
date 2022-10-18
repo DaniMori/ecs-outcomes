@@ -15,8 +15,6 @@ editor_options:
 
 library(Statamarkdown)
 
-# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
-
 # Opciones de configuración de las salidas de R y Stata:
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
