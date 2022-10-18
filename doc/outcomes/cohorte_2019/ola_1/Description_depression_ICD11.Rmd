@@ -338,7 +338,7 @@ codebook depression_lifetime depression_lifetime_proxy
 ```
 
 ```{stata save-data}
-keep q0007a_result ID_ECS depression_lifetime depression_lifetime_proxy 
+keep q0007a_result ID_ECS proxy depression_lifetime depression_lifetime_proxy 
 
 * Cohorte 2019, ola 1:
 
