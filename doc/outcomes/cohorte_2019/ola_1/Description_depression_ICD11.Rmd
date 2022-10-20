@@ -35,12 +35,11 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 | name**             |                  |                  |                  |
 +:===================+:=================+==================+==================+
 | d                  | Lifetime         | Binary           | -   0=No;        |
-| epression_lifetime | depression       |                  | -   1=Yes        |
-|                    | (c2019_w1)       |                  |                  |
+| epression_lifetime | (c2011_w3)       |                  | -   1=Yes        |
 +--------------------+------------------+------------------+------------------+
 | depress            | Lifetime         | Binary           | -   0=No;        |
 | ion_lifetime_proxy | depression for   |                  | -   1=Yes        |
-|                    | proxy (c2019_w1) |                  |                  |
+|                    | proxy (c2011_w3) |                  |                  |
 +--------------------+------------------+------------------+------------------+
 
 # Variable description
@@ -88,15 +87,16 @@ iii) The episode is not attributable to psychoactive substance use or to any
 
 iv) The general criteria for depressive episode must be met;
 
-v)  At least one of the following two symptoms (affective cluster) must be present: Depressed
-    mood, loss of interest;
+v)  At least one of the following two symptoms (affective cluster) must be
+    present: Depressed mood, loss of interest;
 
 vi) Additional symptoms should be present, to give a total of at least five
     (please see criteria C1-C8);
 
 vii) The symptoms are not better accounted for by bereavement.
 
-viii) The symptoms cause clinically significant distress or impairment in social, occupational, or other important areas of functioning 
+viii) The symptoms cause clinically significant distress or impairment in
+      social, occupational, or other important areas of functioning
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
@@ -108,8 +108,8 @@ The following general principles have been followed when possible:
 -   All the non-valid responses are considered to be *negative* responses; that
     is, if an item has been answered with "*Don't know*" (`888`) or "Refused"
     (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though
-    that this rule is reverted for the "exclusion criteria", i.e., criteria "G2", "G3"
-    and "G4").
+    that this rule is reverted for the "exclusion criteria", i.e., criteria
+    "G2", "G3" and "G4").
 
 -   Only the variables that are kept in the final dataset are labelled.
 
@@ -347,7 +347,6 @@ keep q0007a_result ID_ECS proxy subsample_pre interview_pre depression_lifetime 
 
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD11.dta", replace version(13)
 ```
-
 
 # Contact person:
 
