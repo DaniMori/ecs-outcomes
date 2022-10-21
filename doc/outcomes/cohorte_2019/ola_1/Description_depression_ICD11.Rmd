@@ -5,7 +5,7 @@ output:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
   pdf_document: default
 csl: "`r ecs.data::get_proj_csl_file()`"
-bibliography: "../../../../www/Edad_con_salud_outcome_vars.bib"
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 editor_options:
   markdown:
     wrap: 80
