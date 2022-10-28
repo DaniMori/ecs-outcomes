@@ -55,7 +55,7 @@ Note: we have not included the value `1` in `level_edu`, because we don´t have 
 
 ```{stata load-data}
 * Cohorte 2019, linea base:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -99,7 +99,7 @@ sum t_CR, detail
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy t_CR
 
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_cognitivereserve.dta", replace
+save "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_cognitivereserve.dta", replace
 ```
 
 # Contact person:

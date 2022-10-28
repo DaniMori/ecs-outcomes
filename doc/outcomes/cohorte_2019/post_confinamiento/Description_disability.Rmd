@@ -55,7 +55,7 @@ The WHODAS items were selected and their scoring was determined according to the
 ```{stata load-data}
 
 * Cohorte 2019, ola postconfinamiento:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
 
 ```
 
@@ -94,7 +94,7 @@ codebook whodas12
 keep ID_ECS ESTADO_ENTREVISTA whodas12
 
 *Cohorte 2019, ola postconfinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_disability.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_disability.dta", replace version(13)
 
 ```
 

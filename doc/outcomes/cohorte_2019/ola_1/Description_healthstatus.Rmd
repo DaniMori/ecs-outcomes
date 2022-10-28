@@ -56,7 +56,7 @@ library(mirt)
 survey_data <- read_dta(
   file.path(
     "~/../UAM",
-    "marta.miret@uam.es - Bases de datos maestras Edad con Salud",
+    "Marta Miret Garcia - Bases de datos maestras Edad con Salud",
     "Ola_3/Cohorte_2019",
     "rawdata_c2019w1.dta"
   )
@@ -163,7 +163,7 @@ output <- survey_data %>%
 output %>% write_dta(
   file.path(
     "~/../UAM",
-    "marta.miret@uam.es - Documentacion Edad con Salud/Edad con salud - Ola 3",
+    "Marta Miret Garcia - Documentacion Edad con Salud/Edad con salud - Ola 3",
     "Outcomes/Cohorte 2019/Outcome datasets",
     "Outcome_healthstatus.dta"
   ),
