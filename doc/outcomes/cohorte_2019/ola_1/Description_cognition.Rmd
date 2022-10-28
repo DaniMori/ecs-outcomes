@@ -57,7 +57,7 @@ A global score in cognition was obtained from the standardized averages of verba
 
 ```{stata load-data}
 * Cohorte 2019, linea base:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 ```
 
 ```{stata, echo=TRUE}
@@ -102,7 +102,7 @@ sum cognition cognition_std
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy subsample_pre interview_pre cognition_std cognition
 
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_cognition.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_cognition.dta", replace version(13)
 ```
 
 <br>

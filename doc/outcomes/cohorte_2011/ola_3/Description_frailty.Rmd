@@ -83,7 +83,7 @@ All the subscales are then averaged, and a threshold of 0.25 is applied; if the 
 <br>
 
 ```{stata load-data}
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -91,7 +91,7 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Coh
 
 ** Obesity
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\bmi_s2.dta", keepusing(bmi_cat) gen(merge_bmi)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\bmi_s2.dta", keepusing(bmi_cat) gen(merge_bmi)
 
 recode bmi_cat 0/2=0 3=1, gen(obesity)
 
@@ -99,7 +99,7 @@ recode bmi_cat 0/2=0 3=1, gen(obesity)
 ** Chronic conditions
 
 * TODO: Dataset update pending
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\chronics_s2.dta", keepusing(hypertension_s2 stroke_s2 oral_s2 lung_s2 diab_self_s2 angina_s2 asthma_s2 arthritis_s2 cataracts_s2) gen(merge_chronic)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\chronics_s2.dta", keepusing(hypertension_s2 stroke_s2 oral_s2 lung_s2 diab_self_s2 angina_s2 asthma_s2 arthritis_s2 cataracts_s2) gen(merge_chronic)
 
 *** Merges in variables `hypertension_s2`, `stroke_s2`,  `oral_s2`,
 ***   `lung_s2`, `diab_self_s2`, `angina_s2`, `asthma_s2`, `cataracts_s2`
@@ -113,7 +113,7 @@ recode q2049_aids_s2 2=0, gen(aid_machines)
 
 ** Grip Strength (weakness) (grip: 2 levels)
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Grip strength.dta", keepusing(grip_s2) gen(merge_grip)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Grip strength.dta", keepusing(grip_s2) gen(merge_grip)
 
 
 ** Vision difficulties (vision: 4 levels; note this does not match the
@@ -184,7 +184,7 @@ recode verbal_fluency 1=1 2=0.5 3=0
 
 * Physical activity (peer week)
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Physical activity.dta", keepusing(physical_s2) gen(merge_physical)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Physical activity.dta", keepusing(physical_s2) gen(merge_physical)
 
 generate physical_week = physical_s2 / 2
 
@@ -272,7 +272,7 @@ codebook frailty_score frailty_index
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy frailty_score frailty_index
 
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_frailty.dta", replace
+save "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_frailty.dta", replace
 ```
 
 <br>

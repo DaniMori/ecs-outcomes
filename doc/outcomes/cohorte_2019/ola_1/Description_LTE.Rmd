@@ -46,7 +46,7 @@ The 12 items (q4659-q4670) of the LTE instrument have been collected directly in
 
 ```{stata load-data}
 * Cohorte 2019, linea base:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 
 ```
 
@@ -70,7 +70,7 @@ tab LTE, m
 keep ID_ECS q0007a_result proxy subsample_pre interview_pre LTE
 
 * Cohorte 2019, ola 1:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_LTE.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_LTE.dta", replace version(13)
 
 ```
 
