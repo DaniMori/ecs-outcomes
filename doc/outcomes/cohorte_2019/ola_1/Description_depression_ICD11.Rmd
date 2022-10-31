@@ -30,18 +30,18 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+-----------------------+-----------------+-----------------+-----------------+
-| **Main variable       | **Label**       | **Format**      | **Code**        |
-| name**                |                 |                 |                 |
-+:======================+:================+=================+=================+
-| depression_lifetime   | Lifetime        | Binary          | -   0=No;       |
-|                       | (c2011_w3)      |                 | -   1=Yes       |
-+-----------------------+-----------------+-----------------+-----------------+
-| depr                  | Lifetime        | Binary          | -   0=No;       |
-| ession_lifetime_proxy | depression for  |                 | -   1=Yes       |
-|                       | proxy           |                 |                 |
-|                       | (c2011_w3)      |                 |                 |
-+-----------------------+-----------------+-----------------+-----------------+
++----------------------+-----------------+-----------------+-----------------+
+| **Main variable      | **Label**       | **Format**      | **Code**        |
+| name**               |                 |                 |                 |
++:=====================+:================+=================+=================+
+| depression_lifetime  | Lifetime        | Binary          | -   0=No;       |
+|                      | (c2019_w1)      |                 | -   1=Yes       |
++----------------------+-----------------+-----------------+-----------------+
+| depre                | Lifetime        | Binary          | -   0=No;       |
+| ssion_lifetime_proxy | depression for  |                 | -   1=Yes       |
+|                      | proxy           |                 |                 |
+|                      | (c2019_w1)      |                 |                 |
++----------------------+-----------------+-----------------+-----------------+
 
 # Variable description
 
@@ -144,7 +144,7 @@ The following general principles have been followed when possible:
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
-* Cohorte 2011, ola 3:
+* Cohorte 2019, ola 1:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 ```
 
@@ -153,7 +153,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Coh
 label define yesno    0 "No" 1 "Yes"
 
 
-***#"VARIABLE `depression_lifetime`: Depressive episode (F32)"
+***#"VARIABLE `depression_lifetime`: Depressive episode (6A70)"
 
 *#G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
@@ -329,13 +329,13 @@ gen     depression_lifetime = .
 replace depression_lifetime = 0 if  d_skipped==1 | d_crit_a==0 | d_crit_b==0 | d_crit_c==0
 replace depression_lifetime = 1 if  d_skipped==0 & d_crit_a==1 & d_crit_b==1 & d_crit_c==1
 label values   depression_lifetime yesno
-label variable depression_lifetime "Lifetime depression (c2011_w3)"
+label variable depression_lifetime "Lifetime depression (c2019_w1)"
 
 
 ***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
 recode P4040 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
 label values   depression_lifetime_proxy yesno
-label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w3)"
+label variable depression_lifetime_proxy "Lifetime depression for proxy (c2019_w1)"
 
 ```
 
