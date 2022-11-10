@@ -78,30 +78,24 @@ endorsement of depressive episode at some point in their lives (lifetime
 prevalence; variable `depression_lifetime`). More precisely, the following
 criteria must be fulfilled:
 
-i)  The depressive episode should last for at least 2 weeks (please see
-    criterion G1);
+i)  Symptoms should last at least two weeks;
 
-ii) The clinical presentation does not fulfil the diagnostic requirements for a
-    Mixed Episode (please see criterion G2);
+ii) The clinical presentation does not fulfill the diagnostic requirements for a
+    Mixed Episode;
 
 iii) The episode is not attributable to psychoactive substance use or to any
-     organic mental disorder (please see criterion G3);
+     organic mental disorder
 
-iv) The general criteria for depressive episode must be met (please see
-    criterion A);
+iv) The concurrent presence of at least five of the following symptoms:
 
-v)  At least one of the following two symptoms (affective cluster) must be
-    present: Depressed mood, loss of interest (please see criterion B);
+    Depressed mood, Markedly diminished interest or pleasure, Reduced ability to
+    concentrate and sustain attention, Beliefs of low self-worth or excessive
+    and inappropriate guilt, Hopelessness about the future, Reccurent thoughts
+    of death, Significantly disrupted sleep, Significant change in appetite or
+    weight, Psychomotor agitation or retardation, Reduce energy or fatigue;
 
-vi) Additional symptoms should be present, to give a total of at least five
-    (please see criteria C1-C8);
-
-vii) The symptoms are not better accounted for by bereavement (please see
-     criterion G4);
-
-viii) The symptoms cause clinically significant distress or impairment in
-      social, occupational, or other important areas of functioning (please see
-      criterion G5)
+v)  At least one symptom from the affective cluster (depressed mood, loss of
+    interest).
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
@@ -112,9 +106,7 @@ The following general principles have been followed when possible:
 
 -   All the non-valid responses are considered to be *negative* responses; that
     is, if an item has been answered with "*Don't know*" (`888`) or "Refused"
-    (`999`), it is assumed that the criterion is "not met" (=`0`). (Note though
-    that this rule is reverted for the "exclusion criteria", i.e., criteria
-    "G2", "G3" and "G4").
+    (`999`), it is assumed that the criterion is "not met" (=`0`).
 
 -   Only the variables that are kept in the final dataset are labelled.
 
@@ -155,12 +147,12 @@ label define yesno    0 "No" 1 "Yes"
 
 ***#"VARIABLE `depression_lifetime`: Depressive episode (6A70)"
 
-*#G1 criterion: "The depressive episode should last for at least 2 weeks"
+*#Criterion 1: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
 replace d_crit_g1 = 0 if (q4211!=1 & q4211!=.) | (q4213!=1 & q4213!=.)
 replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
 
-*#G2 criterion: "The clinical presentation does not fulfil the diagnostic requirements for a Mixed Episode"
+*#Criterion 2: "The clinical presentation does not fulfil the diagnostic requirements for a Mixed Episode"
 gen     d_crit_g2 = .
 replace d_crit_g2 = 0 if (q4233==1 & proxy==2) | q4225_causemed2==1
 replace d_crit_g2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
@@ -168,7 +160,7 @@ replace d_crit_g2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
 *#       'missing', so only `q4233` is considered to determine whether
 *#       this criterion is 'missing'".
 
-*#G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+*#Criterion 3: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
 gen     d_crit_g3 = .
 replace d_crit_g3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
@@ -176,45 +168,23 @@ replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4
 *#       so only `q4224b` out of these two needs to be checked for considering
 *#       the criterion negative."
 
-*#G4 criterion: "The symptoms are not better accounted for by bereavement"
-gen d_crit_g4 = .
-replace d_crit_g4 = 0 if q1012<5 | (q1013>0 & q1013!=.)
-replace d_crit_g4 = 1 if q1012==5 & q1013==0
-*#"NOTE: When the participant has been widow for less than a year, the G4 criterion is consider not completed. This criterion is not present in the ICD10. "
 
-*#G5 criterion: "The symptoms cause clinically significant distress or impairment in social, occupational, or other important areas of functioning"
-recode q4228a (1=1) (2=1) (3=1) (4=1) (5=1) (6=1) (7=1) (8=1) (9=1) (10=1) (0=0) (888=0) (999=0) (97=.)
-recode q4228b (1=1) (2=1) (3=1) (4=1) (5=1) (6=1) (7=1) (8=1) (9=1) (10=1) (0=0) (888=0) (999=0) (97=.)
-recode q4228c (1=1) (2=1) (3=1) (4=1) (5=1) (6=1) (7=1) (8=1) (9=1) (10=1) (0=0) (888=0) (999=0) (97=.)
-recode q4228d (1=1) (2=1) (3=1) (4=1) (5=1) (6=1) (7=1) (8=1) (9=1) (10=1) (0=0) (888=0) (999=0) (97=.)
-recode q4214 (1=0) (2=1) (3=1) (4=1) (888=0) (999=0)
-recode q4215 (1=1) (2=1) (3=0) (4=0) (888=0) (999=0)
-recode q4216 (1=1) (2=1) (3=0) (4=0) (888=0) (999=0)
-*#"NOTE: The items below have been recoded in binary form (0/1) to facilitate their interpretation. From the moment the individual indicates a level of feeling (evaluated from 0 to 10 in the questionnaire) greater than zero, the item is considered to be present (1). The last three items provide information on the impact of the participant's emotional discomfort on his or her daily functioning. The item is considered to have an impact (value of 1) on functioning when it is said to be "slight, moderate or severe" for the first item or when it appears "very often or often" for the last two items. 
-
-gen     d_crit_g5 = .
-replace d_crit_g5 = 0 if q4228a==0 | q4228b==0 | q4228c==0 | q4228d==0 | q4214==0 | q4215==0 | q4216==0
-replace d_crit_g5 = 1 if q4228a==1 | q4228b==1 | q4228c==1 | q4228d==1 | q4214==1 | q4215==1 | q4216==1
-
-*#"NOTE:In the absence of certainty and information on this subject, it is considered that the symptoms affect the daily life of the individual as soon as a change in behaviour and activity is perceived. Not present in the ICD10." 
-
-
-*#A criterion: "The general criteria for depressive episode must be met"
+*#Criterion 1, 2 and 3 must be meet
 gen     d_crit_a = .
-replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0 | d_crit_g4==1 | d_crit_g5==0
-replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1 & d_crit_g4==0 & d_crit_g5==1
+replace d_crit_a = 0 if d_crit_g1==0 | d_crit_g2==0 | d_crit_g3==0
+replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
 
 
-*#B criterion: "At least one of the following two symptoms (affective cluster) must be present"
+*#Criterion 4: "At least one of the following two symptoms (affective cluster) must be present"
 
-*#B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+*#S1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
 gen     d_b1 = .
 replace d_b1 = 0 if (q4220a!=1 & q4220a!=.) & q4220b!=1 & q4220c!=1
 replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1
 
 *#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview *#skip logic in `q4220a` or `q4220c`, respectively. But if there is a response in *#`q4220a` there must be one also in `q4220c`. Therefore, only `q4220a` needs to be *#checked for missingness".
 
-*#B2: "Loss of interest or pleasure in activities that are normally pleasurable (including sexual desire)"
+*#S2: "Loss of interest or pleasure in activities that are normally pleasurable (including sexual desire)"
 gen     d_b2 = .
 replace d_b2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
 replace d_b2 = 1 if q4220e==1             | q4220f==1
@@ -229,9 +199,9 @@ replace d_crit_b = 0 if d_screentotal<1
 replace d_crit_b = 1 if d_screentotal==1 | d_screentotal==2
 
 
-*#C criterion: "Additional symptoms from the following list should be present, to give a total of at least five"
+*#Criterion 5: "Additional symptoms from the following list should be present, to give a total of at least five"
 
-*#C1: "Beliefs of low self-worth or excessive and inappropriate guilt that may be manifestly delusional"
+*#S3: "Beliefs of low self-worth or excessive and inappropriate guilt that may be manifestly delusional"
 gen     d_c1 = .
 replace d_c1 = 0 if ((q4222k!=1 & q4222k!=.) & (q4222l!=1 & q4222l!=.) & q4222m!=1) | (q4222n!=1 & q4222n!=.)
 replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1 | q4222n==1
@@ -239,13 +209,13 @@ replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1 | 
 *#       skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l`
 *#       need to be checked for missingness".
 
-*#C2: "Hopelessness about the future."
+*#S4: "Hopelessness about the future."
 gen     d_c2 = .
 replace d_c2 = 0 if q4220d!=1 & q4220d!=.
 replace d_c2 = 1 if q4220d==1
 *#"NOTE: Symptom presents in the ICD10 as, (d) bleak and pessimistic views of the future;"
 
-*#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+*#S5: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_c3 = .
 replace d_c3 = 0 if q4222r!=1 & q4222r!=. & q4222s!=1 & q4222t!=1 & q4222u!=1 & q4222v!=1
 replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
@@ -255,7 +225,7 @@ replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | 
 *#       `q4222t`.Therefore, only `q4222r` needs to be checked for
 *#       missingness".
 
-*#C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+*#S6: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
 gen     d_c4 = .
 replace d_c4 = 0 if q4222h!=1 & q4222h!=. & q4222i!=1 & q4222j!=1
 replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
@@ -263,7 +233,7 @@ replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
 *#       interview skip logic in `q4222h`. Therefore, only `q4222h` needs
 *#       to be checked for missingness".
 
-*#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+*#S7: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
 gen     d_c5 = .
 replace d_c5 = 0 if (q4222f!=1 & q4222f!=. & q4222fa!=1) | (q4222g!=1 & q4222ga!=1 & q4222g!=.)
 replace d_c5 = 1 if q4222f==1 | q4222fa==1 | q4222g==1 | q4222ga==1
@@ -271,7 +241,7 @@ replace d_c5 = 1 if q4222f==1 | q4222fa==1 | q4222g==1 | q4222ga==1
 *#       interview skip logic in `q4222f`. Therefore, only `q4222f` needs
 *#       to be checked for missingness".
 
-*#C6: "Sleep disturbance of any type"
+*#S8: "Sleep disturbance of any type"
 gen     d_c6 = .
 replace d_c6 = 0 if (q4222c!=1 & q4222c!=.) & q4222d!=1
 replace d_c6 = 1 if q4222c==1             | q4222d==1
@@ -279,12 +249,12 @@ replace d_c6 = 1 if q4222c==1             | q4222d==1
 *#       logic in `q4222c`. Therefore, only `q4222c` is checked for
 *#       missingness".
 
-*#C7: "Change in appetite (decrease or increase) with corresponding weight change"
+*#S9: "Change in appetite (decrease or increase) with corresponding weight change"
 gen     d_c7 = .
 replace d_c7 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
 replace d_c7 = 1 if  q4222a==1              &  q4222b==1
 
-*#C8: "Decreased energy or increased fatigability"
+*#S10: "Decreased energy or increased fatigability"
 gen     d_c8 = .
 replace d_c8 = 0 if q4222e!=1 & q4222e!=.
 replace d_c8 = 1 if q4222e==1
@@ -292,7 +262,7 @@ replace d_c8 = 1 if q4222e==1
 *#"Sum of depressive symptoms"
 egen d_symptot = rowtotal (d_c1-d_c8), missing
 
-*#"To fulfil C criterion at least four screening symptoms should be present".
+*#"To fulfil Criterion 5, at least four screening symptoms should be present".
 gen     d_crit_c = .
 replace d_crit_c = 0 if d_symptot<4 
 replace d_crit_c = 1 if d_symptot>=4 & d_symptot!=.
@@ -320,8 +290,6 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 *#       implies that the new "truth values" (0/1resulting from each
 *#       comparison) are "logically added" (therefore the "OR" operation)
 *#       to the current values".
-
-
 
 
 ***#"Lifetime depression diagnostic variable":
