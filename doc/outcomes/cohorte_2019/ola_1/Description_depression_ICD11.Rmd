@@ -88,11 +88,11 @@ iii) The episode is not attributable to psychoactive substance use or to any
 
 iv)   The concurrent presence of at least five of the following symptoms:
     
-    Affective cluster: (1) Depressed mood, (2) Markedly diminished interest or pleasure;
+  Affective cluster: (1) Depressed mood, (2) Markedly diminished interest or pleasure;
   
   Cognitive-behavioural cluster: (3) Reduced ability to concentrate and sustain attention, (4) Beliefs of low self-worth or excessive and inappropriate guilt, (5) Hopelessness about the future, (6) Reccurent thoughts of death;
   
-  Neurovegetative cluster: (7) Significantly disrupted sleep, (8) Significant change in appetite or weight, (9) Psychomotor agitation or retardation, (10) Reduce energy or fatigue;
+  Neurovegetative cluster: (7) Significantly disrupted sleep, (8) Significant change in appetite or weight, (9) Psychomotor agitation or retardation, (10) Reduce energy, or fatigue;
 
 
 v)  At least one symptom from the affective cluster (depressed mood, loss of
@@ -191,13 +191,13 @@ replace d_s2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
 replace d_s2 = 1 if q4220e==1             | q4220f==1
 
 
-*#"Sum of depressive screening symptoms"
-egen d_screentotal = rowtotal (d_s1 d_s2), missing
+*#"Sum of depressive symptoms of affective cluster"
+egen d_afftotal = rowtotal (d_s1 d_s2), missing
 
-*#"To fulfil criterion 4 at least one screening symptoms should be present".
+*#"To fulfil criterion 4 at least one symptoms of the affective cluster should be present".
 gen     d_crit_4 = .
-replace d_crit_4 = 0 if d_screentotal<1 
-replace d_crit_4 = 1 if d_screentotal==1 | d_screentotal==2
+replace d_crit_4 = 0 if d_afftotal<1 
+replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
 
 
 *#Criterion 5: "Additional symptoms from the following list should be present, to give a total of at least five"
@@ -261,9 +261,9 @@ replace d_s10 = 0 if q4222e!=1 & q4222e!=.
 replace d_s10 = 1 if q4222e==1
 
 *#"Sum of depressive symptoms"
-egen d_symptot = rowtotal (d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), missing
+egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), missing
 
-*#"To fulfil Criterion 5, at least four screening symptoms should be present".
+*#"To fulfill Criterion 5, at least five symptoms should be present".
 gen     d_crit_5 = .
 replace d_crit_5 = 0 if d_symptot<4 
 replace d_crit_5 = 1 if d_symptot>=4 & d_symptot!=.
