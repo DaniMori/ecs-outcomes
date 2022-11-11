@@ -86,12 +86,14 @@ ii) The clinical presentation does not fulfill the diagnostic requirements for a
 iii) The episode is not attributable to psychoactive substance use or to any
      organic mental disorder
 
-iv) The concurrent presence of at least five of the following symptoms:
-    Depressed mood, Markedly diminished interest or pleasure, Reduced ability to
-    concentrate and sustain attention, Beliefs of low self-worth or excessive
-    and inappropriate guilt, Hopelessness about the future, Reccurent thoughts
-    of death, Significantly disrupted sleep, Significant change in appetite or
-    weight, Psychomotor agitation or retardation, fatigue or reduce energy;
+iv)   The concurrent presence of at least five of the following symptoms:
+    
+    Affective cluster: (1) Depressed mood, (2) Markedly diminished interest or pleasure;
+  
+  Cognitive-behavioural cluster: (3) Reduced ability to concentrate and sustain attention, (4) Beliefs of low self-worth or excessive and inappropriate guilt, (5) Hopelessness about the future, (6) Reccurent thoughts of death;
+  
+  Neurovegetative cluster: (7) Significantly disrupted sleep, (8) Significant change in appetite or weight, (9) Psychomotor agitation or retardation, (10) Reduce energy or fatigue;
+
 
 v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
