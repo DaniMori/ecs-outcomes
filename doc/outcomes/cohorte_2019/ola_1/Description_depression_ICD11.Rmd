@@ -179,8 +179,8 @@ replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0
 replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
 
 
-*#Criterion 4: "At least one of the following two symptoms (affective cluster)
-*#             must be present"
+*#Criterion 4: "A total of at least five symptoms from the following list should
+*#             be present."
 
 *#S1: "Depressed mood to a degree that is definitely abnormal for the
 *#    individual, present for most of the day and almost every day, largely
@@ -188,7 +188,6 @@ replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
 gen     d_s1 = .
 replace d_s1 = 0 if (q4220a!=1 & q4220a!=.) & q4220b!=1 & q4220c!=1
 replace d_s1 = 1 if  q4220a==1              | q4220b==1 | q4220c==1
-
 *#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview
 *#       skip logic in `q4220a` or `q4220c`, respectively. But if there is a
 *#       response in`q4220a` there must be one also in `q4220c`. Therefore, only
@@ -199,20 +198,6 @@ replace d_s1 = 1 if  q4220a==1              | q4220b==1 | q4220c==1
 gen     d_s2 = .
 replace d_s2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
 replace d_s2 = 1 if  q4220e==1              | q4220f==1
-
-
-*#"Sum of depressive symptoms of affective cluster"
-egen d_afftotal = rowtotal (d_s1 d_s2), missing
-
-*#"To fulfil criterion 4 at least one symptoms of the affective cluster should
-*# be present".
-gen     d_crit_4 = .
-replace d_crit_4 = 0 if d_afftotal <1 
-replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
-
-
-*#Criterion 5: "Additional symptoms from the following list should be present,
-*#             to give a total of at least five"
 
 *#S3: "Complaints or evidence of diminished ability to think or concentrate,
 *#    such as indecisiveness or vacillation"
@@ -280,10 +265,23 @@ replace d_s10 = 1 if q4222e==1
 *#"Sum of depressive symptoms"
 egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), missing
 
-*#"To fulfill Criterion 5, at least five symptoms should be present".
+*#"To fulfill Criterion 4, at least five symptoms should be present".
 gen     d_crit_5 = .
 replace d_crit_5 = 0 if d_symptot <4 
 replace d_crit_5 = 1 if d_symptot>=4 & d_symptot!=.
+
+
+*#Criterion 5: "At least one symptom from the affective cluster must be present"
+
+*#"Sum of depressive symptoms of affective cluster"
+egen d_afftotal = rowtotal (d_s1 d_s2), missing
+
+*#"To fulfil criterion 4 at least one symptoms of the affective cluster should
+*# be present".
+gen     d_crit_4 = .
+replace d_crit_4 = 0 if d_afftotal <1 
+replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
+
 
 ***#"Has the person skipped the lifetime depression module?"
 
