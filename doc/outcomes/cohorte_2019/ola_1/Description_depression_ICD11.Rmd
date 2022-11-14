@@ -154,7 +154,8 @@ gen     d_crit1 = .
 replace d_crit1 = 0 if (q4211!=1 & q4211!=.) | (q4213!=1 & q4213!=.)
 replace d_crit1 = 1 if  q4211==1             |  q4213==1
 
-*#Criterion 2: "The clinical presentation does not fulfil the diagnostic requirements for a Mixed Episode"
+*#Criterion 2: "The clinical presentation does not fulfil the diagnostic
+*#             requirements for a Mixed Episode"
 gen     d_crit2 = .
 replace d_crit2 = 0 if (q4233==1 & proxy==2)            | q4225_causemed2==1
 replace d_crit2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
@@ -162,7 +163,8 @@ replace d_crit2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
 *#       'missing', so only `q4233` is considered to determine whether
 *#       this criterion is 'missing'".
 
-*#Criterion 3: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
+*#Criterion 3: "The episode is not attributable to psychoactive substance use or
+*#             to any organic mental disorder"
 gen     d_crit3 = .
 replace d_crit3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 replace d_crit3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
@@ -177,16 +179,23 @@ replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0
 replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
 
 
-*#Criterion 4: "At least one of the following two symptoms (affective cluster) must be present"
+*#Criterion 4: "At least one of the following two symptoms (affective cluster)
+*#             must be present"
 
-*#S1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
+*#S1: "Depressed mood to a degree that is definitely abnormal for the
+*#    individual, present for most of the day and almost every day, largely
+*#    uninfluenced by circumstances, and sustained for at least 2 weeks"
 gen     d_s1 = .
 replace d_s1 = 0 if (q4220a!=1 & q4220a!=.) & q4220b!=1 & q4220c!=1
-replace d_s1 = 1 if q4220a==1               | q4220b==1 | q4220c==1
+replace d_s1 = 1 if  q4220a==1              | q4220b==1 | q4220c==1
 
-*#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview *#skip logic in `q4220a` or `q4220c`, respectively. But if there is a response in *#`q4220a` there must be one also in `q4220c`. Therefore, only `q4220a` needs to be *#checked for missingness".
+*#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview
+*#       skip logic in `q4220a` or `q4220c`, respectively. But if there is a
+*#       response in`q4220a` there must be one also in `q4220c`. Therefore, only
+*#       `q4220a` needs to be checked for missingness".
 
-*#S2: "Loss of interest or pleasure in activities that are normally pleasurable (including sexual desire)"
+*#S2: "Loss of interest or pleasure in activities that are normally pleasurable
+*#    (including sexual desire)"
 gen     d_s2 = .
 replace d_s2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
 replace d_s2 = 1 if  q4220e==1              | q4220f==1
@@ -195,15 +204,18 @@ replace d_s2 = 1 if  q4220e==1              | q4220f==1
 *#"Sum of depressive symptoms of affective cluster"
 egen d_afftotal = rowtotal (d_s1 d_s2), missing
 
-*#"To fulfil criterion 4 at least one symptoms of the affective cluster should be present".
+*#"To fulfil criterion 4 at least one symptoms of the affective cluster should
+*# be present".
 gen     d_crit_4 = .
 replace d_crit_4 = 0 if d_afftotal <1 
 replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
 
 
-*#Criterion 5: "Additional symptoms from the following list should be present, to give a total of at least five"
+*#Criterion 5: "Additional symptoms from the following list should be present,
+*#             to give a total of at least five"
 
-*#S3: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+*#S3: "Complaints or evidence of diminished ability to think or concentrate,
+*#    such as indecisiveness or vacillation"
 gen     d_s3 = .
 replace d_s3 = 0 if q4222h!=1 & q4222h!=. & q4222i!=1 & q4222j!=1
 replace d_s3 = 1 if q4222h==1             | q4222i==1 | q4222j==1
@@ -211,7 +223,8 @@ replace d_s3 = 1 if q4222h==1             | q4222i==1 | q4222j==1
 *#       interview skip logic in `q4222h`. Therefore, only `q4222h` needs
 *#       to be checked for missingness".
 
-*#S4: "Beliefs of low self-worth or excessive and inappropriate guilt that may be manifestly delusional"
+*#S4: "Beliefs of low self-worth or excessive and inappropriate guilt that may
+*#    be manifestly delusional"
 gen     d_s4 = .
 replace d_s4 = 0 if ((q4222k!=1 & q4222k!=.) & (q4222l!=1 & q4222l!=.) & q4222m!=1) | (q4222n!=1 & q4222n!=.)
 replace d_s4 = 1 if q4222k==1                | q4222l==1               | q4222m==1  |  q4222n==1
@@ -223,7 +236,8 @@ replace d_s4 = 1 if q4222k==1                | q4222l==1               | q4222m=
 gen     d_s5 = .
 replace d_s5 = 0 if q4220d!=1 & q4220d!=.
 replace d_s5 = 1 if q4220d==1
-*#"NOTE: Symptom presents in the ICD10 as, (d) bleak and pessimistic views of the future;"
+*#"NOTE: Symptom presents in the ICD10 as, (d) bleak and pessimistic views of
+*#       the future;"
 
 *#S6: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_s6 = .
@@ -243,12 +257,14 @@ replace d_s7 = 1 if q4222c==1               | q4222d==1
 *#       logic in `q4222c`. Therefore, only `q4222c` is checked for
 *#       missingness".
 
-*#S8: "Change in appetite (decrease or increase) with corresponding weight change"
+*#S8: "Change in appetite (decrease or increase) with corresponding weight
+*#    change"
 gen     d_s8 = .
 replace d_s8 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
 replace d_s8 = 1 if  q4222a==1              &  q4222b==1
 
-*#S9: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+*#S9: "Change in psychomotor activity, with agitation or retardation (either
+*#    subjective or objective)"
 gen     d_s9 = .
 replace d_s9 = 0 if (q4222f!=1 & q4222f!=.  & q4222fa!=1) | (q4222g!=1 & q4222ga!=1 & q4222g!=.)
 replace d_s9 = 1 if  q4222f==1 |              q4222fa==1  |  q4222g==1 | q4222ga==1
