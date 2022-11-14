@@ -182,6 +182,8 @@ replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
 *#Criterion 4: "A total of at least five symptoms from the following list should
 *#             be present."
 
+*# AFFECTIVE CLUSTER:
+
 *#S1: "Depressed mood to a degree that is definitely abnormal for the
 *#    individual, present for most of the day and almost every day, largely
 *#    uninfluenced by circumstances, and sustained for at least 2 weeks"
@@ -198,6 +200,8 @@ replace d_s1 = 1 if  q4220a==1              | q4220b==1 | q4220c==1
 gen     d_s2 = .
 replace d_s2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
 replace d_s2 = 1 if  q4220e==1              | q4220f==1
+
+*# COGNITIVE-BEHAVIOURAL CLUSTER:
 
 *#S3: "Complaints or evidence of diminished ability to think or concentrate,
 *#    such as indecisiveness or vacillation"
@@ -233,6 +237,8 @@ replace d_s6 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | 
 *#       response in `q4222r` there must be one also in `q4222s` and
 *#       `q4222t`.Therefore, only `q4222r` needs to be checked for
 *#       missingness".
+
+*# NEUROVEGETATIVE CLUSTER:
 
 *#S7: "Sleep disturbance of any type"
 gen     d_s7 = .
