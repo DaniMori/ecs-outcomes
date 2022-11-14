@@ -156,7 +156,7 @@ replace d_crit1 = 1 if  q4211==1             |  q4213==1
 
 *#Criterion 2: "The clinical presentation does not fulfil the diagnostic requirements for a Mixed Episode"
 gen     d_crit2 = .
-replace d_crit2 = 0 if (q4233==1 & proxy==2) | q4225_causemed2==1
+replace d_crit2 = 0 if (q4233==1 & proxy==2)            | q4225_causemed2==1
 replace d_crit2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
 *#"NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
 *#       'missing', so only `q4233` is considered to determine whether
@@ -182,14 +182,14 @@ replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
 *#S1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
 gen     d_s1 = .
 replace d_s1 = 0 if (q4220a!=1 & q4220a!=.) & q4220b!=1 & q4220c!=1
-replace d_s1 = 1 if q4220a==1             | q4220b==1 | q4220c==1
+replace d_s1 = 1 if q4220a==1               | q4220b==1 | q4220c==1
 
 *#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the interview *#skip logic in `q4220a` or `q4220c`, respectively. But if there is a response in *#`q4220a` there must be one also in `q4220c`. Therefore, only `q4220a` needs to be *#checked for missingness".
 
 *#S2: "Loss of interest or pleasure in activities that are normally pleasurable (including sexual desire)"
 gen     d_s2 = .
 replace d_s2 = 0 if (q4220e!=1 & q4220e!=.) & q4220f!=1
-replace d_s2 = 1 if q4220e==1             | q4220f==1
+replace d_s2 = 1 if  q4220e==1              | q4220f==1
 
 
 *#"Sum of depressive symptoms of affective cluster"
@@ -197,7 +197,7 @@ egen d_afftotal = rowtotal (d_s1 d_s2), missing
 
 *#"To fulfil criterion 4 at least one symptoms of the affective cluster should be present".
 gen     d_crit_4 = .
-replace d_crit_4 = 0 if d_afftotal<1 
+replace d_crit_4 = 0 if d_afftotal <1 
 replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
 
 
@@ -214,7 +214,7 @@ replace d_s3 = 1 if q4222h==1             | q4222i==1 | q4222j==1
 *#S4: "Beliefs of low self-worth or excessive and inappropriate guilt that may be manifestly delusional"
 gen     d_s4 = .
 replace d_s4 = 0 if ((q4222k!=1 & q4222k!=.) & (q4222l!=1 & q4222l!=.) & q4222m!=1) | (q4222n!=1 & q4222n!=.)
-replace d_s4 = 1 if q4222k==1             | q4222l==1             | q4222m==1 | q4222n==1
+replace d_s4 = 1 if q4222k==1                | q4222l==1               | q4222m==1  |  q4222n==1
 *#"NOTE: When `q4222m` is "missing" it may be due to the interview
 *#       skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l`
 *#       need to be checked for missingness".
@@ -238,7 +238,7 @@ replace d_s6 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | 
 *#S7: "Sleep disturbance of any type"
 gen     d_s7 = .
 replace d_s7 = 0 if (q4222c!=1 & q4222c!=.) & q4222d!=1
-replace d_s7 = 1 if q4222c==1             | q4222d==1
+replace d_s7 = 1 if q4222c==1               | q4222d==1
 *#"NOTE: When `q4222d` is 'missing' it may be due to the interview skip
 *#       logic in `q4222c`. Therefore, only `q4222c` is checked for
 *#       missingness".
@@ -250,8 +250,8 @@ replace d_s8 = 1 if  q4222a==1              &  q4222b==1
 
 *#S9: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
 gen     d_s9 = .
-replace d_s9 = 0 if (q4222f!=1 & q4222f!=. & q4222fa!=1) | (q4222g!=1 & q4222ga!=1 & q4222g!=.)
-replace d_s9 = 1 if q4222f==1 | q4222fa==1 | q4222g==1 | q4222ga==1
+replace d_s9 = 0 if (q4222f!=1 & q4222f!=.  & q4222fa!=1) | (q4222g!=1 & q4222ga!=1 & q4222g!=.)
+replace d_s9 = 1 if  q4222f==1 |              q4222fa==1  |  q4222g==1 | q4222ga==1
 *#"NOTE: When the three last items are 'missing' it may be due to the
 *#       interview skip logic in `q4222f`. Therefore, only `q4222f` needs
 *#       to be checked for missingness".
@@ -266,7 +266,7 @@ egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), 
 
 *#"To fulfill Criterion 5, at least five symptoms should be present".
 gen     d_crit_5 = .
-replace d_crit_5 = 0 if d_symptot<4 
+replace d_crit_5 = 0 if d_symptot <4 
 replace d_crit_5 = 1 if d_symptot>=4 & d_symptot!=.
 
 ***#"Has the person skipped the lifetime depression module?"
@@ -289,15 +289,15 @@ replace d_skipped = f4217==1    | d_skipped==1 if f4217!=.
 replace d_skipped = f4221_sum<1 | d_skipped==1 if f4221_sum!=.
 replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 *#"NOTE: For clarity, this recoding adds the criteria incrementally. This
-*#       implies that the new "truth values" (0/1resulting from each
+*#       implies that the new "truth values" (0/1 resulting from each
 *#       comparison) are "logically added" (therefore the "OR" operation)
 *#       to the current values".
 
 
 ***#"Lifetime depression diagnostic variable":
 gen     depression_lifetime = .
-replace depression_lifetime = 0 if  d_skipped==1 | d_crit_123==0 | d_crit_4==0 | d_crit_5==0
-replace depression_lifetime = 1 if  d_skipped==0 & d_crit_123==1 & d_crit_4==1 & d_crit_5==1
+replace depression_lifetime = 0 if d_skipped==1 | d_crit_123==0 | d_crit_4==0 | d_crit_5==0
+replace depression_lifetime = 1 if d_skipped==0 & d_crit_123==1 & d_crit_4==1 & d_crit_5==1
 label values   depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
 
