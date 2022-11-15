@@ -65,8 +65,11 @@ lifetime presence or absence of a depressive episode, as well as its severity,
 we used an adapted version of the Composite International Diagnostic Interview
 (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by
 trained lay interviewers for the assessment of mental disorders according to the
-definitions and criteria of ICD-11. It is intended for use in epidemiological
-and cross-cultural studies, as well as for clinical and research purposes.
+definitions and criteria of ICD-11 (criteria can been seen at [ICD-11 for
+Mortality and Morbidity Statistics
+(who.int)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232)
+It is intended for use in epidemiological and cross-cultural studies, as well as
+for clinical and research purposes.
 
 # Explanation of how the variables were created
 
@@ -98,6 +101,10 @@ iv) The concurrent presence of at least five of the following symptoms:
 
 v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
+
+For reasons of precision and availability of information, certain criteria could
+not be taken into account (affecting the functioning of the individual and the
+presence of grief).
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
