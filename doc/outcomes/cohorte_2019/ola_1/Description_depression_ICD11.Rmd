@@ -67,7 +67,7 @@ we used an adapted version of the Composite International Diagnostic Interview
 trained lay interviewers for the assessment of mental disorders according to the
 definitions and criteria of ICD-11 (criteria can been seen at [ICD-11 for
 Mortality and Morbidity Statistics
-(who.int)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232)
+(who.int](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f578635574)[)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232)
 It is intended for use in epidemiological and cross-cultural studies, as well as
 for clinical and research purposes.
 
@@ -103,8 +103,10 @@ v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
 
 For reasons of precision and availability of information, certain criteria could
-not be taken into account (affecting the functioning of the individual and the
-presence of grief).
+not be taken into account ("The symptoms result in significant distress or
+significant impairment in personal, family, social, educational, occupational or
+other important areas of functioning." and "Symptoms are not best explained by
+bereavement").
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
