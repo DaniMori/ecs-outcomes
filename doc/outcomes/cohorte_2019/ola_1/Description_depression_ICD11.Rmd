@@ -165,27 +165,41 @@ replace d_crit1 = 1 if  q4211==1             |  q4213==1
 
 *#Criterion 2: "The clinical presentation does not fulfil the diagnostic
 *#             requirements for a Mixed Episode"
-gen     d_crit2 = .
-replace d_crit2 = 0 if (q4233==1 & proxy==2)            | q4225_causemed2==1
-replace d_crit2 = 1 if (q4233!=1 & q4233!=. & proxy==2) | q4225_causemed2!=1
-*#"NOTE: When `q4225_causemed2` is not selected, its value may be `0` or
-*#       'missing', so only `q4233` is considered to determine whether
-*#       this criterion is 'missing'".
+gen d_crit2 =0
+replace d_crit2 = 1 if q4233!=1 & q4225_causemed2!=1
+replace d_crit2 = . if q4233==. & q4225_causemed2==.
 
 *#Criterion 3: "The episode is not attributable to psychoactive substance use or
 *#             to any organic mental disorder"
-gen     d_crit3 = .
-replace d_crit3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
-replace d_crit3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
-*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
-*#       so only `q4224b` out of these two needs to be checked for considering
-*#       the criterion negative."
+gen d_crit3= 0 if q4224b==1 | q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1
+replace d_crit3 = 1 if (q4224b==2) | (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1)
+replace d_crit3=. if q4224==. & q4224a==. & q4224b==.
+
+
+*#Criterion 4: "The symptoms cause clinically significant distress or impairment in social, occupational, or other important areas of functioning" 
+recode q4214 (1=0) (2=1) (3=1) (4=1) (888=.), gen (q4214_rec)
+recode q4215 (1=1) (2=1) (3=1) (4=0) (888=.), gen (q4215_rec)
+recode q4216 (1=1) (2=1) (3=1) (4=0) (888=.), gen (q4216_rec)
+* Significant impairment. 
+recode q4228a (999=.) (888=.), gen (q4228a_rec)
+recode q4228b (999=.) (888=.), gen (q4228b_rec)
+recode q4228c (999=.) (888=.), gen (q4228c_rec)
+recode q4228d (999=.) (888=.), gen (q4228d_rec)
+gen discomfort=.
+replace discomfort=1 if q4228a_rec>=4 | q4228b_rec>=4 | q4228c_rec>=4 | q4228d_rec>=4
+replace discomfort=0 if q4228a_rec<4 & q4228b_rec<4 & q4228c_rec<4 & q4228d_rec<4
+replace discomfort=. if q4228a_rec==. & q4228b_rec==. & q4228c_rec==. & q4228d_rec==.
+* To fulfil criterion 4, distress or significant impairment should be present.
+gen d_crit4=.
+replace d_crit4=1 if q4214_rec==1 | q4215_rec==1 | q4216_rec==1 | discomfort==1
+replace d_crit4=0 if q4214_rec==0 & q4215_rec==0 & q4216_rec==0 & discomfort==0
+
 
 
 *#Filling of the three first criteria above (Criterion 1, 2 and 3):
 gen     d_crit_123 = .
-replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0
-replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
+replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0  | d_crit4==0
+replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1  & d_crit4==1
 
 
 *#Criterion 4: "A total of at least five symptoms from the following list should
