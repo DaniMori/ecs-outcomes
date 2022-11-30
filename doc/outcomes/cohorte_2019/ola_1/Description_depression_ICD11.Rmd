@@ -282,8 +282,8 @@ egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), 
 
 *#"To fulfill Criterion 4, at least five symptoms should be present".
 gen     d_crit_5 = .
-replace d_crit_5 = 0 if d_symptot <4 
-replace d_crit_5 = 1 if d_symptot>=4 & d_symptot!=.
+replace d_crit_5 = 0 if d_symptot<5 
+replace d_crit_5 = 1 if d_symptot>=5 & d_symptot!=.
 
 
 *#Criterion 5: "At least one symptom from the affective cluster must be present"
