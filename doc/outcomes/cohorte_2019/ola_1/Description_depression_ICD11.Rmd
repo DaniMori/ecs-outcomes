@@ -174,16 +174,17 @@ replace d_crit2 = . if q4233==. & q4225_causemed2==.
 gen     d_crit3 = .
 replace d_crit3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 replace d_crit3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
-*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
-*#       so only `q4224b` out of these two needs to be checked for considering
-*#       the criterion negative."
+*#"NOTE: The criterion named "d_crit123" includes all the three exclusion criteria *#       of the ICD11. Those three criteria are coded in different points because
+*#       they do not take into account a minimum threshold of symptoms as the two *#       other bellow (Criterion 4 and Criterion 5)."
 
 
 *#Filling of the three first criteria above (Criterion 1, 2 and 3):
 gen     d_crit_123 = .
 replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0
 replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
-
+*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
+*#       so only `q4224b` out of these two needs to be checked for considering
+*#       the criterion negative."
 
 *#Criterion 4: "A total of at least five symptoms from the following list should
 *#             be present."
@@ -278,9 +279,9 @@ replace d_s10 = 1 if q4222e==1
 egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), missing
 
 *#"To fulfill Criterion 4, at least five symptoms should be present".
-gen     d_crit_5 = .
-replace d_crit_5 = 0 if d_symptot<5 
-replace d_crit_5 = 1 if d_symptot>=5 & d_symptot!=.
+gen     d_crit4 = .
+replace d_crit4 = 0 if d_symptot<5 
+replace d_crit4 = 1 if d_symptot>=5 & d_symptot!=.
 
 
 *#Criterion 5: "At least one symptom from the affective cluster must be present"
@@ -288,11 +289,11 @@ replace d_crit_5 = 1 if d_symptot>=5 & d_symptot!=.
 *#"Sum of depressive symptoms of affective cluster"
 egen d_afftotal = rowtotal (d_s1 d_s2), missing
 
-*#"To fulfil criterion 4 at least one symptoms of the affective cluster should
+*#"To fulfil criterion 5 at least one symptoms of the affective cluster should
 *# be present".
-gen     d_crit_4 = .
-replace d_crit_4 = 0 if d_afftotal <1 
-replace d_crit_4 = 1 if d_afftotal==1 | d_afftotal==2
+gen     d_crit5 = .
+replace d_crit5 = 0 if d_afftotal <1 
+replace d_crit5 = 1 if d_afftotal==1 | d_afftotal==2
 
 
 ***#"Has the person skipped the lifetime depression module?"
@@ -322,8 +323,8 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 
 ***#"Lifetime depression diagnostic variable":
 gen     depression_lifetime = .
-replace depression_lifetime = 0 if d_skipped==1 | d_crit_123==0 | d_crit_4==0 | d_crit_5==0
-replace depression_lifetime = 1 if d_skipped==0 & d_crit_123==1 & d_crit_4==1 & d_crit_5==1
+replace depression_lifetime = 0 if d_skipped==1 | d_crit_123==0 | d_crit4==0 | d_crit5==0
+replace depression_lifetime = 1 if d_skipped==0 & d_crit_123==1 & d_crit4==1 & d_crit5==1
 label values   depression_lifetime yesno
 label variable depression_lifetime "Lifetime depression (c2019_w1)"
 
