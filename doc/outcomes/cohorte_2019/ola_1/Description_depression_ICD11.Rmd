@@ -174,19 +174,18 @@ replace d_crit2 = . if q4233==. & q4225_causemed2==.
 gen     d_crit3 = .
 replace d_crit3 = 0 if                            q4224b==1              | (q4224==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30==1 | q4225_causemed31==1))
 replace d_crit3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30!=1 & q4225_causemed31!=1))
-*#"NOTE: The criterion named "d_crit123" includes all the three exclusion criteria
-*#       of the ICD11. Those three criteria are coded in different points because
-*#       they do not take into account a minimum threshold of symptoms as the two
-*#       other bellow (Criterion 4 and Criterion 5)."
-
+*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
+*#       so only `q4224b` out of these two needs to be checked for considering
+*#       the criterion negative."
 
 *#Filling of the three first criteria above (Criterion 1, 2 and 3):
 gen     d_crit_123 = .
 replace d_crit_123 = 0 if d_crit1==0 | d_crit2==0 | d_crit3==0
 replace d_crit_123 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1
-*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
-*#       so only `q4224b` out of these two needs to be checked for considering
-*#       the criterion negative."
+*#"NOTE: The criterion named "d_crit123" includes all the three exclusion criteria
+*#       of the ICD11. Those three criteria are coded in different points because
+*#       they do not take into account a minimum threshold of symptoms as the two
+*#       other bellow (Criterion 4 and Criterion 5)."
 
 *#Criterion 4: "A total of at least five symptoms from the following list should
 *#             be present."
