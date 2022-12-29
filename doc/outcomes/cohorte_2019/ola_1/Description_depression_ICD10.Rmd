@@ -167,7 +167,7 @@ The following general principles have been followed when possible:
 
 ```{stata load-data}
 * Cohorte 2019, linea base:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
