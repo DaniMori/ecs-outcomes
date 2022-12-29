@@ -167,8 +167,8 @@ label define yesno    0 "No" 1 "Yes"
 
 *#G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
-replace d_crit_g1 = 0 if (q4211!=1 & q4211!=.) | (q4213!=1 & q4213!=.)
-replace d_crit_g1 = 1 if  q4211==1             |  q4213==1
+replace d_crit_g1 = 0 if (q4211_s2!=1 & q4211_s2!=.) | (q4213_s2!=1 & q4213_s2!=.)
+replace d_crit_g1 = 1 if  q4211_s2==1             |  q4213_s2==1
 
 *#G2 criterion: "There have been no hypomanic or manic symptoms sufficient to meet the criteria for hypomanic or manic episode at any time in the individual's life"
 gen     d_crit_g2 = .
@@ -181,8 +181,8 @@ replace d_crit_g2 = 1 if (q4233_s2!=1 & q4233_s2!=. & proxy==2) & q4225_causemed
 
 *#G3 criterion: "The episode is not attributable to psychoactive substance use or to any organic mental disorder"
 gen     d_crit_g3 = .
-replace d_crit_g3 = 0 if                            q4224b==1              | (q4224_s2==1 & (q4225_causemed12==1 | q4225_causemed23==1 | q4225_causemed24==1 | q4225_causemed25==1 | q4225_causemed30_s2==1 | q4225_causemed31_s2==1))
-replace d_crit_g3 = 1 if (q4224a!=1 & q4224a!=.) | (q4224b!=1 & q4224b!=.) | (q4224_s2==1 & (q4225_causemed12!=1 & q4225_causemed23!=1 & q4225_causemed24!=1 & q4225_causemed25!=1 & q4225_causemed30_s2!=1 & q4225_causemed31_s2!=1))
+replace d_crit_g3 = 0 if                            q4224b_s2==1              | (q4224_s2==1 & (q4225_causemed12_s2==1 | q4225_causemed23_s2==1 | q4225_causemed24_s2==1 | q4225_causemed25_s2==1 | q4225_causemed30_s2==1 | q4225_causemed31_s2==1))
+replace d_crit_g3 = 1 if (q4224a_s2!=1 & q4224a_s2!=.) | (q4224b_s2!=1 & q4224b_s2!=.) | (q4224_s2==1 & (q4225_causemed12_s2!=1 & q4225_causemed23_s2!=1 & q4225_causemed24_s2!=1 & q4225_causemed25_s2!=1 & q4225_causemed30_s2!=1 & q4225_causemed31_s2!=1))
 *#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
 *#       so only `q4224b` out of these two needs to be checked for considering
 *#       the criterion negative."
@@ -199,8 +199,8 @@ replace d_crit_a = 1 if d_crit_g1==1 & d_crit_g2==1 & d_crit_g3==1
 
 *#B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks"
 gen     d_b1 = .
-replace d_b1 = 0 if q4220a!=1 & q4220a!=. & q4220b!=1 & q4220c!=1 & q4220d!=1
-replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1 | q4220d==1
+replace d_b1 = 0 if q4220a_s2!=1 & q4220a_s2!=. & q4220b_s2!=1 & q4220c_s2!=1 & q4220d_s2!=1
+replace d_b1 = 1 if q4220a_s2==1             | q4220b_s2==1 | q4220c_s2==1 | q4220d_s2==1
 *#"NOTE: When `q4220b` or `q4220d` are "missing" it may be due to the
 *#       interview skip logic in `q4220a` or `q4220c`, respectively.
 *#       But if there is a response in `q4220a` there must be one
@@ -209,13 +209,13 @@ replace d_b1 = 1 if q4220a==1             | q4220b==1 | q4220c==1 | q4220d==1
 
 *#B2: "Loss of interest or pleasure in activities that are normally pleasurable"
 gen     d_b2 = .
-replace d_b2 = 0 if q4220e!=1 & q4220e!=. & q4220f!=1
-replace d_b2 = 1 if q4220e==1             | q4220f==1
+replace d_b2 = 0 if q4220e_s2!=1 & q4220e!=. & q4220f_s2!=1
+replace d_b2 = 1 if q4220e_s2==1             | q4220f_s2==1
 
 *#B3: "Decreased energy or increased fatigability"
 gen     d_b3 = .
-replace d_b3 = 0 if q4222e!=1 & q4222e!=.
-replace d_b3 = 1 if q4222e==1
+replace d_b3 = 0 if q4222e_s2!=1 & q4222e_s2!=.
+replace d_b3 = 1 if q4222e_s2==1
 
 *#"Sum of depressive screening symptoms"
 egen d_screentotal = rowtotal (d_b1 d_b2 d_b3), missing
@@ -230,21 +230,21 @@ replace d_crit_b = 1 if d_screentotal>=2 & d_screentotal!=.
 
 *#C1: "Loss of confidence and self-esteem"
 gen     d_c1 = .
-replace d_c1 = 0 if q4222k!=1 & q4222k!=. & q4222l!=1 & q4222l!=. & q4222m!=1
-replace d_c1 = 1 if q4222k==1             | q4222l==1             | q4222m==1
+replace d_c1 = 0 if q4222k_s2!=1 & q4222k_s2!=. & q4222l_s2!=1 & q4222l_s2!=. & q4222m_s2!=1
+replace d_c1 = 1 if q4222k_s2==1             | q4222l_s2==1             | q4222m_s2==1
 *#"NOTE: When `q4222m` is "missing" it may be due to the interview
 *#       skip logic in `q4222l`. Therefore, only `q4222k` and `q4222l`
 *#       need to be checked for missingness".
 
 *#C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
 gen     d_c2 = .
-replace d_c2 = 0 if q4222n!=1 & q4222n!=.
-replace d_c2 = 1 if q4222n==1
+replace d_c2 = 0 if q4222n_s2!=1 & q4222n_s2!=.
+replace d_c2 = 1 if q4222n_s2==1
 
 *#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_c3 = .
-replace d_c3 = 0 if q4222r!=1 & q4222r!=. & q4222s!=1 & q4222t!=1 & q4222u!=1 & q4222v!=1
-replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | q4222v==1
+replace d_c3 = 0 if q4222r_s2!=1 & q4222r_s2!=. & q4222s_s2!=1 & q4222t_s2!=1 & q4222u_s2!=1 & q4222v_s2!=1
+replace d_c3 = 1 if q4222r_s2==1             | q4222s_s2==1 | q4222t_s2==1 | q4222u_s2==1 | q4222v_s2==1
 *#"NOTE: When any of the two last items are 'missing' it may be due to
 *#       the interview skip logic in `q4222t`. But if there is a
 *#       response in `q4222r` there must be one also in `q4222s` and
@@ -253,32 +253,32 @@ replace d_c3 = 1 if q4222r==1             | q4222s==1 | q4222t==1 | q4222u==1 | 
 
 *#C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
 gen     d_c4 = .
-replace d_c4 = 0 if q4222h!=1 & q4222h!=. & q4222i!=1 & q4222j!=1
-replace d_c4 = 1 if q4222h==1             | q4222i==1 | q4222j==1
+replace d_c4 = 0 if q4222h_s2!=1 & q4222h_s2!=. & q4222i_s2!=1 & q4222j_s2!=1
+replace d_c4 = 1 if q4222h_s2==1             | q4222i_s2==1 | q4222j_s2==1
 *#"NOTE: When `q4222i` and `q4222j` are 'missing' it may be due to the
 *#       interview skip logic in `q4222h`. Therefore, only `q4222h` needs
 *#       to be checked for missingness".
 
 *#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
 gen     d_c5 = .
-replace d_c5 = 0 if q4222f_s2!=1 & q4222f_s2!=. & q4222fa!=1 & q4222g_s2!=1 & q4222ga!=1
-replace d_c5 = 1 if q4222f_s2==1                | q4222fa==1 | q4222g_s2==1 | q4222ga==1
+replace d_c5 = 0 if q4222f_s2!=1 & q4222f_s2!=. & q4222fa_s2!=1 & q4222g_s2!=1 & q4222ga_s2!=1
+replace d_c5 = 1 if q4222f_s2==1                | q4222fa_s2==1 | q4222g_s2==1 | q4222ga_s2==1
 *#"NOTE: When the three last items are 'missing' it may be due to the
 *#       interview skip logic in `q4222f`. Therefore, only `q4222f` needs
 *#       to be checked for missingness".
 
 *#C6: "Sleep disturbance of any type"
 gen     d_c6 = .
-replace d_c6 = 0 if q4222c!=1 & q4222c!=.
-replace d_c6 = 1 if q4222c==1             | q4222d==1
+replace d_c6 = 0 if q4222c_s2!=1 & q4222c_s2!=.
+replace d_c6 = 1 if q4222c_s2==1             | q4222d_s2==1
 *#"NOTE: When `q4222d` is 'missing' it may be due to the interview skip
 *#       logic in `q4222c`. Therefore, only `q4222c` is checked for
 *#       missingness".
 
 *#C7: "Change in appetite (decrease or increase) with corresponding weight change"
 gen     d_c7 = .
-replace d_c7 = 0 if (q4222a!=1 & q4222a!=.) | (q4222b!=1 & q4222b!=.)
-replace d_c7 = 1 if  q4222a==1              &  q4222b==1
+replace d_c7 = 0 if (q4222a_s2!=1 & q4222a_s2!=.) | (q4222b_s2!=1 & q4222b_s2!=.)
+replace d_c7 = 1 if  q4222a_s2==1              &  q4222b_s2==1
 
 *#"Sum of depressive symptoms"
 egen d_symtotal = rowtotal (d_c1-d_c7), missing
@@ -287,19 +287,19 @@ egen d_symtotal = rowtotal (d_c1-d_c7), missing
 ***#"Has the person skipped the lifetime depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
-recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+recode q4220a_s2-q4222v_s2 (1=1) (2=0) (888 999=.)
 
 *#"Filter variables":
-gen  f4217     = q4214==1 & q4215==4 & q4216==4 if q4214!=.
-egen f4221_sum = rowtotal (q4220a-q4220f), missing
-egen f4223_sum = rowtotal (q4220a-q4222v), missing
+gen  f4217     = q4214_s2==1 & q4215_s2==4 & q4216_s2==4 if q4214_s2!=.
+egen f4221_sum = rowtotal (q4220a_s2-q4220f_s2), missing
+egen f4223_sum = rowtotal (q4220a_s2-q4222v_s2), missing
 
 *#"Variable "skipped" computation":
 gen     d_skipped = .
-replace d_skipped = q4202!=1                   if q4202!=.
-replace d_skipped = q4211!=1    | d_skipped==1 if q4211!=.    
-replace d_skipped = q4213!=1    | d_skipped==1 if q4213!=.    
-replace d_skipped = q4218!=1    | d_skipped==1 if q4218!=.    
+replace d_skipped = q4202_s2!=1                   if q4202_s2!=.
+replace d_skipped = q4211_s2!=1    | d_skipped==1 if q4211_s2!=.    
+replace d_skipped = q4213_s2!=1    | d_skipped==1 if q4213_s2!=.    
+replace d_skipped = q4218_s2!=1    | d_skipped==1 if q4218_s2!=.    
 replace d_skipped = f4217==1    | d_skipped==1 if f4217!=.    
 replace d_skipped = f4221_sum<1 | d_skipped==1 if f4221_sum!=.
 replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
