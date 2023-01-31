@@ -55,7 +55,7 @@ Items have all binary responses, except for the values `888`, which indicate a "
 <br>
 
 ```{stata load-data}
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -76,7 +76,7 @@ codebook sle
 ```{stata save-data}
 keep ID_ECS q0007a_result proxy sle
 
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_stressfulLifeEvents.dta", replace
+save "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_stressfulLifeEvents.dta", replace
 ```
 
 <br>

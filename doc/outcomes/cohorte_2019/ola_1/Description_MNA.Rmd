@@ -98,14 +98,14 @@ Three out of the six questionnaire's items were directly available (changes in a
 <!--# TODO: Borrar párrafo anterior -->
 
 ```{stata load-data}
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
 
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_BMI.dta", keepusing(bmi_cont) nogenerate
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_BMI.dta", keepusing(bmi_cont) nogenerate
 
-merge 1:1 ID_ECS using "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD10.dta", keepusing(d_lifetime_severity) gen(merge_MNA)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_depression_ICD10.dta", keepusing(d_lifetime_severity) gen(merge_MNA)
 
 gen MNA_A = q3045
 recode MNA_A (3=2)
@@ -149,7 +149,7 @@ codebook MNA
 keep ID_ECS q0007a_result proxy subsample_pre interview_pre MNA MNA_cont
 
 * Cohorte 2019, ola 1:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_MNA.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_MNA.dta", replace version(13)
 
 ```
 <br>

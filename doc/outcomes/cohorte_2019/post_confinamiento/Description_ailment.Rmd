@@ -118,7 +118,7 @@ the COVID-19 pandemic:
 
 ```{stata load-data}
 * Cohorte 2019, ola post-confinamiento:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -179,7 +179,7 @@ codebook infected severity_raw severity rel_isolated rel_concerned rel_deceased
 keep ID_ECS ESTADO_ENTREVISTA infected severity_raw severity rel_isolated rel_concerned rel_deceased
 
 * Cohorte 2019, ola post-confinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_ailment.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_ailment.dta", replace version(13)
 ```
 
 <br>

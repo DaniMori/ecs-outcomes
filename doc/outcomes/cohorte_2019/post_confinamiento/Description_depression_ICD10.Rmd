@@ -147,7 +147,7 @@ The following general principles have been followed when possible:
 
 ```{stata load-data}
 * Cohorte 2019, ola postconfinamiento:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -290,7 +290,7 @@ codebook d_30d_severity depression_30d
 keep ID_ECS ESTADO_ENTREVISTA d_30d_severity depression_30d
 
 *Cohorte 2019, ola postconfinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 ```
 
 # Contact person:

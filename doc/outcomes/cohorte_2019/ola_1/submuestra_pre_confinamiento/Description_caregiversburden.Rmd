@@ -54,7 +54,7 @@ Obtenemos una escala de 0 a 48, mayores índices indican mayor carga.
 ```{stata load-data}
 * Cohorte 2019, linea base:
 
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\Submuestra_1_preconfinamiento\Edad con Salud ola 3_cohorte 2019_base completa_Stata14.dta" // Para Stata 14+
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -75,7 +75,7 @@ codebook burden
 keep ID_ECS q0007a_result proxy burden
 
 * Cohorte 2019, linea base:
-save "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_caregiversburden.dta", replace
+save "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Submuestra_1_preconfinamiento\Outcome datasets\Outcome_caregiversburden.dta", replace
 ```
 
 # Contact person:
