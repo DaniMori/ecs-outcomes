@@ -1,146 +1,111 @@
 # Outcome description
 
-- [ ] "Outcome description" existe
+- [ ] File name follows format
+  "Description_[variablename].docx", or
+  "Description_[variablename]_[qualifier].docx" (if there is a qualifier)
 
-- [ ] El nombre de archivo cumple el formato
-  "Descripcion_[nombrevariable]_[peculiaridad].docx"
+- [ ] File name does NOT contain spaces, accents, 'ñ', or 'Ñ'
 
-- [ ] El nombre de archivo NO contiene espacios, tildes, 'ñ', ni 'Ñ'
+- [ ] The whole document is in English
 
-- [ ] "Outcome description" se encuentra en la ruta correcta
-
-- [ ] El documento está completamente en inglés
-
-- [ ] Encabezado cumple formato
+- [ ] Header follows format
   "Edad con Salud - cohort [cohort_id] - wave [wave_id]"
 
-- [ ] Subencabezado cumple formato "[variable(s) domain ID]"
+- [ ] Subheader follows format "[variable(s) domain ID]"
 
-- [ ] Tabla con datos de variables existe
+- [ ] A table with variable metadata exists
 
-- [ ] Todas las variables en "Outcome dataset" están en la tabla
-  (excluyendo las de ID)
+- [ ] All variables in the chunk `save-data` are in the table
+  (except for the ID and the ancillary variables)
 
-- [ ] Todas las variables en la tabla tienen etiqueta (Label)
+- [ ] All the variables in the metadata table have a label (Label)
 
-- [ ] Las etiquetas coinciden con "Outcome dataset"
+- [ ] The labels in the metadata table coincide with the ones in the syntax
+  (see chunk `generate-outcomes`)
 
-- [ ] Las etiquetas tienen sufijo "(c\<cohorte\>_w\<ola\>)"
+- [ ] All labels have suffix "(c\<cohorte\>_w\<ola\>)"
 
-- [ ] Todas las variables tienen formato (Format)
+- [ ] All variables have a format (column "format")
 
-- [ ] Todas las variables tienen "Code"
+- [ ] All variables have a code (column "code")
 
-- [ ] Las etiquetas de valores en la columna "Code" de la tabla coinciden con las
-  etiquetas de valores en el dataset
+- [ ] Labels in column "Code" in the table coincide with the ones in the syntax
+  (see chunk `generate-outcomes`)
 
-- [ ] El apartado "Variable description" está relleno
+- [ ] Section "Variable description" is filled in
 
-- [ ] La información en "Variable description" es suficiente para
-  entender la(s) variable(s) incluidas.
+- [ ] The information in "Variable description"
+  **is enough to understand the generated variable(s)**
 
-- [ ] El apartado "Explanation on how the variable was created"
-  está relleno
+- [ ] Section "Explanation on how the variable was created" is filled in
   
-- [ ] El apartado "Explanation on how the variable was created" explica
-  con claridad el procedimiento para crear la variable
+- [ ] Section "Explanation on how the variable was created"
+  **explains clearly the procedure to create the variable(s)**
 
-- [ ] El título del apartado "Syntax used to create the variable" incluye
-  el software utilizado para aplicar la sintaxis de creación
+- [ ] Title in section "Syntax used to create the variable" includes the
+  software used to apply the generating syntax
 
-- [ ] Si se usa Stata, la versión indicada es "Stata 13"
+- [ ] Section "Syntax used to create the variable" includes the syntax
 
-- [ ] El apartado "Syntax used to create the variable" incluye sintaxis
+- [ ] Section "Syntax used to create the variable" includes descriptives of ALL
+  the created variables (see chunk `descriptives`)
 
-- [ ] El apartado "Syntax used to create the variable" incluye
-  descriptivos de todas las variables generadas
+- [ ] **The interpretation of the syntax in section "Syntax used to create the
+  variable" coincides with the explanation in section "Explanation on how the
+  variable was created"**
 
-- [ ] El resultado de ejecutar la sintaxis en el apartado
-  "Syntax used to create the variable" da lugar a los descriptivos
-  de las variables en este mismo apartado
+- [ ] Section "For any further questions regarding this variable please
+  contact:" is filled in
 
-- [ ] La interpretación de la sintaxis en el apartado
- "Syntax used to create the variable" coincide con lo explicado en
- el apartado "Explanation on how the variable was created"
+- [ ] The contact information of the person who created the document is in
+  section "For any further questions regarding this variable please contact:"
+  (Name, email, telephone, institution)
 
-- [ ] El apartado
-  "For any further questions regarding this variable please contact:"
-  está relleno
+- [ ] If the document is based on a previous version, created by another person,
+  the contact information of the previous version (in which this one is based)
+  are in section "For any further questions regarding this variable please
+  contact:" (Name, email, telephone, institution)
 
-- [ ] Los datos de la persona que ha creado el "Outcome description"
-  se encuentran en el apartado
-  "For any further questions regarding this variable please contact:"
-  (Nombre, email, teléfono, institución)
+- [ ] Al final "Session info" section is included
 
-- [ ] Si el documento está basado en una versión anterior creada por
-  otra persona, los datos de la persona que creó la versión
-  en la cual se basa esta versión se encuentran en el apartado
-  "For any further questions regarding this variable please contact:"
-  (Nombre, email, teléfono, institución)
+- [ ] The document knits without errors
 
-- [ ] El apartado "References" está relleno
+- [ ] The "descriptives"" table renders properly in the knitted document
 
-- [ ] Todas las citas en los apartados "Variable description" y
-  "Explanation on how the variable was created" están referenciadas
-  en el apartado "References"
-
-- [ ] Si el documento "Outcome description" está generado a partir de un
-  Rmarkdown, se incluye al final un apartado "Session info"
-
+- [ ] The "Outcome dataset" is generated when the document is knitted
 
 # Outcome dataset
 
-- [ ] "Outcome dataset" existe
+- [ ] File name follows format "Outcome_[variablename].dta", or
+  "Outcome_[variablename]_[qualifier].dta", if there is a qualifier
+  (see chunk `save-data`)
 
-- [ ] El nombre de archivo cumple el formato
-  "Outcome_[nombrevariable]_[peculiaridad].dta"
+- [ ] [variablename] and [qualifier] coincide with the values in the file name
+  of the "Outcome description" (see chunk `save-data`)
 
-- [ ] [nombrevariable] y [peculiaridad] coinciden con los valores en el nombre de
-  archivo del "Outcome description"
+- [ ] "Outcome dataset" is created in the correct path (see chunk `save-data`)
 
-- [ ] "Outcome dataset" se encuentra en la ruta correcta
+- [ ] "Outcome dataset" is saved in format Stata 13 (see chunk `save-data`)
 
-- [ ] "Outcome dataset" está en formato Stata 13 (comando `dtaversion`)
+- [ ] The number of cases in the dataset coincides with the number of
+  cases in the corresponding raw interview dataset (for c2011_w4, 963 cases)
 
-- [ ] El número de casos en el dataset coincide con el número de casos en la BDD
-  maestra correspondiente (para C2019_W1 3,002 casos; para C2019_wCOVID, 1854 casos;
-  para c2011_w3 1,577 casos)
+- [ ] All the variables en the "Variable information" table in the
+  "Outcome description" document are in the "Outcome dataset" (see chunk
+  `save-data`)
 
-- [ ] El número de casos válidos en el dataset coincide con el número de casos
-  validos esperables en la BDD maestra correspondiente (para C2019_wCOVID, 1166 casos)
+- [ ] The variable types coincide with the values in column "Format" of table
+  "Variable information" in the "Outcome description" document
 
-- [ ] Todas las variables en la tabla en "Outcome description" están en
-  "Outcome dataset"
+- [ ] The values in the variables coincide with the ones in column "Code" of
+  table "Variable information" in the "Outcome description" document
 
-- [ ] Todas las variables necesarias para entender o analizar la variable final
-  están en el "Outcome dataset"
+- [ ] The value labels (if any) coincide with the value labels in column "Code"
+  of table "Variable information" in the "Outcome description" document
 
-- [ ] Las etiquetas de las variables coinciden con los valores en "Label"
-  en la tabla en "Outcome description"
-  
-- [ ] Los tipos de variable coinciden con los valores en "Format" en la tabla en
-  "Outcome description"
+- [ ] The ancillary variables (`q0007a_result`, `ID_ECS` and `proxy`, for
+  c2011_w4) are in the dataset.
 
-- [ ] Los valores de las variables coinciden con los valores en "Code"
-  en la tabla en "Outcome description"
+# Outcome planning spreadsheet (C2011_W4_Planning_outcomes.xlsx)
 
-- [ ] Las etiquetas de valores en el dataset coinciden con las etiquetas de valores
-  en la columna "Code" de la tabla en "Outcome description"
-
-- [ ] Los valores de las variables generadas en "Outcome dataset"
-  coinciden con los valores resultantes de ejecutar la sintaxis en
-  "Outcome description"
-
-- [ ] Se encuentran las variables de apoyo en el dataset: `q0007a_result`, `ID_ECS`,
-  `proxy` (para c2019_w1); `ID_ECS` y `ESTADO_ENTREVISTA` (para c2019_wCOVID).
-
-- [ ] Para las variables de C2019_W1, se encuentran las variables `subsample_pre` y
-  `interview_pre`.
-
-
-# Documento de creación y revisión de variables
-
-- [ ] Columna(s) de "Variable generada" y/o "Variable actualizada" está(n)
-  rellena(s)
-
-- [ ] Fecha de generación/actualización coincide con fecha del "Outcome dataset"
+- [ ] Column I (CODING REVIEW) is marked as YES
