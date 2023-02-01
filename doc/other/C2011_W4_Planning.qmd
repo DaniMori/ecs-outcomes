@@ -1,0 +1,75 @@
+---
+title: "Planning"
+author: "Daniel Morillo"
+format: html
+---
+
+```{r setup}
+theme_set(theme_minimal())
+```
+
+
+```{r libraries}
+library(tidyverse)
+library(readxl)
+```
+
+```{r load-data}
+PLANNING_DATA_PATH <- file.path(
+  '~/..',
+  r"(OneDrive - UAM\Documentación\Proyectos\Edad_con_Salud)",
+  "C2011_W4_Planificacion_outcomes.xlsx"
+)
+
+col_names <- PLANNING_DATA_PATH            |>
+  read_excel(col_names = FALSE, n_max = 1) |>
+  pivot_longer(everything())               |>
+  filter(!is.na(value), !name %in% c("...7", "...18")) |>
+  select(value, name)                      |>
+  deframe()
+
+planning_data <- PLANNING_DATA_PATH |>
+  read_excel(skip = 2)              |>
+  select(-c(...18:...25))           |>
+  rename(!!!col_names)              |>
+  select(-matches("COMPLETE"))
+
+coding_data <- planning_data |>
+  select(ASIGNEE = ASIGNEE...7, `DUE DATE` = `DUE DATE...8`)
+review_data <- planning_data |>
+  select(ASIGNEE = ASIGNEE...10, `DUE DATE` = `DUE DATE...11`)
+```
+
+
+# Workload estimation
+
+## By team member
+
+```{r}
+coding_data |>
+  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
+  geom_bar() +
+  scale_fill_discrete(guide = NULL)
+
+review_data |>
+  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
+  geom_bar() +
+  scale_fill_discrete(guide = NULL)
+
+coding_data |> bind_rows(review_data) |>
+  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
+  geom_bar() +
+  scale_fill_discrete(guide = NULL)
+```
+
+## By date
+
+```{r}
+coding_data |>
+  ggplot(aes(x = `DUE DATE`, fill = ASIGNEE, group = ASIGNEE)) +
+  geom_bar()
+
+review_data |>
+  ggplot(aes(x = `DUE DATE`, fill = ASIGNEE, group = ASIGNEE)) +
+  geom_bar()
+```
