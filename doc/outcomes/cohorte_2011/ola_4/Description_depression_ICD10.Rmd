@@ -437,7 +437,7 @@ codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m
 ```
 
 ```{stata save-data-test, eval=TEST}
-saveold "Outcome_Outcome_depression_ICD10.dta", replace version(13)
+saveold "Outcome_depression_ICD10.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
