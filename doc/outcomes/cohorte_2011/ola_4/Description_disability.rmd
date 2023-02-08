@@ -1,0 +1,249 @@
+---
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'DISABILITY'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options:
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
+##       o eliminar linea 62:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| **Main variable name** | **Label**                                                     | **Format** | **Code**   |
+|:----------------|:----------------------------|:----------------|:----------------|
+| whodas12               | disability whodas 12 (c2011_w4)                               | Continuous | 0-100      |
+| adl                    | difficulties with activities of daily living (c2011_w4)       | Binary     | 0=no;1=yes |
+| iadl                   | difficulties with instrumental act of daily living (c2011_w4) | Binary     | 0=no;1=yes |
+
+# Variable description
+
+The level of functional impairment has been assessed using the
+12-items-interviewer-administered version of the World Health Organization (WHO)
+
+Disability Assessment Schedule version II (WHODAS 2.0). This instrument is
+
+grounded in the conceptual framework of the International Classification of
+
+Functioning, Disability, and Health (ICF) and places health and disability on a
+
+continuum, with disability defined as "a decrement in each functioning domain".
+
+Participants were asked to report the level of difficulty they had in doing
+
+various activities during the previous 30 days using a five-point scale (none=1,
+
+mild=2, moderate=3, severe=4, extreme/cannot do=5). The global score ranges from
+
+0 to 100, with higher scores indicating greater disability. Level of
+
+independence was measured by means of Activities of Daily Living (ADLs) and
+
+Instrumental Activities of Daily Living (IADLs). ADLs describes a set of daily
+
+self-care activities and assesses the need for help with personal care
+
+activities such as eating, bathing, and dressing; while, IADLs describes
+
+somewhat higher-level functioning considered necessary to live independently,
+
+assessing the need for help with routine needs such as using transportation,
+
+housekeeping, and preparing food. An individual's ability to perform ADLs is
+
+typically considered normal functional status, with an inability to perform ADLs
+
+suggesting disability.
+
+# Explanation of how the variables were created
+
+The WHODAS items were selected and their scoring was determined according to the
+
+WHO guidelines. It follows an "item-response-theory" (IRT) based scoring where
+
+the summary score takes into account the levels of severity and weights of the
+
+items. First, the mean score across all items was calculated (per domain). Then,
+
+the summary scores were summed and converted into a metric ranging from 0 to
+
+100\. A score in this questionnaire was obtained for the participants who had
+
+answered to at least 80% of the items (i.e., at least 10 out of the 12 items).
+
+In those cases with one or two missing values, the score were obtained based on
+
+the items completed, replacing the missing values by the mean of the remaining
+
+items.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+
+/*WHODAS-12 questionnaire*/
+
+gen S1=q2028_stand
+gen S2=q2032_hh_resp
+gen S3=q2011_learn
+gen S4=q2033_activ
+gen S5=q2047_affect
+gen S6=q2035_concent
+gen S7=q2036_walk
+gen S8=q2037_wash
+gen S9=q2038_dress
+gen S10=q2015_strang
+gen S11=q2014_friend
+gen S12=q2039_daily
+recode S1 S2 S3 S4 S5 S6 S7 S8 S9 S10 S11 S12 (888=.)
+recode S1 S3 S5 S6 S7 S9 (1=0) (2=1) (3=2) (4=3) (5=4)
+recode S2 S4 S8 S10 S11 S12 (1=0) (2=1) (3=1) (4=2) (5=2)
+egen missing=rowmiss(S1-S12)
+egen part1=rowmean(S1 S3 S5 S6 S7 S9) if missing <=2
+egen part2=rowmean(S2 S4 S8 S10 S11 S12) if missing <=2
+gen whodas12=(part1*25+part2*50)/2
+label variable whodas12 "disability WHODAS 12 (c2011_w4)"
+
+/*ADL and IADL*/
+
+gen dq2025=q2025_sitting
+gen dq2026=q2026_walk
+gen dq2027=q2027_stand
+gen dq2028=q2028_stand
+gen dq2029=q2029_climb
+gen dq2030=q2030_crouch
+gen dq2031=q2031_pickup
+gen dq2032=q2032_hh_resp
+gen dq2033=q2033_activ
+gen dq2034=q2034_reach
+gen dq2035=q2035_concent
+gen dq2036=q2036_walk
+gen dq2037=q2037_wash
+gen dq2038=q2038_dress
+gen dq2039=q2039_daily
+gen dq2040=q2040_carry
+gen dq2041=q2041_movement
+gen dq2042=q2042_eating
+gen dq2043=q2043_arising
+gen dq2044=q2044_toilet
+gen dq2045=q2045_movement
+gen dq2046=q2046_going
+recode dq2025-dq2046 (1=0)(2=0)(3=0)(4=1)(5=1) (888=.)
+
+egen adlcounter=rowtotal(dq2025 dq2026 dq2027 dq2028 dq2029 dq2030 dq2031 dq2034 dq2035 dq2036 dq2037 dq2038 dq2040 dq2041 dq2042 dq2043 dq2044)
+egen missing_adl=rowmiss (dq2025 dq2026 dq2027 dq2028 dq2029 dq2030 dq2031 dq2034 dq2035 dq2036 dq2037 dq2038 dq2040 dq2041 dq2042 dq2043 dq2044)
+gen adl=1 if adlcounter>=1 & adlcounter<.
+replace adl=0 if adlcounter==0
+replace adl=. if missing_adl==17
+label variable adl "activities of daily living (c2011_w4)"
+
+egen iadlcounter=rowtotal(dq2032 dq2033 dq2039 dq2045 dq2046)
+egen missing_iadl=rowmiss (dq2032 dq2033 dq2039 dq2045 dq2046)
+gen iadl=1 if iadlcounter>=1 & iadlcounter<.
+replace iadl=0 if iadlcounter==0
+replace iadl=. if missing_iadl==5
+label variable iadl "instrumental act of daily living (c2011_w4)"
+
+label define dAdl 0 "No" 1 "Yes"
+label values adl iadl dAdl
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy whodas12 adl iadl
+
+sum whodas12, detail
+codebook adl iadl
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_disability.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+<br>
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+-   Name: Daniel Morillo
+-   e-mail:
+    [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 914975816
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
