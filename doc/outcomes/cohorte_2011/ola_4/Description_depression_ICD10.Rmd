@@ -4,24 +4,27 @@ output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 # bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
-# bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
 editor_options: 
   markdown:
     wrap: 80
+params:
+  test: true
+  double-coding: false
 ---
 
 ```{r setup, include=FALSE}
 # Activar los paquetes que R necesita para ejecutar el código:
+
 
 library(Statamarkdown)
 
 # Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
 
 ## TODO: sustituir '<path\to\>' por la ubicación de Stata
-##       (ejecutar `sysdir` en Stata) y descomentar línea 34,
-##       o eliminar siguiente linea:
+##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
+##       o eliminar linea 62:
 # STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
 
 
@@ -38,53 +41,55 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
   collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
   comment     = ''     #   - No añade ningún prefijo a los resultados
 )
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
 ```
 
 # Variable information
 
-
-+--------------------+-------------------+-----------------+-----------------+
-| **Main variable    | **Label**         | **Format**      | **Code**        |
-| name**             |                   |                 |                 |
-+:===================+:==================+=================+=================+
-| d                  | Severity of       | Ordinal         | -   0=No;       |
-| _lifetime_severity | lifetime          |                 | -   1=Mild;     |
-|                    | depressive        |                 | -   2=Moderate; |
-|                    | episode           |                 | -   3=Severe    |
-|                    | (c2011_w4)        |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| d                  | Lifetime          | Binary          | -   0=no;       |
-| epression_lifetime | depression        |                 | -   1=yes       |
-|                    | (c2011_w4)        |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| dep                | Lifetime          | Binary          | -   0=no;       |
-| ress               | depression for    |                 | -   1=yes       |
-| ion_lifetime_proxy | proxy (c2011_w4)  |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| d_12m_item         | 12 month          | Binary          | -   0=no;       |
-|                    | depression, one   |                 | -   1=yes       |
-|                    | item (c2011_w4)   |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| depression_12m     | 12 month          | Binary          | -   0=no;       |
-|                    | depression from   |                 | -   1=yes       |
-|                    | lifetime          |                 |                 |
-|                    | diagnosis &       |                 |                 |
-|                    | q4227/q4227a      |                 |                 |
-|                    | items (c2011_w4)  |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| d_l                | Severity of       | Binary          | -   0=no;       |
-| ifetime_comparable | lifetime          |                 | -   1=yes       |
-|                    | depressive        |                 |                 |
-|                    | episode           |                 |                 |
-|                    | comparable        |                 |                 |
-|                    | (c2011_w4)        |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
-| d_12m_comparable   | 12 month          | Binary          | -   0=no;       |
-|                    | depression        |                 | -   1=yes       |
-|                    | comparable with   |                 |                 |
-|                    | COVID substudy    |                 |                 |
-|                    | (c2011_w4)        |                 |                 |
-+--------------------+-------------------+-----------------+-----------------+
++--------------------+------------------+-----------------+-----------------+
+| **Main variable    | **Label**        | **Format**      | **Code**        |
+| name**             |                  |                 |                 |
++:===================+:=================+=================+=================+
+| d                  | Severity of      | Ordinal         | -   0=No;       |
+| \                  | lifetime         |                 | -   1=Mild;     |
+| _lifetime_severity | depressive       |                 | -   2=Moderate; |
+|                    | episode          |                 | -   3=Severe    |
+|                    | (c2011_w4)       |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| d                  | Lifetime         | Binary          | -   0=no;       |
+| epression_lifetime | depression       |                 | -   1=yes       |
+|                    | (c2011_w4)       |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| depress            | Lifetime         | Binary          | -   0=no;       |
+| ion_lifetime_proxy | depression for   |                 | -   1=yes       |
+|                    | proxy (c2011_w4) |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| d_12m_item         | 12 month         | Binary          | -   0=no;       |
+|                    | depression, one  |                 | -   1=yes       |
+|                    | item (c2011_w4)  |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| depression_12m     | 12 month         | Binary          | -   0=no;       |
+|                    | depression from  |                 | -   1=yes       |
+|                    | lifetime         |                 |                 |
+|                    | diagnosis &      |                 |                 |
+|                    | q4227/q4227a     |                 |                 |
+|                    | items (c2011_w4) |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| d_l                | Severity of      | Binary          | -   0=no;       |
+| ifetime_comparable | lifetime         |                 | -   1=yes       |
+|                    | depressive       |                 |                 |
+|                    | episode          |                 |                 |
+|                    | comparable       |                 |                 |
+|                    | (c2011_w4)       |                 |                 |
++--------------------+------------------+-----------------+-----------------+
+| d_12m_comparable   | 12 month         | Binary          | -   0=no;       |
+|                    | depression       |                 | -   1=yes       |
+|                    | comparable with  |                 |                 |
+|                    | COVID substudy   |                 |                 |
+|                    | (c2011_w4)       |                 |                 |
++--------------------+------------------+-----------------+-----------------+
 
 # Variable description
 
@@ -189,12 +194,12 @@ The following general principles have been followed when possible:
 -   When these principles are not strictly followed, an annotation is added
     right below, explaining how it changes from them and why.
 
-# Syntax used to create the variable (Stata 15) (15 o 13?)
+# Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
 * Cohorte 2011, linea base:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-``` 
+```
 
 ```{stata generate-outcomes, echo=TRUE}
 *# "Value labels (defined for all the outcome variables in the dataset)":
@@ -387,7 +392,7 @@ label variable depression_lifetime "Lifetime depression (c2011_w4)"
 #the "don't know" case (888) in proxy is not considered as a 'no' but as missing. 
 
 ***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
-recode p4040_depression_s3 (1=1) (2=0) (888=.) (999=.), gen (depression_lifetime_proxy)
+recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
 label values   depression_lifetime_proxy yesno
 label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w4)"
 
@@ -425,17 +430,17 @@ label values   d_12m_comparable yesno
 label variable d_12m_comparable "12 month depression comparable with COVID substudy (c2011_w4)"
 ```
 
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
 
-```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup'}
 codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
 ```
 
-<!--# TODO: Leer párrafos a continuación -->
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_Outcome_depression_ICD10.dta", replace version(13)
+```
 
-
-```{stata save-data}
-keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
-
+```{stata save-data, eval=!TEST}
 *Cohorte 2011, linea base:
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 ```
@@ -443,7 +448,6 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 <br>
 
 # Contact person:
-
 
 -   Name: Lea Francia
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
@@ -469,17 +473,10 @@ Original version:
 
 # References
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta información será igualmente útil para citar apropiadamente en nuestros artículos científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ::: {#refs}
 :::
 
 \newpage
-
 
 # Session info
 
