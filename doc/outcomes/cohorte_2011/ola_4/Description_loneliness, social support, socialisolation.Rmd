@@ -1,0 +1,224 @@
+---
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- '<variable name(s)/domain>'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                      | Format     | Code  |
+|:-------------------|:---------------------------|:-----------|:------|
+| social_support     | Social support(c2011_w4)   | Continuous | 0-100 |
+| loneliness         | Loneliness(c2011_w4)       | Continuous | 0-100 |
+| isolation          | Social isolation(c2011_w4) | Continuous | 0-5   |
+
+# Variable description
+
+**Social_support_oslo**: social support was measured using
+the OSLO-3 Social Support Scale (see Dalgard, 1996 and Dalgard et al., 2006).
+
+**Loneliness_ucla**: refers to a distressing perceived
+discrepancy between one´s social desires and one´s actual interactions with
+others (Heinrich & Gullone, 2006). Loneliness was assessed by means of the
+Three-item UCLA Loneliness Scale (Hughes et al, 2004).
+
+**Social isolation:** relate to structural aspects of the
+social network (e.g. low frequency of interactions, small size of the social
+network) (De Jong Gierveld & Tilburg, 2006).
+
+# Explanation of how the variables were created
+
+**Social_support:** items Q6310,
+Q6320 and Q6330. Since higher scores in Q6310 and Q6330 indicate low support
+and high scores in Q6320 indicate high support, Q6310 and Q6330 were reverted
+in the syntax to obtain the global score. A global score was created by adding
+up the three items and transforming the result into a percentile scale. Higher
+scores indicate a higher social support. For the 11 participants who said to
+have not neighbours, it was considered as \"very difficult\" (the worst
+punctuation) the help received from neighbours.The following formula has
+been used in order to rescale the obtained scores from 0 to 100:
+
+**Loneliness:** items Q6351, Q6352 and Q6353. Responses to the three items were
+added
+up and transformed into a percentile scale, with higher scores indicating a
+higher subjective perception of loneliness. The
+following formula has been used in order to rescale the obtained scores from 0
+to 100:
+
+**Isolation**: A social isolation index, based on
+the one proposed by Shankar et al. (2011), was computed with respondents given
+a point if they: a) were not married/not cohabiting with a partner
+(q6010a_spouse); b) had less than monthly contact with children
+(q6010c_children); c) had less than monthly contact with other immediate family
+(q6010b_parents, q6010i_grand, q6010k_inlaw q6010j_siblings); d) had less than
+monthly contact with friends (q6010g_friends); and e) did not participate in
+any organizations, religious groups, or committees (q6618_relig, q6619_leave,
+q6613_club, and q6621_assoc). Scores ranged from 0 to 5, with higher scores
+representing greater social isolation. Items q6613_club, and q6621_assoc were
+added in the creation of the social isolation variable in 3 Wave, so that they
+were considered also in the 2019 cohort. In fact, Shankar considered
+organizations,
+religious groups, or committees. Items q6613_club, and q6621_assoc
+corresponded to \"committees\" (\"participation in clubs or organizations\" and
+\"attend
+associations or senior community centres, or adult day care centres, or senior
+universities\").
+
+The social support and loneliness scores have been generated without allowing missing values, taking into account that both scales (Oslo Social Support and Three-item UCLA) comprise only three items; so global scores for social support and loneliness have been calculated only for subjects who answered the three items from the OSLO/UCLA. 
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+***Social support 
+recode q6310_help_neig q6320_close q6330_concern (888=.) (999=.)
+replace q6310_help_neig =5 if q6010h_neighbours==2 
+generate social_support =q6320_close +(6-q6310_help_neig)+(6- q6330_concern)
+replace social_support =(( social_support -3)/11)*100
+label variable social_support "Social support (c2019_w1)"
+
+***Loneliness 
+recode q6351_companion q6352_leftout q6353_isolated (888=.) (999=.)
+generate loneliness=(q6351_companion + q6352_leftout+ q6353_isolated)
+replace loneliness=((loneliness-3)/6)*100
+label variable loneliness "Loneliness (c2019_w1)"
+
+***Social isolation 
+recode q6010a_spouse (1=0) (2=1), gen(spouse)
+
+gen children=.
+replace children=0 if q6010c_children==1 
+replace children=1 if q6010c_children==2 | (q6213_children==1 | q6213_children==2)
+
+gen parents=.
+replace parents=0 if q6010b_parents==1
+replace parents=1 if q6010b_parents==2 | (q6212_parents==1 | q6212_parents==2)
+
+gen grandch=.
+replace grandch=0 if q6010i_grand ==1
+replace grandch=1 if q6010i_grand ==2 | (q6214a_grand ==1 | q6214a_grand ==2)
+
+gen otherfam=.
+replace otherfam=0 if q6010k_inlaw ==1 |  q6010j_siblings==1
+replace otherfam=1 if (q6010k_inlaw ==2 |  q6010j_siblings==2) | (q6215a_siblings==1 | q6215a_siblings==2) | (q6215b_inlaw==1 | q6215b_inlaw==2)
+
+gen family=.
+replace family=0 if parents==0 | grandch==0 | otherfam==0
+replace family=1 if parents==1 & grandch==1 & otherfam==1
+
+gen friends=.
+replace friends=0 if q6010g_friends==1
+replace friends=1 if q6010g_friends==2 | (q6217_friends==1 | q6217_friends==2)
+
+gen activities=.
+replace activities=0 if (q6618_relig>2 & q6618_relig<.) | (q6619_leave>2 & q6619_leave<.) | (q6613_club >2 & q6613_club <.) | (q6621_assoc >2 & q6621_assoc <.)
+replace activities=1 if (q6618_relig==1 | q6618_relig==2) & (q6619_leave==1 | q6619_leave==2) & (q6613_club==1 | q6613_club==2) & (q6621_assoc==1 | q6621_assoc==2)
+
+egen obs2=rownonmiss(spouse children family friends activities)
+egen isolation=rowtotal(spouse children family friends activities) if obs2>=2
+label variable isolation "Social isolation (c2019_w1)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy isolation social_support loneliness
+
+codebook isolation social_support loneliness
+```
+
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+-   Name: Félix Caballero
+-   e-mail:
+    [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+-   Phone number: (+34) 914972447
+
+# References
+
+::: {#refs}
+:::
+#Dalgard OS (1996). Community health profile: a tool for psychiatric prevention. In: Trent DR, Reed CA, editors. Promotion of Mental Health. Aldershot: Avebury Press; p. 681-695.
+#Dalgard OS, Dowrick C, Lehtinen V, Vázquez-Barquero, Casey P, Wilkinson G, Ayuso-Mateos JL, Page H, Dunn G, and the ODIN Group (2006). Social psychiatry and psychiatric epidemiology, 41(6): 444-451.
+#De Jong Gierveld, J., & Tilburg, T. V. (2006). A 6-Item Scale for Overall, Emotional, and Social Loneliness: Confirmatory Tests on Survey Data. Research on Aging, 28(5), 17. doi:10.1177/0164027506289723
+#Heinrich, L. M., & Gullone, E. (2006). The clinical significance of loneliness: A literature review. Clinical Psychology Review, 26, 24. doi:10.1016/j.cpr.2006.04.002
+#Hughes ME, Waite LJ, Hawkley LC, and Cacioppo JT (2004). A short scale for measuring loneliness in large surveys: results from two population-based studies. Research on Aging, 26(6): 655-672.
+#Shankar A, McMunn A, Banks J, Steptoe A. Loneliness, social isolation, and behavioral and biological health indicators in older adults. Health Psychol. 2011 Jul;30(4):377-85. doi: 10.1037/a0022826.
+#Steptoe, A., Shankar, A., Demakakos, P., Wardle, J., 2013. Social isolation, loneliness, and all-cause mortality in older men and women. Proc. Natl. Acad. Sci. U. S. A. 110, 5797–5801. http://dx.doi.org/10.1073/pnas.1219686110.
+
+
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
