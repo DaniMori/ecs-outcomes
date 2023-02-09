@@ -82,7 +82,7 @@ same formula as used for social support variable has been used in order to resca
 
 **Isolation**: A social isolation index, based on
 the one proposed by Shankar et al. (2011), was computed with respondents given a point if they (1) were not married/not cohabiting with a partner (q6010a_spouse); (2) had less than monthly contact with children (q6010c_children); (3) had less than monthly contact with other immediate family
-(q6010b_parents, q6010i_grand, q6010k_inlaw q6010j_siblings); (4) had less than monthly contact with friends (q6010g_friends); and (5) did not participate in any organizations, religious groups, or committees (q6618_relig, q6619_leave,q6613_club, and q6621_assoc). 
+(q6010b_parents, q6010d_grandch, q6010e_other, q6010f_cowork); (4) had less than monthly contact with friends (q6010g_friends); and (5) did not participate in any organizations, religious groups, or committees (q6618_relig, q6619_leave,q6613_club, and q6621_assoc). 
 The total score was obtained by summing the answers given by the participants to the different items listed below. The total score ranged from 0 to 5, with higher scores
 representing greater social isolation. 
 Items q6613_club, and q6621_assoc
@@ -104,8 +104,8 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ***Social support 
 recode q6310_help_neig q6320_close q6330_concern (888=.) (999=.)
 replace q6310_help_neig =5 if q6010h_neighbours==2 
-generate social_support =q6320_close +(6-q6310_help_neig)+(6- q6330_concern)
-replace social_support =(( social_support -3)/11)*100
+generate social_support =(q6320_close+(6-q6310_help_neig)+(6-q6330_concern))
+replace social_support =((social_support-3)/11)*100
 label variable social_support "Social support (c2019_w1)"
 
 ***Loneliness 
@@ -126,16 +126,21 @@ replace parents=0 if q6010b_parents==1
 replace parents=1 if q6010b_parents==2 | (q6212_parents==1 | q6212_parents==2)
 
 gen grandch=.
-replace grandch=0 if q6010i_grand ==1
-replace grandch=1 if q6010i_grand ==2 | (q6214a_grand ==1 | q6214a_grand ==2)
+replace grandch=0 if q6010d_grandch ==1
+replace grandch=1 if q6010d_grandch ==2 | (q6214_grand ==1 | q6214_grand ==2)
 
 gen otherfam=.
-replace otherfam=0 if q6010k_inlaw ==1 |  q6010j_siblings==1
-replace otherfam=1 if (q6010k_inlaw ==2 |  q6010j_siblings==2) | (q6215a_siblings==1 | q6215a_siblings==2) | (q6215b_inlaw==1 | q6215b_inlaw==2)
+replace otherfam=0 if q6010e_other ==1
+replace otherfam=1 if q6010e_other ==2 | (q6215_other ==1 | q6215_other ==2)
 
 gen family=.
 replace family=0 if parents==0 | grandch==0 | otherfam==0
 replace family=1 if parents==1 & grandch==1 & otherfam==1
+
+gen coworker=.
+replace coworker=0 if q6010f_cowork ==1
+replace coworker=1 if q6010f_cowork ==2 | (q6216_cowork ==1 | q6216_cowork ==2)
+
 
 gen friends=.
 replace friends=0 if q6010g_friends==1
@@ -145,8 +150,8 @@ gen activities=.
 replace activities=0 if (q6618_relig>2 & q6618_relig<.) | (q6619_leave>2 & q6619_leave<.) | (q6613_club >2 & q6613_club <.) | (q6621_assoc >2 & q6621_assoc <.)
 replace activities=1 if (q6618_relig==1 | q6618_relig==2) & (q6619_leave==1 | q6619_leave==2) & (q6613_club==1 | q6613_club==2) & (q6621_assoc==1 | q6621_assoc==2)
 
-egen obs2=rownonmiss(spouse children family friends activities)
-egen isolation=rowtotal(spouse children family friends activities) if obs2>=2
+egen obs2=rownonmiss(spouse children family coworker friends activities)
+egen isolation=rowtotal(spouse children family coworker friends activities) if obs2>=2
 label variable isolation "Social isolation (c2019_w1)"
 ```
 
