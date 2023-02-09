@@ -102,15 +102,15 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 ***Social support 
-recode q6310_help_neig q6320_close q6330_concern (888=.) (999=.)
-replace q6310_help_neig =5 if q6010h_neighbours==2 
-generate social_support =(q6320_close+(6-q6310_help_neig)+(6-q6330_concern))
+recode q6310_help_neig_s3 q6320_close_s3 q6330_concern_s3 (888=.) (999=.)
+replace q6310_help_neig_s3 =5 if q6010h_neighbours_s3==2 
+generate social_support =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
 replace social_support =((social_support-3)/11)*100
 label variable social_support "Social support (c2011_w4)"
 
 ***Loneliness 
-recode q6351_companion q6352_leftout q6353_isolated (888=.) (999=.)
-generate loneliness=(q6351_companion + q6352_leftout+ q6353_isolated)
+recode q6351_companion_s3 q6352_leftout_s3 q6353_isolated_s3 (888=.) (999=.)
+generate loneliness=(q6351_companion_s3 + q6352_leftout_s3+ q6353_isolated_s3)
 replace loneliness=((loneliness-3)/6)*100
 label variable loneliness "Loneliness (c2011_w4)"
 
@@ -118,37 +118,37 @@ label variable loneliness "Loneliness (c2011_w4)"
 recode q6010a_spouse (1=0) (2=1), gen(spouse)
 
 gen children=.
-replace children=0 if q6010c_children==1 
-replace children=1 if q6010c_children==2 | (q6213_children==1 | q6213_children==2)
+replace children=0 if q6010c_children_s3==1 
+replace children=1 if q6010c_children_s3==2 | (q6213_children_s3==1 | q6213_children_s3==2)
 
 gen parents=.
-replace parents=0 if q6010b_parents==1
-replace parents=1 if q6010b_parents==2 | (q6212_parents==1 | q6212_parents==2)
+replace parents=0 if q6010b_parents_s3==1
+replace parents=1 if q6010b_parents_s3==2 | (q6212_parents_s3==1 | q6212_parents_s3==2)
 
 gen grandch=.
-replace grandch=0 if q6010d_grandch ==1
-replace grandch=1 if q6010d_grandch ==2 | (q6214_grand ==1 | q6214_grand ==2)
+replace grandch=0 if q6010d_grandch_s3 ==1
+replace grandch=1 if q6010d_grandch_s3 ==2 | (q6214_grandch_s3 ==1 | q6214_grandch_s3 ==2)
 
 gen otherfam=.
-replace otherfam=0 if q6010e_other ==1
-replace otherfam=1 if q6010e_other ==2 | (q6215_other ==1 | q6215_other ==2)
+replace otherfam=0 if q6010e_other_s3 ==1
+replace otherfam=1 if q6010e_other_s3 ==2 | (q6215_other_s3 ==1 | q6215_other_s3 ==2)
 
 gen family=.
 replace family=0 if parents==0 | grandch==0 | otherfam==0
 replace family=1 if parents==1 & grandch==1 & otherfam==1
 
 gen coworker=.
-replace coworker=0 if q6010f_cowork ==1
-replace coworker=1 if q6010f_cowork ==2 | (q6216_cowork ==1 | q6216_cowork ==2)
+replace coworker=0 if q6010f_cowork_s3 ==1
+replace coworker=1 if q6010f_cowork_s3 ==2 | (q6216_cowork_s3 ==1 | q6216_cowork_s3 ==2)
 
 
 gen friends=.
-replace friends=0 if q6010g_friends==1
-replace friends=1 if q6010g_friends==2 | (q6217_friends==1 | q6217_friends==2)
+replace friends=0 if q6010g_friends_s3==1
+replace friends=1 if q6010g_friends_s3==2 | (q6217_friends_s3==1 | q6217_friends_s3==2)
 
 gen activities=.
-replace activities=0 if (q6618_relig>2 & q6618_relig<.) | (q6619_leave>2 & q6619_leave<.) | (q6613_club >2 & q6613_club <.) | (q6621_assoc >2 & q6621_assoc <.)
-replace activities=1 if (q6618_relig==1 | q6618_relig==2) & (q6619_leave==1 | q6619_leave==2) & (q6613_club==1 | q6613_club==2) & (q6621_assoc==1 | q6621_assoc==2)
+replace activities=0 if (q6618_relig_s3>2 & q6618_relig_s3<.) | (q6619_leave_s3>2 & q6619_leave_s3<.) | (q6613_club_s3 >2 & q6613_club_s3 <.) | (q6621_assoc_s3 >2 & q6621_assoc_s3 <.)
+replace activities=1 if (q6618_relig_s3==1 | q6618_relig_s3==2) & (q6619_leave_s3==1 | q6619_leave_s3==2) & (q6613_club_s3==1 | q6613_club_s3==2) & (q6621_assoc_s3==1 | q6621_assoc_s3==2)
 
 egen obs2=rownonmiss(spouse children family coworker friends activities)
 egen isolation=rowtotal(spouse children family coworker friends activities) if obs2>=2
