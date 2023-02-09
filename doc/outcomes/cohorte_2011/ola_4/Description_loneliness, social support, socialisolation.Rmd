@@ -106,13 +106,13 @@ recode q6310_help_neig q6320_close q6330_concern (888=.) (999=.)
 replace q6310_help_neig =5 if q6010h_neighbours==2 
 generate social_support =(q6320_close+(6-q6310_help_neig)+(6-q6330_concern))
 replace social_support =((social_support-3)/11)*100
-label variable social_support "Social support (c2019_w1)"
+label variable social_support "Social support (c2011_w4)"
 
 ***Loneliness 
 recode q6351_companion q6352_leftout q6353_isolated (888=.) (999=.)
 generate loneliness=(q6351_companion + q6352_leftout+ q6353_isolated)
 replace loneliness=((loneliness-3)/6)*100
-label variable loneliness "Loneliness (c2019_w1)"
+label variable loneliness "Loneliness (c2011_w4)"
 
 ***Social isolation 
 recode q6010a_spouse (1=0) (2=1), gen(spouse)
@@ -152,7 +152,7 @@ replace activities=1 if (q6618_relig==1 | q6618_relig==2) & (q6619_leave==1 | q6
 
 egen obs2=rownonmiss(spouse children family coworker friends activities)
 egen isolation=rowtotal(spouse children family coworker friends activities) if obs2>=2
-label variable isolation "Social isolation (c2019_w1)"
+label variable isolation "Social isolation (c2011_w4)"
 ```
 
 <br>
