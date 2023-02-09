@@ -51,57 +51,47 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
-**Social_support_oslo**: social support was measured using
-the OSLO-3 Social Support Scale (see Dalgard, 1996 and Dalgard et al., 2006).
+For computing the variable **Social_support_oslo**. The social support was measured using
+the OSLO-3 Social Support Scale (OSSS-3). This scale is composed of three items measuring the level of social support perceived by the participant. Those three items provide information on (1) the number of close confidants, assessed on a 4-point scale ranging from "none" to "more then five", (2) how much interest and concern do people show in what the participant do, assessed on a 5-point scale ranging from "none" to "a lot"(3) the relationship with neighbors, assessed on a 5-point scale ranging from "very difficult" to "very easy". The total score ranges from 3 to 14, the more the value is high, the more high is the level of social support (Dalgard, 1996; Dalgard et al., 2006).
 
-**Loneliness_ucla**: refers to a distressing perceived
+The loneliness refers to a distressing perceived
 discrepancy between one´s social desires and one´s actual interactions with
-others (Heinrich & Gullone, 2006). Loneliness was assessed by means of the
-Three-item UCLA Loneliness Scale (Hughes et al, 2004).
+others (Heinrich & Gullone, 2006). The variable **Loneliness_ucla** was assessed by means of the
+Three-item UCLA Loneliness Scale assessing the perceived level of (1) companionship, (2) exclusion, and (3) isolation. All items are assessed on a scale ranging from 1, "hardly ever" to 3, "often", the higher the total score is, the higher is the feeling of loneliness perceived by the participant (Hughes et al, 2004).
 
-**Social isolation:** relate to structural aspects of the
-social network (e.g. low frequency of interactions, small size of the social
+The social isolation is relate to structural aspects of the
+social network. This variable **Social isolation:**  was computed using  aspects like level of frequency of interactions or size of the social
 network) (De Jong Gierveld & Tilburg, 2006).
 
 # Explanation of how the variables were created
 
-**Social_support:** items Q6310,
-Q6320 and Q6330. Since higher scores in Q6310 and Q6330 indicate low support
-and high scores in Q6320 indicate high support, Q6310 and Q6330 were reverted
-in the syntax to obtain the global score. A global score was created by adding
-up the three items and transforming the result into a percentile scale. Higher
-scores indicate a higher social support. For the 11 participants who said to
-have not neighbours, it was considered as \"very difficult\" (the worst
+The **Social_support:**  Variable was created using the scores obtain in three items assessing the relationship with neighbors (items q6310), the number of close confidants (q6320), and the interest and concern of people in what the participant do (q6330). Since higher scores in q6310 and q6330 indicate a low level of perceived social support
+and that the opposite situation occurs for the items q6320. To simplify the understanding of the total scale items q6310 and q6330 were reverted
+in the syntax to obtain a scale where where the higher the score, the higher the level of social support. The global score was created by adding
+up the three items and transforming the result into a percentile scale. 11 participants said to
+have not neighbours. Those cases was considered as \"very difficult\" (the worst
 punctuation) the help received from neighbours.The following formula has
-been used in order to rescale the obtained scores from 0 to 100:
+been used in order to rescale the obtained scores from 0 to 100: 
+global score = ((Factor score - min(factor scores))/(max(factor scores) - min(factor scores)))*100
 
-**Loneliness:** items Q6351, Q6352 and Q6353. Responses to the three items were
-added
+**Loneliness:** variable was created using items assessing companionship (q6351), exclusion (q6352), and isolation (q6353). The scores corresponding to each of the responses given to these three items were added
 up and transformed into a percentile scale, with higher scores indicating a
 higher subjective perception of loneliness. The
-following formula has been used in order to rescale the obtained scores from 0
-to 100:
+same formula as used for social support variable has been used in order to rescale the obtained scores from 0 to 100.
+
 
 **Isolation**: A social isolation index, based on
-the one proposed by Shankar et al. (2011), was computed with respondents given
-a point if they: a) were not married/not cohabiting with a partner
-(q6010a_spouse); b) had less than monthly contact with children
-(q6010c_children); c) had less than monthly contact with other immediate family
-(q6010b_parents, q6010i_grand, q6010k_inlaw q6010j_siblings); d) had less than
-monthly contact with friends (q6010g_friends); and e) did not participate in
-any organizations, religious groups, or committees (q6618_relig, q6619_leave,
-q6613_club, and q6621_assoc). Scores ranged from 0 to 5, with higher scores
-representing greater social isolation. Items q6613_club, and q6621_assoc were
-added in the creation of the social isolation variable in 3 Wave, so that they
-were considered also in the 2019 cohort. In fact, Shankar considered
-organizations,
-religious groups, or committees. Items q6613_club, and q6621_assoc
+the one proposed by Shankar et al. (2011), was computed with respondents given a point if they (1) were not married/not cohabiting with a partner (q6010a_spouse); (2) had less than monthly contact with children (q6010c_children); (3) had less than monthly contact with other immediate family
+(q6010b_parents, q6010i_grand, q6010k_inlaw q6010j_siblings); (4) had less than monthly contact with friends (q6010g_friends); and (5) did not participate in any organizations, religious groups, or committees (q6618_relig, q6619_leave,q6613_club, and q6621_assoc). 
+The total score was obtained by summing the answers given by the participants to the different items listed below. The total score ranged from 0 to 5, with higher scores
+representing greater social isolation. 
+Items q6613_club, and q6621_assoc
 corresponded to \"committees\" (\"participation in clubs or organizations\" and
 \"attend
 associations or senior community centres, or adult day care centres, or senior
 universities\").
 
-The social support and loneliness scores have been generated without allowing missing values, taking into account that both scales (Oslo Social Support and Three-item UCLA) comprise only three items; so global scores for social support and loneliness have been calculated only for subjects who answered the three items from the OSLO/UCLA. 
+The social support and loneliness scores have been generated without allowing missing values, taking into account that both scales (Oslo Social Support (OSLO) and Three-item UCLA) comprise only three items. Therefore, global scores for social support and loneliness have been calculated only for subjects who answered the three items from each scale (OSLO/UCLA). 
 
 # Syntax used to create the variable (Stata 15)
 
