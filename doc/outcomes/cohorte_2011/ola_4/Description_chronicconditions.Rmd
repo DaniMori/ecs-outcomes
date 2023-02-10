@@ -1,0 +1,453 @@
+---
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'Chronic Conditions'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(Program Files (x86)StataSE-64.exe)"
+
+
+options(width = 88) 
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE, 
+  collectcode = TRUE,  
+  comment     = ''     
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++----------------+-------------------------+----------------+----------------+
+| Main variable  | Label                   | Format         | Code           |
+| name           |                         |                |                |
++:===============+:========================+:===============+:===============+
+| arthitis_s3    | arthritis algorithm     | dummy          | 2 no           |
+|                | test or self-reported   |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| oste           | osteoarthritis          | dummy          | 2 no           |
+| oarthritis_s3  | algorithm test or       |                |                |
+|                | self-reported           |                | 1 yes          |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| stroke_s3      | stroke algorithm test   | dummy          | 2 no           |
+|                | or self-reported        |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| angina_s3      | angina algorithm test   | dummy          | 2 no           |
+|                | or self-reported        |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| diab_s3        | diabetes self reported  | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| lung_s3        | lung disease algorithm  | dummy          | 2 no           |
+|                | test or self-reported   |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| asthma_s3      | asthma algorithm test   | dummy          | 2 no           |
+|                | or self reported        |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| hy             | hypertension algorithm  | dummy          | 2 no           |
+| pertension_s3  | test or self reported   |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| cataracts_s3   | cataracts algorithm     | dummy          | 2 no           |
+|                | test or self reported   |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| ora            | oral problems algorithm | dummy          | 2 no           |
+| l_problems_s3  | test or self reported   |                |                |
+|                | (c2011_w4)              |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| kidney_s3      | kidney self reported    | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| diges_s3       | digestive self reported | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| cancer_s3      | cancer self reported    | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| liver_s3       | liver self reported     | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| osteop_s3      | osteoporosis self       | dummy          | 2 no           |
+|                | reported (c2011_w4)     |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| anaemia_s3     | anaemia self reported   | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| thyroid_s3     | thyroid self reported   | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| glaucoma_s3    | glaucoma self reported  | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+| heart_s3       | heart self reported     | dummy          | 2 no           |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 yes          |
++----------------+-------------------------+----------------+----------------+
+
+# Variables description
+
+General comment: Chronic condition algorithms were developed for the World
+Health Survey and adapted from COURAGE. Symptom based estimates were prepared
+for the following conditions: arthritis, stroke, angina, lung disease, asthma
+and hypertension. In such cases, the algorithm reflects a specific response
+pattern or a combination of answers indicating whether someone has a disease
+(see explanations below) in the previous 12 months. All other response patterns
+(i.e. one or more no's) will result in 'no disease'. Additionally, self-reported
+diagnoses (ever diagnosed) were included in all chronic conditions.
+
+Important note: In "Edad con Salud" we have created an option (i.e. var_a =997)
+for those individuals who reported a disease in first assessment, but in second
+assessment they said that they have never had such disease. There are ≈10-20
+individuals per disease that have reported this situation. We have considered
+this circumstance in the self-reported algorithms presented below (i.e. those
+who said 997 have been considered as not having the disease). This condition
+applies for all the diagnoses.
+
+## Arthritis
+Rheumatoid Arthritis is a chronic systemic disease that affects the joints, 
+connective tissues, muscle, tendons, and fibrous tissue. It tends to strike 
+during the most productive years of adulthood, between the ages of 20 and 40, 
+and is a chronic disabling condition often causing pain and deformity. 
+Osteoarthritis is a degenerative joint disease, which mainly affects the 
+articular cartilage. It is associated with ageing and will most likely affect 
+the joints that have been continually stressed throughout the years including 
+the knees, hips, fingers, and lower spine region. 
+
+## Stroke
+A stroke is caused by the interruption of the blood supply to the brain, 
+usually because a blood vessel bursts or is blocked by a clot. This cuts off 
+the supply of oxygen and nutrients, causing damage to the brain tissue.
+
+## Angina
+Angina is a chest pain that occurs when the blood supply to the muscles of 
+the heart is restricted. It usually happens because the arteries supplying the 
+heart become hardened and narrowed.
+
+## Diabetes
+Diabetes is a chronic, metabolic disease characterized by elevated levels of 
+blood glucose (or blood sugar), which leads over time to serious damage to the 
+heart, blood vessels, eyes, kidneys, and nerves. The most common is type 2 
+diabetes, usually in adults, which occurs when the body becomes resistant to 
+insulin or doesn't make enough insulin.
+
+## Lung Disease
+Lung disease is any problem in the lungs that prevents the lungs from 
+working properly. There are three main types of lung disease: a) airway 
+diseases, that affect the tubes (airways) that carry oxygen and other gases 
+into and out of the lungs; b) Lung tissue diseases, affecting the structure of 
+the lung tissue; and c) Lung circulation diseases, that affect the blood vessels 
+in the lungs. 
+
+## Asthma 
+Asthma is a chronic disease characterized by recurrent attacks of breathlessness 
+and wheezing, which vary in severity and frequency from person to person. During 
+an asthma attack, the lining of the bronchial tubes swells, causing the airways 
+to narrow and reducing the flow of air into and out of the lungs.
+
+## Hypertension
+Hypertension, also known as high or raised blood pressure, is a condition in 
+which the blood vessels have persistently raised pressure. Blood is carried from 
+the heart to all parts of the body in the vessels. Each time the heart beats, it 
+pumps blood into the vessels. Blood pressure is created by the force of blood 
+pushing against the walls of blood vessels (arteries) as it is pumped by the 
+heart. The higher the pressure the harder the heart has to pump.
+
+## Cataracts
+A cataract is clouding of the lens of the eye, which impedes the passage of 
+light. Most cataracts are related to ageing, although occasionally children may 
+be born with the condition, or cataract may develop after an injury, 
+inflammation or disease. 
+
+## Oral Health
+Oral health is essential to general health and quality of life. It is a state of 
+being free from mouth and facial pain, oral and throat cancer, oral infection 
+and sores, periodontal (gum) disease, tooth decay, tooth loss, and other 
+diseases and disorders that limit an individual’s capacity in biting, chewing, 
+smiling, speaking, and psychosocial wellbeing. Risk factors for oral diseases 
+include an unhealthy diet, tobacco use and harmful alcohol use.
+
+## Kidney Disease
+Chronic kidney disease includes complications like high blood pressure, 
+anaemia, weak bones, poor nutritional health and nerve damage. It may be caused 
+by diabetes, high blood pressure and other disorders.
+
+## Digestive Disease
+A digestive disease is any health problem that occurs in the digestive tract, 
+and may range from mild to serious conditions. Some common problems include 
+cancer, irritable bowel syndrome, and lactose intolerance.
+
+## Cancer
+Cancer is a generic term for a large group of diseases that can affect any part 
+of the body. One defining feature of cancer is the rapid creation of abnormal 
+cells that grow beyond their usual boundaries, and which can then invade 
+adjoining parts of the body and spread to other organs, the latter process is 
+referred to as metastasizing. 
+
+## Liver Disease
+There are diverse kinds of liver diseases that difficult the process of 
+digestion, store energy, or poisons removal. Viruses cause some of them 
+(i.e. hepatitis A, hepatitis B and hepatitis C), while others can be the result 
+of drugs, poisons or drinking too much alcohol.
+
+## Osteoporosis
+Osteoporosis is a disease in which the density and quality of bone are reduced. 
+As bones become more porous and fragile, the risk of fracture is greatly 
+increased. The loss of bone occurs silently and progressively. 
+
+## Anaemia
+Anaemia is a condition in which the number of red blood cells or their 
+oxygen-carrying capacity is insufficient to meet physiologic needs, which vary 
+by age, sex, altitude, smoking, and pregnancy status.
+
+## Thyroid
+The thyroid gland is an endocrine gland in the neck. It makes two hormones that 
+are secreted into the blood: thyroxine (T4) and triodothyronine (T3). These 
+hormones are necessary for all the cells in the body to work normally. Thyroid 
+disorders are very common and tend mainly to occur in women. If too much of the 
+thyroid hormones are secreted (hyperthyroid), the body cells work faster than 
+normal, and this increased activity may lead to a quickening of your heart rate 
+or increased activity of the intestine. If too little of the thyroid hormones 
+are produced (hypothyroidism), the cells and organs of your body slow down. 
+In that case, the heart rate, for example, may be slower than normal and the 
+intestines work sluggishly.
+
+## Glaucoma
+Glaucoma is the general term for a group of similar diseases. In primary open 
+angle glaucoma, the channels that drain fluid within the eye become blocked, 
+causing the pressure within the eye to rise. It causes gradual loss of vision. 
+There are few symptoms so that people may not notice for a long time that they 
+are losing their sight.
+
+## Heart Disease
+Cardiovascular diseases are disorders of the heart and blood vessels and include 
+coronary heart disease, cerebrovascular disease, rheumatic heart disease and 
+other conditions. Four out of five CVD deaths are due to heart attacks and 
+strokes. Individuals at risk of CVD may demonstrate raised blood pressure, 
+glucose, and lipids as well as overweight and obesity.
+
+# Explanation of how the variables were created
+
+## Arthritis
+A diagnosis of arthritis was made if the participant fulfilled any of the 
+available criteria: (1) self-reported diagnosis of arthritis (q4001_arthritis_s3); (2) self-reported symptoms of arthritis (q4003_symptoms_s3, q4004_symptoms_s3,); (3) self-reported as under treatment for arthritis (q4002b_treated_s3) and characteristics like duration (q4005_duration_s3 and q4006_outcome_s3)
+As for the self-reported diagnosis, arthritis was endorsed if the participant 
+answered "yes" (1) to self-reported diagnosis of arthritis, but if they affirmed they had never had the disease (not "997" to q4001a_s3).
+
+## Stroke
+A diagnosis of stroke was made if the 
+participant (1) self-reported the diagnosis of a stroke (q4010_stroke_s3) or (2) suffer from two relevant symptoms (q4012_parals_s3, q4013_feeling_s3.)
+
+## Angina
+Original variables include , q4015b_treated_s3, 
+, q4017_symptoms_s3, q4018_resp_s3, q4019_stand_s3, 
+q4020_where_6_s3, q4020_where_7_s3, q4020_where_8_s3 and q4020_where_11_s3. 
+
+A diagnosis of angina was made if the participant self reported suffering from angina (q4014_angina_s3) or if he presents several symptoms such as chest pain when walking downhill, chest pain when walking normally, etc. (q4016_symptoms_s3, q4017_symptoms_s3, q4018_r, q4019_s, q4020_where_6_s3, q4020_where_7_s3, q4020_where_8_s3, q4020_where_11_s3) 
+Diagnosis of angina was endorsed if the participant answered "yes" (1) to self-reported diagnosis , but not if they affirmed they had never had the disease (not "997" to q4014_angina_s3).
+
+
+
+## Diabetes
+Original variables include the self-reported diagnosis of diabete (q4022_diabetes_s3), the self-reported treatment of diabetes (q4023b_treated_s3) and the following of a special diet (q4024_diet_s3). Diabetes was endorsed when the participant answered "yes" to 
+self-reported diagnose of diabetes, but not 997 in q4022a_s3 
+(they affirmed they had never had the disease). 
+
+## Lung Disease
+Original variables include q4025_lungs_s3, q4026b_treated_s3, q4027_symptoms_s3, 
+q4028_symptoms_s3 and q4029_symptoms_s3.  A diagnosis of lung disease was made 
+if the participant fulfilled any of the available criteria 
+(i.e. self-reported diagnosis or symptoms). Those participants who 
+answered "yes" to q4027_symptoms_s3, q4028_symptoms_s3 and q4029_symptoms_s3, 
+were defined as having had lung disease. As for the self-reported diagnosis, 
+lung disease was endorsed if the participant answered "yes" to q4025_lungs_s3, 
+but not 997 in q4025a_s3 (they affirmed they had never had the disease). 
+Please, consider that this algorithm doesn´t include asthma as a part of 
+lung diseases.
+
+## Asthma 
+Original variables include q4033_asthma_s3, q4034b_treated_s3, 
+q4035_symptoms_s3, q4036_symptoms_s3, q4037_symptoms_s3, q4038_symptoms_s3 
+and q4039_symptoms_s3. A diagnosis of asthma was made if the participant 
+fulfilled any of the available criteria 
+(i.e. self-reported diagnosis or symptoms). 
+Those participants who answered "yes" to q4035_symptoms_s3 and q4036_symptoms_s3 
+and q4037_symptoms_s3 and q4038_symptoms_s3 and q4039_symptoms_s3,
+were defined as having had asthma. As for the self-reported diagnosis, 
+asthma was endorsed if the participant answered "yes" to q4033_asthma_s3, 
+but not 997 in q4033a_s3 (they affirmed they had never had the disease). 
+Note= it is possible to create the symptom algorithm in a less conservative way. 
+That is: if q4035_symptoms_s3=1  and q4036_symptoms_s3=1  or q4037_symptoms_s3=1  
+or q4038_symptoms_s3=1  or q4039_symptoms_s3=1, asthma_test=1. 
+There is, apparently, no wrong or right option.
+
+## Hypertension
+Original variables include q2501_syst_s3, q2502_syst_s3, q2501_diast_s3, 
+q2502_diast_s3, q4061b_treated_s3 and q4060_high_bp_s3. A diagnosis of asthma 
+was made if the participant fulfilled any of the available criteria 
+(i.e. self-reported diagnosis or symptoms).  
+Those participants with systolic blood pressure ≥140 mmHg and/or diastolic blood 
+pressure ≥90 mmHg were considered to have hypertension 
+(blood pressure measurement). As for the self-reported diagnosis, 
+asthma was endorsed if the participant answered "yes" to q4060_high_bp_s3, 
+but not 997 in q4060a_s3 (they affirmed they had never had the disease). 
+
+## Cataracts
+Original variables include q4062_catar_s3, q4063_surgery_s3, q4064_vision_s3 
+and q4065_light_s3. A diagnosis of cataracts was made if the participant 
+fulfilled any of the available criteria 
+(i.e. self-reported diagnosis or symptoms). 
+Those participants who answered “yes” to q4064_vision_s3 and q4065_light_s3 
+were defined as having had cataracts. We also included a treatment code 
+(cataracts_self=2) in those individuals who, apart from having reported a 
+cataract diagnosis, have had surgery for cataracts in the previous 12 months.
+
+## Oral Health
+Original variables include q4066_teeth_s3, q4067_symptoms_s3 
+and q4068b_treated_s3. Oral problems were endorsed if the participant fulfilled 
+any of the available criteria (i.e. total tooth loss or self-reported problems). 
+Those participants who answered “yes” to q4066_teeth_s3, 
+but not 997 in q4066a_s3 (they affirmed they had never lost their tooth) were 
+defined as having had total tooth loss. As for the self-reported symptoms, 
+oral problems were endorsed if the participant answered "yes" 
+to q4067_symptoms_s3. 
+
+## Kidney Disease
+Original variables include q4085_kidney_s3 and q4086_s3. 
+A diagnosis of kidney disease was endorsed if the participant 
+answered "yes" to q4085_kidney_s3. 
+
+## Digestive Disease
+Original variables include q4087_s3 and q4088_s3. 
+A diagnosis of digestive disease was endorsed if the participant 
+answered "yes" to q4087_s3. 
+
+## Cancer
+Original variables include q4089_s3. A diagnosis of cancer disease was endorsed 
+if the participant answered "yes" to q4089_s3. 
+
+## Liver Disease
+Original variables include q4091_s3 and q4092_s3. A diagnosis of liver disease 
+was endorsed if the participant answered "yes" to q4091_s3. 
+
+## Osteoporosis
+Original variables include q4093_s3 and q4094_s3. A diagnosis of osteoporosis 
+was endorsed if the participant answered "yes" to q4093_s3. 
+
+## Anaemia
+Original variables include q4095_s3 and q4096_s3. A diagnosis of anaemia was 
+endorsed if the participant answered "yes" to q4095_s3. 
+
+## Thyroid
+Original variables include q4097_s3 and q4098_s3. A diagnosis of thyroid disease 
+was endorsed if the participant answered "yes" to q4097_s3. 
+
+## Glaucoma
+Original variables include q4099_s3 and q4100_s3. A diagnosis of glaucoma was 
+endorsed if the participant answered "yes" to q4099_s3. 
+
+## Heart Disease
+Original variables include q4101_s2 and q4102_s2. A diagnosis of heart disease was endorsed if the participant answered "yes" to q4101_s2. 
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* TODO: Escribir aquí la sintaxis de generación de las variables
+```
+
+
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+
+keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+
+codebook <variable(s) generada(s)>
+```
+
+
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_chronicconditions.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_chronicconditions.dta", replace version(13)
+
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+\< Original version:
+
+-   Name: Emese Verdes-Tennant
+-   e-mail: [verdese\@who.int](mailto:nombre.buzon@institucion.org){.email}
+-   Phone number: +41 22 791 1428
+
+<br>
+
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya\@pssjd.org](mailto:beatriz.olaya@pssjd.org){.email}
+-   Phone number: (+34)936406350 ext(1)2540
+
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
