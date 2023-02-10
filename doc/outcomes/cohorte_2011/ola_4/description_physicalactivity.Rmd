@@ -15,28 +15,17 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-# Activar los paquetes que R necesita para ejecutar el código:
-
 library(Statamarkdown)
-
-# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
-
 
 STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 
-
-# Opciones de configuración de las salidas de R y Stata:
-
-options(width = 88) # Ancho de salida de texto en R
-
-knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-  ## TODO: Descomentar si hace falta
-  # engine.path = list(stata = STATA_PATH),
-  echo        = FALSE, #   - No muestra la sintaxis en el documento
-  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
-  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
-  comment     = ''     #   - No añade ningún prefijo a los resultados
+options(width = 88) 
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
 )
 
 TEST          <- params$test
@@ -103,26 +92,7 @@ Items to create this variable were: `q3017_days_s3`, `q3018_hours_s3`,
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
-* Cohorte 2011, ola 4:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
@@ -162,7 +132,7 @@ label variable physical_s3  "Physical activity (c2011w4)"
 ```
 
 
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+<br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result proxy physical_s3
