@@ -295,72 +295,48 @@ or q4038_symptoms_s3=1  or q4039_symptoms_s3=1, asthma_test=1.
 There is, apparently, no wrong or right option.
 
 ## Hypertension
-Original variables include q2501_syst_s3, q2502_syst_s3, q2501_diast_s3, 
-q2502_diast_s3, q4061b_treated_s3 and q4060_high_bp_s3. A diagnosis of asthma 
-was made if the participant fulfilled any of the available criteria 
-(i.e. self-reported diagnosis or symptoms).  
-Those participants with systolic blood pressure ≥140 mmHg and/or diastolic blood 
-pressure ≥90 mmHg were considered to have hypertension 
-(blood pressure measurement). As for the self-reported diagnosis, 
-asthma was endorsed if the participant answered "yes" to q4060_high_bp_s3, 
-but not 997 in q4060a_s3 (they affirmed they had never had the disease). 
+Those participants with systolic blood pressure ≥140 mmHg (q2501_syst_s3, q2502_syst_s3, measured twice) and/or diastolic blood pressure ≥90 mmHg (q2501_diast_s3, q2502_diast_s3, measured twice) were considered to have hypertension (blood pressure measurement). Hypertension diagonisis was also assess if participan answer "yes" to the self-reported question about the condition (q4060_high_bp_s3) but not "997" (they affirmed they had never had the disease). 
 
 ## Cataracts
-Original variables include q4062_catar_s3, q4063_surgery_s3, q4064_vision_s3 
-and q4065_light_s3. A diagnosis of cataracts was made if the participant 
-fulfilled any of the available criteria 
-(i.e. self-reported diagnosis or symptoms). 
-Those participants who answered “yes” to q4064_vision_s3 and q4065_light_s3 
-were defined as having had cataracts. We also included a treatment code 
-(cataracts_self=2) in those individuals who, apart from having reported a 
+A diagnosis of cataracts was made if the participant says he has the condition (q4062_catar_s3) or if he suffer from those two symptoms: (1) blurred or hazy vision (q4064_vision_s3) and (2) visual problems with light (q4065_light_s3) or if he has undergone surgery (q4063_surgery_s3).We also included a treatment code (cataracts_self=2) in those individuals who, apart from having reported a 
 cataract diagnosis, have had surgery for cataracts in the previous 12 months.
 
 ## Oral Health
-Original variables include q4066_teeth_s3, q4067_symptoms_s3 
-and q4068b_treated_s3. Oral problems were endorsed if the participant fulfilled 
-any of the available criteria (i.e. total tooth loss or self-reported problems). 
-Those participants who answered “yes” to q4066_teeth_s3, 
+Oral problems were endorsed if the participant answered "yes" to the self-reported question about any oral conditions (q4067_symptoms_s3) or has been pharmacology treated for oral problem (q4068b_treated_s3). We also consider the age at which the participants lost all their teeth (q4066_teeth_s3). Those participants who answered “yes” to q4066_teeth_s3, 
 but not 997 in q4066a_s3 (they affirmed they had never lost their tooth) were 
 defined as having had total tooth loss. As for the self-reported symptoms, 
 oral problems were endorsed if the participant answered "yes" 
 to q4067_symptoms_s3. 
 
 ## Kidney Disease
-Original variables include q4085_kidney_s3 and q4086_s3. 
-A diagnosis of kidney disease was endorsed if the participant 
-answered "yes" to q4085_kidney_s3. 
+A diagnosis of kidney disease was endorsed if the participant self-reported having a kidney diases (q4085_kidney_s3) or take treatment for kidney disease (q4086_s3).
 
 ## Digestive Disease
-Original variables include q4087_s3 and q4088_s3. 
-A diagnosis of digestive disease was endorsed if the participant 
-answered "yes" to q4087_s3. 
+A diagnosis of digestive disease was endorsed if the participant self-reported having a kidney diases (q4087_s3) or take treatment for kidney disease (q4088_s3).
 
 ## Cancer
-Original variables include q4089_s3. A diagnosis of cancer disease was endorsed 
-if the participant answered "yes" to q4089_s3. 
+A diagnosis of cancer disease was endorsed 
+if the participant answered "yes" to self-reported question about cancer (q4089_s3). 
 
 ## Liver Disease
-Original variables include q4091_s3 and q4092_s3. A diagnosis of liver disease 
-was endorsed if the participant answered "yes" to q4091_s3. 
+A diagnosis of liver disease was endorsed if the participant self-reported having a kidney diases (q4091_s3) or take treatment for kidney disease (q4092_s3).
 
 ## Osteoporosis
-Original variables include q4093_s3 and q4094_s3. A diagnosis of osteoporosis 
-was endorsed if the participant answered "yes" to q4093_s3. 
+A diagnosis of osteoporosis was endorsed if the participant self-reported having a kidney diases (q4093_s3) or take treatment for kidney disease (q4094_s3).
 
 ## Anaemia
-Original variables include q4095_s3 and q4096_s3. A diagnosis of anaemia was 
-endorsed if the participant answered "yes" to q4095_s3. 
+A diagnosis of anaemia was endorsed if the participant self-reported having a kidney diases (q4095_s3) or take treatment for kidney disease (q4096_s3).
+
 
 ## Thyroid
-Original variables include q4097_s3 and q4098_s3. A diagnosis of thyroid disease 
-was endorsed if the participant answered "yes" to q4097_s3. 
+A diagnosis of hyperthyroid or hypothyroid was endorsed if the participant self-reported having a kidney diases (q4097_s3) or take treatment for kidney disease (q4098_s3).
 
 ## Glaucoma
-Original variables include q4099_s3 and q4100_s3. A diagnosis of glaucoma was 
-endorsed if the participant answered "yes" to q4099_s3. 
+
+A diagnosis of glaucoma was endorsed if the participant self-reported having a kidney diases (q4099_s3) or take treatment for kidney disease (q4100_s3).
 
 ## Heart Disease
-Original variables include q4101_s2 and q4102_s2. A diagnosis of heart disease was endorsed if the participant answered "yes" to q4101_s2. 
+A diagnosis of heart disease was endorsed if the participant self-reported having a kidney diases (q4101_s3) or take treatment for kidney disease (q4102_s3).
 
 # Syntax used to create the variable (Stata 15)
 
