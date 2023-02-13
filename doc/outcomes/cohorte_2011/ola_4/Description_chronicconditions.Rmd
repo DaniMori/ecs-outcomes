@@ -270,47 +270,26 @@ answered "yes" (1) to self-reported diagnosis of arthritis, but if they affirmed
 
 ## Stroke
 A diagnosis of stroke was made if the 
-participant (1) self-reported the diagnosis of a stroke (q4010_stroke_s3) or (2) suffer from two relevant symptoms (q4012_parals_s3, q4013_feeling_s3.)
+participant (1) self-reported the diagnosis of a stroke (q4010_stroke_s3) or (2) suffer from two symptoms: a sudden paralysis or weakness in arms or legs on one side of the body and a sudden loss of sensation on one side of the body (q4012_parals_s3, q4013_feeling_s3).
 
 ## Angina
-Original variables include , q4015b_treated_s3, 
-, q4017_symptoms_s3, q4018_resp_s3, q4019_stand_s3, 
-q4020_where_6_s3, q4020_where_7_s3, q4020_where_8_s3 and q4020_where_11_s3. 
-
 A diagnosis of angina was made if the participant self reported suffering from angina (q4014_angina_s3) or if he presents several symptoms such as chest pain when walking downhill, chest pain when walking normally, etc. (q4016_symptoms_s3, q4017_symptoms_s3, q4018_r, q4019_s, q4020_where_6_s3, q4020_where_7_s3, q4020_where_8_s3, q4020_where_11_s3) 
 Diagnosis of angina was endorsed if the participant answered "yes" (1) to self-reported diagnosis , but not if they affirmed they had never had the disease (not "997" to q4014_angina_s3).
 
 
-
 ## Diabetes
-Original variables include the self-reported diagnosis of diabete (q4022_diabetes_s3), the self-reported treatment of diabetes (q4023b_treated_s3) and the following of a special diet (q4024_diet_s3). Diabetes was endorsed when the participant answered "yes" to 
-self-reported diagnose of diabetes, but not 997 in q4022a_s3 
-(they affirmed they had never had the disease). 
+Original variables include the self-reported diagnosis of diabetes (q4022_diabetes_s3), the self-reported treatment of diabetes (q4023b_treated_s3) and the following of a special diet (q4024_diet_s3). Diabetes was endorsed when the participant answered "yes" to 
+self-reported diagnose of diabetes, but not 997 in q4022a_s3 (they affirmed they had never had the disease). 
 
 ## Lung Disease
-Original variables include q4025_lungs_s3, q4026b_treated_s3, q4027_symptoms_s3, 
-q4028_symptoms_s3 and q4029_symptoms_s3.  A diagnosis of lung disease was made 
-if the participant fulfilled any of the available criteria 
-(i.e. self-reported diagnosis or symptoms). Those participants who 
-answered "yes" to q4027_symptoms_s3, q4028_symptoms_s3 and q4029_symptoms_s3, 
-were defined as having had lung disease. As for the self-reported diagnosis, 
-lung disease was endorsed if the participant answered "yes" to q4025_lungs_s3, 
-but not 997 in q4025a_s3 (they affirmed they had never had the disease). 
-Please, consider that this algorithm doesn´t include asthma as a part of 
-lung diseases.
+A diagnosis of lung disease was made if the participant fulfilled any of the available criteria 
+(i.e. self-reported diagnosis or symptoms). Those participants who answered "yes" to q4027_symptoms_s3, q4028_symptoms_s3 and q4029_symptoms_s3, were defined as having had lung disease. As for the self-reported diagnosis, lung disease was endorsed if the participant answered "yes" to q4025_lungs_s3, but not 997 in q4025a_s3 (they affirmed they had never had the disease). Please, consider that this algorithm does not include asthma as a part of lung diseases.
 
 ## Asthma 
-Original variables include q4033_asthma_s3, q4034b_treated_s3, 
-q4035_symptoms_s3, q4036_symptoms_s3, q4037_symptoms_s3, q4038_symptoms_s3 
-and q4039_symptoms_s3. A diagnosis of asthma was made if the participant 
-fulfilled any of the available criteria 
-(i.e. self-reported diagnosis or symptoms). 
-Those participants who answered "yes" to q4035_symptoms_s3 and q4036_symptoms_s3 
-and q4037_symptoms_s3 and q4038_symptoms_s3 and q4039_symptoms_s3,
-were defined as having had asthma. As for the self-reported diagnosis, 
-asthma was endorsed if the participant answered "yes" to q4033_asthma_s3, 
-but not 997 in q4033a_s3 (they affirmed they had never had the disease). 
-Note= it is possible to create the symptom algorithm in a less conservative way. 
+A diagnosis of asthma was made if the participant has self-reported having the diases (q4033_asthma_s3) or if he is treated for asthma (q4034b_treated_s3)  or several symptoms such as (1) wheezing attacks (q4035_symptoms_s3), (2) wheezing attack immediately after physical activity (q4036_symptoms_s3), (3) feeling of tightness in the chest (q4037_symptoms_s3), (4) woken up with a tight feeling in chest (q4038_symptoms_s3), (5) attack of shortness of breath, which occurs without an obvious cause (q4039_symptoms_s3).
+Those participants who answered "yes" to all five symptoms were defined as having had asthma. As for the self-reported diagnosis, 
+asthma was endorsed if the participant answered "yes" to q4033_asthma_s3, but not 997 in q4033a_s3 (they affirmed they had never had the disease). 
+Note: it is possible to create the symptom algorithm in a less conservative way. 
 That is: if q4035_symptoms_s3=1  and q4036_symptoms_s3=1  or q4037_symptoms_s3=1  
 or q4038_symptoms_s3=1  or q4039_symptoms_s3=1, asthma_test=1. 
 There is, apparently, no wrong or right option.
