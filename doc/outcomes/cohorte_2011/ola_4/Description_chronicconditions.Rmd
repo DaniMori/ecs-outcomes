@@ -260,6 +260,17 @@ other conditions. Four out of five CVD deaths are due to heart attacks and
 strokes. Individuals at risk of CVD may demonstrate raised blood pressure, 
 glucose, and lipids as well as overweight and obesity.
 
+## Migraine
+Migraine is a primary headache disorder and it is caused by the activation of a mechanism deep in the brain that leads to release of pain-producing inflammatory substances around the nerves and blood vessels of the head. A large number of people with headache disorders are not diagnosed and treated: worldwide only 40% of those with migraine are professionally diagnosed. In the Global Burden of Disease Study of 2016, migraine affected more than one billion people globally, caused 45 million years lost due to disability (YLDs) and was the second most disabling condition worldwide. Among young adults (under 50 years of age), it was the most disabling.
+
+## Chronic Back Pain
+Chronic back pain is defined as pain that continues for 12 weeks or longer. It has been found to be the leading cause of disability when analysed globally and has remained one of the top 2 contributors of global disability causes for over two decades.
+Chronic low back pain: About 20 percent of people affected by acute low back pain develop chronic low back pain with persistent symptoms at one year.
+Chronic cervical, neck or upper-back pain: Although most acute episodes resolve spontaneously, more than a third of affected people still have low grade symptoms or recurrences more than one year later, with genetics and psychosocial factors being risk factors for persistence.
+
+## Dementia
+Dementia is a syndrome in which there is deterioration in cognitive function (i.e. the ability to process thought) beyond what might be expected from normal ageing. It affects memory, thinking, orientation, comprehension, calculation, learning capacity, language, and judgement. The impairment in cognitive function is commonly accompanied, and occasionally preceded, by changes in mood, emotional control, behaviour, or motivation. Dementia results from a variety of diseases and injuries that primarily or secondarily affect the brain, such as Alzheimer's disease or stroke.
+
 # Explanation of how the variables were created
 
 ## Arthritis
@@ -338,6 +349,15 @@ A diagnosis of glaucoma was endorsed if the participant self-reported having a k
 ## Heart Disease
 A diagnosis of heart disease was endorsed if the participant self-reported having a kidney diases (q4101_s3) or take treatment for kidney disease (q4102_s3).
 
+## Migraine
+Original variables include self-reported diagnose (q4119) and treatment (q4119c). A diagnosis of migraine was endorsed if the participant answered "yes" to q4119. We also included a treatment code (migr_self=2) in those individuals who reported migraine and received treatment for it in the previous 12 months.
+
+## Chronic Back pain
+Diagnosis of chronic low back or cervical pain were made if the participant self-reported chronic back pain (q4112) or was treat for it (q4113c). Those participants reported suffering from back pain by answering "yes" to q4112 were defined as having had lombalgy. We also included a treatment code (low_self =2 or cerv_self =2) in those individuals who reported a diagnosis and had received treatment for it in the previous 12 months.
+
+## Dementia
+Original variables include question about previous diagnose of dementia (q4105) and treatment (q4106c). A diagnosis of dementia was endorsed if the participant answered "yes" to q4105. We also included a treatment code (dem_self=2) in those individuals who reported dementia and received treatment for it in the previous 12 months.
+
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
@@ -347,7 +367,455 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+*ARTHRITIS
+* Symptoms for arthritis.
+gen art_test_s3=.
+replace art_test_s3=1 if q4003_symptoms_s3==1 & q4004_symptoms_s3==1 & q4005_duration_s3==2 & q4006_outcome_s3==1
+replace art_test_s3=2 if q4003_symptoms_s3==2 | q4004_symptoms_s3==2 | q4005_duration_s3==1 | q4006_outcome_s3==2
+label define labels1 1 "Yes" 2 "No"
+label values art_test_s3 labels1
+label variable art_test_s3 "test for arthritis"
+
+* Arthritis self-reported. 
+recode q4001_arthritis_s3 (888=.), gen (art_1)
+recode q4002c_treated_s3 (888=.), gen (art_2)
+replace art_1=2 if q4001a_s3==997
+gen art_self_s3=.
+replace art_self_s3=2 if art_1==2
+replace art_self_s3=1 if art_1==1
+label values art_self_s3 labels1
+label variable art_self_s3 "Arthritis self-reported"
+
+* Final algorithm for arthritis (without treatment).
+gen arthritis_s3=.
+replace arthritis_s3=1 if (art_test_s3==1 | art_self_s3==1) | (art_test_s3==. & art_self_s3==1) | (art_test_s3==1 & art_self_s3==.)  
+replace arthritis_s3=2 if art_test_s3==2 & art_self_s3==2
+label values arthritis_s3 labels1
+label variable arthritis_s3 "Arthritis test or self-reported"
+
+
+*OSTEOARTHRITIS
+* Symptoms for osteoarthritis.
+gen osteoart_test_s3=.
+replace osteoart_test_s3=1 if q4003_symptoms_s3==1 & q4005_duration_s3==1 & q4005_duration_s3==1 & q4006_outcome_s3==2
+replace osteoart_test_s3=2 if q4003_symptoms_s3==2 | q4005_duration_s3==2 | q4005_duration_s3==2 | q4006_outcome_s3==1
+label values osteoart_test_s3 labels1
+label variable osteoart_test_s3 "Osteoarthritis test"
+
+* Final algorithm for osteoarthritis.
+gen osteoart_s3=.
+replace osteoart_s3=1 if (osteoart_test_s3==1 | art_self_s3==1) | (osteoart_test_s3==. & art_self_s3==1) | (osteoart_test_s3==1 & art_self_s3==.)  
+replace osteoart_s3=2 if osteoart_test_s3==2 & art_self_s3==2
+label values osteoart_s3 labels1
+label variable osteoart_s3 "Osteoarthritis self-reported test"
+
+
+*STROKE.
+* Symptoms for stroke.
+gen stroke_test_s3=.
+replace stroke_test_s3=1 if q4012_paral_s3==1 & q4013_feeling_s3==1
+replace stroke_test_s3=2 if q4012_paral_s3==2 | q4013_feeling_s3==2
+label values stroke_test_s3 labels1
+label variable stroke_test_s3 "Stroke test"
+
+* Stroke self-reported.
+recode q4010_stroke_s3 (888=.), gen (str_1)
+replace str_1=2 if q4010a_s3==997
+gen str_self_s3=.
+replace str_self_s3=1 if str_1==1
+replace str_self_s3=2 if str_1==2
+label values str_self_s3 labels1
+label variable str_self_s3 "Stroke self-reported"
+
+* Final algorithm for stroke.
+gen stroke_s3=.
+replace stroke_s3=1 if stroke_test_s3==1 | str_self_s3==1
+replace stroke_s3=2 if stroke_test_s3==2 & str_self_s3==2
+label values stroke_s3 labels1
+label variable stroke_s3 "Stroke self-reported or test"
+
+
+*ANGINA. 
+* Symptoms for angina. 
+recode q4016_symptoms_s3 (3=2), gen (q4016_s)
+rename q4017_symptoms_s3 q4017_s
+recode q4018_resp_s3 (1=1) (2=1) (3=2), gen (q4018_r)
+recode q4019_stand_s3 (888=.), gen (q4019_s)
+replace q4018_r=9 if q4017_s==2
+replace q4019_s=9 if q4017_s==2
+gen angina_test_s3=2
+replace angina_test_s3=1 if (q4016_s==1 | q4017_s==1) & q4018_r==1 & q4019_s==1 & (q4020_where_6_s3==1 | q4020_where_8_s3==1 | q4020_where_8_s3==1 | q4020_where_11_s3==1)
+replace angina_test_s3=. if q4016_s==. | q4017_s==. | q4018_r==. | q4019_s==.
+label values angina_test_s3 labels1
+label variable angina_test_s3 "Angina test"
+
+* Angina self-reported. 
+recode q4014_angina_s3 (888=.), gen (ang_1)
+replace ang_1=2 if q4014a_s3==997
+gen ang_self_s3=.
+replace ang_self_s3=1 if ang_1==1
+replace ang_self_s3=2 if ang_1==2
+label values ang_self_s3 labels1
+label variable ang_self_s3 "Angina self-reported"
+ 
+* Final algorithm for angina. 
+gen angina_s3=2
+replace angina_s3=1 if angina_test_s3==1 | ang_self_s3==1
+replace angina_s3=. if angina_test_s3==. & ang_self_s3==.
+label values angina_s3 labels1
+label variable angina_s3 "Angina test or self-reported"
+
+
+* DIABETES.
+* Diabetes self-reported.
+recode q4022_diabetes_s3 (888=.), gen (diab_self)
+replace diab_self=2 if q4022a_s3==997
+label values diab_self labels1
+label variable diab_self "Diabetes self-reported"
+
+recode q4023b_treated (888=.) (2=0), gen (diab_2)
+label values diab_2 labels1
+label variable diab_2 "Treatment for diabetes"
+
+gen diab_self=.
+replace diab_self=0 if diabetes==0
+replace diab_self=1 if diabetes==1 
+replace diab_self=2 if diabetes==1 & diab_2==1
+label values diab_self labels2
+label variable diab_self "Diabetes self-reported and treatment"
+
+
+* LUNG DISEASE 
+* Symptoms for lung disease.
+gen lung_test_s3=.
+replace lung_test_s3=1 if q4027_symptoms_s3==1 & q4028_symptoms_s3==1 & q4029_symptoms_s3==1
+replace lung_test_s3=2 if q4027_symptoms_s3==2 | q4028_symptoms_s3==2 | q4029_symptoms_s3==2
+label values lung_test_s3 labels1
+label variable lung_test_s3 "Lung Disease test"
+
+* Lung disease self-reported.
+recode q4025_lungs_s3 (888=.), gen (lu_1)
+replace lu_1=2 if q4025a_s3==997
+ren lu_1 lung_self_s3
+label values lung_self_s3 labels1
+label variable lung_self_s3 "Lung Disease self-reported"
+
+* Final algorithm for lung disease.
+gen lung_s3=.
+replace lung_s3=1 if lung_test_s3==1 | lung_self_s3 ==1
+replace lung_s3=2 if lung_test_s3==2 & lung_self_s3 ==2
+label values lung_s3 labels1
+label variable lung_s3 "Lung Disease test or self-reported"
+
+
+*ASTHMA. 
+* Symptoms for asthma. 
+gen asthma_test_s3=.
+replace asthma_test_s3=1 if (q4035_symptoms_s3==1 & q4036_symptoms_s3==1 & q4037_symptoms_s3==1 & q4038_symptoms_s3==1 & q4039_symptoms_s3==1)
+replace asthma_test_s3=2 if (q4035_symptoms_s3==2 | q4036_symptoms_s3==2 | q4037_symptoms_s3==2 | q4038_symptoms_s3==2 | q4039_symptoms_s3==2)
+label values asthma_test_s3 labels1
+label variable asthma_test_s3 "Asthma test"
+
+* Asthma self-reported. 
+recode q4033_asthma_s3 (888=.), gen (ast_1)
+replace ast_1=2 if q4033a_s3==997
+ren ast_1 ast_self_s3
+label values ast_self_s3 labels1
+label variable ast_self_s3 "Asthma self-reported"
+
+* Final algorithm for asthma. 
+gen asthma_s3=.
+replace asthma_s3=1 if asthma_test_s3==1 | ast_self_s3==1
+replace asthma_s3=2 if asthma_test_s3==2 & ast_self_s3==2
+label values asthma_s3 labels1
+label variable asthma_s3 "Asthma test or self-reported"
+
+
+* HYPERTENSION.
+* Test for hypertension. 
+recode q2501_syst_s3 (997=.) (998=.), gen (q2501_s)
+recode q2502_syst_s3 (997=.) (998=.), gen (q2502_s)
+recode q2501_diast_s3 (997=.) (998=.), gen (q2501_d)
+recode q2502_diast_s3 (997=.) (998=.), gen (q2502_d)
+egen systolic= rowmean(q2501_s q2502_s)
+replace systolic=q2501_s if q2501_s!=. & q2502_s==.
+replace systolic=q2502_s if q2501_s==. & q2502_s!=.
+egen diastolic= rowmean(q2501_d q2502_d)
+replace diastolic =q2501_d if q2501_d!=. & q2502_d==.
+replace diastolic =q2502_d if q2501_d==. & q2502_d!=.
+gen hypertension_test_s3=.
+replace hypertension_test_s3=1 if systolic>=140 | diastolic>=90 
+replace hypertension_test_s3=2 if systolic<140 & diastolic<90 
+replace hypertension_test_s3=. if systolic==. | diastolic==.
+label values hypertension_test_s3 labels1
+label variable hypertension_test_s3 "Hypertension test"
+
+* Hypertension self-reported.
+recode q4060_high_bp_s3 (888=.), gen (hyp_1)
+replace hyp_1=2 if q4060a_s3==997
+ren hyp_1 hyper_self_s3
+label values hyper_self_s3 labels1
+label variable hyper_self_s3 "Hypertension self-reported"
+
+* Final algorithm for hypertension.
+gen hypertension_s3=.
+replace hypertension_s3=1 if hypertension_test_s3==1 | hyper_self_s3 ==1
+replace hypertension_s3=2 if hypertension_test_s3==2 & hyper_self_s3 ==2
+label values hypertension_s3 labels1
+label variable hypertension_s3 "Hypertension test or self-reported"
+
+
+* CATARACTS.
+recode q4062_catar_s3 (888=.), gen (catar_self_s3)
+gen catar_test_s3=.
+replace catar_test_s3=1 if q4064_vision_s3==1 & q4065_light_s3==1
+replace catar_test_s3=2 if q4064_vision_s3==2 | q4065_light_s3==2
+label values catar_test_s3 labels1
+label variable catar_test_s3 "Cataract test"
+label values catar_self_s3 labels1
+label variable catar_self_s3 "Cataract self-reported"
+
+* Final algorithm for cataracts.
+gen cataracts_s3=.
+replace cataracts_s3=1 if catar_self_s3==1 | catar_test_s3==1
+replace cataracts_s3=2 if catar_self_s3==2 & catar_test_s3==2
+label values cataracts_s3 labels1
+label variable cataracts_s3 "Cataract test or self-reported"
+
+
+* ORAL HEALTH.
+recode q4066_teeth_s3 (888=.), gen (oral_self_s3)
+recode q4067_symptoms_s3 (888=.), gen (oral_test_s3)
+replace oral_self_s3=2 if q4066a_s3==997
+label values oral_self_s3 labels1
+label variable oral_self_s3 "Oral problems self-reported"
+label values oral_test_s3 labels1
+label variable oral_test_s3 "Oral problems test"
+
+* Final algorithm for oral problems.
+gen oral_s3=.
+replace oral_s3=1 if oral_self_s3==1 | oral_test_s3==1
+replace oral_s3=2 if oral_self_s3==2 & oral_test_s3==2
+label values oral_s3 labels1
+label variable oral_s3 "Oral problems test or self-reported"
+
+
+* KIDNEY.
+recode q4085_s3 (888=.), gen (kidney)
+replace kidney=2 if q4085a_s3==997
+label values kidney labels1
+label variable kidney "Kidney problems self-reported"
+
+recode q4086c (888=.) (2=0), gen (kidney_2)
+label values kidney_2 labels1
+label variable kidney_2 "Treatment for kidney disease"
+
+gen kidney_self=.
+replace kidney_self=0 if kidney ==0
+replace kidney_self=1 if kidney==1 
+replace kidney_self=2 if kidney==1 | kidney_2==1
+label values kidney_self labels2
+label variable kidney_self "Kidney disease self-reported or treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+
+* DIGESTIVE.
+recode q4087_s3 (888=.), gen (digestive)
+replace digestive=2 if q4087a_s3==997
+label values digestive labels1
+label variable digestive "Digestive problems self-reported"
+
+recode q4088c (888=.) (2=0), gen (digestive_2)
+label values digestive_2 labels1
+label variable digestive_2 "Treatment for digestive disease"
+
+gen digestive_self=.
+replace digestive_self=0 if digestive==0
+replace digestive_self=1 if digestive==1 
+replace digestive_self=2 if digestive==1 & digestive_2==1
+label values digestive_self labels2
+label variable digestive_self "Digestive problems self-reported and treatment"
+
+
+* CANCER.
+recode q4089_s3 (888=.), gen (cancer_s3)
+replace cancer_s3=2 if q4089a_s3==997
+label values cancer_s3 labels1
+label variable cancer_s3 "Cancer self-reported"
+
+
+* LIVER.
+recode q4091_s3 (888=.), gen (liver)
+replace liver=2 if q4091a_s3==997
+label values liver labels1
+label variable liver "Liver self-reported"
+
+recode q4092c (888=.) (2=0), gen (liver_2)
+label values liver_2 labels1
+label variable liver_2 "Treatment for liver"
+
+gen liver_self=.
+replace liver_self=0 if liver==0
+replace liver_self=1 if liver==1 
+replace liver_self=2 if liver==1 & liver_2==1
+label values liver_self labels2
+label variable liver_self "Liver disease self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+
+
+* OSTEOPOROSIS.
+recode q4093_s3 (888=.), gen (osteo)
+replace osteo=2 if q4093a_s3==997
+label values osteo labels1
+label variable osteo "Osteoporosis self-reported"
+
+recode q4094c (888=.) (2=0), gen (osteop_2)
+label values osteop_2 labels1
+label variable osteop_2 "Treatment for osteoporosis"
+
+gen osteop_self=.
+replace osteop_self=0 if osteop==0
+replace osteop_self=1 if osteop==1 
+replace osteop_self=2 if osteop==1 & osteop_2==1
+label values osteop_self labels2
+label variable osteop_self "Osteoporosis self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+
+* ANAEMIA.
+recode q4095_s3 (888=.), gen (anaemia_s3)
+replace anaemia_s3=2 if q4095a_s3==997
+label values anaemia_s3 labels1
+label variable anaemia_s3 "Anaemia self-reported"
+
+recode q4096c (888=.) (2=0), gen (anaemia_2)
+label values anaemia_2 labels1
+label variable anaemia_2 "Treatment for anaemia"
+
+gen anaemia_self=.
+replace anaemia_self=0 if anaemia==0
+replace anaemia_self=1 if anaemia==1 
+replace anaemia_self=2 if anaemia==1 & anaemia_2==1
+label values anaemia_self labels2
+label variable anaemia_self "Anaemia self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+* THYROID.
+recode q4097_s3 (888=.), gen (thyroid_s3)
+replace thyroid_s3=2 if q4097a_s3==997
+label values thyroid_s3 labels1
+label variable thyroid_s3 "Thyroid disease self-reported"
+
+recode q4098c (888=.) (2=0), gen (thyroid_2)
+label values thyroid_2 labels1
+label variable thyroid_2 "Treatment for thyroid"
+
+gen thyroid_self=.
+replace thyroid_self=0 if thyroid==0
+replace thyroid_self=1 if thyroid==1 
+replace thyroid_self=2 if thyroid==1 & thyroid_2==1
+label values thyroid_self labels2
+label variable thyroid_self "Thyroid self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+
+* GLAUCOMA.
+recode q4099_s3 (888=.), gen (glaucoma_s3)
+replace glaucoma_s3=2 if q4099a_s3==997
+label values glaucoma_s3 labels1
+label variable glaucoma_s3 "Glaucoma self-reported"
+
+recode q4100c (888=.) (2=0), gen (glaucoma_2)
+label values glaucoma_2 labels1
+label variable glaucoma_2 "Treatment for glaucoma"
+
+gen glaucoma_self=.
+replace glaucoma_self=0 if glaucoma==0
+replace glaucoma_self=1 if glaucoma==1 
+replace glaucoma_self=2 if glaucoma==1 & glaucoma_2==1
+label values glaucoma_self labels2
+label variable glaucoma_self "Glaucoma self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
+* HEART CONDITIONS.
+recode q4101_s3 (888=.), gen (heart_s3)
+replace heart_s3=2 if q4101a_s3==997
+
+label values heart_s3 labels1
+label variable heart_s3 "Heart disease self-reported"
+
+* MIGRAINE.
+recode q4119 (888=.) (999=.) (2=0), gen (migraine)
+label values migraine labels1
+label variable migraine "Migraine self-reported (c2011_w4)"
+
+recode q4119c (888=.) (2=0), gen (migr_2)
+label values migr_2 labels1
+label variable migr_2 "Treatment for migraine"
+
+gen migr_self=.
+replace migr_self=0 if migraine==0
+replace migr_self=1 if migraine==1 
+replace migr_self=2 if migraine==1 & migr_2==1
+label values migr_self labels2
+label variable migr_self "Migraine self-reported and treatment"
+
+*CHRONIC BACK PAIN
+**Lower back pain
+recode q4112 (888=.) (999=.) (2=0), gen (lowback)
+recode q4112m (888=.) (999=.) (2=0), gen (low_1)
+recode q4113c (888=.) (2=0), gen (low_2)
+label values (lowback low_1 low_2) labels1
+label variable lowback "Lower back pain self-reported (c2011_w4)"
+label variable low_1 "Self-reported diagnosis lower back pain"
+label variable low_2 "Treatment for lower back pain"
+replace lowback=1 if low_1==1
+gen low_self=.
+replace low_self=0 if low_1==0 | lowback==0
+replace low_self=1 if low_1==1 
+replace low_self=2 if lowback==1 & low_2==1
+label values low_self labels2
+label variable low_self "Lower back pain self-reported and treatment"
+
+**Cervical pain
+recode q4120pre (888=.) (999=.) (2=0), gen (cervical)
+recode q4120 (888=.) (999=.) (2=0), gen (cerv_1)
+recode q4120c (888=.) (2=0), gen (cerv_2)
+label values (cervical cerv_1 cerv_2) labels1
+label variable cervical "Cervical pain self-reported (c2011_w4)"
+label variable cerv_1 "Self-reported diagnosis cervical pain"
+label variable cerv_2 "Treatment for cervical pain"
+replace cervical=1 if cerv_1==1
+
+gen cerv_self=.
+replace cerv_self=0 if cerv_1==0 | cervical==0
+replace cerv_self=1 if cerv_1==1 
+replace cerv_self=2 if cervical==1 & cerv_2==1
+label values cerv_self labels2
+label variable cerv_self "Cervical pain self-reported and treatment"
+
+* DEMENTIA.
+recode q4105 (888=.) (999=.) (2=0), gen (dementia)
+recode q4106c (888=.) (2=0), gen (dem_2)
+label values (dementia dem_2) labels1
+ label variable dementia "Dementia self-reported (c2011_w4)"
+label variable dem_2 "Treatment for dementia"
+
+gen dem_self=.
+replace dem_self=0 if dementia==0
+replace dem_self=1 if dementia==1 
+replace dem_self=2 if dementia==1 & dem_2==1
+label values dem_self labels2
+label variable dem_self "Dementia self-reported and treatment"
+
+
 ```
 
 
