@@ -185,8 +185,6 @@ Original version:
 
 # References
 
-<!--# TODO: Borrar párrafo anterior -->
-
 ::: {#refs}
 :::
 
