@@ -74,6 +74,8 @@
 
 - [ ] Al final "Session info" section is included
 
+- [ ] All the TODO's in the template are addressed and deleted
+
 - [ ] The document knits without errors
 
 - [ ] The "descriptives"" table renders properly in the knitted document
