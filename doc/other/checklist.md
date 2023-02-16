@@ -65,12 +65,12 @@
 
 - [ ] The contact information of the person who created the document is in
   section "For any further questions regarding this variable please contact:"
-  (Name, email, telephone, institution)
+  (Name, institutional email, telephone)
 
 - [ ] If the document is based on a previous version, created by another person,
   the contact information of the previous version (in which this one is based)
   are in section "For any further questions regarding this variable please
-  contact:" (Name, email, telephone, institution)
+  contact:" (Name, institutional email, telephone)
 
 - [ ] Al final "Session info" section is included
 
