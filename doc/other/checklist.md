@@ -17,6 +17,9 @@
 
 - [ ] All variables in the chunk `save-data` are in the table
   (except for the ID and the ancillary variables)
+  
+- [ ] All the variables in the metadata table end with suffix `_s\<followup\>`,
+  where `\<followup\> = \<ola\> - 1`
 
 - [ ] All the variables in the metadata table have a label (Label)
 
