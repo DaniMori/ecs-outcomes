@@ -1,12 +1,10 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- Wave 4 -- '<variable name(s)/domain>'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'loneliness, social support, social isolation'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
-bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
 editor_options: 
   markdown:
     wrap: 80
@@ -16,16 +14,9 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-# Activar los paquetes que R necesita para ejecutar el código:
-
 library(Statamarkdown)
 
-# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
-
 STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
-
-
-# Opciones de configuración de las salidas de R y Stata:
 
 options(width = 88) # Ancho de salida de texto en R
 
@@ -47,51 +38,75 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |:-------------------|:---------------------------|:-----------|:------|
 | social_support     | Social support(c2011_w4)   | Continuous | 0-100 |
 | loneliness         | Loneliness(c2011_w4)       | Continuous | 0-100 |
-| isolation          | Social isolation(c2011_w4) | Continuous | 0-5   |
+| isolation          | Social isolation(c2011_w4) | Continuous | 0-6   |
 
 # Variable description
 
-For computing the variable **Social_support_oslo**. The social support was measured using
-the OSLO-3 Social Support Scale (OSSS-3). This scale is composed of three items measuring the level of social support perceived by the participant. Those three items provide information on (1) the number of close confidants, assessed on a 4-point scale ranging from "none" to "more then five", (2) how much interest and concern do people show in what the participant do, assessed on a 5-point scale ranging from "none" to "a lot"(3) the relationship with neighbors, assessed on a 5-point scale ranging from "very difficult" to "very easy". The total score ranges from 3 to 14, the more the value is high, the more high is the level of social support (Dalgard, 1996; Dalgard et al., 2006).
+For computing the variable **Social_support_oslo**. The social support was
+measured using the OSLO-3 Social Support Scale (OSSS-3). This scale is composed
+of three items measuring the level of social support perceived by the
+participant. Those three items provide information on (1) the number of close
+confidants, assessed on a 4-point scale ranging from "none" to "more then five",
+(2) how much interest and concern do people show in what the participant do,
+assessed on a 5-point scale ranging from "none" to "a lot" (3) the relationship
+with neighbors, assessed on a 5-point scale ranging from "very difficult" to
+"very easy". The total score ranges from 3 to 14, the more the value is high,
+the more high is the level of social support [@dalgard2006; @dalgard1996].
 
-The loneliness refers to a distressing perceived
-discrepancy between one´s social desires and one´s actual interactions with
-others (Heinrich & Gullone, 2006). The variable **Loneliness_ucla** was assessed by means of the
-Three-item UCLA Loneliness Scale assessing the perceived level of (1) companionship, (2) exclusion, and (3) isolation. All items are assessed on a scale ranging from 1, "hardly ever" to 3, "often", the higher the total score is, the higher is the feeling of loneliness perceived by the participant (Hughes et al, 2004).
+The loneliness refers to a distressing perceived discrepancy between one´s
+social desires and one´s actual interactions with others [@heinrich2006]. The
+variable **Loneliness_ucla** was assessed by means of the Three-item UCLA
+Loneliness Scale assessing the perceived level of (1) companionship, (2)
+exclusion, and (3) isolation. All items are assessed on a scale ranging from 1,
+"hardly ever" to 3, "often", the higher the total score is, the higher is the
+feeling of loneliness perceived by the participant [@hughes2004].
 
-The social isolation is relate to structural aspects of the
-social network. This variable **Social isolation:**  was computed using  aspects like level of frequency of interactions or size of the social
-network) (De Jong Gierveld & Tilburg, 2006).
+The social isolation is relate to structural aspects of the social network. This
+variable **Social isolation:** was computed using aspects like level of
+frequency of interactions or size of the social network) [@a6-item].
 
 # Explanation of how the variables were created
 
-The **Social_support:**  Variable was created using the scores obtain in three items assessing the relationship with neighbors (items q6310), the number of close confidants (q6320), and the interest and concern of people in what the participant do (q6330). Since higher scores in q6310 and q6330 indicate a low level of perceived social support
-and that the opposite situation occurs for the items q6320. To simplify the understanding of the total scale items q6310 and q6330 were reverted
-in the syntax to obtain a scale where where the higher the score, the higher the level of social support. The global score was created by adding
-up the three items and transforming the result into a percentile scale. 11 participants said to
-have not neighbours. Those cases was considered as \"very difficult\" (the worst
-punctuation) the help received from neighbours.The following formula has
-been used in order to rescale the obtained scores from 0 to 100: 
-global score = ((Factor score - min(factor scores))/(max(factor scores) - min(factor scores)))*100
+The **Social_support:** variables was created using the scores obtain in three
+items assessing the relationship with neighbors (items q6310), the number of
+close confidants (q6320), and the interest and concern of people in what the
+participant do (q6330). To simplify the understanding of the total scale items
+q6310 and q6330 were reverted in the syntax to obtain a scale where the higher
+the score, the higher the level of social support. The global score was created
+by adding up the three items and transforming the result into a percentile
+scale. Eleven participants said to have not neighbors. Those cases was
+considered as "very difficult" (the worst punctuation) the help received from
+neighbors.The following formula has been used in order to rescale the obtained
+scores from 0 to 100: global score = ((Factor score - min(factor
+scores))/(max(factor scores) - min(factor scores)))\*100
 
-**Loneliness:** variable was created using items assessing companionship (q6351), exclusion (q6352), and isolation (q6353). The scores corresponding to each of the responses given to these three items were added
-up and transformed into a percentile scale, with higher scores indicating a
-higher subjective perception of loneliness. The
-same formula as used for social support variable has been used in order to rescale the obtained scores from 0 to 100.
+**Loneliness:** variable was created using items assessing companionship
+(q6351), exclusion (q6352), and isolation (q6353). The scores corresponding to
+each of the responses given to these three items were added up and transformed
+into a percentile scale, with higher scores indicating a higher subjective
+perception of loneliness. The same formula as used for social support variable
+has been used in order to rescale the obtained scores from 0 to 100.
 
+**Isolation**: A social isolation index, based on the one proposed by
+[@shankar2011] was computed with respondents given a point if they (1) were not
+married/not cohabiting with a partner (q6010a_spouse); (2) had less than monthly
+contact with children (q6010c_children); (3) had less than monthly contact with
+other immediate family (q6010b_parents, q6010d_grandch, q6010e_other,
+q6010f_cowork); (4) had less than monthly contact with friends (q6010g_friends);
+and (5) did not participate in any organizations, religious groups, or
+committees (q6618_relig, q6619_leave,q6613_club, and q6621_assoc). The total
+score was obtained by summing the answers given by the participants to the
+different items listed below. The total score ranged from 0 to 5, with higher
+scores representing greater social isolation. Items q6613_club, and q6621_assoc
+corresponded to "committees" ("participation in clubs or organizations" and
+"attend associations or senior community centres, or adult day care centres, or
+senior universities").
 
-**Isolation**: A social isolation index, based on
-the one proposed by Shankar et al. (2011), was computed with respondents given a point if they (1) were not married/not cohabiting with a partner (q6010a_spouse); (2) had less than monthly contact with children (q6010c_children); (3) had less than monthly contact with other immediate family
-(q6010b_parents, q6010d_grandch, q6010e_other, q6010f_cowork); (4) had less than monthly contact with friends (q6010g_friends); and (5) did not participate in any organizations, religious groups, or committees (q6618_relig, q6619_leave,q6613_club, and q6621_assoc). 
-The total score was obtained by summing the answers given by the participants to the different items listed below. The total score ranged from 0 to 5, with higher scores
-representing greater social isolation. 
-Items q6613_club, and q6621_assoc
-corresponded to \"committees\" (\"participation in clubs or organizations\" and
-\"attend
-associations or senior community centres, or adult day care centres, or senior
-universities\").
-
-The social support and loneliness scores have been generated without allowing missing values, taking into account that both scales (Oslo Social Support (OSLO) and Three-item UCLA) comprise only three items. Therefore, global scores for social support and loneliness have been calculated only for subjects who answered the three items from each scale (OSLO/UCLA). 
+The social support and loneliness scores have been generated without allowing
+missing values, taking into account that both scales (Oslo Social Support (OSLO)
+and Three-item UCLA) comprise only three items. Therefore, global scores for
+social support and loneliness have been calculated only for subjects who
+answered the three items from each scale (OSLO/UCLA).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -163,21 +178,19 @@ keep ID_ECS q0007a_result proxy isolation social_support loneliness
 codebook isolation social_support loneliness
 ```
 
-
 ```{stata save-data-test, eval=TEST}
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "loneliness-socialsupport-socialisolation.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
 
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\loneliness-socialsupport-socialisolation.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
-
 
 -   Name: Lea Francia
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
@@ -192,23 +205,13 @@ Original version:
 <br>
 
 -   Name: Félix Caballero
--   e-mail:
-    [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+-   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
 -   Phone number: (+34) 914972447
 
 # References
 
 ::: {#refs}
 :::
-#Dalgard OS (1996). Community health profile: a tool for psychiatric prevention. In: Trent DR, Reed CA, editors. Promotion of Mental Health. Aldershot: Avebury Press; p. 681-695.
-#Dalgard OS, Dowrick C, Lehtinen V, Vázquez-Barquero, Casey P, Wilkinson G, Ayuso-Mateos JL, Page H, Dunn G, and the ODIN Group (2006). Social psychiatry and psychiatric epidemiology, 41(6): 444-451.
-#De Jong Gierveld, J., & Tilburg, T. V. (2006). A 6-Item Scale for Overall, Emotional, and Social Loneliness: Confirmatory Tests on Survey Data. Research on Aging, 28(5), 17. doi:10.1177/0164027506289723
-#Heinrich, L. M., & Gullone, E. (2006). The clinical significance of loneliness: A literature review. Clinical Psychology Review, 26, 24. doi:10.1016/j.cpr.2006.04.002
-#Hughes ME, Waite LJ, Hawkley LC, and Cacioppo JT (2004). A short scale for measuring loneliness in large surveys: results from two population-based studies. Research on Aging, 26(6): 655-672.
-#Shankar A, McMunn A, Banks J, Steptoe A. Loneliness, social isolation, and behavioral and biological health indicators in older adults. Health Psychol. 2011 Jul;30(4):377-85. doi: 10.1037/a0022826.
-#Steptoe, A., Shankar, A., Demakakos, P., Wardle, J., 2013. Social isolation, loneliness, and all-cause mortality in older men and women. Proc. Natl. Acad. Sci. U. S. A. 110, 5797–5801. http://dx.doi.org/10.1073/pnas.1219686110.
-
-
 
 \newpage
 
