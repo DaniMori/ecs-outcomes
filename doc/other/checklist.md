@@ -17,6 +17,9 @@
 
 - [ ] All variables in the chunk `save-data` are in the table
   (except for the ID and the ancillary variables)
+  
+- [ ] All the variables in the metadata table end with suffix `_s\<followup\>`,
+  where `\<followup\> = \<ola\> - 1`
 
 - [ ] All the variables in the metadata table have a label (Label)
 
@@ -47,6 +50,9 @@
 
 - [ ] Section "Syntax used to create the variable" includes the syntax
 
+- [ ] All the variables used in the syntax iare referred to by their complete
+  name, including suffix `_s\<followup\>` (where `\<followup\> = \<ola\> - 1`)
+
 - [ ] Section "Syntax used to create the variable" includes descriptives of ALL
   the created variables (see chunk `descriptives`)
 
@@ -59,18 +65,20 @@
 
 - [ ] The contact information of the person who created the document is in
   section "For any further questions regarding this variable please contact:"
-  (Name, email, telephone, institution)
+  (Name, institutional email, telephone)
 
 - [ ] If the document is based on a previous version, created by another person,
   the contact information of the previous version (in which this one is based)
   are in section "For any further questions regarding this variable please
-  contact:" (Name, email, telephone, institution)
+  contact:" (Name, institutional email, telephone)
 
 - [ ] Al final "Session info" section is included
 
+- [ ] All the TODO's in the template are addressed and deleted
+
 - [ ] The document knits without errors
 
-- [ ] The "descriptives"" table renders properly in the knitted document
+- [ ] The "descriptives" table renders properly in the knitted document
 
 - [ ] The "Outcome dataset" is generated when the document is knitted
 
