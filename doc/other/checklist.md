@@ -78,7 +78,7 @@
 
 - [ ] The document knits without errors
 
-- [ ] The "descriptives"" table renders properly in the knitted document
+- [ ] The "descriptives" table renders properly in the knitted document
 
 - [ ] The "Outcome dataset" is generated when the document is knitted
 
