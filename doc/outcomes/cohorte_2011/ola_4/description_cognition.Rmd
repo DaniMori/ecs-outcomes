@@ -1,10 +1,10 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'Cognition'" 
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'cognition'" 
 output:
   word_document:
-    reference_docx: !expr ecs.data::get_pkg_docx_template()
+       reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
 csl: "`r ecs.data::get_proj_csl_file()`"
-bibliography: "`r ecs.data::get_proj_bib_file()`"
 editor_options: 
   markdown:
     wrap: 80
@@ -14,15 +14,9 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-# Activar los paquetes que R necesita para ejecutar el código:
-
 library(Statamarkdown)
 
-# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
-
 STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
-
-# Opciones de configuración de las salidas de R y Stata:
 
 options(width = 88) # Ancho de salida de texto en R
 
@@ -41,9 +35,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                    | Format     | Code     |
-|:--------------|:---------------------------------|:--------------|:--------------|
-| cognition_std      | Cognition score, standardized (c2011_w4) | continuous | standard |
-| cognition          | Cognition score, harmonized (c2011_w4)   | continuous | 0-100    |
+|:----------------|:-----------------------------|:----------------|:----------------|
+| cognition_std_s3   | Cognition score, standardized (c2011_w4) | continuous | standard |
+| cognition_s3       | Cognition score, harmonized (c2011_w4)   | continuous | 0-100    |
 
 <br>
 
@@ -102,20 +96,20 @@ egen z_animals = std(animals)
 egen missing_cognitive = rowmiss(z_immediate_c - z_animals)
 egen z_cognitive_test = rowmean(z_immediate_c - z_animals) if missing_cognitive<=1
 
-egen cognition_std = std(z_cognitive_test)
-label variable cognition_std "Cognition score, standardized (c2011_w4)"
+egen cognition_std_s3 = std(z_cognitive_test)
+label variable cognition_std_s3 "Cognition score, standardized (c2011_w4)"
  
 /* The following step transforms the score generated into a 0-100 scale. */
-generate cognition = ((cognition_std + 3.459429) / (3.397 + 3.459429))*100
-label variable cognition "Cognition score, harmonized (c2011_w4)"
+generate cognition_s3 = ((cognition_std + 3.459429) / (3.397 + 3.459429))*100
+label variable cognition_s3 "Cognition score, harmonized (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-sum cognition cognition_std
+sum cognition_s3 cognition_std_s3
 
-keep ID_ECS q0007a_result proxy cognition_std cognition
+keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3
 
-codebook cognition_std cognition
+codebook cognition_std_s3 cognition_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
@@ -124,7 +118,7 @@ saveold "Outcome_cognition.dta", replace version(13)
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", replace version(13
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", replace version(13
 ```
 
 <br>
