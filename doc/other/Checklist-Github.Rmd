@@ -1,6 +1,5 @@
 ---
-title: "Ckecklist Git"
-author: "Lea"
+title: "Ckecklist Git-Github"
 output: html_document
 ---
 
