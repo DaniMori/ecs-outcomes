@@ -50,7 +50,7 @@
 
 - [ ] Section "Syntax used to create the variable" includes the syntax
 
-- [ ] All the variables used in the syntax iare referred to by their complete
+- [ ] All the variables used in the syntax are referred to by their complete
   name, including suffix `_s\<followup\>` (where `\<followup\> = \<ola\> - 1`)
 
 - [ ] Section "Syntax used to create the variable" includes descriptives of ALL
