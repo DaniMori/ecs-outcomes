@@ -188,7 +188,7 @@ The following general principles have been followed when possible:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
-```{stata generate-outcomes, echo=TRUE}
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
 *# "Value labels (defined for all the outcome variables in the dataset)":
 label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label define yesno    0 "No" 1 "Yes"
