@@ -35,50 +35,49 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+-------------------+-----------------+-----------------+-----------------+
-| **Main variable   | **Label**       | **Format**      | **Code**        |
-| name**            |                 |                 |                 |
-+:==================+:================+=================+=================+
-| d_                | Severity of     | Ordinal         | -   0=No;       |
-| lifetime_severity | lifetime        |                 | -   1=Mild;     |
-|                   | depressive      |                 | -   2=Moderate; |
-|                   | episode         |                 | -   3=Severe    |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| de                | Lifetime        | Binary          | -   0=no;       |
-| pression_lifetime | depression      |                 | -   1=yes       |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| depressi          | Lifetime        | Binary          | -   0=no;       |
-| on_lifetime_proxy | depression for  |                 | -   1=yes       |
-|                   | proxy           |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_12m_item        | 12 month        | Binary          | -   0=no;       |
-|                   | depression, one |                 | -   1=yes       |
-|                   | item (c2011_w4) |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| depression_12m    | 12 month        | Binary          | -   0=no;       |
-|                   | depression from |                 | -   1=yes       |
-|                   | lifetime        |                 |                 |
-|                   | diagnosis &     |                 |                 |
-|                   | q4227/q4227a    |                 |                 |
-|                   | items           |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_li              | Severity of     | Binary          | -   0=no;       |
-| fetime_comparable | lifetime        |                 | -   1=yes       |
-|                   | depressive      |                 |                 |
-|                   | episode         |                 |                 |
-|                   | comparable      |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_12m_comparable  | 12 month        | Binary          | -   0=no;       |
-|                   | depression      |                 | -   1=yes       |
-|                   | comparable with |                 |                 |
-|                   | COVID substudy  |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
++-------------------------------------+-----------------+-----------------+-----------------+
+| **Main variable name**              | **Label**       | **Format**      | **Code**        |
++:====================================+:================+=================+=================+
+| d_lifetime_severity                 | Severity of     | Ordinal         | -   0=No;       |
+|                                     | lifetime        |                 | -   1=Mild;     |
+|                                     | depressive      |                 | -   2=Moderate; |
+|                                     | episode         |                 | -   3=Severe    |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| depression_lifetime                 | Lifetime        | Binary          | -   0=no;       |
+|                                     | depression      |                 | -   1=yes       |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| depression_lifetime_proxy           | Lifetime        | Binary          | -   0=no;       |
+|                                     | depression for  |                 | -   1=yes       |
+|                                     | proxy           |                 |                 |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| d_12m_item                          | 12 month        | Binary          | -   0=no;       |
+|                                     | depression, one |                 | -   1=yes       |
+|                                     | item (c2011_w4) |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| depression_12m                      | 12 month        | Binary          | -   0=no;       |
+|                                     | depression from |                 | -   1=yes       |
+|                                     | lifetime        |                 |                 |
+|                                     | diagnosis &     |                 |                 |
+|                                     | q4227/q4227a    |                 |                 |
+|                                     | items           |                 |                 |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| d_lifetime_comparable               | Severity of     | Binary          | -   0=no;       |
+|                                     | lifetime        |                 | -   1=yes       |
+|                                     | depressive      |                 |                 |
+|                                     | episode         |                 |                 |
+|                                     | comparable      |                 |                 |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
+| d_12m_comparable                    | 12 month        | Binary          | -   0=no;       |
+|                                     | depression      |                 | -   1=yes       |
+|                                     | comparable with |                 |                 |
+|                                     | COVID substudy  |                 |                 |
+|                                     | (c2011_w4)      |                 |                 |
++-------------------------------------+-----------------+-----------------+-----------------+
 
 # Variable description
 
