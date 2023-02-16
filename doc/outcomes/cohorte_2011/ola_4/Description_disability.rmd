@@ -37,7 +37,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | **Main variable name** | **Label**                                                     | **Format** | **Code**   |
-|:------------------|:----------------------|:------------------|:------------------|
+|:-------------------|:--------------------|:-------------------|:-------------------|
 | whodas12_s3            | disability whodas 12 (c2011_w4)                               | Continuous | 0-100      |
 | adl_s3                 | difficulties with activities of daily living (c2011_w4)       | Binary     | 0=no;1=yes |
 | iadl_s3                | difficulties with instrumental act of daily living (c2011_w4) | Binary     | 0=no;1=yes |
@@ -46,7 +46,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 The level of functional impairment has been assessed using the
 12-items-interviewer-administered version of the World Health Organization (WHO)
-Disability Assessment Schedule version II [@ustun2010]. This instrument is
+Disability Assessment Schedule version II [@ustun2010a]. This instrument is
 grounded in the conceptual framework of the International Classification of
 Functioning, Disability, and Health [@internat] and places health and disability
 on a continuum, with disability defined as "a decrement in each functioning
