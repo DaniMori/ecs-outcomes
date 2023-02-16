@@ -15,8 +15,8 @@
 
 - [ ] A table with variable metadata exists
 
-- [ ] All variables in the chunk `save-data` are in the table
-  (except for the ID and the ancillary variables)
+- [ ] All the variables in the `keep` command (chunk `descriptives` are in the
+  table (except for the ID and the ancillary variables)
   
 - [ ] All the variables in the metadata table end with suffix `_s\<followup\>`,
   where `\<followup\> = \<ola\> - 1`
