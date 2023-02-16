@@ -1,0 +1,21 @@
+---
+title: "Ckecklist Git"
+author: "Lea"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## When using Git-GitHub do not forget to :
+
+-   Do "Pull" when opening R
+
+-   Created Branch from "*development*" branch **not "main"**
+
+-   When committing check if you are in the right branch
+
+-   Do push after commit
+
+-   Created pull request in github.com from "development" branch **not "main"**
