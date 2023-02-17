@@ -11,10 +11,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   Do "Pull" when opening R
 
--   Created Branch from "*development*" branch **not "main"**
+-   Created Branch from "*development*" branch, **not "main"**
+
+-   Save .Rmd file to first create a commit with empty template
+
+-   Go to https://github.com/CCOMS-UAM/ecs-outcomes
+
+-   Generate a new Pull Request from **development** branch, **NOT "MAIN"**
+    to record changes and progress on the outcome variable creation.
 
 -   When committing check if you are in the right branch
 
--   Do push after commit
-
--   Created pull request in github.com from "development" branch **not "main"**
+-   Do push after commit.
