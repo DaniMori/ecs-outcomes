@@ -3,7 +3,8 @@ title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Physical activity'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-bibliography: ../../../../www/physicalactivity.bib
+#bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+bibliography: ecs.data::get_proj_bib_file()
 csl: "`r ecs.data::get_proj_csl_file()`"
 nocite: '@world_health_organization_global_2012'
 editor_options: 
@@ -37,7 +38,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| physical_s3        | Physical activity (c2011w4)              | Categorical| 0 = High;            |
+| physical_s3        | Physical activity (c2011w4)              | Ordinal    | 0 = High;            |
 |                    |                                          |            |                      |
 |                    |                                          |            | 1 = Moderate;        |
 |                    |                                          |            |                      |
@@ -58,21 +59,21 @@ participants have been converted to Metabolic Equivalent to Task (MET) values.
 Applying MET values to activity levels allows for calculating total physical 
 activities. A detailed description of the calculation and categorization of the
 physical activity levels (low, moderate or high) is available at the GPAQ v2 
-guidelines in the WHO website (World Health Organization, 2012).
+guidelines in the WHO website [@world_health_organization_global_2012].
 
 # Explanation of how the variables were created
 
 
 Physical activity has been categorized as follows:
 
-  •	_High physical activity_: vigorous-intensity activity on at least 3 days 
+-  	_High physical activity_: vigorous-intensity activity on at least 3 days 
   achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per 
   week - or - 7 or more days of any combination of walking, moderate or vigorous 
   intensity activities achieving a minimum of at least 3000 MET-minutes per 
   week.
 
 
-  •	_Moderate physical activity_: three or more days of vigorous-intensity 
+-	_Moderate physical activity_: three or more days of vigorous-intensity 
   activity of at least 20 minutes per day - or - five or more days of 
   moderate-intensity activity or walking of at least 30 minutes per day - or - 
   five or more days of any combination of walking, moderate or 
@@ -80,7 +81,7 @@ Physical activity has been categorized as follows:
   per week.
   
   
-  •	_Low physical activity_: a person not meeting any of the above-mentioned
+-	_Low physical activity_: a person not meeting any of the above-mentioned
   criteria.
 
 Items to create this variable were: `q3017_days_s3`, `q3018_hours_s3`, 
@@ -92,6 +93,7 @@ Items to create this variable were: `q3017_days_s3`, `q3018_hours_s3`,
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
+* Cohorte 2011, ola 4:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
@@ -158,7 +160,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 -   e-mail:
     [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 -   Institution: Universidad Autónoma de Madrid / FIB-HU La Princesa
--   Phone number: (+34) 914975492
+-   Phone number: (+34) 91 497 54 92
 
 <br>
 
@@ -176,8 +178,8 @@ Original version:
 -   e-mail:
     [elvira.lara@uam.es](mailto:elvira.lara@uam.es){.email}
 -   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Ma
-drid
--   Phone number: (+34) 91 497 46 01 \>
+    drid
+-   Phone number: (+34) 91 497 46 01
 
 # References
 
