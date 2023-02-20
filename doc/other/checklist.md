@@ -10,8 +10,8 @@ When using Git-GitHub do not forget to :
 
 - [ ]  Go to https://github.com/CCOMS-UAM/ecs-outcomes
 
-- [ ]  Generate a new Pull Request from **development** branch, **NOT "MAIN"**
-        to record changes and progress on the outcome variable creation.
+- [ ]  Generate a new Pull Request with `development`as base branch, 
+        instead of `main`.
 
 - [ ]  When committing check if you are in the right branch
 
