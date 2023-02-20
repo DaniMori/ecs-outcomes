@@ -36,106 +36,132 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------+-----------------------+----------------+----------------+
-| Main variable  | Label                 | Format         | Code           |
-| name           |                       |                |                |
-+:===============+:======================+:===============+:===============+
-| arthitis_s3    | arthritis algorithm   | dummy          | 2 no           |
-|                | test or self-reported |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| oste           | osteoarthritis        | dummy          | 2 no           |
-| oarthritis_s3  | algorithm test or     |                |                |
-|                | self-reported         |                | 1 yes          |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| stroke_s3      | stroke algorithm test | dummy          | 2 no           |
-|                | or self-reported      |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| angina_s3      | angina algorithm test | dummy          | 2 no           |
-|                | or self-reported      |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| diab_s3        | diabetes self         | dummy          | 2 no           |
-|                | reported (c2011_w4)   |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| lung_s3        | lung disease          | dummy          | 2 no           |
-|                | algorithm test or     |                |                |
-|                | self-reported         |                | 1 yes          |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| asthma_s3      | asthma algorithm test | dummy          | 2 no           |
-|                | or self reported      |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| hy             | hypertension          | dummy          | 2 no           |
-| pertension_s3  | algorithm test or     |                |                |
-|                | self reported         |                | 1 yes          |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| cataracts_s3   | cataracts algorithm   | dummy          | 2 no           |
-|                | test or self reported |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| ora            | oral problems         | dummy          | 2 no           |
-| l_problems_s3  | algorithm test or     |                |                |
-|                | self reported         |                | 1 yes          |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| kidney_s3      | kidney self reported  | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| diges_s3       | digestive self        | dummy          | 2 no           |
-|                | reported (c2011_w4)   |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| cancer_s3      | cancer self reported  | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| liver_s3       | liver self reported   | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| osteop_s3      | osteoporosis self     | dummy          | 2 no           |
-|                | reported (c2011_w4)   |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| anaemia_s3     | anaemia self reported | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| thyroid_s3     | thyroid self reported | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| glaucoma_s3    | glaucoma self         | dummy          | 2 no           |
-|                | reported (c2011_w4)   |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| heart_s3       | heart self reported   | dummy          | 2 no           |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-|                | Migraine self         | dummy          | 2 no           |
-|                | reported              |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-|                | Chronic Back Pain     | dummy          | 2 no           |
-|                | self reported         |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-|                | Dementia self         | dummy          | 2 no           |
-|                | reported              |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
++-----------------+----------------------+-----------------+-----------------+
+| Main variable   | Label                | Format          | Code            |
+| name            |                      |                 |                 |
++:================+:=====================+:================+:================+
+| arthritis_s3    | arthritis algorithm  | dummy           | 1 yes           |
+|                 | test or              |                 |                 |
+|                 | self-reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| osteoart_s3     | osteoarthritis       | dummy           | 1 yes           |
+|                 | algorithm test or    |                 |                 |
+|                 | self-reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| stroke_s3       | stroke algorithm     | dummy           | 1 yes           |
+|                 | test or              |                 |                 |
+|                 | self-reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| angina_s3       | angina algorithm     | dummy           | 1 yes           |
+|                 | test or              |                 |                 |
+|                 | self-reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| diab_s3         | diabetes self        | dummy           | 0 No            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| lung_s3         | lung disease         | dummy           | 1 yes           |
+|                 | algorithm test or    |                 |                 |
+|                 | self-reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| asthma_s3       | asthma algorithm     | dummy           | 1 yes           |
+|                 | test or self         |                 |                 |
+|                 | reported (c2011_w4)  |                 | 2 no            |
++-----------------+----------------------+-----------------+-----------------+
+| hypertension_s3 | hypertension         | dummy           | 1 yes           |
+|                 | algorithm test or    |                 |                 |
+|                 | self reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| cataracts_s3    | cataracts algorithm  | dummy           | 1 yes           |
+|                 | test or self         |                 |                 |
+|                 | reported (c2011_w4)  |                 | 2 no            |
++-----------------+----------------------+-----------------+-----------------+
+| oral_s3         | oral problems        | dummy           | 1 yes           |
+|                 | algorithm test or    |                 |                 |
+|                 | self reported        |                 | 2 no            |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| kidney_s3       | kidney self reported | dummy           | 0 no            |
+|                 | and treatment        |                 |                 |
+|                 | (c2011_w4)           |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| digestive_s3    | digestive self       | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| cancer_s3       | cancer self reported | dummy           | 1 yes           |
+|                 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 2 no            |
++-----------------+----------------------+-----------------+-----------------+
+| liver_s3        | liver self reported  | dummy           | 0 no            |
+|                 | and treatment        |                 |                 |
+|                 | (c2011_w4)           |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| osteop_s3       | osteoporosis self    | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| anaemia_s3      | anaemia self         | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| thyroid_s3      | thyroid self         | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| glaucoma_s3     | glaucoma self        | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| heart_s3        | heart self reported  | dummy           | 1 yes           |
+|                 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 2 no            |
++-----------------+----------------------+-----------------+-----------------+
+| migr_s3         | Migraine self        | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| lowback_s3      | Chronic Back Pain    | dummy           | 0 no            |
+|                 | self-reported and    |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
+| dem_s3          | Dementia self        | dummy           | 0 no            |
+|                 | reported and         |                 |                 |
+|                 | treatment (c2011_w4) |                 | 1 yes           |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 treatment     |
++-----------------+----------------------+-----------------+-----------------+
 
 # Variables description
 
 General comment: Chronic condition algorithms were developed for the World
-Health Survey [@worldhe]and adapted from COURAGE [@courage]. Symptom based
+Health Survey [@worldhe]and adapted from COURAGE [@courage]. Symptom-based
 estimates were prepared for the following conditions: arthritis, stroke, angina,
 lung disease, asthma and hypertension. In such cases, the algorithm reflects a
 specific response pattern or a combination of answers indicating whether someone
@@ -517,7 +543,6 @@ replace art_test_s3=2 if q4003_symptoms_s3==2 | q4004_symptoms_s3==2 | q4005_dur
 label define labels1 1 "Yes" 2 "No"
 label values art_test_s3 labels1
 label variable art_test_s3 "test for arthritis"
-
 * Arthritis self-reported. 
 recode q4001_arthritis_s3 (888=.), gen (art_1)
 recode q4002c_treated_s3 (888=.), gen (art_2)
@@ -527,7 +552,6 @@ replace art_self_s3=2 if art_1==2
 replace art_self_s3=1 if art_1==1
 label values art_self_s3 labels1
 label variable art_self_s3 "Arthritis self-reported"
-
 * Final algorithm for arthritis (without treatment).
 gen arthritis_s3=.
 replace arthritis_s3=1 if (art_test_s3==1 | art_self_s3==1) | (art_test_s3==. & art_self_s3==1) | (art_test_s3==1 & art_self_s3==.)  
@@ -543,13 +567,12 @@ replace osteoart_test_s3=1 if q4003_symptoms_s3==1 & q4005_duration_s3==1 & q400
 replace osteoart_test_s3=2 if q4003_symptoms_s3==2 | q4005_duration_s3==2 | q4005_duration_s3==2 | q4006_outcome_s3==1
 label values osteoart_test_s3 labels1
 label variable osteoart_test_s3 "Osteoarthritis test"
-
 * Final algorithm for osteoarthritis.
 gen osteoart_s3=.
 replace osteoart_s3=1 if (osteoart_test_s3==1 | art_self_s3==1) | (osteoart_test_s3==. & art_self_s3==1) | (osteoart_test_s3==1 & art_self_s3==.)  
 replace osteoart_s3=2 if osteoart_test_s3==2 & art_self_s3==2
 label values osteoart_s3 labels1
-label variable osteoart_s3 "Osteoarthritis self-reported test"
+label variable osteoart_s3 "Osteoarthritis test or self-reported"
 
 
 *STROKE.
@@ -559,7 +582,6 @@ replace stroke_test_s3=1 if q4012_paral_s3==1 & q4013_feeling_s3==1
 replace stroke_test_s3=2 if q4012_paral_s3==2 | q4013_feeling_s3==2
 label values stroke_test_s3 labels1
 label variable stroke_test_s3 "Stroke test"
-
 * Stroke self-reported.
 recode q4010_stroke_s3 (888=.), gen (str_1)
 replace str_1=2 if q4010a_s3==997
@@ -568,7 +590,6 @@ replace str_self_s3=1 if str_1==1
 replace str_self_s3=2 if str_1==2
 label values str_self_s3 labels1
 label variable str_self_s3 "Stroke self-reported"
-
 * Final algorithm for stroke.
 gen stroke_s3=.
 replace stroke_s3=1 if stroke_test_s3==1 | str_self_s3==1
@@ -590,7 +611,6 @@ replace angina_test_s3=1 if (q4016_s==1 | q4017_s==1) & q4018_r==1 & q4019_s==1 
 replace angina_test_s3=. if q4016_s==. | q4017_s==. | q4018_r==. | q4019_s==.
 label values angina_test_s3 labels1
 label variable angina_test_s3 "Angina test"
-
 * Angina self-reported. 
 recode q4014_angina_s3 (888=.), gen (ang_1)
 replace ang_1=2 if q4014a_s3==997
@@ -599,7 +619,6 @@ replace ang_self_s3=1 if ang_1==1
 replace ang_self_s3=2 if ang_1==2
 label values ang_self_s3 labels1
 label variable ang_self_s3 "Angina self-reported"
- 
 * Final algorithm for angina. 
 gen angina_s3=2
 replace angina_s3=1 if angina_test_s3==1 | ang_self_s3==1
@@ -610,21 +629,22 @@ label variable angina_s3 "Angina test or self-reported"
 
 * DIABETES.
 * Diabetes self-reported.
-recode q4022_diabetes_s3 (888=.), gen (diab_self)
-replace diab_self=2 if q4022a_s3==997
-label values diab_self labels1
-label variable diab_self "Diabetes self-reported"
-
-recode q4023b_treated (888=.) (2=0), gen (diab_2)
-label values diab_2 labels1
-label variable diab_2 "Treatment for diabetes"
-
-gen diab_self=.
-replace diab_self=0 if diabetes==0
-replace diab_self=1 if diabetes==1 
-replace diab_self=2 if diabetes==1 & diab_2==1
-label values diab_self labels2
-label variable diab_self "Diabetes self-reported and treatment"
+recode q4022_diabetes_s3 (888=.), gen (diab_self_s3)
+replace diab_self_s3=2 if q4022a_s3==997
+label values diab_self_s3 labels1
+label variable diab_self_s3 "Diabetes self-reported"
+recode q4023b_treated (888=.) (2=0), gen (diab_treatment_s3)
+label values diab_treatment_s3 labels1
+label variable diab_treatment_s3 "Treatment for diabetes"
+gen diab_s3=.
+replace diab_s3=0 if diab_self_s3==0
+replace diab_s3=1 if diab_self_s3==1 
+replace diab_s3=2 if diab_self_s3==1 & diab_treatment_s3==1
+label define labels2 0 "No" 1 "Self-reported" 2 "Treatment"
+label values diab_s3 labels2
+label variable diab_s3 "Diabetes self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
 
 
 * LUNG DISEASE 
@@ -634,14 +654,12 @@ replace lung_test_s3=1 if q4027_symptoms_s3==1 & q4028_symptoms_s3==1 & q4029_sy
 replace lung_test_s3=2 if q4027_symptoms_s3==2 | q4028_symptoms_s3==2 | q4029_symptoms_s3==2
 label values lung_test_s3 labels1
 label variable lung_test_s3 "Lung Disease test"
-
 * Lung disease self-reported.
 recode q4025_lungs_s3 (888=.), gen (lu_1)
 replace lu_1=2 if q4025a_s3==997
 ren lu_1 lung_self_s3
 label values lung_self_s3 labels1
 label variable lung_self_s3 "Lung Disease self-reported"
-
 * Final algorithm for lung disease.
 gen lung_s3=.
 replace lung_s3=1 if lung_test_s3==1 | lung_self_s3 ==1
@@ -657,14 +675,12 @@ replace asthma_test_s3=1 if (q4035_symptoms_s3==1 & q4036_symptoms_s3==1 & q4037
 replace asthma_test_s3=2 if (q4035_symptoms_s3==2 | q4036_symptoms_s3==2 | q4037_symptoms_s3==2 | q4038_symptoms_s3==2 | q4039_symptoms_s3==2)
 label values asthma_test_s3 labels1
 label variable asthma_test_s3 "Asthma test"
-
 * Asthma self-reported. 
 recode q4033_asthma_s3 (888=.), gen (ast_1)
 replace ast_1=2 if q4033a_s3==997
 ren ast_1 ast_self_s3
 label values ast_self_s3 labels1
 label variable ast_self_s3 "Asthma self-reported"
-
 * Final algorithm for asthma. 
 gen asthma_s3=.
 replace asthma_s3=1 if asthma_test_s3==1 | ast_self_s3==1
@@ -691,14 +707,12 @@ replace hypertension_test_s3=2 if systolic<140 & diastolic<90
 replace hypertension_test_s3=. if systolic==. | diastolic==.
 label values hypertension_test_s3 labels1
 label variable hypertension_test_s3 "Hypertension test"
-
 * Hypertension self-reported.
 recode q4060_high_bp_s3 (888=.), gen (hyp_1)
 replace hyp_1=2 if q4060a_s3==997
 ren hyp_1 hyper_self_s3
 label values hyper_self_s3 labels1
 label variable hyper_self_s3 "Hypertension self-reported"
-
 * Final algorithm for hypertension.
 gen hypertension_s3=.
 replace hypertension_s3=1 if hypertension_test_s3==1 | hyper_self_s3 ==1
@@ -716,7 +730,6 @@ label values catar_test_s3 labels1
 label variable catar_test_s3 "Cataract test"
 label values catar_self_s3 labels1
 label variable catar_self_s3 "Cataract self-reported"
-
 * Final algorithm for cataracts.
 gen cataracts_s3=.
 replace cataracts_s3=1 if catar_self_s3==1 | catar_test_s3==1
@@ -733,7 +746,6 @@ label values oral_self_s3 labels1
 label variable oral_self_s3 "Oral problems self-reported"
 label values oral_test_s3 labels1
 label variable oral_test_s3 "Oral problems test"
-
 * Final algorithm for oral problems.
 gen oral_s3=.
 replace oral_s3=1 if oral_self_s3==1 | oral_test_s3==1
@@ -743,42 +755,39 @@ label variable oral_s3 "Oral problems test or self-reported"
 
 
 * KIDNEY.
-recode q4085_s3 (888=.), gen (kidney)
-replace kidney=2 if q4085a_s3==997
-label values kidney labels1
-label variable kidney "Kidney problems self-reported"
-
-recode q4086c (888=.) (2=0), gen (kidney_2)
-label values kidney_2 labels1
-label variable kidney_2 "Treatment for kidney disease"
-
-gen kidney_self=.
-replace kidney_self=0 if kidney ==0
-replace kidney_self=1 if kidney==1 
-replace kidney_self=2 if kidney==1 | kidney_2==1
-label values kidney_self labels2
-label variable kidney_self "Kidney disease self-reported or treatment"
+recode q4085_s3 (888=.), gen (kidney_self_s3)
+replace kidney_self_s3=2 if q4085a_s3==997
+label values kidney_self_s3 labels1
+label variable kidney_self_s3 "Kidney problems self-reported"
+recode q4086c (888=.) (2=0), gen (kidney_treatment_s3)
+label values kidney_treatment_s3 labels1
+label variable kidney_treatment_s3 "Treatment for kidney disease"
+gen kidney_s3=.
+replace kidney_s3=0 if kidney_self_s3 ==0
+replace kidney_s3=1 if kidney_self_s3==1 
+replace kidney_s3=2 if kidney_self_s3==1 & kidney_treatment_s3==1
+label values kidney_s3 labels2
+label variable kidney_s3 "Kidney disease self-reported or treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
 
 
 * DIGESTIVE.
-recode q4087_s3 (888=.), gen (digestive)
-replace digestive=2 if q4087a_s3==997
-label values digestive labels1
-label variable digestive "Digestive problems self-reported"
-
-recode q4088c (888=.) (2=0), gen (digestive_2)
-label values digestive_2 labels1
-label variable digestive_2 "Treatment for digestive disease"
-
-gen digestive_self=.
-replace digestive_self=0 if digestive==0
-replace digestive_self=1 if digestive==1 
-replace digestive_self=2 if digestive==1 & digestive_2==1
-label values digestive_self labels2
-label variable digestive_self "Digestive problems self-reported and treatment"
-
+recode q4087_s3 (888=.), gen (digestive_self_s3)
+replace digestive_self_s3=2 if q4087a_s3==997
+label values digestive_self_s3 labels1
+label variable digestive_self "Digestive problems self-reported"
+recode q4088c (888=.) (2=0), gen (digestive_treatment_s3)
+label values digestive_treatment_s3 labels1
+label variable digestive_treatment_s3 "Treatment for digestive disease"
+gen digestive_s3=.
+replace digestive_s3=0 if digestive_self_s3==0
+replace digestive_s3=1 if digestive_self_s3==1 
+replace digestive_s3=2 if digestive_self_s3==1 & digestive_treatment_s3==1
+label values digestive_s3 labels2
+label variable digestive_s3 "Digestive problems self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
 
 * CANCER.
 recode q4089_s3 (888=.), gen (cancer_s3)
@@ -788,183 +797,154 @@ label variable cancer_s3 "Cancer self-reported"
 
 
 * LIVER.
-recode q4091_s3 (888=.), gen (liver)
-replace liver=2 if q4091a_s3==997
-label values liver labels1
-label variable liver "Liver self-reported"
-
-recode q4092c (888=.) (2=0), gen (liver_2)
-label values liver_2 labels1
-label variable liver_2 "Treatment for liver"
-
-gen liver_self=.
-replace liver_self=0 if liver==0
-replace liver_self=1 if liver==1 
-replace liver_self=2 if liver==1 & liver_2==1
-label values liver_self labels2
-label variable liver_self "Liver disease self-reported and treatment"
+recode q4091_s3 (888=.), gen (liver_self_s3)
+replace liver_self_s3=2 if q4091a_s3==997
+label values liver_self_s3 labels1
+label variable liver_self_s3 "Liver self-reported"
+recode q4092c (888=.) (2=0), gen (liver_treatment_s3)
+label values liver_treatment_s3 labels1
+label variable liver_treatment_s3 "Treatment for liver"
+gen liver_s3=.
+replace liver_s3=0 if liver_self_s3==0
+replace liver_s3=1 if liver_self_s3==1 
+replace liver_s3=2 if liver_self_s3==1 & liver_treatment_s3==1
+label values liver_s3 labels2
+label variable liver_s3 "Liver disease self-reported and treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
 
 
-
 * OSTEOPOROSIS.
-recode q4093_s3 (888=.), gen (osteo)
-replace osteo=2 if q4093a_s3==997
-label values osteo labels1
-label variable osteo "Osteoporosis self-reported"
-
-recode q4094c (888=.) (2=0), gen (osteop_2)
-label values osteop_2 labels1
-label variable osteop_2 "Treatment for osteoporosis"
-
-gen osteop_self=.
-replace osteop_self=0 if osteop==0
-replace osteop_self=1 if osteop==1 
-replace osteop_self=2 if osteop==1 & osteop_2==1
-label values osteop_self labels2
-label variable osteop_self "Osteoporosis self-reported and treatment"
+recode q4093_s3 (888=.), gen (osteo_self_s3)
+replace osteo_self_s3=2 if q4093a_s3==997
+label values osteo_self_s3 labels1
+label variable osteo_self_s3 "Osteoporosis self-reported"
+recode q4094c (888=.) (2=0), gen (osteop_treatment_s3)
+label values osteop_treatment_s3 labels1
+label variable osteop_treatment_s3 "Treatment for osteoporosis"
+gen osteop_s3=.
+replace osteop_s3=0 if osteop_self_s3==0
+replace osteop_s3=1 if osteop_self_s3==1 
+replace osteop_s3=2 if osteop_self_s3==1 & osteop_treatment_s3==1
+label values osteop_s3 labels2
+label variable osteop_s3 "Osteoporosis self-reported and treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
 
 
 * ANAEMIA.
-recode q4095_s3 (888=.), gen (anaemia_s3)
-replace anaemia_s3=2 if q4095a_s3==997
-label values anaemia_s3 labels1
-label variable anaemia_s3 "Anaemia self-reported"
-
-recode q4096c (888=.) (2=0), gen (anaemia_2)
-label values anaemia_2 labels1
-label variable anaemia_2 "Treatment for anaemia"
-
-gen anaemia_self=.
-replace anaemia_self=0 if anaemia==0
-replace anaemia_self=1 if anaemia==1 
-replace anaemia_self=2 if anaemia==1 & anaemia_2==1
-label values anaemia_self labels2
-label variable anaemia_self "Anaemia self-reported and treatment"
+recode q4095_s3 (888=.), gen (anaemia_self_s3)
+replace anaemia_self_s3=2 if q4095a_s3==997
+label values anaemia_self_s3 labels1
+label variable anaemia_self_s3 "Anaemia self-reported"
+recode q4096c (888=.) (2=0), gen (anaemia_treatment_s3)
+label values anaemia_treatment_s3 labels1
+label variable anaemia_treatment_s3 "Treatment for anaemia"
+gen anaemia_s3=.
+replace anaemia_s3=0 if anaemia_self_s3==0
+replace anaemia_s3=1 if anaemia_self_s3==1 
+replace anaemia_s3=2 if anaemia_self_s3==1 & anaemia_treatment_s3==1
+label values anaemia_s3 labels2
+label variable anaemia_s3 "Anaemia self-reported and treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
 
+
 * THYROID.
-recode q4097_s3 (888=.), gen (thyroid_s3)
-replace thyroid_s3=2 if q4097a_s3==997
-label values thyroid_s3 labels1
-label variable thyroid_s3 "Thyroid disease self-reported"
-
-recode q4098c (888=.) (2=0), gen (thyroid_2)
-label values thyroid_2 labels1
-label variable thyroid_2 "Treatment for thyroid"
-
+recode q4097_s3 (888=.), gen (thyroid_self_s3)
+replace thyroid_self_s3=2 if q4097a_s3==997
+label values thyroid_self_s3 labels1
+label variable thyroid_self_s3 "Thyroid disease self-reported"
+recode q4098c (888=.) (2=0), gen (thyroid_treatment_s3)
+label values thyroid_treatment_s3 labels1
+label variable thyroid_treatment_s3 "Treatment for thyroid"
 gen thyroid_self=.
-replace thyroid_self=0 if thyroid==0
-replace thyroid_self=1 if thyroid==1 
-replace thyroid_self=2 if thyroid==1 & thyroid_2==1
-label values thyroid_self labels2
-label variable thyroid_self "Thyroid self-reported and treatment"
+replace thyroid_s3=0 if thyroid_self_s3==0
+replace thyroid_s3=1 if thyroid_self_s3==1 
+replace thyroid_s3=2 if thyroid_self_s3==1 & thyroid_treatment_s3==1
+label values thyroid_s3 labels2
+label variable thyroid_s3 "Thyroid self-reported and treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
 
 
 * GLAUCOMA.
-recode q4099_s3 (888=.), gen (glaucoma_s3)
-replace glaucoma_s3=2 if q4099a_s3==997
-label values glaucoma_s3 labels1
-label variable glaucoma_s3 "Glaucoma self-reported"
-
-recode q4100c (888=.) (2=0), gen (glaucoma_2)
-label values glaucoma_2 labels1
-label variable glaucoma_2 "Treatment for glaucoma"
-
+recode q4099_s3 (888=.), gen (glaucoma_self_s3)
+replace glaucoma_self_s3=2 if q4099a_s3==997
+label values glaucoma_self_s3 labels1
+label variable glaucoma_self_s3 "Glaucoma self-reported"
+recode q4100c (888=.) (2=0), gen (glaucoma_treatment_s3)
+label values glaucoma_treatment_s3 labels1
+label variable glaucoma_treatment_s3 "Treatment for glaucoma"
 gen glaucoma_self=.
-replace glaucoma_self=0 if glaucoma==0
-replace glaucoma_self=1 if glaucoma==1 
-replace glaucoma_self=2 if glaucoma==1 & glaucoma_2==1
-label values glaucoma_self labels2
-label variable glaucoma_self "Glaucoma self-reported and treatment"
+replace glaucoma_s3=0 if glaucoma_self_s3==0
+replace glaucoma_s3=1 if glaucoma_self_s3==1 
+replace glaucoma_s3=2 if glaucoma_self_s3==1 & glaucoma_treatment_s3==1
+label values glaucoma_s3 labels2
+label variable glaucoma_s3 "Glaucoma self-reported and treatment"
 *NOTE: self-reported AND treatment or self-reported OR treatment or just take 
 *into acount "self-reported" and not treatment?
+
 
 * HEART CONDITIONS.
 recode q4101_s3 (888=.), gen (heart_s3)
 replace heart_s3=2 if q4101a_s3==997
-
 label values heart_s3 labels1
-label variable heart_s3 "Heart disease self-reported"
+labelvariable heart_s3 "Heart disease self-reported"
+
 
 * MIGRAINE.
-recode q4119 (888=.) (999=.) (2=0), gen (migraine)
-label values migraine labels1
-label variable migraine "Migraine self-reported (c2011_w4)"
-
-recode q4119c (888=.) (2=0), gen (migr_2)
-label values migr_2 labels1
-label variable migr_2 "Treatment for migraine"
-
+recode q4119 (888=.) (999=.) (2=0), gen (migraine_self_s3)
+label values migraine_self_s3 labels1
+label variable migraine_self_s3 "Migraine self-reported (c2011_w4)"
+recode q4119c (888=.) (2=0), gen (migr_treatment_s3)
+label values migr_treatment_s3 labels1
+label variable migr_treatment_s3 "Treatment for migraine"
 gen migr_self=.
-replace migr_self=0 if migraine==0
-replace migr_self=1 if migraine==1 
-replace migr_self=2 if migraine==1 & migr_2==1
-label values migr_self labels2
-label variable migr_self "Migraine self-reported and treatment"
+replace migr_s3=0 if migraine_self_s3==0
+replace migr_s3=1 if migraine_self_s3==1 
+replace migr_s3=2 if migraine_self_s3==1 & migr_treatment_s3==1
+label values migr_s3 labels2
+label variable migr_s3 "Migraine self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
+
 
 *CHRONIC BACK PAIN
 **Lower back pain
-recode q4112 (888=.) (999=.) (2=0), gen (lowback)
-recode q4112m (888=.) (999=.) (2=0), gen (low_1)
-recode q4113c (888=.) (2=0), gen (low_2)
-label values (lowback low_1 low_2) labels1
-label variable lowback "Lower back pain self-reported (c2011_w4)"
-label variable low_1 "Self-reported diagnosis lower back pain"
-label variable low_2 "Treatment for lower back pain"
-replace lowback=1 if low_1==1
-gen low_self=.
-replace low_self=0 if low_1==0 | lowback==0
-replace low_self=1 if low_1==1 
-replace low_self=2 if lowback==1 & low_2==1
-label values low_self labels2
-label variable low_self "Lower back pain self-reported and treatment"
-
-**Cervical pain
-recode q4120pre (888=.) (999=.) (2=0), gen (cervical)
-recode q4120 (888=.) (999=.) (2=0), gen (cerv_1)
-recode q4120c (888=.) (2=0), gen (cerv_2)
-label values (cervical cerv_1 cerv_2) labels1
-label variable cervical "Cervical pain self-reported (c2011_w4)"
-label variable cerv_1 "Self-reported diagnosis cervical pain"
-label variable cerv_2 "Treatment for cervical pain"
-replace cervical=1 if cerv_1==1
-
-gen cerv_self=.
-replace cerv_self=0 if cerv_1==0 | cervical==0
-replace cerv_self=1 if cerv_1==1 
-replace cerv_self=2 if cervical==1 & cerv_2==1
-label values cerv_self labels2
-label variable cerv_self "Cervical pain self-reported and treatment"
+recode q4112 (888=.) (999=.) (2=0), gen (lowback_self_s3)
+recode q4113c (888=.) (2=0), gen (low_treatment_s3)
+label values (lowback_self_s3 low_treatment_s3) labels1
+label variable lowback_self_s3 "Lower back pain self-reported"
+label variable low_treatment_s3 "Treatment for lower back pain"
+gen lowback_s3=.
+replace lowback_s3=0 if lowback_self_s3==0 
+replace lowback_s3=1 if lowback_self_s3==1 
+replace lowback_s3=2 if lowback_self_s3==1 & low_treatment_s3==1
+label values lowback_s3 labels2
+label variable lowback_s3 "Lower back pain self-reported and treatment"
+*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
+*into acount "self-reported" and not treatment?
 
 * DEMENTIA.
-recode q4105 (888=.) (999=.) (2=0), gen (dementia)
-recode q4106c (888=.) (2=0), gen (dem_2)
-label values (dementia dem_2) labels1
- label variable dementia "Dementia self-reported (c2011_w4)"
-label variable dem_2 "Treatment for dementia"
-
-gen dem_self=.
-replace dem_self=0 if dementia==0
-replace dem_self=1 if dementia==1 
-replace dem_self=2 if dementia==1 & dem_2==1
-label values dem_self labels2
-label variable dem_self "Dementia self-reported and treatment"
-
-
+recode q4105 (888=.) (999=.) (2=0), gen (dementia_self_s3)
+recode q4106c (888=.) (2=0), gen (dem_treatment_s3)
+label values (dementia_self_s3 dem_treatment_s3) labels1
+ label variable dementia_self_s3 "Dementia self-reported (c2011_w4)"
+label variable dem_treatment_s3 "Treatment for dementia"
+gen dem_s3=.
+replace dem_s3=0 if dementia_self_s3==0
+replace dem_s3=1 if dementia_self_s3==1 
+replace dem_s3=2 if dementia_self_s3==1 & dem_treatment_s3==1
+label values dem_s3 labels2
+label variable dem_s3 "Dementia self-reported and treatment"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+keep ID_ECS q0007a_result proxy arthritis_s3 osteoart_s3 stroke_s3 angina_s3 diab_s3 lung_s3 asthma_s3 hypertension_s3 cataracts_s3 oral_s3 kidney_s3 digestive_s3 cancer_s3 liver_s3 osteop_s3 anaemia_s3 thyroid_s3 glaucoma_s3 heart_s3 migr_s3 lowback_s3 dem_s3
 
-codebook <variable(s) generada(s)>
+codebook arthritis_s3 osteoart_s3 stroke_s3 angina_s3 diab_s3 lung_s3 asthma_s3 hypertension_s3 cataracts_s3 oral_s3 kidney_s3 digestive_s3 cancer_s3 liver_s3 osteop_s3 anaemia_s3 thyroid_s3 glaucoma_s3 heart_s3 migr_s3 lowback_s3 dem_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
