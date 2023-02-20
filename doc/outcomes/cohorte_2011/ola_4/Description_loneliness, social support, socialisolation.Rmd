@@ -36,9 +36,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                      | Format     | Code  |
 |:-------------------|:---------------------------|:-----------|:------|
-| social_support     | Social support(c2011_w4)   | Continuous | 0-100 |
-| loneliness         | Loneliness(c2011_w4)       | Continuous | 0-100 |
-| isolation          | Social isolation(c2011_w4) | Continuous | 0-6   |
+| social_support_s3  | Social support(c2011_w4)   | Continuous | 0-100 |
+| loneliness_s3      | Loneliness(c2011_w4)       | Continuous | 0-100 |
+| isolation_s3       | Social isolation(c2011_w4) | Continuous | 0-6   |
 
 # Variable description
 
@@ -119,15 +119,15 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ***Social support 
 recode q6310_help_neig_s3 q6320_close_s3 q6330_concern_s3 (888=.) (999=.)
 replace q6310_help_neig_s3 =5 if q6010h_neighbours_s3==2 
-generate social_support =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
-replace social_support =((social_support-3)/11)*100
-label variable social_support "Social support (c2011_w4)"
+generate social_support_s3 =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
+replace social_support_s3 =((social_support-3)/11)*100
+label variable social_support_s3 "Social support (c2011_w4)"
 
 ***Loneliness 
 recode q6351_companion_s3 q6352_leftout_s3 q6353_isolated_s3 (888=.) (999=.)
-generate loneliness=(q6351_companion_s3 + q6352_leftout_s3+ q6353_isolated_s3)
-replace loneliness=((loneliness-3)/6)*100
-label variable loneliness "Loneliness (c2011_w4)"
+generate loneliness_s3=(q6351_companion_s3 + q6352_leftout_s3+ q6353_isolated_s3)
+replace loneliness_s3=((loneliness-3)/6)*100
+label variable loneliness_s3 "Loneliness (c2011_w4)"
 
 ***Social isolation 
 recode q6010a_spouse (1=0) (2=1), gen(spouse)
@@ -166,16 +166,16 @@ replace activities=0 if (q6618_relig_s3>2 & q6618_relig_s3<.) | (q6619_leave_s3>
 replace activities=1 if (q6618_relig_s3==1 | q6618_relig_s3==2) & (q6619_leave_s3==1 | q6619_leave_s3==2) & (q6613_club_s3==1 | q6613_club_s3==2) & (q6621_assoc_s3==1 | q6621_assoc_s3==2)
 
 egen obs2=rownonmiss(spouse children family coworker friends activities)
-egen isolation=rowtotal(spouse children family coworker friends activities) if obs2>=2
-label variable isolation "Social isolation (c2011_w4)"
+egen isolation_s3=rowtotal(spouse children family coworker friends activities) if obs2>=2
+label variable isolation_s3 "Social isolation (c2011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy isolation social_support loneliness
+keep ID_ECS q0007a_result proxy isolation_s3 social_support_s3 loneliness_s3
 
-codebook isolation social_support loneliness
+codebook isolation_s3 social_support_s3 loneliness_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
