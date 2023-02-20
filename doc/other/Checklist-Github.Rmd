@@ -1,25 +1,30 @@
 ---
-title: "Ckecklist Git-Github"
+title: "Description document generation process"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# Description document generation process
 
-## When using Git-GitHub do not forget to :
+1.   Do "Pull" when opening R
 
--   Do "Pull" when opening R
+2.   Create Branch from "*development*" branch, **not "main"**
 
--   Created Branch from "*development*" branch, **not "main"**
+3.   Save .Rmd file to first create a commit with empty template
 
--   Save .Rmd file to first create a commit with empty template
+4.   Go to https://github.com/CCOMS-UAM/ecs-outcomes
 
--   Go to https://github.com/CCOMS-UAM/ecs-outcomes
+5.   Generate a new Pull Request with `development`as base branch,
+     instead of `main`.
+     
+6.   Fill in template with the information in the description document
+     (resolving all the "TO-DOs")
 
--   Generate a new Pull Request from **development** branch, **NOT "MAIN"**
-    to record changes and progress on the outcome variable creation.
+7.   When committing, check that you are in the right branch
 
--   When committing check if you are in the right branch
+8.   Do "Push" after committing.
 
--   Do push after commit.
+9.   Check that the document knits without errors and the dataset is generated
+
+9.   Use checklist.md to quality-check the new description document
+
+10.  Assign the designated "Reviewer" as a reviewer in the PR in Github
