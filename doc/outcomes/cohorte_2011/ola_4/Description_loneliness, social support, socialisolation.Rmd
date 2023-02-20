@@ -179,13 +179,13 @@ codebook isolation social_support loneliness
 ```
 
 ```{stata save-data-test, eval=TEST}
-saveold "Outcomes_loneliness-socialsupport-socialisolation.dta", replace version(13)
+saveold "Outcome_loneliness-socialsupport-socialisolation.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
 
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\loneliness-socialsupport-socialisolation.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_loneliness-socialsupport-socialisolation.dta", replace version(13)
 ```
 
 <br>
