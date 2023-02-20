@@ -1,22 +1,3 @@
-# Version control features [GitHub]
-
-When using Git-GitHub do not forget to :
-
-- [ ]  Do "Pull" when opening R
-
-- [ ]  Create branch from "*development*" branch, **not "main"**
-
-- [ ]  Save .Rmd file to first create a commit with empty template
-
-- [ ]  Go to https://github.com/CCOMS-UAM/ecs-outcomes
-
-- [ ]  Generate a new Pull Request with `development`as base branch, 
-        instead of `main`.
-
-- [ ]  When committing check if you are in the right branch
-
-- [ ]  Do push after commit.
-
 # Outcome description
 
 - [ ] File name follows format
