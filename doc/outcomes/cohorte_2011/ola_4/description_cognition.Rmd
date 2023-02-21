@@ -35,7 +35,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                    | Format     | Code     |
-|:----------------|:-----------------------------|:----------------|:----------------|
+|:-----------------|:--------------------------|:-----------------|:-----------------|
 | cognition_std_s3   | Cognition score, standardized (c2011_w4) | continuous | standard |
 | cognition_s3       | Cognition score, harmonized (c2011_w4)   | continuous | 0-100    |
 
@@ -118,7 +118,7 @@ saveold "Outcome_cognition.dta", replace version(13)
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", replace version(13
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", replace version(13)
 ```
 
 <br>
