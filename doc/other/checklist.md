@@ -15,6 +15,8 @@
 
 - [ ] A table with variable metadata exists
 
+- [ ] The table is properly formatted in markdown (e.g. no variable names cut)
+
 - [ ] All the variables in the `keep` command (chunk `descriptives` are in the
   table (except for the ID and the ancillary variables)
   
