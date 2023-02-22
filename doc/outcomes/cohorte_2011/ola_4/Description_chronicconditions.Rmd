@@ -455,14 +455,14 @@ the participant answered "yes" to q4067_symptoms_s3.
 ## Kidney Disease
 
 A diagnosis of kidney disease was endorsed if the participant self-reported
-having a kidney diases (q4085_kidney_s3). Treatment taken for kidney disease 
+having a kidney diases (q4085_kidney_s3). Treatment taken for kidney disease
 have also been taken into acount (q4086_s3).
 
 ## Digestive Disease
 
 A diagnosis of digestive disease was endorsed if the participant self-reported
-having a kidney diases (q4087_s3). Treatment taken for digestive disease 
-have also been taken into acount (q4088_s3).
+having a kidney diases (q4087_s3). Treatment taken for digestive disease have
+also been taken into acount (q4088_s3).
 
 ## Cancer
 
@@ -472,38 +472,38 @@ self-reported question about cancer (q4089_s3).
 ## Liver Disease
 
 A diagnosis of liver disease was endorsed if the participant self-reported
-having a kidney diases (q4091_s3). Treatment taken for liver disease 
-have also been taken into acount (q4092_s3).
+having a kidney diases (q4091_s3). Treatment taken for liver disease have also
+been taken into acount (q4092_s3).
 
 ## Osteoporosis
 
 A diagnosis of osteoporosis was endorsed if the participant self-reported having
-a kidney diases (q4093_s3). Treatment taken for osteoporosis have also been 
+a kidney diases (q4093_s3). Treatment taken for osteoporosis have also been
 taken into acount (q4094_s3).
 
 ## Anaemia
 
 A diagnosis of anaemia was endorsed if the participant self-reported having a
-kidney diases (q4095_s3). Treatment taken for anaemia have also been taken into 
+kidney diases (q4095_s3). Treatment taken for anaemia have also been taken into
 acount (q4096_s3).
 
 ## Thyroid
 
 A diagnosis of hyperthyroid or hypothyroid was endorsed if the participant
-self-reported having a kidney diases (q4097_s3). Treatment taken for tyroid 
+self-reported having a kidney diases (q4097_s3). Treatment taken for tyroid
 condition have also been taken into acount (q4098_s3).
 
 ## Glaucoma
 
 A diagnosis of glaucoma was endorsed if the participant self-reported having a
-kidney diases (q4099_s3). Treatment taken for glaucoma have also been taken into 
+kidney diases (q4099_s3). Treatment taken for glaucoma have also been taken into
 acount (q4100_s3).
 
 ## Heart Disease
 
 A diagnosis of heart disease was endorsed if the participant self-reported
-having a kidney diases (q4101_s3). Treatment taken for heart disease 
-have also been taken into acount (q4102_s3).
+having a kidney diases (q4101_s3). Treatment taken for heart disease have also
+been taken into acount (q4102_s3).
 
 ## Migraine
 
@@ -514,9 +514,9 @@ who reported migraine and received treatment for it in the previous 12 months.
 
 ## Chronic Back pain
 
-Diagnosis of chronic low back pain were made if the participant self-reported 
-chronic back pain (q4112). Treatment taken for chronic low back pain 
-have also been taken into acount (q4113c). 
+Diagnosis of chronic low back pain were made if the participant self-reported
+chronic back pain (q4112). Treatment taken for chronic low back pain have also
+been taken into acount (q4113c).
 
 ## Dementia
 
