@@ -161,7 +161,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variables description
 
 General comment: Chronic condition algorithms were developed for the World
-Health Survey [@worldhe]and adapted from COURAGE [@courage]. Symptom-based
+Health Survey [@worldhe] and adapted from COURAGE [@courage]. Symptom-based
 estimates were prepared for the following conditions: arthritis, stroke, angina,
 lung disease, asthma and hypertension. In such cases, the algorithm reflects a
 specific response pattern or a combination of answers indicating whether someone
@@ -170,7 +170,7 @@ response patterns (i.e. one or more no's) will result in 'no disease'.
 Additionally, self-reported diagnoses (ever diagnosed) were included in all
 chronic conditions.
 
-Important note: In "Edad con Salud" we have created an option (i.e. var_a =997)
+Important note: In "Edad con Salud" we have created an option (i.e. var_a = 997)
 for those individuals who reported a disease in first assessment, but in second
 assessment they said that they have never had such disease. There are ≈10-20
 individuals per disease that have reported this situation. We have considered
@@ -251,7 +251,7 @@ include an unhealthy diet, tobacco use and harmful alcohol use.
 
 ## Kidney Disease
 
-Chronic kidney disease includes complications like high blood pressure, anaemia,
+Chronic kidney disease includes complications like high blood pressure, anemia,
 weak bones, poor nutritional health and nerve damage. It may be caused by
 diabetes, high blood pressure and other disorders.
 
@@ -334,9 +334,13 @@ was the most disabling.
 Chronic back pain is defined as pain that continues for 12 weeks or longer. It
 has been found to be the leading cause of disability when analysed globally and
 has remained one of the top 2 contributors of global disability causes for over
-two decades. Chronic low back pain: About 20 percent of people affected by acute
+two decades. 
+
+* Chronic low back pain: About 20 percent of people affected by acute
 low back pain develop chronic low back pain with persistent symptoms at one
-year. Chronic cervical, neck or upper-back pain: Although most acute episodes
+year. 
+
+* Chronic cervical, neck or upper-back pain: Although most acute episodes
 resolve spontaneously, more than a third of affected people still have low grade
 symptoms or recurrences more than one year later, with genetics and psychosocial
 factors being risk factors for persistence.
@@ -358,156 +362,156 @@ Alzheimer's disease or stroke.
 
 A diagnosis of arthritis was made if the participant fulfilled any of the
 available criteria: (1) self-reported diagnosis of arthritis
-(q4001_arthritis_s3); (2) self-reported symptoms of arthritis
-(q4003_symptoms_s3, q4004_symptoms_s3,); (3) self-reported as under treatment
-for arthritis (q4002b_treated_s3) and characteristics like duration
-(q4005_duration_s3 and q4006_outcome_s3) As for the self-reported diagnosis,
+(`q4001_arthritis_s3`); (2) self-reported symptoms of arthritis
+(`q4003_symptoms_s3`, `q4004_symptoms_s3`); (3) self-reported as under treatment
+for arthritis (`q4002b_treated_s3`) and characteristics like duration
+(`q4005_duration_s3` and `q4006_outcome_s3`) As for the self-reported diagnosis,
 arthritis was endorsed if the participant answered "yes" (1) to self-reported
 diagnosis of arthritis, but if they affirmed they had never had the disease (not
-"997" to q4001a_s3).
+"997" to `q4001a_s3`).
 
 ## Stroke
 
 A diagnosis of stroke was made if the participant (1) self-reported the
-diagnosis of a stroke (q4010_stroke_s3) or (2) suffer from two symptoms: a
+diagnosis of a stroke (`q4010_stroke_s3`) or (2) suffer from two symptoms: a
 sudden paralysis or weakness in arms or legs on one side of the body and a
-sudden loss of sensation on one side of the body (q4012_parals_s3,
-q4013_feeling_s3).
+sudden loss of sensation on one side of the body (`q4012_parals_s3`,
+`q4013_feeling_s3`).
 
 ## Angina
 
 A diagnosis of angina was made if the participant self reported suffering from
-angina (q4014_angina_s3) or if he presents several symptoms such as chest pain
+angina (`q4014_angina_s3`) or if he presents several symptoms such as chest pain
 when walking downhill, chest pain when walking normally, etc.
-(q4016_symptoms_s3, q4017_symptoms_s3, q4018_r, q4019_s, q4020_where_6\_s3,
-q4020_where_7\_s3, q4020_where_8\_s3, q4020_where_11_s3) Diagnosis of angina was
-endorsed if the participant answered "yes" (1) to self-reported diagnosis , but
-not if they affirmed they had never had the disease (not "997" to
-q4014_angina_s3).
+(`q4016_symptoms_s3`, `q4017_symptoms_s3`, `q4018_r`, `q4019_s`, `q4020_where_6_s3`,
+`q4020_where_7_s3`, `q4020_where_8_s3`, `q4020_where_11_s3`).
+Diagnosis of angina was endorsed if the participant answered "yes" (1) to 
+self-reported diagnosis , but not if they affirmed they had never had the 
+disease (not "997" to `q4014_angina_s3`).
 
 ## Diabetes
 
 Original variables include the self-reported diagnosis of diabetes
-(q4022_diabetes_s3), the self-reported treatment of diabetes (q4023b_treated_s3)
-and the following of a special diet (q4024_diet_s3). Diabetes was endorsed when
+(`q4022_diabetes_s3`), the self-reported treatment of diabetes (`q4023b_treated_s3`)
+and the following of a special diet (`q4024_diet_s3`). Diabetes was endorsed when
 the participant answered "yes" to self-reported diagnose of diabetes, but not
-997 in q4022a_s3 (they affirmed they had never had the disease).
+997 in `q4022a_s3` (they affirmed they had never had the disease).
 
 ## Lung Disease
 
 A diagnosis of lung disease was made if the participant fulfilled any of the
 available criteria (i.e. self-reported diagnosis or symptoms). Those
-participants who answered "yes" to q4027_symptoms_s3, q4028_symptoms_s3 and
-q4029_symptoms_s3, were defined as having had lung disease. As for the
+participants who answered "yes" to `q4027_symptoms_s3`, `q4028_symptoms_s3` and
+`q4029_symptoms_s3`, were defined as having had lung disease. As for the
 self-reported diagnosis, lung disease was endorsed if the participant answered
-"yes" to q4025_lungs_s3, but not 997 in q4025a_s3 (they affirmed they had never
+"yes" to `q4025_lungs_s3`, but not 997 in `q4025a_s3` (they affirmed they had never
 had the disease). Please, consider that this algorithm does not include asthma
 as a part of lung diseases.
 
 ## Asthma
 
 A diagnosis of asthma was made if the participant has self-reported having the
-diases (q4033_asthma_s3) or if he is treated for asthma (q4034b_treated_s3) or
-several symptoms such as (1) wheezing attacks (q4035_symptoms_s3), (2) wheezing
-attack immediately after physical activity (q4036_symptoms_s3), (3) feeling of
-tightness in the chest (q4037_symptoms_s3), (4) woken up with a tight feeling in
-chest (q4038_symptoms_s3), (5) attack of shortness of breath, which occurs
-without an obvious cause (q4039_symptoms_s3). Those participants who answered
+diases (`q4033_asthma_s3`) or if he is treated for asthma (`q4034b_treated_s3`) or
+several symptoms such as (1) wheezing attacks (`q4035_symptoms_s3`), (2) wheezing
+attack immediately after physical activity (`q4036_symptoms_s3`), (3) feeling of
+tightness in the chest (`q4037_symptoms_s3`), (4) woken up with a tight feeling in
+chest (`q4038_symptoms_s3`), (5) attack of shortness of breath, which occurs
+without an obvious cause (`q4039_symptoms_s3`). Those participants who answered
 "yes" to all five symptoms were defined as having had asthma. As for the
 self-reported diagnosis, asthma was endorsed if the participant answered "yes"
-to q4033_asthma_s3, but not 997 in q4033a_s3 (they affirmed they had never had
-the disease). Note: it is possible to create the symptom algorithm in a less
-conservative way. That is: if q4035_symptoms_s3=1 and q4036_symptoms_s3=1 or
-q4037_symptoms_s3=1\
-or q4038_symptoms_s3=1 or q4039_symptoms_s3=1, asthma_test=1. There is,
-apparently, no wrong or right option.
+to `q4033_asthma_s3`, but not 997 in `q4033a_s3` (they affirmed they had never had
+the disease). 
+**NOTE**: it is possible to create the symptom algorithm in a less
+conservative way. That is: if `q4035_symptoms_s3=1` and `q4036_symptoms_s3=1` or
+`q4037_symptoms_s3=1` or `q4038_symptoms_s3=1` or `q4039_symptoms_s3=1`, 
+`asthma_test=1`. There is, apparently, no wrong or right option.
 
 ## Hypertension
 
-Those participants with systolic blood pressure ≥140 mmHg (q2501_syst_s3,
-q2502_syst_s3, measured twice) and/or diastolic blood pressure ≥90 mmHg
-(q2501_diast_s3, q2502_diast_s3, measured twice) were considered to have
-hypertension (blood pressure measurement). Hypertension diagonisis was also
-assess if participan answer "yes" to the self-reported question about the
-condition (q4060_high_bp_s3) but not "997" (they affirmed they had never had the
+Those participants with systolic blood pressure ≥140 mmHg (`q2501_syst_s3`,
+`q2502_syst_s3`, measured twice) and/or diastolic blood pressure ≥90 mmHg
+(`q2501_diast_s3`, `q2502_diast_s3`, measured twice) were considered to have
+hypertension (blood pressure measurement). Hypertension diagnosis was also
+assess if participants answer "yes" to the self-reported question about the
+condition (`q4060_high_bp_s3`) but not "997" (they affirmed they had never had the
 disease).
 
 ## Cataracts
 
 A diagnosis of cataracts was made if the participant says he has the condition
-(q4062_catar_s3) or if he suffer from those two symptoms: (1) blurred or hazy
-vision (q4064_vision_s3) and (2) visual problems with light (q4065_light_s3) or
-if he has undergone surgery (q4063_surgery_s3).We also included a treatment code
-(cataracts_self=2) in those individuals who, apart from having reported a
+(`q4062_catar_s3`) or if he suffer from those two symptoms: (1) blurred or hazy
+vision (`q4064_vision_s3`) and (2) visual problems with light (`q4065_light_s3`) or
+if he has undergone surgery (`q4063_surgery_s3`).We also included a treatment code
+(`cataracts_self=2`) in those individuals who, apart from having reported a
 cataract diagnosis, have had surgery for cataracts in the previous 12 months.
 
 ## Oral Health
 
 Oral problems were endorsed if the participant answered "yes" to the
-self-reported question about any oral conditions (q4067_symptoms_s3) or has been
-pharmacology treated for oral problem (q4068b_treated_s3). We also consider the
-age at which the participants lost all their teeth (q4066_teeth_s3). Those
-participants who answered "yes" to q4066_teeth_s3, but not 997 in q4066a_s3
+self-reported question about any oral conditions (`q4067_symptoms_s3`) or has been
+pharmacology treated for oral problem (`q4068b_treated_s3`). We also consider the
+age at which the participants lost all their teeth (`q4066_teeth_s3`). Those
+participants who answered "yes" to `q4066_teeth_s3`, but not 997 in `q4066a_s3`
 (they affirmed they had never lost their tooth) were defined as having had total
 tooth loss. As for the self-reported symptoms, oral problems were endorsed if
-the participant answered "yes" to q4067_symptoms_s3.
+the participant answered "yes" to `q4067_symptoms_s3`.
 
 ## Kidney Disease
 
 A diagnosis of kidney disease was endorsed if the participant self-reported
-having a kidney diases (q4085_kidney_s3). Treatment taken for kidney disease 
-have also been taken into acount (q4086_s3).
+having a kidney disease (`q4085_kidney_s3`). Treatment taken for kidney disease 
+have also been taken into account (`q4086_s3`).
 
 ## Digestive Disease
 
 A diagnosis of digestive disease was endorsed if the participant self-reported
-having a kidney diases (q4087_s3). Treatment taken for digestive disease 
-have also been taken into acount (q4088_s3).
+having a kidney disease (`q4087_s3`). Treatment taken for digestive disease 
+have also been taken into account (`q4088_s3`).
 
 ## Cancer
 
 A diagnosis of cancer disease was endorsed if the participant answered "yes" to
-self-reported question about cancer (q4089_s3).
+self-reported question about cancer (`q4089_s3`).
 
 ## Liver Disease
 
 A diagnosis of liver disease was endorsed if the participant self-reported
-having a kidney diases (q4091_s3). Treatment taken for liver disease 
-have also been taken into acount (q4092_s3).
+having a kidney disease (`q4091_s3`). Treatment taken for liver disease 
+have also been taken into account (`q4092_s3`).
 
 ## Osteoporosis
 
 A diagnosis of osteoporosis was endorsed if the participant self-reported having
-a kidney diases (q4093_s3). Treatment taken for osteoporosis have also been 
-taken into acount (q4094_s3).
+a kidney disease (`q4093_s3`). Treatment taken for osteoporosis have also been 
+taken into account (`q4094_s3`).
 
 ## Anaemia
 
 A diagnosis of anaemia was endorsed if the participant self-reported having a
-kidney diases (q4095_s3). Treatment taken for anaemia have also been taken into 
-acount (q4096_s3).
+kidney diases (`q4095_s3`). Treatment taken for anaemia have also been taken into 
+acount (`q4096_s3`).
 
 ## Thyroid
 
 A diagnosis of hyperthyroid or hypothyroid was endorsed if the participant
-self-reported having a kidney diases (q4097_s3). Treatment taken for tyroid 
-condition have also been taken into acount (q4098_s3).
+self-reported having a kidney disease (`q4097_s3`). Treatment taken for tyroid 
+condition have also been taken into account (`q4098_s3`).
 
 ## Glaucoma
 
 A diagnosis of glaucoma was endorsed if the participant self-reported having a
-kidney diases (q4099_s3). Treatment taken for glaucoma have also been taken into 
-acount (q4100_s3).
+kidney diases (`q4099_s3`). Treatment taken for glaucoma have also been taken into 
+acount (`q4100_s3`).
 
 ## Heart Disease
 
 A diagnosis of heart disease was endorsed if the participant self-reported
-having a kidney diases (q4101_s3). Treatment taken for heart disease 
-have also been taken into acount (q4102_s3).
+having a kidney diases (`q4101_s3`). Treatment taken for heart disease 
+have also been taken into acount (`q4102_s3`).
 
 ## Migraine
 
-Original variables include self-reported diagnose (q4119) and treatment
+Original variables include self-reported diagnose (`q4119`) and treatment
 (q4119c). A diagnosis of migraine was endorsed if the participant answered "yes"
 to q4119. We also included a treatment code (migr_self=2) in those individuals
 who reported migraine and received treatment for it in the previous 12 months.
@@ -543,6 +547,7 @@ replace art_test_s3=2 if q4003_symptoms_s3==2 | q4004_symptoms_s3==2 | q4005_dur
 label define labels1 1 "Yes" 2 "No"
 label values art_test_s3 labels1
 label variable art_test_s3 "test for arthritis"
+
 * Arthritis self-reported. 
 recode q4001_arthritis_s3 (888=.), gen (art_1)
 recode q4002c_treated_s3 (888=.), gen (art_2)
@@ -552,6 +557,7 @@ replace art_self_s3=2 if art_1==2
 replace art_self_s3=1 if art_1==1
 label values art_self_s3 labels1
 label variable art_self_s3 "Arthritis self-reported"
+
 * Final algorithm for arthritis (without treatment).
 gen arthritis_s3=.
 replace arthritis_s3=1 if (art_test_s3==1 | art_self_s3==1) | (art_test_s3==. & art_self_s3==1) | (art_test_s3==1 & art_self_s3==.)  
