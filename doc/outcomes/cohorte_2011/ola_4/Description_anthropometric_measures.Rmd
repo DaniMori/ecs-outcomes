@@ -5,10 +5,10 @@ output:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
 csl: "`r ecs.data::get_proj_csl_file()`"
-nocite: '@world_health_organization_obesity_nodate, @cdc_defining_2022'
+nocite: '@worldhealthorganization, @cdc2022'
 editor_options: 
   markdown:
-    wrap: 80
+    wrap: 80 ; 
 params:
   test: true
   double-coding: false
@@ -80,22 +80,22 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Explanation of how the variables were created
 
--   **Height** is renamed from q2506_height_s3 to height_s3. It is obtained by
-    using a measuring tape. Constraints are set to allow only valid values.
+-   **Height** is renamed from `q2506_height_s3` to `height_s3`. It is obtained
+    by using a measuring tape. Constraints are set to allow only valid values.
 
--   **Weight** is renamed from q2507_weight to weight_s3. It is obtained using a
-    weight scale without shoes. Constraints are set to allow only valid values.
+-   **Weight** is renamed from `q2507_weight` to `weight_s3`. It is obtained
+    using a weight scale without shoes. Constraints are set to allow only valid
+    values.
 
--   **Waist circumference** is ranamed from q2508_waist_s3 to waist_s3. It is
-    obtained by identifying the midpoint between the last rib and the illiac
+-   **Waist circumference** is ranamed from `q2508_waist_s3` to `waist_s3`. It
+    is obtained by identifying the midpoint between the last rib and the illiac
     crest, ensuring that the tape measure around the body is parallel to the
     ground. It is intended that the measurement is taken directly from the skin,
     if not, with light clothing. Constraints are set to allow only valid values.
 
 -   **BMI**: BMI is defined as the weight in kilograms divided by the square of
-    the height in meters (kg/m2) @world_health_organization_obesity_nodate,
-    @cdc_defining_2022 ). Four categories are created using the WHO BMI cut-off
-    points:
+    the height in meters (kg/m2) [@worldhealthorganization; @cdc2022]). Four
+    categories are created using the WHO BMI cut-off points:
 
 +--------------------+---------------------------+----------------------------+
 | Classification of  |                           |                            |
