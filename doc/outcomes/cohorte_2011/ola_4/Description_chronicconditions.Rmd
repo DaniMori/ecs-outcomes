@@ -455,14 +455,14 @@ the participant answered "yes" to q4067_symptoms_s3.
 ## Kidney Disease
 
 A diagnosis of kidney disease was endorsed if the participant self-reported
-having a kidney diases (q4085_kidney_s3) or take treatment for kidney disease
-(q4086_s3).
+having a kidney diases (q4085_kidney_s3). Treatment taken for kidney disease 
+have also been taken into acount (q4086_s3).
 
 ## Digestive Disease
 
 A diagnosis of digestive disease was endorsed if the participant self-reported
-having a kidney diases (q4087_s3) or take treatment for kidney disease
-(q4088_s3).
+having a kidney diases (q4087_s3). Treatment taken for digestive disease 
+have also been taken into acount (q4088_s3).
 
 ## Cancer
 
@@ -472,35 +472,38 @@ self-reported question about cancer (q4089_s3).
 ## Liver Disease
 
 A diagnosis of liver disease was endorsed if the participant self-reported
-having a kidney diases (q4091_s3) or take treatment for kidney disease
-(q4092_s3).
+having a kidney diases (q4091_s3). Treatment taken for liver disease 
+have also been taken into acount (q4092_s3).
 
 ## Osteoporosis
 
 A diagnosis of osteoporosis was endorsed if the participant self-reported having
-a kidney diases (q4093_s3) or take treatment for kidney disease (q4094_s3).
+a kidney diases (q4093_s3). Treatment taken for osteoporosis have also been 
+taken into acount (q4094_s3).
 
 ## Anaemia
 
 A diagnosis of anaemia was endorsed if the participant self-reported having a
-kidney diases (q4095_s3) or take treatment for kidney disease (q4096_s3).
+kidney diases (q4095_s3). Treatment taken for anaemia have also been taken into 
+acount (q4096_s3).
 
 ## Thyroid
 
 A diagnosis of hyperthyroid or hypothyroid was endorsed if the participant
-self-reported having a kidney diases (q4097_s3) or take treatment for kidney
-disease (q4098_s3).
+self-reported having a kidney diases (q4097_s3). Treatment taken for tyroid 
+condition have also been taken into acount (q4098_s3).
 
 ## Glaucoma
 
 A diagnosis of glaucoma was endorsed if the participant self-reported having a
-kidney diases (q4099_s3) or take treatment for kidney disease (q4100_s3).
+kidney diases (q4099_s3). Treatment taken for glaucoma have also been taken into 
+acount (q4100_s3).
 
 ## Heart Disease
 
 A diagnosis of heart disease was endorsed if the participant self-reported
-having a kidney diases (q4101_s3) or take treatment for kidney disease
-(q4102_s3).
+having a kidney diases (q4101_s3). Treatment taken for heart disease 
+have also been taken into acount (q4102_s3).
 
 ## Migraine
 
@@ -511,12 +514,9 @@ who reported migraine and received treatment for it in the previous 12 months.
 
 ## Chronic Back pain
 
-Diagnosis of chronic low back or cervical pain were made if the participant
-self-reported chronic back pain (q4112) or was treat for it (q4113c). Those
-participants reported suffering from back pain by answering "yes" to q4112 were
-defined as having had lombalgy. We also included a treatment code (low_self =2
-or cerv_self =2) in those individuals who reported a diagnosis and had received
-treatment for it in the previous 12 months.
+Diagnosis of chronic low back pain were made if the participant self-reported 
+chronic back pain (q4112). Treatment taken for chronic low back pain 
+have also been taken into acount (q4113c). 
 
 ## Dementia
 
@@ -643,8 +643,6 @@ replace diab_s3=2 if diab_self_s3==1 & diab_treatment_s3==1
 label define labels2 0 "No" 1 "Self-reported" 2 "Treatment"
 label values diab_s3 labels2
 label variable diab_s3 "Diabetes self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
 
 
 * LUNG DISEASE 
@@ -768,8 +766,6 @@ replace kidney_s3=1 if kidney_self_s3==1
 replace kidney_s3=2 if kidney_self_s3==1 & kidney_treatment_s3==1
 label values kidney_s3 labels2
 label variable kidney_s3 "Kidney disease self-reported or treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
 
 
 * DIGESTIVE.
@@ -786,8 +782,6 @@ replace digestive_s3=1 if digestive_self_s3==1
 replace digestive_s3=2 if digestive_self_s3==1 & digestive_treatment_s3==1
 label values digestive_s3 labels2
 label variable digestive_s3 "Digestive problems self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
 
 * CANCER.
 recode q4089_s3 (888=.), gen (cancer_s3)
@@ -810,15 +804,12 @@ replace liver_s3=1 if liver_self_s3==1
 replace liver_s3=2 if liver_self_s3==1 & liver_treatment_s3==1
 label values liver_s3 labels2
 label variable liver_s3 "Liver disease self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
-
 
 * OSTEOPOROSIS.
-recode q4093_s3 (888=.), gen (osteo_self_s3)
-replace osteo_self_s3=2 if q4093a_s3==997
-label values osteo_self_s3 labels1
-label variable osteo_self_s3 "Osteoporosis self-reported"
+recode q4093_s3 (888=.), gen (osteop_self_s3)
+replace osteop_self_s3=2 if q4093a_s3==997
+label values osteop_self_s3 labels1
+label variable osteop_self_s3 "Osteoporosis self-reported"
 recode q4094c (888=.) (2=0), gen (osteop_treatment_s3)
 label values osteop_treatment_s3 labels1
 label variable osteop_treatment_s3 "Treatment for osteoporosis"
@@ -828,9 +819,6 @@ replace osteop_s3=1 if osteop_self_s3==1
 replace osteop_s3=2 if osteop_self_s3==1 & osteop_treatment_s3==1
 label values osteop_s3 labels2
 label variable osteop_s3 "Osteoporosis self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
-
 
 * ANAEMIA.
 recode q4095_s3 (888=.), gen (anaemia_self_s3)
@@ -846,8 +834,6 @@ replace anaemia_s3=1 if anaemia_self_s3==1
 replace anaemia_s3=2 if anaemia_self_s3==1 & anaemia_treatment_s3==1
 label values anaemia_s3 labels2
 label variable anaemia_s3 "Anaemia self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
 
 
 * THYROID.
@@ -858,15 +844,12 @@ label variable thyroid_self_s3 "Thyroid disease self-reported"
 recode q4098c (888=.) (2=0), gen (thyroid_treatment_s3)
 label values thyroid_treatment_s3 labels1
 label variable thyroid_treatment_s3 "Treatment for thyroid"
-gen thyroid_self=.
+gen thyroid_s3=.
 replace thyroid_s3=0 if thyroid_self_s3==0
 replace thyroid_s3=1 if thyroid_self_s3==1 
 replace thyroid_s3=2 if thyroid_self_s3==1 & thyroid_treatment_s3==1
 label values thyroid_s3 labels2
 label variable thyroid_s3 "Thyroid self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
-
 
 * GLAUCOMA.
 recode q4099_s3 (888=.), gen (glaucoma_self_s3)
@@ -876,44 +859,39 @@ label variable glaucoma_self_s3 "Glaucoma self-reported"
 recode q4100c (888=.) (2=0), gen (glaucoma_treatment_s3)
 label values glaucoma_treatment_s3 labels1
 label variable glaucoma_treatment_s3 "Treatment for glaucoma"
-gen glaucoma_self=.
+gen glaucoma_s3=.
 replace glaucoma_s3=0 if glaucoma_self_s3==0
 replace glaucoma_s3=1 if glaucoma_self_s3==1 
 replace glaucoma_s3=2 if glaucoma_self_s3==1 & glaucoma_treatment_s3==1
 label values glaucoma_s3 labels2
 label variable glaucoma_s3 "Glaucoma self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
-
 
 * HEART CONDITIONS.
 recode q4101_s3 (888=.), gen (heart_s3)
 replace heart_s3=2 if q4101a_s3==997
 label values heart_s3 labels1
-labelvariable heart_s3 "Heart disease self-reported"
+label variable heart_s3 "Heart disease self-reported"
 
 
 * MIGRAINE.
-recode q4119 (888=.) (999=.) (2=0), gen (migraine_self_s3)
+recode q4119_s3 (888=.) (999=.) (2=0), gen (migraine_self_s3)
 label values migraine_self_s3 labels1
 label variable migraine_self_s3 "Migraine self-reported (c2011_w4)"
-recode q4119c (888=.) (2=0), gen (migr_treatment_s3)
+recode q4119c_s3 (888=.) (2=0), gen (migr_treatment_s3)
 label values migr_treatment_s3 labels1
 label variable migr_treatment_s3 "Treatment for migraine"
-gen migr_self=.
+gen migr_s3=.
 replace migr_s3=0 if migraine_self_s3==0
 replace migr_s3=1 if migraine_self_s3==1 
 replace migr_s3=2 if migraine_self_s3==1 & migr_treatment_s3==1
 label values migr_s3 labels2
 label variable migr_s3 "Migraine self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
 
 
 *CHRONIC BACK PAIN
 **Lower back pain
-recode q4112 (888=.) (999=.) (2=0), gen (lowback_self_s3)
-recode q4113c (888=.) (2=0), gen (low_treatment_s3)
+recode q4112_s3 (888=.) (999=.) (2=0), gen (lowback_self_s3)
+recode q4113c_s3 (888=.) (2=0), gen (low_treatment_s3)
 label values (lowback_self_s3 low_treatment_s3) labels1
 label variable lowback_self_s3 "Lower back pain self-reported"
 label variable low_treatment_s3 "Treatment for lower back pain"
@@ -923,12 +901,11 @@ replace lowback_s3=1 if lowback_self_s3==1
 replace lowback_s3=2 if lowback_self_s3==1 & low_treatment_s3==1
 label values lowback_s3 labels2
 label variable lowback_s3 "Lower back pain self-reported and treatment"
-*NOTE: self-reported AND treatment or self-reported OR treatment or just take 
-*into acount "self-reported" and not treatment?
+
 
 * DEMENTIA.
-recode q4105 (888=.) (999=.) (2=0), gen (dementia_self_s3)
-recode q4106c (888=.) (2=0), gen (dem_treatment_s3)
+recode q4105_s3 (888=.) (999=.) (2=0), gen (dementia_self_s3)
+recode q4106c_s3 (888=.) (2=0), gen (dem_treatment_s3)
 label values (dementia_self_s3 dem_treatment_s3) labels1
  label variable dementia_self_s3 "Dementia self-reported (c2011_w4)"
 label variable dem_treatment_s3 "Treatment for dementia"
