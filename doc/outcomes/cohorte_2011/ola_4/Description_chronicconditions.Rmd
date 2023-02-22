@@ -684,7 +684,7 @@ gen asthma_s3=.
 replace asthma_s3=1 if asthma_test_s3==1 | ast_self_s3==1
 replace asthma_s3=2 if asthma_test_s3==2 & ast_self_s3==2
 label values asthma_s3 labels1
-label variable asthma_s3 "Asthma test or self-reported"
+label variable asthma_s3 "Asthma  test or self-reported"
 
 
 * HYPERTENSION.
