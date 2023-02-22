@@ -46,8 +46,7 @@ options(knitr.kable.NA = '')
 2. Run the chunk `load-data`
 
 ```{r load-data}
-# DATASET_NAME <- "Outcome_[varname_qualifier].dta"
-DATASET_NAME <- "Outcome_anthropometric_measures.dta"
+DATASET_NAME <- "Outcome_[varname_qualifier].dta"
 
 C2019W4_FOLDER <- "../outcomes/cohorte_2011/ola_4/"
 
@@ -66,26 +65,6 @@ outcomes_original <- read_dta(DATASET_PATH, encoding = 'UTF-8')
 use "~\\UAM\\Marta Miret Garcia - Bases de datos maestras Edad con Salud\\Ola_4\\Cohorte 2011\\rawdata_c2011w4.dta"
 
 **# TODO: Paste double coding syntax here
-recode q2506_height_s3 q2507_weight_s3 q2508_waist_s3(997=.)(998=.) 
-gen height_s3=q2506_height_s3 if q2506_height_s3>=50 & q2506_height_s3<=200 
-label variable height_s3 "Height, in cm (c2011_w4)" 
-gen weight_s3=q2507_weight_s3 if q2507_weight_s3>=20 & q2507_weight_s3<=200 
-label variable weight_s3 "Weight, in kg (c2011_w4)" 
-gen waist_s3=q2508_waist_s3 if q2508_waist_s3>=40 & q2508_waist_s3<=300 
-label variable waist_s3 "Waist circumference, in cm (c2011_w4)" 
-***BMI (kg/m2) is defined as the weight (kg) divided by the square of the height (m)  
-gen height_m=height_s3/100 
-gen bmi_s3= weight_s3/(height_m*height_m) 
-label variable bmi_s3 "Body mass index (kg/m2), continuous (c2011_w4)" 
-*BMI-Four categories are created using the WHO BMI cut-off points. 
-gen bmi_cat_s3=. 
-replace bmi_cat_s3=1 if bmi_s3<18.5 
-replace bmi_cat_s3=2 if bmi_s3>=18.5 & bmi_s3<25 
-replace bmi_cat_s3=3 if bmi_s3>=25 & bmi_s3<30 
-replace bmi_cat_s3=4 if bmi_s3>=30 & bmi_s3<50 
-label define bmi1 1 "Underweight" 2 "Normal weight" 3 "Overweight" 4 "Obese" 
-label values bmi_cat_s3 bmi1 
-label variable bmi_cat_s3 "Body mass index, categorical (c2011_w4)"
 
 * #ATTENTION: DO NOT DELETE THE FOLLOWING LINE:
 saveold "throughput.dta", replace version(13)
