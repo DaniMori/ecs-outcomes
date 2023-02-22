@@ -139,19 +139,19 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                 | (c2011_w4)           |                 |                 |
 |                 |                      |                 | 2 no            |
 +-----------------+----------------------+-----------------+-----------------+
-| migr_s3         | Migraine self        | dummy           | 0 no            |
+| migr_s3         | migraine self        | dummy           | 0 no            |
 |                 | reported and         |                 |                 |
 |                 | treatment (c2011_w4) |                 | 1 yes           |
 |                 |                      |                 |                 |
 |                 |                      |                 | 2 treatment     |
 +-----------------+----------------------+-----------------+-----------------+
-| lowback_s3      | Chronic Back Pain    | dummy           | 0 no            |
+| lowback_s3      | chronic Back Pain    | dummy           | 0 no            |
 |                 | self-reported and    |                 |                 |
 |                 | treatment (c2011_w4) |                 | 1 yes           |
 |                 |                      |                 |                 |
 |                 |                      |                 | 2 treatment     |
 +-----------------+----------------------+-----------------+-----------------+
-| dem_s3          | Dementia self        | dummy           | 0 no            |
+| dem_s3          | dementia self        | dummy           | 0 no            |
 |                 | reported and         |                 |                 |
 |                 | treatment (c2011_w4) |                 | 1 yes           |
 |                 |                      |                 |                 |
@@ -461,7 +461,7 @@ have also been taken into acount (q4086_s3).
 ## Digestive Disease
 
 A diagnosis of digestive disease was endorsed if the participant self-reported
-having a kidney diases (q4087_s3). Treatment taken for digestive disease have
+having a digestive disease (q4087_s3). Treatment taken for digestive disease have
 also been taken into acount (q4088_s3).
 
 ## Cancer
@@ -472,37 +472,37 @@ self-reported question about cancer (q4089_s3).
 ## Liver Disease
 
 A diagnosis of liver disease was endorsed if the participant self-reported
-having a kidney diases (q4091_s3). Treatment taken for liver disease have also
+having a liver disease (q4091_s3). Treatment taken for liver disease have also
 been taken into acount (q4092_s3).
 
 ## Osteoporosis
 
 A diagnosis of osteoporosis was endorsed if the participant self-reported having
-a kidney diases (q4093_s3). Treatment taken for osteoporosis have also been
+a osteoporosis (q4093_s3). Treatment taken for osteoporosis have also been
 taken into acount (q4094_s3).
 
 ## Anaemia
 
 A diagnosis of anaemia was endorsed if the participant self-reported having a
-kidney diases (q4095_s3). Treatment taken for anaemia have also been taken into
+anaemia (q4095_s3). Treatment taken for anaemia have also been taken into
 acount (q4096_s3).
 
 ## Thyroid
 
 A diagnosis of hyperthyroid or hypothyroid was endorsed if the participant
-self-reported having a kidney diases (q4097_s3). Treatment taken for tyroid
+self-reported having a thyroid condition (q4097_s3). Treatment taken for tyroid
 condition have also been taken into acount (q4098_s3).
 
 ## Glaucoma
 
 A diagnosis of glaucoma was endorsed if the participant self-reported having a
-kidney diases (q4099_s3). Treatment taken for glaucoma have also been taken into
+glaucoma (q4099_s3). Treatment taken for glaucoma have also been taken into
 acount (q4100_s3).
 
 ## Heart Disease
 
 A diagnosis of heart disease was endorsed if the participant self-reported
-having a kidney diases (q4101_s3). Treatment taken for heart disease have also
+having a heart disease (q4101_s3). Treatment taken for heart disease have also
 been taken into acount (q4102_s3).
 
 ## Migraine
@@ -557,7 +557,7 @@ gen arthritis_s3=.
 replace arthritis_s3=1 if (art_test_s3==1 | art_self_s3==1) | (art_test_s3==. & art_self_s3==1) | (art_test_s3==1 & art_self_s3==.)  
 replace arthritis_s3=2 if art_test_s3==2 & art_self_s3==2
 label values arthritis_s3 labels1
-label variable arthritis_s3 "Arthritis test or self-reported"
+label variable arthritis_s3 "Arthritis test or self-reported (c2011_w4)"
 
 
 *OSTEOARTHRITIS
@@ -572,7 +572,7 @@ gen osteoart_s3=.
 replace osteoart_s3=1 if (osteoart_test_s3==1 | art_self_s3==1) | (osteoart_test_s3==. & art_self_s3==1) | (osteoart_test_s3==1 & art_self_s3==.)  
 replace osteoart_s3=2 if osteoart_test_s3==2 & art_self_s3==2
 label values osteoart_s3 labels1
-label variable osteoart_s3 "Osteoarthritis test or self-reported"
+label variable osteoart_s3 "Osteoarthritis test or self-reported (c2011_w4)"
 
 
 *STROKE.
@@ -595,7 +595,7 @@ gen stroke_s3=.
 replace stroke_s3=1 if stroke_test_s3==1 | str_self_s3==1
 replace stroke_s3=2 if stroke_test_s3==2 & str_self_s3==2
 label values stroke_s3 labels1
-label variable stroke_s3 "Stroke self-reported or test"
+label variable stroke_s3 "Stroke self-reported or test (c2011_w4)"
 
 
 *ANGINA. 
@@ -624,7 +624,7 @@ gen angina_s3=2
 replace angina_s3=1 if angina_test_s3==1 | ang_self_s3==1
 replace angina_s3=. if angina_test_s3==. & ang_self_s3==.
 label values angina_s3 labels1
-label variable angina_s3 "Angina test or self-reported"
+label variable angina_s3 "Angina test or self-reported (c2011_w4)"
 
 
 * DIABETES.
@@ -642,7 +642,7 @@ replace diab_s3=1 if diab_self_s3==1
 replace diab_s3=2 if diab_self_s3==1 & diab_treatment_s3==1
 label define labels2 0 "No" 1 "Self-reported" 2 "Treatment"
 label values diab_s3 labels2
-label variable diab_s3 "Diabetes self-reported and treatment"
+label variable diab_s3 "Diabetes self-reported and treatment (c2011_w4)"
 
 
 * LUNG DISEASE 
@@ -663,7 +663,7 @@ gen lung_s3=.
 replace lung_s3=1 if lung_test_s3==1 | lung_self_s3 ==1
 replace lung_s3=2 if lung_test_s3==2 & lung_self_s3 ==2
 label values lung_s3 labels1
-label variable lung_s3 "Lung Disease test or self-reported"
+label variable lung_s3 "Lung Disease test or self-reported (c2011_w4)"
 
 
 *ASTHMA. 
@@ -684,7 +684,7 @@ gen asthma_s3=.
 replace asthma_s3=1 if asthma_test_s3==1 | ast_self_s3==1
 replace asthma_s3=2 if asthma_test_s3==2 & ast_self_s3==2
 label values asthma_s3 labels1
-label variable asthma_s3 "Asthma  test or self-reported"
+label variable asthma_s3 "Asthma  test or self-reported (c2011_w4)"
 
 
 * HYPERTENSION.
@@ -716,7 +716,7 @@ gen hypertension_s3=.
 replace hypertension_s3=1 if hypertension_test_s3==1 | hyper_self_s3 ==1
 replace hypertension_s3=2 if hypertension_test_s3==2 & hyper_self_s3 ==2
 label values hypertension_s3 labels1
-label variable hypertension_s3 "Hypertension test or self-reported"
+label variable hypertension_s3 "Hypertension test or self-reported (c2011_w4)"
 
 
 * CATARACTS.
@@ -733,7 +733,7 @@ gen cataracts_s3=.
 replace cataracts_s3=1 if catar_self_s3==1 | catar_test_s3==1
 replace cataracts_s3=2 if catar_self_s3==2 & catar_test_s3==2
 label values cataracts_s3 labels1
-label variable cataracts_s3 "Cataract test or self-reported"
+label variable cataracts_s3 "Cataract test or self-reported (c2011_w4)"
 
 
 * ORAL HEALTH.
@@ -749,7 +749,7 @@ gen oral_s3=.
 replace oral_s3=1 if oral_self_s3==1 | oral_test_s3==1
 replace oral_s3=2 if oral_self_s3==2 & oral_test_s3==2
 label values oral_s3 labels1
-label variable oral_s3 "Oral problems test or self-reported"
+label variable oral_s3 "Oral problems test or self-reported (c2011_w4)"
 
 
 * KIDNEY.
@@ -765,7 +765,7 @@ replace kidney_s3=0 if kidney_self_s3 ==0
 replace kidney_s3=1 if kidney_self_s3==1 
 replace kidney_s3=2 if kidney_self_s3==1 & kidney_treatment_s3==1
 label values kidney_s3 labels2
-label variable kidney_s3 "Kidney disease self-reported or treatment"
+label variable kidney_s3 "Kidney disease self-reported or treatment (c2011_w4)"
 
 
 * DIGESTIVE.
@@ -781,13 +781,13 @@ replace digestive_s3=0 if digestive_self_s3==0
 replace digestive_s3=1 if digestive_self_s3==1 
 replace digestive_s3=2 if digestive_self_s3==1 & digestive_treatment_s3==1
 label values digestive_s3 labels2
-label variable digestive_s3 "Digestive problems self-reported and treatment"
+label variable digestive_s3 "Digestive problems self-reported and treatment (c2011_w4)"
 
 * CANCER.
 recode q4089_s3 (888=.), gen (cancer_s3)
 replace cancer_s3=2 if q4089a_s3==997
 label values cancer_s3 labels1
-label variable cancer_s3 "Cancer self-reported"
+label variable cancer_s3 "Cancer self-reported (c2011_w4)"
 
 
 * LIVER.
@@ -803,7 +803,7 @@ replace liver_s3=0 if liver_self_s3==0
 replace liver_s3=1 if liver_self_s3==1 
 replace liver_s3=2 if liver_self_s3==1 & liver_treatment_s3==1
 label values liver_s3 labels2
-label variable liver_s3 "Liver disease self-reported and treatment"
+label variable liver_s3 "Liver disease self-reported and treatment (c2011_w4)"
 
 * OSTEOPOROSIS.
 recode q4093_s3 (888=.), gen (osteop_self_s3)
@@ -818,7 +818,7 @@ replace osteop_s3=0 if osteop_self_s3==0
 replace osteop_s3=1 if osteop_self_s3==1 
 replace osteop_s3=2 if osteop_self_s3==1 & osteop_treatment_s3==1
 label values osteop_s3 labels2
-label variable osteop_s3 "Osteoporosis self-reported and treatment"
+label variable osteop_s3 "Osteoporosis self-reported and treatment (c2011_w4)"
 
 * ANAEMIA.
 recode q4095_s3 (888=.), gen (anaemia_self_s3)
@@ -833,7 +833,7 @@ replace anaemia_s3=0 if anaemia_self_s3==0
 replace anaemia_s3=1 if anaemia_self_s3==1 
 replace anaemia_s3=2 if anaemia_self_s3==1 & anaemia_treatment_s3==1
 label values anaemia_s3 labels2
-label variable anaemia_s3 "Anaemia self-reported and treatment"
+label variable anaemia_s3 "Anaemia self-reported and treatment (c2011_w4)"
 
 
 * THYROID.
@@ -849,7 +849,7 @@ replace thyroid_s3=0 if thyroid_self_s3==0
 replace thyroid_s3=1 if thyroid_self_s3==1 
 replace thyroid_s3=2 if thyroid_self_s3==1 & thyroid_treatment_s3==1
 label values thyroid_s3 labels2
-label variable thyroid_s3 "Thyroid self-reported and treatment"
+label variable thyroid_s3 "Thyroid self-reported and treatment (c2011_w4)"
 
 * GLAUCOMA.
 recode q4099_s3 (888=.), gen (glaucoma_self_s3)
@@ -864,19 +864,19 @@ replace glaucoma_s3=0 if glaucoma_self_s3==0
 replace glaucoma_s3=1 if glaucoma_self_s3==1 
 replace glaucoma_s3=2 if glaucoma_self_s3==1 & glaucoma_treatment_s3==1
 label values glaucoma_s3 labels2
-label variable glaucoma_s3 "Glaucoma self-reported and treatment"
+label variable glaucoma_s3 "Glaucoma self-reported and treatment (c2011_w4)"
 
 * HEART CONDITIONS.
 recode q4101_s3 (888=.), gen (heart_s3)
 replace heart_s3=2 if q4101a_s3==997
 label values heart_s3 labels1
-label variable heart_s3 "Heart disease self-reported"
+label variable heart_s3 "Heart disease self-reported (c2011_w4)"
 
 
 * MIGRAINE.
 recode q4119_s3 (888=.) (999=.) (2=0), gen (migraine_self_s3)
 label values migraine_self_s3 labels1
-label variable migraine_self_s3 "Migraine self-reported (c2011_w4)"
+label variable migraine_self_s3 "Migraine self-reported"
 recode q4119c_s3 (888=.) (2=0), gen (migr_treatment_s3)
 label values migr_treatment_s3 labels1
 label variable migr_treatment_s3 "Treatment for migraine"
@@ -885,7 +885,7 @@ replace migr_s3=0 if migraine_self_s3==0
 replace migr_s3=1 if migraine_self_s3==1 
 replace migr_s3=2 if migraine_self_s3==1 & migr_treatment_s3==1
 label values migr_s3 labels2
-label variable migr_s3 "Migraine self-reported and treatment"
+label variable migr_s3 "Migraine self-reported and treatment (c2011_w4)"
 
 
 *CHRONIC BACK PAIN
@@ -900,21 +900,21 @@ replace lowback_s3=0 if lowback_self_s3==0
 replace lowback_s3=1 if lowback_self_s3==1 
 replace lowback_s3=2 if lowback_self_s3==1 & low_treatment_s3==1
 label values lowback_s3 labels2
-label variable lowback_s3 "Lower back pain self-reported and treatment"
+label variable lowback_s3 "Lower back pain self-reported and treatment (c2011_w4)"
 
 
 * DEMENTIA.
 recode q4105_s3 (888=.) (999=.) (2=0), gen (dementia_self_s3)
 recode q4106c_s3 (888=.) (2=0), gen (dem_treatment_s3)
 label values (dementia_self_s3 dem_treatment_s3) labels1
- label variable dementia_self_s3 "Dementia self-reported (c2011_w4)"
+ label variable dementia_self_s3 "Dementia self-reported"
 label variable dem_treatment_s3 "Treatment for dementia"
 gen dem_s3=.
 replace dem_s3=0 if dementia_self_s3==0
 replace dem_s3=1 if dementia_self_s3==1 
 replace dem_s3=2 if dementia_self_s3==1 & dem_treatment_s3==1
 label values dem_s3 labels2
-label variable dem_s3 "Dementia self-reported and treatment"
+label variable dem_s3 "Dementia self-reported and treatment (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
@@ -944,7 +944,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 <br>
 
-\< Original version:
+Original version:
 
 -   Name: Emese Verdes-Tennant
 -   e-mail: [verdese\@who.int](mailto:nombre.buzon@institucion.org){.email}
