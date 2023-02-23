@@ -85,39 +85,28 @@ result <- file.remove("throughput.dta")
 
 # Format the double coding dataset:
 
-outcome_varnames <- outcomes_original |> select(-(ID_ECS:proxy_s3)) |> colnames()
-outcome_varnames <- outcome_varnames |>
-  setNames(outcome_varnames |> paste0('_dc'))
-
-outcomes_dc <- outcomes_dc |> select(ID_ECS, !!!outcome_varnames)
+outcome_varnames <- outcomes_original |>
+  select(-(ID_ECS:proxy_s3))          |>
+  colnames()
 
 # Collapse the datasets and compare the variables:
 
-outcomes_collapsed <- outcomes_original |> full_join(outcomes_dc, by = "ID_ECS")
-
-for (var in outcome_varnames) {
-  
-  cat('\n## `', var, '`\n\n\n', sep = '')
-  
-  var_dc <- var |> paste0('_dc')
-  
-  vars <- c(original = unname(var), dc = var_dc)
-  
-  counts_table <- outcomes_collapsed |>
-    select(all_of(vars)) |>
-    count(original, dc)
-  
-  counts_table |>
-    pivot_wider(names_from = dc, values_from = n) |>
-    kable() |>
-    print()
-  
-  non_matching <- counts_table |>
-    filter(original != dc) |>
-    count(wt = n) |>
-    pull()
-  
-  cat('\n\n\nNº of off-diagonal cases: ', non_matching, '\n', sep = '')
-}
+diff_values <- outcome_varnames |> imap_dfr(
+  ~{
+    backup_var  <- outcomes_original |> select(ID_ECS, all_of(c(old = .y)))
+    updated_var <- outcomes_dc       |> select(ID_ECS, all_of(c(new = .y)))
+    
+    full_join(backup_var, updated_var, by = "ID_ECS")   |>
+      filter((old != new) | (is.na(old) != is.na(new))) |>
+      mutate(
+        across(
+          -ID_ECS,
+          ~if (is.labelled(.)) as_factor(.) else as.character(.) |> as_factor()
+        )
+      )
+  },
+  .id = "Variable"
+)
+n_diff_values <- diff_values |> count(Variable)
 ```
 
