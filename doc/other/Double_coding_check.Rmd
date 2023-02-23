@@ -74,7 +74,11 @@ saveold "throughput.dta", replace version(13)
 
 **DO THE FOLLOWING:**
 
-1. Run and knit this notebook
+1. Run the whole notebook typing `CTRL + ALT + R` (Windows)
+   or `CMD + OPTION + R` (Mac)
+
+2. Knit the notebook with `CTRL + SHIFT + K` (Windows)
+   or `CMD + SHIFT + K` (Mac)
 
 ```{r compare-dc, results='asis'}
 #| echo: false
