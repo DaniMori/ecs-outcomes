@@ -93,15 +93,21 @@ outcome_varnames <- outcomes_original |>
   select(-(ID_ECS:proxy_s3))          |>
   colnames()
 
+outcomes_dc <- outcomes_dc |> select(ID_ECS, all_of(outcome_varnames))
+
 # Collapse the datasets and compare the variables:
 
+outcome_varnames <- outcome_varnames |> setNames(outcome_varnames)
 diff_values <- outcome_varnames |> imap_dfr(
   ~{
-    backup_var  <- outcomes_original |> select(ID_ECS, all_of(c(old = .y)))
-    updated_var <- outcomes_dc       |> select(ID_ECS, all_of(c(new = .y)))
+    original_var  <- outcomes_original |>
+      select(ID_ECS, all_of(c(original = .x)))
+    dc_var <- outcomes_dc |> select(ID_ECS, all_of(c(double_coding = .x)))
     
-    full_join(backup_var, updated_var, by = "ID_ECS")   |>
-      filter((old != new) | (is.na(old) != is.na(new))) |>
+    full_join(original_var, dc_var, by = "ID_ECS")   |>
+      filter(
+        (original != double_coding) | (is.na(original) != is.na(double_coding))
+      ) |>
       mutate(
         across(
           -ID_ECS,
@@ -112,5 +118,13 @@ diff_values <- outcome_varnames |> imap_dfr(
   .id = "Variable"
 )
 n_diff_values <- diff_values |> count(Variable)
+
+cat('\n## Nº of non-matching cases by variable:\n')
+
+n_diff_values
+
+cat('\n## Detail of non-missing cases:\n')
+
+diff_values
 ```
 
