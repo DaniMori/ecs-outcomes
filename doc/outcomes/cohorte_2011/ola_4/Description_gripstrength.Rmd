@@ -1,0 +1,155 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'grip strength'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++---------------+----------------------------+---------------+---------------+
+| Main variable | Label                      | Format        | Code          |
+| name          |                            |               |               |
++:==============+:===========================+:==============+:==============+
+| grip_s3       | Grip strength at wave 4    | Categorical   | 0 normal      |
+|               | (c2011_w4)                 |               |               |
+|               |                            |               | 1 weak        |
++---------------+----------------------------+---------------+---------------+
+
+# Variable description
+
+This
+variable classifies the respondents in a subject with a normal grip strength
+and a subject with a weak grip strength. Hand-grip strength has been measured
+using the Smedley Hand Dynamometer (Stoelting Company, Wood Dale, Illinois,
+United States). While each participant was sitting, he/she extended his/her arm
+in front of him/her and gripped the dynamometer with his/her dominant hand. The
+width of the handle was adjusted, so that, when the subject held the
+dynamometer, the second joint of the forefinger was in 90 degree flexion. Two
+trials, with brief pauses, were allowed unless the difference between the two
+measures was more than 10%; in that case, the test was repeated once more after
+a rest period. Participants were encouraged to exert their maximal grip. The
+best result will be chosen for analyses.
+
+# Explanation of how the variables were created
+
+A dichotomous variable categorising grip strength in *Normal* and *Weak* was
+generated, based on the information about the trials collected in the items
+q2521_first_s3, q2522_second_s3 and q2522a_third_s3. The best grip strength
+value was taken and the following algorithm in Stata was used to create the two
+categories (0 = Normal, 1 = Weak), depending on sex and body
+mass index (expressed as ratio).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+/* First, we would need to create the BMI variable */
+
+generate weight=q2507_weight_s3 if (q2507_weight_s3 >= 27.3) & (q2507_weight_s3<= 200)
+generate height=q2506_height_s3/100 if (q2506_height_s3 >= 120) & (q2506_height_s3 <= 200)
+generate bmi_raw=weight/(height*height)
+
+generate grip_max=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
+replace grip_max=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
+replace grip_max= q2522a_third_s3 if q2521_first_s3>100
+
+generate grip_s3=1 if (q1009_sex==1 & bmi_raw>0 & bmi_raw<=24 & grip_max<=29)|( q1009_sex==1 & bmi_raw>24 & bmi_raw<=26 & grip_max<=30)| (q1009_sex==1 & bmi_raw>26 & bmi_raw<=28 & grip_max<=30) | (q1009_sex==1 & bmi_raw>28 & bmi_raw<=40 & grip_max<=32)
+
+replace grip_s3=1 if (q1009_sex==2 & bmi_raw>0 & bmi_raw<=23 & grip_max<=17)|( q1009_sex==2 & bmi_raw>23 & bmi_raw<=26 & grip_max<=17.3)| (q1009_sex==2 & bmi_raw>26 & bmi_raw<=29 & grip_max<=18) | (q1009_sex==2 & bmi_raw>29 & bmi_raw<=40 & grip_max<=21)
+
+replace grip_s3=0 if grip_s3==.
+
+replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. | q2522_second_s3 < 0 | bmi_raw>=50 | bmi_raw==.) | (q2521_first_s3>100 & q2522_second_s3>100)
+
+label define grip_s3 0 "Normal" 1 "Weak"
+label values grip_s3 grip
+label variable grip_s3 "Grip strength at wave 4"
+
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+
+keep ID_ECS q0007a_result proxy grip_s3
+
+codebook grip_s3
+```
+
+```{stata save-data-test, eval=TEST}
+
+saveold "Outcome_gripstrength.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_gripstrength.dta", replace version(13)
+
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail:
+    [\<lea.francia\@inv.uam.es\>](mailto:nombre.buzon@institucion.org){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+Original version:
+
+-   Name: Félix Caballero
+-   e-mail:
+    [\<felix.caballero\@uam.es\>](mailto:nombre.buzon@institucion.org){.email}
+-   Phone number: (+34)914975088
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
