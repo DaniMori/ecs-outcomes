@@ -1,0 +1,254 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'panic disorder'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++------------------+-------------------------+---------------+---------------+
+| Main variable    | Label                   | Format        | Code          |
+| name             |                         |               |               |
++:=================+:========================+:==============+:==============+
+| panic_12m        | Panic disorder during   | Categorical   | 0 no          |
+|                  | last 12 months          |               |               |
+|                  | (c2011_w4)              |               | 1 yes         |
++------------------+-------------------------+---------------+---------------+
+| p anic_lifetime  | Lifetime panic disorder | Categorical   | 0no           |
+|                  | (c2011_w4)              |               |               |
+|                  |                         |               | 1 yes         |
++------------------+-------------------------+---------------+---------------+
+
+# Variable description
+
+Panic disorder is among the most prevalent mental disorders. The trouble is
+associated with chronic medical conditions, a higher burden on the health care
+system, and lower health-related quality of life.
+
+# Explanation of how the variables were created
+
+An adapted version of the Composite International Diagnostic Interview (CIDI
+3.0) was used to assess the presence of panic disorder [@haro2006]. An algorithm
+based on the fifth edition of the Diagnostic and Statistical Manual of Mental
+Disorders was used [@americanpsychiatricassociation2013] (APA, 1994).
+Participants that reported crises of fear or anxiety in which they suddenly had
+feelings such as fear, anxiety, anguished, restlessness, discomfort, etc., with
+more than three physical symptoms such as pounding or very fast heartbeat,
+feeling short of breath, nausea, or upset stomach, dizziness, sweating, shaking,
+dry mouth, etc., and with two or more crises during their lifetime that had
+started suddenly and got worse during the first 10 minutes, were considered to
+be suffering from panic disorder.
+
+To generate the variables, the following criteria related to the DSM were
+considered: 1. Crisis of fear or anxiety in which appears a sudden feeling such
+as fear, anxiety, anguished, restlessness, discomfort, etc. (items q4501_s3 and
+q4502_s3). 2. More than three physical symptoms such as pounding or very fast
+heartbeat, feeling short of breath, nausea or upset stomach, dizziness,
+sweating, shaking, dry mouth, feeling of choking, chest discomfort, fear of
+losing control, feeling distant from the situation, feeling that things are not
+real, fear of losing consciousness, fear of dying, chills or feelings of
+numbness (items from q4503_s3 to q4518_s3) have to be present. 3. Crisis started
+suddenly and got worse during the first 10 minutes (item q4519_s3) 4. Having had
+two or more crises in the lifetime (item q4520_s3).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define yesno    0 "No" 1 "Yes"
+
+*# "Criterion 1":
+gen     d_crit1 = .
+replace d_crit1 = 0 if (q4501_anxlife_s3!=1 & q4501_anxlife_s3!=.) | (q4502_unclife_s3!=1 & q4502_unclife_s3!=.)
+replace d_crit1 = 1 if  q4501_anxlife_s3==1             |  q4502_unclife_s3==1
+  
+*# "Criterion 2":
+  *#s1
+gen     d_s1 = .
+replace d_s1 = 0 if (q4503_beat_s3!=1 & q4503_beat_s3!=.)
+replace d_s1 = 1 if  q4503_beat_s3==1  
+
+  *#s2
+gen     d_s2 = .
+replace d_s2 = 0 if (q4504_air_s3!=1 & q4504_air_s3!=.)
+replace d_s2 = 1 if  q4504_air_s3==1 
+
+  *#s3
+gen     d_s3 = .
+replace d_s3 = 0 if (q4505_nausea_s3!=1 & q4505_nausea_s3!=.)
+replace d_s3 = 1 if  q4505_nausea_s3==1
+
+  *#s4
+gen     d_s4 = .
+replace d_s4 = 0 if (q4506_dizziness_s3!=1 & q4506_dizziness_s3!=.)
+replace d_s4 = 1 if  q4506_dizziness_s3==1 
+
+  *#s5
+gen     d_s5 = .
+replace d_s5 = 0 if (q4507_sweat_s3!=1 & q4507_sweat_s3!=.)
+replace d_s5 = 1 if  q4507_sweat_s3==1 
+
+  *#s6
+gen     d_s6 = .
+replace d_s6 = 0 if (q4508_trembling_s3!=1 & q4508_trembling_s3!=.)
+replace d_s6 = 1 if  q4508_trembling_s3==1 
+
+  *#s7
+gen     d_s7 = .
+replace d_s7 = 0 if (q4509_mouth_s3!=1 & q4509_mouth_s3!=.)
+replace d_s7 = 1 if  q4509_mouth_s3==1 
+
+  *#s8
+gen     d_s8 = .
+replace d_s8 = 0 if (q4510_choke_s3!=1 & q4510_choke_s3!=.)
+replace d_s8 = 1 if  q4510_choke_s3==1 
+
+  *#s9
+gen     d_s9 = .
+replace d_s9 = 0 if (q4511_chest_s3!=1 & q4511_chest_s3!=.)
+replace d_s9 = 1 if  q4511_chest_s3==1 
+
+  *#s10
+gen     d_s10 = .
+replace d_s10 = 0 if (q4512_control_s3!=1 & q4512_control_s3!=.)
+replace d_s10 = 1 if  q4512_control_s3==1 
+
+  *#s11
+gen     d_s11 = .
+replace d_s11 = 0 if (q4513_deper_s3!=1 & q4513_deper_s3!=.)
+replace d_s11 = 1 if  q4513_deper_s3==1 
+
+  *#s12
+gen     d_s12 = .
+replace d_s12 = 0 if (q4514_disreal_s3!=1 & q4514_disreal_s3!=.)
+replace d_s12 = 1 if  q4514_disreal_s3==1  
+
+  *#s13
+gen     d_s13 = .
+replace d_s13 = 0 if (q4515_cons_s3!=1 & q4515_cons_s3!=.)
+replace d_s13 = 1 if  q4515_cons_s3==1 
+
+  *#s14
+gen     d_s14 = .
+replace d_s14 = 0 if (q4516_dying_s3!=1 & q4516_dying_s3!=.)
+replace d_s14 = 1 if  q4516_dying_s3==1 
+
+  *#s15
+gen     d_s15 = .
+replace d_s15 = 0 if (q4517_suffoc_s3!=1 & q4517_suffoc_s3!=.)
+replace d_s15 = 1 if  q4517_suffoc_s3==1 
+
+  *#s16
+gen     d_s16 = .
+replace d_s16 = 0 if (q4518_tingling_s3!=1 & q4518_tingling_s3!=.)
+replace d_s16 = 1 if  q4518_tingling_s3==1 
+
+
+*#"Sum of depressive symptoms"
+egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10 d_s11 d_s12 d_s13 d_s14 d_s15 d_s16), missing
+
+*#"To fulfill Criterion 2, at least three physical symptoms should be present".
+gen     d_crit2 = .
+replace d_crit2 = 0 if d_symptot<4 
+replace d_crit2 = 1 if d_symptot>=4 & d_symptot!=.
+
+
+*# "Criterion 3":
+gen     d_crit3 = .
+replace d_crit3 = 0 if (q4519_sudden_s3!=1 & q4519_sudden_s3!=.)
+replace d_crit3 = 1 if  q4519_sudden_s3==1
+  
+*# "Criterion 4":
+gen     d_crit4 = .
+replace d_crit4 = 0 if (q4520_times_s3<2 & q4520_times_s3!=.)
+replace d_crit4 = 1 if  q4520_times_s3>=2
+
+***#"Lifetime panic disorder diagnostic variable"
+gen     panic_lifetime = .
+replace panic_lifetime = 0 if  d_crit1==0 | d_crit2==0 | d_crit3==0 | d_crit4==0
+replace panic_lifetime = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1 & d_crit4==1
+label values   panic_lifetime yesno
+label variable panic_lifetime "Lifetime panic disorder (c2011_w4)"
+
+***#"12 months panic disorder diagnostic variable"
+gen panic_12m = .
+replace panic_12m = 0 if (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
+replace panic_12m = 1 if q4524_crisis12_s3==1
+label values   panic_12m yesno
+label variable panic_12m "Panic disorder during last 12 months (c2011_w4)"
+
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy panic_12m panic_lifetime
+
+codebook panic_12m panic_lifetime
+```
+
+```{stata save-data-test, eval=TEST}
+
+saveold "Outcome_panicdisorder.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_panicdisorder.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
