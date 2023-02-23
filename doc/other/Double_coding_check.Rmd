@@ -1,7 +1,8 @@
 ---
 title: "Double coding check"
 output:
-  html_notebook: default
+  html_notebook:
+    code_folding: hide
   html_document:
     df_print: paged
     keep_md: true
