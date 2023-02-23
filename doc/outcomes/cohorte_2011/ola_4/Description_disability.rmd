@@ -48,21 +48,21 @@ The level of functional impairment has been assessed using the
 12-items-interviewer-administered version of the World Health Organization (WHO)
 Disability Assessment Schedule version II [@ustun2010a]. This instrument is
 grounded in the conceptual framework of the International Classification of
-Functioning, Disability, and Health [@internat] and places health and disability
-on a continuum, with disability defined as "a decrement in each functioning
-domain". Participants were asked to report the level of difficulty they had in
-doing various activities during the previous 30 days using a five-point scale
-(none=1, mild=2, moderate=3, severe=4, extreme/cannot do=5). The global score
-ranges from 0 to 100, with higher scores indicating greater disability. Level of
-independence was measured by means of Activities of Daily Living (ADLs) and
-Instrumental Activities of Daily Living (IADLs). ADLs describes a set of daily
-self-care activities and assesses the need for help with personal care
-activities such as eating, bathing, and dressing; while, IADLs describes
-somewhat higher-level functioning considered necessary to live independently,
-assessing the need for help with routine needs such as using transportation,
-housekeeping, and preparing food. An individual's ability to perform ADLs is
-typically considered normal functional status, with an inability to perform ADLs
-suggesting disability.
+Functioning, Disability, and Health [@worldhealthorganization2023] and places
+health and disability on a continuum, with disability defined as "a decrement in
+each functioning domain". Participants were asked to report the level of
+difficulty they had in doing various activities during the previous 30 days
+using a five-point scale (none=1, mild=2, moderate=3, severe=4, extreme/cannot
+do=5). The global score ranges from 0 to 100, with higher scores indicating
+greater disability. Level of independence was measured by means of Activities of
+Daily Living (ADLs) and Instrumental Activities of Daily Living (IADLs). ADLs
+describes a set of daily self-care activities and assesses the need for help
+with personal care activities such as eating, bathing, and dressing; while,
+IADLs describes somewhat higher-level functioning considered necessary to live
+independently, assessing the need for help with routine needs such as using
+transportation, housekeeping, and preparing food. An individual's ability to
+perform ADLs is typically considered normal functional status, with an inability
+to perform ADLs suggesting disability.
 
 # Explanation of how the variables were created
 
