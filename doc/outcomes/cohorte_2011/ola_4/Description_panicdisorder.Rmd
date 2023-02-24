@@ -43,7 +43,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                  | last 12 months          |               |               |
 |                  | (c2011_w4)              |               | 1 yes         |
 +------------------+-------------------------+---------------+---------------+
-| p anic_lifetime  | Lifetime panic disorder | Categorical   | 0no           |
+| panic_lifetime   | Lifetime panic disorder | Categorical   | 0no           |
 |                  | (c2011_w4)              |               |               |
 |                  |                         |               | 1 yes         |
 +------------------+-------------------------+---------------+---------------+
