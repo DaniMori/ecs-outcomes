@@ -38,7 +38,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                             | Format   | Code |
 |:------------------|:------------------------|:------------------|:------------------|
-| sum_MMSEc_s3_s3    | Rounded and corrected MMSE total score (c2011_w4) | Discrete | 0-30 |
+| sum_MMSEc_s3       | Rounded and corrected MMSE total score (c2011_w4) | Discrete | 0-30 |
 
 # Variable description
 
@@ -121,8 +121,8 @@ replace sum_MMSE_v3= sum_MMSE_v1
 replace sum_MMSE_v3= (sum_MMSE_v2*30)/ (30+d1+d2+d3+d4+d5+d6) if na_mmse==1
 label variable sum_MMSE_v3 "Crude and corrected MMSE total score "   
 
-gen sum_MMSEc_s3_s3=round(sum_MMSE_v3)
-label variable sum_MMSEc_s3_s3 "Rounded and corrected MMSE total score (c2011_w4)"   
+gen sum_MMSEc_s3=round(sum_MMSE_v3)
+label variable sum_MMSEc_s3 "Rounded and corrected MMSE total score (c2011_w4)"   
 
 ```
 
@@ -130,9 +130,9 @@ label variable sum_MMSEc_s3_s3 "Rounded and corrected MMSE total score (c2011_w4
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy sum_MMSEc_s3_s3
+keep ID_ECS q0007a_result proxy sum_MMSEc_s3
 
-sum sum_MMSEc_s3_s3, detail
+sum sum_MMSEc_s3, detail
 
 ```
 
