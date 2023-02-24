@@ -37,12 +37,12 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                             | Format   | Code |
-|:-----------------|:--------------------------|:-----------------|:-----------------|
-| Sum_MMSEc          | Rounded and corrected MMSE total score (c2011_w4) | Discrete | 0-30 |
+|:------------------|:------------------------|:------------------|:------------------|
+| sum_MMSEc_s3_s3    | Rounded and corrected MMSE total score (c2011_w4) | Discrete | 0-30 |
 
 # Variable description
 
-The Mini Mental State Examination (MMSE) [@folstein1983]is effective as a
+The Mini Mental State Examination (MMSE) [@folstein1983] is effective as a
 screening tool for cognitive impairment with older, community dwelling,
 hospitalized and institutionalized adults, being able to separate patients with
 cognitive impairment from those without it, and to measure changes in cognitive
@@ -121,8 +121,8 @@ replace sum_MMSE_v3= sum_MMSE_v1
 replace sum_MMSE_v3= (sum_MMSE_v2*30)/ (30+d1+d2+d3+d4+d5+d6) if na_mmse==1
 label variable sum_MMSE_v3 "Crude and corrected MMSE total score "   
 
-gen sum_MMSEc=round(sum_MMSE_v3)
-label variable sum_MMSEc "Rounded and corrected MMSE total score (c2011_w4)"   
+gen sum_MMSEc_s3_s3=round(sum_MMSE_v3)
+label variable sum_MMSEc_s3_s3 "Rounded and corrected MMSE total score (c2011_w4)"   
 
 ```
 
@@ -130,9 +130,9 @@ label variable sum_MMSEc "Rounded and corrected MMSE total score (c2011_w4)"
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy sum_MMSEc
+keep ID_ECS q0007a_result proxy sum_MMSEc_s3_s3
 
-sum sum_MMSEc, detail
+sum sum_MMSEc_s3_s3, detail
 
 ```
 
