@@ -48,18 +48,17 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
-This
-variable classifies the respondents in a subject with a normal grip strength
-and a subject with a weak grip strength. Hand-grip strength has been measured
-using the Smedley Hand Dynamometer (Stoelting Company, Wood Dale, Illinois,
-United States). While each participant was sitting, he/she extended his/her arm
-in front of him/her and gripped the dynamometer with his/her dominant hand. The
-width of the handle was adjusted, so that, when the subject held the
-dynamometer, the second joint of the forefinger was in 90 degree flexion. Two
-trials, with brief pauses, were allowed unless the difference between the two
-measures was more than 10%; in that case, the test was repeated once more after
-a rest period. Participants were encouraged to exert their maximal grip. The
-best result will be chosen for analyses.
+This variable classifies the respondents in a subject with a normal grip 
+strength and a subject with a weak grip strength. Hand-grip strength has been 
+measured using the Smedley Hand Dynamometer (Stoelting Company, Wood Dale, 
+Illinois,United States). While each participant was sitting, he/she extended 
+his/her arm in front of him/her and gripped the dynamometer with his/her 
+dominant hand. The width of the handle was adjusted, so that, when the subject 
+held the dynamometer, the second joint of the forefinger was in 90 degree 
+flexion. Two trials, with brief pauses, were allowed unless the difference 
+between the two measures was more than 10%; in that case, the test was repeated 
+once more after a rest period. Participants were encouraged to exert their 
+maximal grip. The best result will be chosen for analyses.
 
 # Explanation of how the variables were created
 
@@ -99,7 +98,7 @@ replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. |
 
 label define grip_s3 0 "Normal" 1 "Weak"
 label values grip_s3 grip
-label variable grip_s3 "Grip strength at wave 4"
+label variable grip_s3 "Grip strength at wave 4 (c2011_w4)"
 
 ```
 
