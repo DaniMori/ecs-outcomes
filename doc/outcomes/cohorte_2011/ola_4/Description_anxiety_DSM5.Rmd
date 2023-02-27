@@ -1,0 +1,218 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'anxiety_DSM5'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++--------------------+--------------------------+-------------+-------+
+| Main variable name | Label                    | Format      | Code  |
++:===================+:=========================+:============+:======+
+| gad_12m_s3         | Generalized anxiety      | Catehorical | 0 no  |
+|                    | disorder during last 12  |             |       |
+|                    | months (c2011_w4)        |             | 1 yes |
++--------------------+--------------------------+-------------+-------+
+| gad_s3             | Lifetime generalized     | Categorical | 0 no  |
+|                    | anxiety disorder         |             |       |
+|                    | (c2011_w4)               |             | 1 yes |
++--------------------+--------------------------+-------------+-------+
+
+# Variable description
+
+Generalized Anxiety Disorder is among the most prevalent mental disorders and is
+associated with chronic medical conditions, a higher burden on the health care
+system, and lower health-related quality of life.
+
+# Explanation of how the variables were created
+
+An adapted version of the Composite International Diagnostic Interview (CIDI
+3.0) was used to assess the presence of generalized anxiety disorders
+[@haro2006]. An algorithm based on the fifth edition of the Diagnostic and
+Statistical Manual of Mental Disorders was used
+[@americanpsychiatricassociation2013]. Participants that reported feelings of
+worry or anxiety, with excessive concerns for more than one aspect of their life
+during 6 months or over, and with further physical and mental problems related
+to anxiety -- of which at least one may be nerves on edge, tiredness,
+irritability, concentration difficulty, muscle pain, or insomnia -- were
+considered to be suffering from Generalized Anxiety Disorder.
+
+More exactly the criteria used to created the syntaxe was the following ones: A.
+Excessive anxiety and worry for at least six months (q4552_s3).
+
+B. Difficulty to control the worry (q4556_s3).
+
+C. At least three of the following six symptoms: -Restlessness or feeling keyed
+up or on edge (q4560a_S3) -Being easily fatigued (q4560b_S3) -Irritability
+(q4560c_S3) -Difficulty concentrating or mind going blank (q4560d_S3) -Muscle
+tension (q4560e_S3) -Sleep disturbance (difficulty falling or staying asleep, or
+restless unsatisfying sleep) (q4560e_S3)
+
+D. The worries are related to diffuse concerns such as personal problems, phobic
+and obsessive-compulsive situations, social problems (q4554_s3)
+
+E. The symptoms are not attributable to psychoactive substance use or to any
+organic mental disorder
+
+NB: There is no major difference between the DSM-4 and DSM-5 critera. See
+<https://www.ncbi.nlm.nih.gov/books/NBK519704/table/ch3.t15/> for more
+information.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define yesno    0 "No" 1 "Yes"
+
+*#Criterion A: "Excessive anxiety and worry for at least six months"
+gen gad_crit_a = .
+replace gad_crit_a = 0 if (q4552_6months_s3!=1 & q4552_6months_s3!=.) 
+replace gad_crit_a = 1 if  q4552_6months_s3==1   
+
+*#Criterion B: "Difficulty to control the worry"
+gen gad_crit_b = .
+replace gad_crit_b = 0 if (q4556_control_s3!=1 & q4556_control_s3!=.) 
+replace gad_crit_b = 1 if  q4556_control_s3==1   
+
+*#Criterion C: "At least three of the following six symptoms":
+*#s1: "Restlessness or feeling keyed up or on edge" 
+  gen gad_s1 = .
+replace gad_s1 = 0 if (q4560a_restless_S3!=1 & q4560a_restless_S3!=.) 
+replace gad_s1 = 1 if  q4560a_restless_S3==1  
+*#s2: "Being easily fatigued"
+  gen gad_s2 = .
+replace gad_s2 = 0 if (q4560b_tiredness_S3!=1 & q4560b_tiredness_S3!=.) 
+replace gad_s2 = 1 if  q4560b_tiredness_S3==1  
+*#s3: "Irritability"
+  gen gad_s3 = .
+replace gad_s3 = 0 if (q4560c_irritable_S3!=1 & q4560c_irritable_S3!=.) 
+replace gad_s3 = 1 if  q4560c_irritable_S3==1  
+*#s4: "Difficulty concentrating or mind going blank" 
+  gen gad_s4 = .
+replace gad_s4 = 0 if (q4560d_concentration_S3!=1 & q4560d_concentration_S3!=.) 
+replace gad_s4 = 1 if  q4560d_concentration_S3==1  
+*#s5: "Muscle tension"
+  gen gad_s5 = .
+replace gad_s5 = 0 if (q4560e_tight_S3!=1 & q4560e_tight_S3!=.) 
+replace gad_s5 = 1 if  q4560e_tight_S3==1  
+*#s6: "Sleep disturbance"
+  gen gad_s6 = .
+replace gad_s6 = 0 if (q4560f_sleep_S3!=1 & q4560f_sleep_S3!=.) 
+replace gad_s6 = 1 if  q4560f_sleep_S3==1  
+
+*#"Sum of depressive symptoms"
+egen d_symptot = rowtotal (gad_s1 gad_s2 gad_s3 gad_s4 gad_s5 gad_s6), missing
+
+*#"To fulfill Criterion C, at least three symptoms should be present".
+gen     gad_crit_c = .
+replace gad_crit_c= 0 if d_symptot<3 
+replace gad_crit_c = 1 if d_symptot>=3 & d_symptot!=.
+
+*#Criterion D: "Worries are related to diffuse concerns"
+  gen w1 = .
+replace w1 = 0 if (q4554_worry1_s3!=1 & q4554_worry1_s3!=.) 
+replace w1 = 1 if  q4554_worry1_s3==1  
+
+  
+*#Criterion E: "The episode is not attributable to psychoactive substance use or
+*#             to any organic mental disorder"
+gen     gad_crit_e = .
+replace gad_crit_e = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
+replace gad_crit_e = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed12_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
+*#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
+*#       so only `q4224b` out of these two needs to be checked for considering
+*#       the criterion negative."
+
+***#"Lifetime generalized anxiety disorder diagnostic variable":
+gen     gad_s3  = .
+replace gad_s3  = 0 if gad_crit_a==0 | gad_crit_b==0 | gad_crit_c==0 | gad_crit_d==0 | gad_crit_e==0
+replace gad_s3  = 1 if gad_crit_a==1 & gad_crit_b==1 & gad_crit_c==1 & gad_crit_d==1 & gad_crit_e==0
+label values   gad_s3  yesno
+label variable gad_s3  "Lifetime generalized anxiety disorder (c2011_w4)"
+
+***#"12 months generalized anxiety disorder diagnostic variable":
+  gen gad_12m_s3 = .
+replace gad_12m_s3 = 0 if (q4573_s3!=1 & q4573_s3!=.) 
+replace gad_12m_s3 = 1 if  q4573_s3==1 
+label values   gad_12m_s3  yesno
+label variable gad_12m_s3  "Generalized anxiety disorder during last 12 months (c2011_w4)"
+  
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy gad_s3 gad_12m_s3
+
+codebook gad_s3 gad_12m_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_anxiety_DSM5.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anxiety_DSM5.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Joan Domènech Abella
+-   e-mail: [joan.domenech\@sjd.es](mailto:joan.domenech@sjd.es)){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
