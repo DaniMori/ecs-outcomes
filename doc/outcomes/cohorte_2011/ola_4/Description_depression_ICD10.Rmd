@@ -35,50 +35,48 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+-------------------+-----------------+-----------------+-----------------+
-| **Main variable   | **Label**       | **Format**      | **Code**        |
-| name**            |                 |                 |                 |
-+:==================+:================+=================+=================+
-| d_                | Severity of     | Ordinal         | -   0=No;       |
-| lifetime_severity | lifetime        |                 | -   1=Mild;     |
-|                   | depressive      |                 | -   2=Moderate; |
-|                   | episode         |                 | -   3=Severe    |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| de                | Lifetime        | Binary          | -   0=no;       |
-| pression_lifetime | depression      |                 | -   1=yes       |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| depressi          | Lifetime        | Binary          | -   0=no;       |
-| on_lifetime_proxy | depression for  |                 | -   1=yes       |
-|                   | proxy           |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_12m_item        | 12 month        | Binary          | -   0=no;       |
-|                   | depression, one |                 | -   1=yes       |
-|                   | item (c2011_w4) |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| depression_12m    | 12 month        | Binary          | -   0=no;       |
-|                   | depression from |                 | -   1=yes       |
-|                   | lifetime        |                 |                 |
-|                   | diagnosis &     |                 |                 |
-|                   | q4227/q4227a    |                 |                 |
-|                   | items           |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_li              | Severity of     | Binary          | -   0=no;       |
-| fetime_comparable | lifetime        |                 | -   1=yes       |
-|                   | depressive      |                 |                 |
-|                   | episode         |                 |                 |
-|                   | comparable      |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
-| d_12m_comparable  | 12 month        | Binary          | -   0=no;       |
-|                   | depression      |                 | -   1=yes       |
-|                   | comparable with |                 |                 |
-|                   | COVID substudy  |                 |                 |
-|                   | (c2011_w4)      |                 |                 |
-+-------------------+-----------------+-----------------+-----------------+
++-------------------+------------------+------------------+------------------+
+| **Main variable   | **Label**        | **Format**       | **Code**         |
+| name**            |                  |                  |                  |
++:==================+:=================+==================+==================+
+| d_lif             | Severity of      | Ordinal          | -   0=No;        |
+| etime_severity_s3 | lifetime         |                  | -   1=Mild;      |
+|                   | depressive       |                  | -   2=Moderate;  |
+|                   | episode          |                  | -   3=Severe     |
+|                   | (c2011_w4)       |                  |                  |
++-------------------+------------------+------------------+------------------+
+| depre             | Lifetime         | Binary           | -   0=no;        |
+| ssion_lifetime_s3 | depression       |                  | -   1=yes        |
+|                   | (c2011_w4)       |                  |                  |
++-------------------+------------------+------------------+------------------+
+| depression_       | Lifetime         | Binary           | -   0=no;        |
+| lifetime_proxy_s3 | depression for   |                  | -   1=yes        |
+|                   | proxy (c2011_w4) |                  |                  |
++-------------------+------------------+------------------+------------------+
+| d_12m_item_s3     | 12 month         | Binary           | -   0=no;        |
+|                   | depression, one  |                  | -   1=yes        |
+|                   | item (c2011_w4)  |                  |                  |
++-------------------+------------------+------------------+------------------+
+| depression_12m_s3 | 12 month         | Binary           | -   0=no;        |
+|                   | depression from  |                  | -   1=yes        |
+|                   | lifetime         |                  |                  |
+|                   | diagnosis &      |                  |                  |
+|                   | q4227/q4227a     |                  |                  |
+|                   | items (c2011_w4) |                  |                  |
++-------------------+------------------+------------------+------------------+
+| d_lifet           | Severity of      | Binary           | -   0=no;        |
+| ime_comparable_s3 | lifetime         |                  | -   1=yes        |
+|                   | depressive       |                  |                  |
+|                   | episode          |                  |                  |
+|                   | comparable       |                  |                  |
+|                   | (c2011_w4)       |                  |                  |
++-------------------+------------------+------------------+------------------+
+| d_                | 12 month         | Binary           | -   0=no;        |
+| 12m_comparable_s3 | depression       |                  | -   1=yes        |
+|                   | comparable with  |                  |                  |
+|                   | COVID substudy   |                  |                  |
+|                   | (c2011_w4)       |                  |                  |
++-------------------+------------------+------------------+------------------+
 
 # Variable description
 
@@ -89,7 +87,7 @@ Disorders, Diagnostic criteria for research
 [@world_health_organization_icd-10_1992], the main characteristics of depression
 are the presence of a sustained depressed mood, the loss of interest or pleasure
 in activities normally pleasurable and/or the decreased energy or increased
-fatigability. In addition to these main criteria, the ICD-10 Diagnostic criteria
+fatigability. In addition to these main criteria, the ICD-10 diagnostic criteria
 for research proposes several contributing factors that can be present or
 absent: loss of confidence and self-esteem, feelings of self-reproach or guilt,
 recurrent thoughts of death or suicide, diminished ability to think or
@@ -110,9 +108,9 @@ clinical and research purposes.
 Information from the CIDI depression module was used for the creation of the
 depression variables. Algorithms based on the ICD-10 were used for the
 endorsement of depressive episode at some point in their lives (lifetime
-prevalence; variable `depression_lifetime`) and in the previous 12 months (point
-prevalence; variable `depression_12m`). More precisely, the following criteria
-must be fulfilled:
+prevalence; variable `depression_lifetime_s3`) and in the previous 12 months
+(point prevalence; variable `depression_12m_s3`). More precisely, the following
+criteria must be fulfilled:
 
 i)  The depressive episode should last for at least 2 weeks;
 
@@ -141,8 +139,8 @@ skip logic) of the interview lead to most of the participants not responding to
 this part of the interview when they should. Therefore, these variables have
 been dropped. Finally, as as abbreviated version of the CIDI interview was used
 for the post-lockdown telephonic interview in the COVID substudy, comparable
-versions of both lifetime (`d_lifetime_comparable`) and recent
-(`d_12m_comparable`) have been created, applying the same criteria and
+versions of both lifetime (`d_lifetime_comparable_s3`) and recent
+(`d_12m_comparable_s3`) have been created, applying the same criteria and
 algorithm.
 
 The coding of this algorithm is very complex and requires many different
@@ -196,7 +194,7 @@ label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label define yesno    0 "No" 1 "Yes"
 
 
-***#"VARIABLE `depression_lifetime`: Depressive episode (F32)"
+***#"VARIABLE `depression_lifetime_s3`: Depressive episode (F32)"
 
 *#G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
@@ -371,58 +369,58 @@ label variable d_lifetime_severity "Severity of lifetime depressive episode (c20
 
 
 ***#"Lifetime depression diagnostic variable":
-gen     depression_lifetime = .
-replace depression_lifetime = 0 if d_lifetime_severity==0 & proxy==2
-replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
-label values   depression_lifetime yesno
-label variable depression_lifetime "Lifetime depression (c2011_w4)"
+gen     depression_lifetime_s3 = .
+replace depression_lifetime_s3 = 0 if d_lifetime_severity==0 & proxy==2
+replace depression_lifetime_s3 = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
+label values   depression_lifetime_s3 yesno
+label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
 #Due to a 888 case to "p4040_depression" we know one interview is proxy but 
 #we don't know if it is a case of depression. We have to add "proxy = 2" to be 
 #the "don't know" case (888) in proxy is not considered as a 'no' but as missing. 
 
-***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
-recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
-label values   depression_lifetime_proxy yesno
-label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w4)"
+***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
+recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s3)
+label values   depression_lifetime_proxy_s3 yesno
+label variable depression_lifetime_proxy_s3 "Lifetime depression for proxy (c2011_w4)"
 
 
-***#"VARIABLE `d_12m_item`: 12-month depression criterion from q4227/q4227a items"
-gen     d_12m_item = .
-replace d_12m_item = 0 if q4227!=1 & q4227a!=1 & proxy==2
-replace d_12m_item = 1 if q4227==1 | q4227a==1
-label values   d_12m_item yesno
-label variable d_12m_item "12 month depression, one item (c2011_w4)"
+***#"VARIABLE `d_12m_item_s3`: 12-month depression criterion from q4227/q4227a items"
+gen     d_12m_item_s3 = .
+replace d_12m_item_s3 = 0 if q4227!=1 & q4227a!=1 & proxy==2
+replace d_12m_item_s3 = 1 if q4227==1 | q4227a==1
+label values   d_12m_item_s3 yesno
+label variable d_12m_item_s3 "12 month depression, one item (c2011_w4)"
 
 
-***#"VARIABLE `depression_12m`: 12-month depression (combining `depression_lifetime` + `d_12m_item`)"
-gen     depression_12m = .
-replace depression_12m = 0 if depression_lifetime==0 | d_12m_item==0
-replace depression_12m = 1 if depression_lifetime==1 & d_12m_item==1
-label values   depression_12m yesno
-label variable depression_12m "12 month depression from lifetime diagnosis + q4227/q4227a items (c2011_w4)"
+***#"VARIABLE `depression_12m_s3`: 12-month depression (combining `depression_lifetime_s3` + `d_12m_item_s3`)"
+gen     depression_12m_s3 = .
+replace depression_12m_s3 = 0 if depression_lifetime_s3==0 | d_12m_item_s3==0
+replace depression_12m_s3 = 1 if depression_lifetime_s3==1 & d_12m_item_s3==1
+label values   depression_12m_s3 yesno
+label variable depression_12m_s3 "12 month depression from lifetime diagnosis + q4227/q4227a items (c2011_w4)"
 
 
-***#"VARIABLE `d_12m_comparable`: 12-month depression (comparable with COVID substudy) from lifetime diagnosis"
+***#"VARIABLE `d_12m_comparable_s3`: 12-month depression (comparable with COVID substudy) from lifetime diagnosis"
 
 *#"Lifetime "comparable" (does not take into account exclusion criteria G2 and G3)":
-gen     d_lifetime_comparable = .
-replace d_lifetime_comparable = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
-replace d_lifetime_comparable = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-label values   d_lifetime_comparable severity
-label variable d_lifetime_comparable "Severity of lifetime depressive episode comparable (c2011_w4)"
+gen     d_lifetime_comparable_s3 = .
+replace d_lifetime_comparable_s3 = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
+replace d_lifetime_comparable_s3 = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+label values   d_lifetime_comparable_s3 severity
+label variable d_lifetime_comparable_s3 "Severity of lifetime depressive episode comparable (c2011_w4)"
 
 *#"12-month 'comparable', based on the intermediate 'lifetime comparable' and the individual item":
-gen     d_12m_comparable = .
-replace d_12m_comparable = 0 if d_lifetime_comparable==0 | d_12m_item==0
-replace d_12m_comparable = 1 if d_lifetime_comparable==1 & d_12m_item==1
-label values   d_12m_comparable yesno
-label variable d_12m_comparable "12 month depression comparable with COVID substudy (c2011_w4)"
+gen     d_12m_comparable_s3 = .
+replace d_12m_comparable_s3 = 0 if d_lifetime_comparable_s3==0 | d_12m_item_s3==0
+replace d_12m_comparable_s3 = 1 if d_lifetime_comparable_s3==1 & d_12m_item_s3==1
+label values   d_12m_comparable_s3 yesno
+label variable d_12m_comparable_s3 "12 month depression comparable with COVID substudy (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
+keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
 
-codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m d_lifetime_comparable d_12m_comparable
+codebook d_lifetime_severity depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
