@@ -77,18 +77,26 @@ from similar questions available in the interview (mobility, neuropsychological
 problems, and BMI; corresponding to q2041 and q2046 for mobility, recent
 depression in the CIDI module, and q2506 and q2507 for IMC). These items were
 coded and the resulting score obtained following the MNA-SF's scoring
-instructions. The total score was obained summing the answer given by the
+instructions. The total score was obtained summing the answer given by the
 participant to each of the 6 items. The higher the score, the better the
-participant's nutrition. The six screening question was the following ones: -Has
-food intake declined over the past 3 months due to loss of appetite, digestive
-problems, chewing or swallowing difficulties? (ranging from 0 severe decrease in
-food intale to 2 no decrease in food intake) -Weight loss during the last 3
-months (ranging from 0 weight loss greater than 3kg to 3 no weight loss)
--Mobility (rangin from 0 bed or chair bound to 2 goes out) -Has suffered
-psychological stress or acute disease in the past 3 months? (coding as 0 yes; 2
-no) -Neuropsychological problems (ranging from 0 severe dementia or depression
-to 2 no psychological problems) -Body Mass Index (ranging from 0 BMI less than
-19 to 3 BMI 23 or greater).
+participant's nutrition. The six screening question was the following ones:
+
+-   Has food intake declined over the past 3 months due to loss of appetite,
+    digestive problems, chewing or swallowing difficulties? (ranging from 0
+    severe decrease in food intake to 2 no decrease in food intake);
+
+-   Weight loss during the last 3 months (ranging from 0 weight loss greater
+    than 3kg to 3 no weight loss);
+
+-   Mobility (rangin from 0 bed or chair bound to 2 goes out);
+
+-   Has suffered psychological stress or acute disease in the past 3 months?
+    (coding as 0 yes; 2 no);
+
+-   Neuropsychological problems (ranging from 0 severe dementia or depression to
+    2 no psychological problems);
+
+-   Body Mass Index (ranging from 0 BMI less than 19 to 3 BMI 23 or greater).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -125,22 +133,22 @@ gen MNA_F = q2507_weight_s3/((q2506_height_s3/100)^2)
 recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3)
 
 *# Total scale MNA
-gen MNA = MNA_A + MNA_B + MNA_C + MNA_D + MNA_E + MNA_F
-gen MNA_cat = MNA
-recode MNA_cat (0/7 = 2) (8/11 = 1) (12/14 = 0)
-label variable MNA "Mini Nutritional Assessment-based continuous score (c2011_w4)"
-label variable MNA_cat "Mini Nutritional Assessment-based categorical score"
-label define MNA_cat 0 "Normal nutritional status (12-14) (c2011_w4)" 1 "At risk of malnutrition (8-11)" 2 "Malnourished (0-7)"
-label values MNA_cat MNA_cat
+gen MNA_s3 = MNA_A + MNA_B + MNA_C + MNA_D + MNA_E + MNA_F
+gen MNA_cat_s3 = MNA_s3
+recode MNA_cat_s3 (0/7 = 2) (8/11 = 1) (12/14 = 0)
+label variable MNA_s3 "Mini Nutritional Assessment-based continuous score (c2011_w4)"
+label variable MNA_cat_s3 "Mini Nutritional Assessment-based categorical score (c2011_w4)"
+label define MNA_cat 0 "Normal nutritional status (12-14)" 1 "At risk of malnutrition (8-11)" 2 "Malnourished (0-7)"
+label values MNA_cat_s3 MNA_cat
 
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy MNA_cat MNA
+keep ID_ECS q0007a_result proxy MNA_cat_s3 MNA_s3
 
-codebook MNA_cat MNA
+codebook MNA_cat_s3 MNA_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
