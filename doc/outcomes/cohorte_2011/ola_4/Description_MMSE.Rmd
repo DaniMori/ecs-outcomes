@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'MMSE'" 
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Mini Mental State Examination'" 
 output:
   word_document:
    reference_docx: !expr ecs.data::get_pkg_docx_template()
@@ -81,8 +81,12 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* Filter: q1038 (incapacidad de hacer mini mental) 
+
+***Cases including NA ***
+
 /* Uncomment the following line to check frequencies */
-/* tab1 q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3, nol */
+tab1 q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3, nol
 
 /* Generating a variable for people with NA in any of the MMSE items */
 gen na_mmse=0
@@ -114,6 +118,14 @@ gen d5=0
 replace d5=-1 if (q1047_s3==999)
 gen d6=0
 replace d6=-1 if (q1048_s3==999)
+*Note: 1. If there is no 999, the maximum score will be 30.
+*a) Subject scoring 16 or more points: continue with the next section.
+*b) Subject with a score equal to or lower than 15 points: go to question Q1005, to *look for an informant, and the proxy interview is carried out.
+*2. If there is any 999, the maximum score for which the individual is eligible and *the turning point will have to be calculated. For example, if the person has 999 *in Q1041: The maximum score= 30-5= 25. The tipping point=25/2=12.5  12 (integer *par). In this case:
+*a) Subject with a score equal to or higher than 13 points: continue with next *section (Section 0300).
+*b) Subject with a score equal to or lower than 12 points: go to question Q1005, to *look for an informant, and the proxy interview is carried out.
+*This procedure not allows missing value (participants that have skip this module 
+*are not taken into acount)
 
 /* Corrected MMSE total score */
 gen sum_MMSE_v3=.
