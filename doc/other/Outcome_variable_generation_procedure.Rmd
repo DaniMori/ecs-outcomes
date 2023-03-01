@@ -29,3 +29,34 @@ output: html_document
 10.  Use checklist.md to quality-check the new description document
 
 11.  Assign the designated "Reviewer" as a reviewer in the PR in Github
+
+# Double-coding procedure
+
+As reviewer:
+
+1. Go to `doc/other/Double_coding_check.Rmd`
+
+2. Until the file is _rebased_ in each branch of the repository, copy the file 
+   to the desktop and add it to the branch of each outcome (but without committing). 
+   
+3. Go to the .rmd of the specific outcome generation.
+
+4. Knit it to generate .dta database of the outcome. This one is the one created
+   on the UAM site. 
+   
+5. Open Teams folder > Outcomes C2011 W4 > Files
+
+6. Open the <OUTCOME> .docx file. This file is the Barcelona double-coded file. 
+ 
+7. Open in R the file `doc/other/Double_coding_check.Rmd` and follow the instructions.
+     
+8. Knit the file and observe the differences between the two datasets. 
+   With this information, go to the GitHub PR on <OUTCOME> and open a new revision 
+   specifying what are the mismatches between the two encodings. 
+
+As coder:
+1. Wait for the reviewer to do the double-coding review on github,
+     
+2. Read the suggested changes or the mismatches between two encodings,
+     
+3. Commit the possible solutions to solve those mismatches. 
