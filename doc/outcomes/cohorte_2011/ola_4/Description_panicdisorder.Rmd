@@ -93,88 +93,88 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 *# "Value labels (defined for all the outcome variables in the dataset)":
 label define yesno    0 "No" 1 "Yes"
 
-*# "Criterion 1":
+*# "Criterion 1": "Crisis of fear or anxiety in which appears a sudden feeling"
 gen     d_crit1 = .
 replace d_crit1 = 0 if (q4501_anxlife_s3!=1 & q4501_anxlife_s3!=.) | (q4502_unclife_s3!=1 & q4502_unclife_s3!=.)
 replace d_crit1 = 1 if  q4501_anxlife_s3==1             |  q4502_unclife_s3==1
   
-*# "Criterion 2":
-  *#s1
+*# "Criterion 2": "More than three physical symptoms"
+  *#s1: "Pounding or very fast heartbeat"
 gen     d_s1 = .
 replace d_s1 = 0 if (q4503_beat_s3!=1 & q4503_beat_s3!=.)
 replace d_s1 = 1 if  q4503_beat_s3==1  
 
-  *#s2
+  *#s2: "Feeling short of breath"
 gen     d_s2 = .
 replace d_s2 = 0 if (q4504_air_s3!=1 & q4504_air_s3!=.)
 replace d_s2 = 1 if  q4504_air_s3==1 
 
-  *#s3
+  *#s3: "Nausea or upset stomach"
 gen     d_s3 = .
 replace d_s3 = 0 if (q4505_nausea_s3!=1 & q4505_nausea_s3!=.)
 replace d_s3 = 1 if  q4505_nausea_s3==1
 
-  *#s4
+  *#s4: "Dizziness"
 gen     d_s4 = .
 replace d_s4 = 0 if (q4506_dizziness_s3!=1 & q4506_dizziness_s3!=.)
 replace d_s4 = 1 if  q4506_dizziness_s3==1 
 
-  *#s5
+  *#s5: "Sweating"
 gen     d_s5 = .
 replace d_s5 = 0 if (q4507_sweat_s3!=1 & q4507_sweat_s3!=.)
 replace d_s5 = 1 if  q4507_sweat_s3==1 
 
-  *#s6
+  *#s6: "Shaking/trembling" 
 gen     d_s6 = .
 replace d_s6 = 0 if (q4508_trembling_s3!=1 & q4508_trembling_s3!=.)
 replace d_s6 = 1 if  q4508_trembling_s3==1 
 
-  *#s7
+  *#s7: "Dry mouth"
 gen     d_s7 = .
 replace d_s7 = 0 if (q4509_mouth_s3!=1 & q4509_mouth_s3!=.)
 replace d_s7 = 1 if  q4509_mouth_s3==1 
 
-  *#s8
+  *#s8: "Feeling of choking" 
 gen     d_s8 = .
 replace d_s8 = 0 if (q4510_choke_s3!=1 & q4510_choke_s3!=.)
 replace d_s8 = 1 if  q4510_choke_s3==1 
 
-  *#s9
+  *#s9: "Chest discomfort"
 gen     d_s9 = .
 replace d_s9 = 0 if (q4511_chest_s3!=1 & q4511_chest_s3!=.)
 replace d_s9 = 1 if  q4511_chest_s3==1 
 
-  *#s10
+  *#s10: "Fear of losing control"
 gen     d_s10 = .
 replace d_s10 = 0 if (q4512_control_s3!=1 & q4512_control_s3!=.)
 replace d_s10 = 1 if  q4512_control_s3==1 
 
-  *#s11
+  *#s11: "Feeling distant from the situation"
 gen     d_s11 = .
 replace d_s11 = 0 if (q4513_deper_s3!=1 & q4513_deper_s3!=.)
 replace d_s11 = 1 if  q4513_deper_s3==1 
 
-  *#s12
+  *#s12: "Feeling that things are not real"
 gen     d_s12 = .
 replace d_s12 = 0 if (q4514_disreal_s3!=1 & q4514_disreal_s3!=.)
 replace d_s12 = 1 if  q4514_disreal_s3==1  
 
-  *#s13
+  *#s13: "Fear of losing consciousness"
 gen     d_s13 = .
 replace d_s13 = 0 if (q4515_cons_s3!=1 & q4515_cons_s3!=.)
 replace d_s13 = 1 if  q4515_cons_s3==1 
 
-  *#s14
+  *#s14: "Fear of dying"
 gen     d_s14 = .
 replace d_s14 = 0 if (q4516_dying_s3!=1 & q4516_dying_s3!=.)
 replace d_s14 = 1 if  q4516_dying_s3==1 
 
-  *#s15
+  *#s15: "Suffocation"
 gen     d_s15 = .
 replace d_s15 = 0 if (q4517_suffoc_s3!=1 & q4517_suffoc_s3!=.)
 replace d_s15 = 1 if  q4517_suffoc_s3==1 
 
-  *#s16
+  *#s16: "Tingling"
 gen     d_s16 = .
 replace d_s16 = 0 if (q4518_tingling_s3!=1 & q4518_tingling_s3!=.)
 replace d_s16 = 1 if  q4518_tingling_s3==1 
@@ -189,36 +189,36 @@ replace d_crit2 = 0 if d_symptot<4
 replace d_crit2 = 1 if d_symptot>=4 & d_symptot!=.
 
 
-*# "Criterion 3":
+*# "Criterion 3": "Crisis started suddenly and got worse during the first 10 minutes"
 gen     d_crit3 = .
 replace d_crit3 = 0 if (q4519_sudden_s3!=1 & q4519_sudden_s3!=.)
 replace d_crit3 = 1 if  q4519_sudden_s3==1
   
-*# "Criterion 4":
+*# "Criterion 4": "Having had two or more crises in the lifetime"
 gen     d_crit4 = .
 replace d_crit4 = 0 if (q4520_times_s3<2 & q4520_times_s3!=.)
 replace d_crit4 = 1 if  q4520_times_s3>=2
 
 ***#"Lifetime panic disorder diagnostic variable"
-gen     panic_lifetime = .
-replace panic_lifetime = 0 if  d_crit1==0 | d_crit2==0 | d_crit3==0 | d_crit4==0
-replace panic_lifetime = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1 & d_crit4==1
-label values   panic_lifetime yesno
-label variable panic_lifetime "Lifetime panic disorder (c2011_w4)"
+gen     panic_lifetime_s3 = .
+replace panic_lifetime_s3 = 0 if  d_crit1==0 | d_crit2==0 | d_crit3==0 | d_crit4==0
+replace panic_lifetime_s3 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1 & d_crit4==1
+label values   panic_lifetime_s3 yesno
+label variable panic_lifetime_s3 "Lifetime panic disorder (c2011_w4)"
 
 ***#"12 months panic disorder diagnostic variable"
-gen panic_12m = .
-replace panic_12m = 0 if (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
-replace panic_12m = 1 if q4524_crisis12_s3==1
-label values   panic_12m yesno
-label variable panic_12m "Panic disorder during last 12 months (c2011_w4)"
+gen panic_12m_s3 = .
+replace panic_12m_s3 = 0 if (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
+replace panic_12m_s3 = 1 if q4524_crisis12_s3==1
+label values   panic_12m_s3 yesno
+label variable panic_12m_s3 "Panic disorder during last 12 months (c2011_w4)"
 
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy panic_12m panic_lifetime
+keep ID_ECS q0007a_result proxy panic_12m_s3 panic_lifetime_s3
 
-codebook panic_12m panic_lifetime
+codebook panic_12m_s3 panic_lifetime_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
