@@ -35,7 +35,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                    | Format    | Code |
 |:-------------------|:-----------------------------------------|:----------|:-----|
-| t_CR_s3_s3         | cognitive reserve total score (c2011_w4) | Continous | 0-25 |
+| t_CR_s3            | cognitive reserve total score (c2011_w4) | Continous | 0-25 |
 
 # Variable description
 
