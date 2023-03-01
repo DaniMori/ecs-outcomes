@@ -83,10 +83,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 * Filter: q1038 (incapacidad de hacer mini mental) 
 
-***Cases including NA ***
-
-/* Uncomment the following line to check frequencies */
-tab1 q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3, nol
+***Cases excluding NA ***
 
 /* Generating a variable for people with NA in any of the MMSE items */
 gen na_mmse=0
@@ -94,11 +91,9 @@ replace na_mmse=1 if (q1041_s3==999 | q1043_s3==999 | q1045_s3==999 | q1046_s3==
 replace na_mmse=. if (q1038_s3==2  | q0007a_result!=1)
 label variable na_mmse "Individuals with NA answers in MMSE"
 
-/* Converting 999 (NA) values in missing data */
-recode q1041 q1043 q1045 q1046 q1047 q1048 (999=.)
 
 /* Sum of MMSE items for individuals without NA answers (all items were applied) */
-egen sum_MMSE_v1=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3) if na_mmse==0, missing 
+egen sum_MMSE_v1=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3) if na_mmse==0, missing
 label variable sum_MMSE_v1 "MMSE total score for individuals with no NA answers"
 
 /* Sum of MMSE items for individuals with NA answers */
@@ -144,7 +139,7 @@ label variable sum_MMSEc_s3 "Rounded and corrected MMSE total score (c2011_w4)"
 
 keep ID_ECS q0007a_result proxy sum_MMSEc_s3
 
-sum sum_MMSEc_s3, detail
+codebook sum_MMSEc_s3
 
 ```
 
