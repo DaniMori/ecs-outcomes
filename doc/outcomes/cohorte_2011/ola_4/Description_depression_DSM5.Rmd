@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- 2011 -- Wave 4 -- 'depression_DSM5'"
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'Depression according to DSM-5'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
@@ -34,27 +34,27 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------+-----------------------+----------------+----------------+
-| Main variable  | Label                 | Format         | Code           |
-| name           |                       |                |                |
-+:===============+:======================+:===============+:===============+
-| depressi       | Lifetime depression   | Binary         | 0 no           |
-| on_lifetime_s3 | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| dep            | 12 months depression  | Binary         | 0 no           |
-| ression_12m_s3 | (c2011_w4)            |                |                |
-|                |                       |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
-| depression_    | Treatment for         | Binary         | 0 no           |
-| 12treatment_s3 | depression in         |                |                |
-|                | previous 12 months    |                | 1 yes          |
-|                | (c2011_w4)            |                |                |
-+----------------+-----------------------+----------------+----------------+
-| depr           | Depression            | Binary         | 0 no           |
-| ession_self_s3 | self-reported         |                |                |
-|                | (c2011_w4)            |                | 1 yes          |
-+----------------+-----------------------+----------------+----------------+
++-----------------+----------------------+-----------------+-----------------+
+| Main variable   | Label                | Format          | Code            |
+| name            |                      |                 |                 |
++:================+:=====================+:================+:================+
+| depress         | Lifetime depression  | Binary          | 0 no            |
+| ion_lifetime_s3 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 1 yes           |
++-----------------+----------------------+-----------------+-----------------+
+| de              | 12 months depression | Binary          | 0 no            |
+| pression_12m_s3 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 1 yes           |
++-----------------+----------------------+-----------------+-----------------+
+| depression      | Treatment for        | Binary          | 0 no            |
+| _12treatment_s3 | depression in        |                 |                 |
+|                 | previous 12 months   |                 | 1 yes           |
+|                 | (c2011_w4)           |                 |                 |
++-----------------+----------------------+-----------------+-----------------+
+| dep             | Depression           | Binary          | 0 no            |
+| ression_self_s3 | self-reported        |                 |                 |
+|                 | (c2011_w4)           |                 | 1 yes           |
++-----------------+----------------------+-----------------+-----------------+
 
 # Variable description
 
@@ -113,10 +113,10 @@ condition. ; D) The occurrence of the major depressive episode is not better
 explained by schizoaffective disorder, schizophrenia, schizophreniform disorder,
 delusional disorder, or other specified and unspecified schizophrenia spectrum
 and other psychotic disorders.; E) There has never been a manic episode or a
-hypomanic episode. Those criteria where used to created the variable related to
+hypomanic episode. Those criteria where used to create the variable related to
 lifetime depression (depression_lifetime_s3). We also created a variable to
 assess the presence of a depressive episode during the last 12 months using only
-one item (q4227a_s3) which directly questions the presence of a depressive
+one item (q4227a_s3) which directly asks for the presence of a depressive
 episode during this 12-month period.
 
 The coding of this algorithm is very complex and requires many different
@@ -124,26 +124,35 @@ criteria to be taken into account. We have tried to make use of uniform coding
 criteria for implementing the computation of the different symptoms and
 diagnostic criteria, and also separating clearly the computation of the
 positive/negative/missing cases, to make the code the clearest possible. The
-following general principles have been followed when possible: • All the
-non-valid responses are considered to be negative responses; that is, if an item
-has been answered with "Don't know" (888) or "Refused" (999), it is assumed that
-the criterion is "not met" (=0).• When an item hasn't been answered or has been
-"passed" (97), it is considered as a missing value (=.). Only the variables that
-are kept in the final dataset are labelled. • First, all the cases are set to .
-("Missing" value). • Then, the negative cases are recoded to 0 (diagnostic
-"No"). • Finally, the positive cases are recoded to 1 (diagnostic "Yes"). •
-Unless stated otherwise, the cases are explicitly recoded to their final value
-exclusively and exhaustively, such that the number of cases recoded to 0/1 in
-each step must be exactly the same as the number of 0/1 cases finally in the
-variable. This allows for an additional check of recoding errors. • When the
-values need to be compared for unequality (operator !=) against a non-missing
-value, it must be taken into account that a "missing" value gives a 1 result
-instead of a missing in Stata. Therefore, in order to avoid recoding "missing"
-values into non-missing ones, the "missing" values must be excluded from the
-comparison. This principle is used generally throughout the algorithm; when used
-differently, it is explained in the syntax. • When these principles are not
-strictly followed, an annotation is added right below, explaining how it changes
-from them and why.
+following general principles have been followed when possible:
+
+-   All the non-valid responses are considered to be negative responses; that
+    is, if an item has been answered with "Don't know" (888) or "Refused" (999),
+    it is assumed that the criterion is "not met" (=0).
+
+-   When an item hasn't been answered or has been "passed" (97), it is
+    considered as a missing value (=.). Only the variables that are kept in the
+    final dataset are labelled. • First, all the cases are set to . ("Missing"
+    value).
+
+-   Then, the negative cases are recoded to 0 (diagnostic "No").
+
+-   Finally, the positive cases are recoded to 1 (diagnostic "Yes").
+
+-   Unless stated otherwise, the cases are explicitly recoded to their final
+    value exclusively and exhaustively, such that the number of cases recoded to
+    0/1 in each step must be exactly the same as the number of 0/1 cases finally
+    in the variable. This allows for an additional check of recoding errors.
+
+-   When the values need to be compared for unequality (operator !=) against a
+    non-missing value, it must be taken into account that a "missing" value
+    gives a 1 result instead of a missing in Stata. Therefore, in order to avoid
+    recoding "missing" values into non-missing ones, the "missing" values must
+    be excluded from the comparison. This principle is used generally throughout
+    the algorithm; when used differently, it is explained in the syntax.
+
+-   When these principles are not strictly followed, an annotation is added
+    right below, explaining how it changes from them and why.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -169,7 +178,7 @@ replace d_A1 = 1 if q4220a_s3==1             | q4220b_s3==1 | q4220c_s3==1 | q42
 
 *#A2:"Markedly diminished interest or pleasure in all, or almost all, activities most of the day nearly every day" 
 gen     d_A2 = .
-replace d_A2 = 0 if q4220e_s3!=1 & q4220e_s3!=. & q4220f_s3!=1 & q4220f!=. 
+replace d_A2 = 0 if q4220e_s3!=1 & q4220e_s3!=. & q4220f_s3!=1 & q4220f_s3!=. 
 replace d_A2 = 1 if q4220e_s3==1 | q4220f_s3==1
   
 *#A3:"Significant weight loss when not dieting, or weight gain or decrease or increase in appetite nearly every day"
@@ -246,7 +255,7 @@ replace d_crit_C = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s
 ***#"Has the person skipped the lifetime depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
-recode q4220a-q4222v (1=1) (2=0) (888 999=.)
+recode q4220a_s3-q4222v_s3 (1=1) (2=0) (888 999=.)
 
 *#"Filter variables":
 gen  f4217     = q4214_s3==1 & q4215_s3==4 & q4216_s3==4 if q4214_s3!=.
@@ -274,7 +283,7 @@ gen     depression_lifetime_s3 = .
 replace depression_lifetime_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 & proxy==2
 replace depression_lifetime_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1 & d_crit_C==1
 label values   depression_lifetime_s3 yesno
-label variable depression_lifetime_s3 "Lifetime depression (c2011_w3)"
+label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
 
 
 ***#"VARIABLE `depression_12m_s3`: 12-month depression"
@@ -282,7 +291,7 @@ gen     depression_12m_s3 = .
 replace depression_12m_s3 = 0 if q4227a_s3!=1 & proxy==2
 replace depression_12m_s3 = 1 if q4227a_s3==1
 label values   depression_12m_s3 yesno
-label variable depression_12m_s3 "12 month depression, one item (c2011_w3)"
+label variable depression_12m_s3 "12 months depression (c2011_w4)"
 
 
 ***#"VARIABLE `depression_12treatment_s3`: treatment for depression, 12-months"
@@ -293,16 +302,16 @@ gen     depression_12treatment_s3 = .
 replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 & (q4232_s3!=. & q4231_s3!=1 & q4232_s3!=.) & (q4231_s3!=1  & q4231_s3!=.) & q4231_s3==0) | proxy==2
 replace depression_12treatment_s3 = 1 if depression_12m_s3==1 & (q4231_s3==1 | q4232_s3==1)
 label values   depression_12treatment_s3 yesno
-label variable depression_12treatment_s3 "received depression's treatment in the previous 12 months (c2011_w3)"
+label variable depression_12treatment_s3 "Treatment for depression in the previous 12 months (c2011_w4)"
 *#"NOTE: We take into acount psychological treatment and pharmacological treatment.
 
-***#"VARIABLE `depression_self_s3`: depression self reported"
+***#"VARIABLE `depression_self_s3`: depression self-reported"
 recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0)
 gen     depression_self_s3 = .
 replace depression_self_s3 = 0 if p4040_depression_s3!=1 & p4040_depression_s3!=.
 replace depression_self_s3 = 1 if p4040_depression_s3==1 & p4040a_age_s3!=997
 label values   depression_self_s3 yesno
-label variable depression_self_s3 "diagnosis of depression"
+label variable depression_self_s3 "Depression self-reported(c2011_w4)"
 
 ```
 
