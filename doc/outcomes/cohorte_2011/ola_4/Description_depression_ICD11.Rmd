@@ -339,7 +339,7 @@ label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
 
 
 ***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
-recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
+recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s3)
 label values   depression_lifetime_proxy_s3 yesno
 label variable depression_lifetime_proxy_s3 "Lifetime depression for proxy (c2011_w4)"
 
