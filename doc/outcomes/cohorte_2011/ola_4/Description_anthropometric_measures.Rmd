@@ -49,10 +49,10 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | waist_s3       | Waist circumference, in | Continuous     | 40 - 300       |
 |                | cms (c2011_w4)          |                |                |
 +----------------+-------------------------+----------------+----------------+
-| bmi_s3         | Body mass index,        | Continuous     |                |
+| bmi_s3         | Body mass index,        | Continuous     | 14.86 - 47.60  |
 |                | continuous (c2011_w4)   |                |                |
 +----------------+-------------------------+----------------+----------------+
-| bmi_cat_s3     | Body mass index,        | Continuous     | 1 =            |
+| bmi_cat_s3     | Body mass index,        | Categorical    | 1 =            |
 |                | categorical (c2011_w4)  |                | Underweight;   |
 |                |                         |                |                |
 |                |                         |                | 2 = Normal     |
@@ -80,14 +80,15 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Explanation of how the variables were created
 
--   **Height** is renamed from `q2506_height_s3` to `height_s3`. It is obtained
-    by using a measuring tape. Constraints are set to allow only valid values.
+-   **Height** is renamed from `q2506_height_s3` to `height_s3`. Is the height
+    of the participant (cms). It is obtained by using a measuring tape. 
+    Constraints are set to allow only valid values.
 
--   **Weight** is renamed from `q2507_weight` to `weight_s3`. It is obtained
-    using a weight scale without shoes. Constraints are set to allow only valid
-    values.
+-   **Weight** is renamed from `q2507_weight` to `weight_s3`. Is the weight of 
+    the participant in kilograms. It is obtained using a weight scale without
+    shoes. Constraints are set to allow only valid values.
 
--   **Waist circumference** is ranamed from `q2508_waist_s3` to `waist_s3`. It
+-   **Waist circumference** is renamed from `q2508_waist_s3` to `waist_s3`. It
     is obtained by identifying the midpoint between the last rib and the illiac
     crest, ensuring that the tape measure around the body is parallel to the
     ground. It is intended that the measurement is taken directly from the skin,
@@ -144,14 +145,20 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 recode q2506_height_s3 (997=.)(998=.), gen (height_s3)
+label variable height_s3 "Height in cms (c2011w4)"
+
 recode q2507_weight_s3 (997=.)(998=.), gen (weight_s3)
+label variable weight_s3 "Weight in kgs (c2011w4)"
+
 recode q2508_waist_s3 (997=.)(998=.), gen (waist_s3)
+label variable waist_s3 "Waist circumference in cms (c2011w4)"
 
 gen height=.
 replace height=height_s3/100 if height_s3>=120 & height_s3<=200
 
 gen bmi_s3=.
-replace bmi_s3= weight_s3/(height_s3*height_s3) if weight_s3>=27.3 & weight_s3<=200
+replace bmi_s3= weight_s3/(height*height) if weight_s3>=27.3 & weight_s3<=200
+label variable bmi_s3 "Body mass index, continuous (c2011w4)"
 
 gen bmi_cat_s3=.
 	replace bmi_cat_s3=1 if bmi_s3<18.5
@@ -161,7 +168,7 @@ gen bmi_cat_s3=.
 	
 label define obese1 0 "normal weight" 1 "underweight" 2 "overweight" 3 "Obese"
 label values bmi_cat_s3 obese1
-label variable bmi_cat_s3 "Categories of BMI"
+label variable bmi_cat_s3 "Body mass index, categorical (c2011w4)"
 
 ```
 
