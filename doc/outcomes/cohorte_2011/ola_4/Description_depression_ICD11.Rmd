@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'depression_ICD11'" 
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'depression ICD11'" 
 output:
   word_document:
    reference_docx: !expr ecs.data::get_pkg_docx_template()
