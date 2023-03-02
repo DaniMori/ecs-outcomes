@@ -40,12 +40,12 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable    | Label            | Format           | Code             |
 | name             |                  |                  |                  |
 +:=================+:=================+:=================+:=================+
-| dep              | Lifetime         | Binary           | 0 no             |
-| ression_lifetime | (c2011_w4)       |                  |                  |
+| depres           | Lifetime         | Binary           | 0 no             |
+| sion_lifetime_s3 | (c2011_w4)       |                  |                  |
 |                  |                  |                  | 1 yes            |
 +------------------+------------------+------------------+------------------+
-| depressio        | Lifetime         | Binary           | 0 no             |
-| n_lifetime_proxy | depression for   |                  |                  |
+| depression_l     | Lifetime         | Binary           | 0 no             |
+| ifetime_proxy_s3 | depression for   |                  |                  |
 |                  | proxy (c2011_w4) |                  | 1 yes            |
 +------------------+------------------+------------------+------------------+
 
@@ -100,7 +100,7 @@ iv) The concurrent presence of at least five of the following symptoms:
         interest or pleasure;
     -   **Cognitive-behavioural cluster:** (3) Reduced ability to concentrate
         and sustain attention, (4) Beliefs of low self-worth or excessive and
-        inappropriate guilt, (5) Hopelessness about the future, (6) Reccurent
+        inappropriate guilt, (5) Hopelessness about the future, (6) Recurrent
         thoughts of death;
     -   **Neurovegetative cluster:** (7) Significantly disrupted sleep, (8)
         Significant change in appetite or weight, (9) Psychomotor agitation or
@@ -110,10 +110,10 @@ v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
 
 For reasons of precision and availability of information, certain criteria could
-not be taken into account ("The symptoms result in significant distress or
+not be taken into account: "the symptoms result in significant distress or
 significant impairment in personal, family, social, educational, occupational or
-other important areas of functioning." and "Symptoms are not best explained by
-bereavement").
+other important areas of functioning" and "symptoms are not best explained by
+bereavement".
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
@@ -331,17 +331,17 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 
 
 ***#"Lifetime depression diagnostic variable":
-gen     depression_lifetime = .
-replace depression_lifetime = 0 if d_skipped==1 | d_crit_123==0 | d_crit4==0 | d_crit5==0
-replace depression_lifetime = 1 if d_skipped==0 & d_crit_123==1 & d_crit4==1 & d_crit5==1
-label values   depression_lifetime yesno
-label variable depression_lifetime "Lifetime depression (c2011_w4)"
+gen     depression_lifetime_s3 = .
+replace depression_lifetime_s3 = 0 if d_skipped==1 | d_crit_123==0 | d_crit4==0 | d_crit5==0
+replace depression_lifetime_s3 = 1 if d_skipped==0 & d_crit_123==1 & d_crit4==1 & d_crit5==1
+label values   depression_lifetime_s3 yesno
+label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
 
 
-***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
+***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
 recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
-label values   depression_lifetime_proxy yesno
-label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w4)"
+label values   depression_lifetime_proxy_s3 yesno
+label variable depression_lifetime_proxy_s3 "Lifetime depression for proxy (c2011_w4)"
 
 ```
 
@@ -349,9 +349,9 @@ label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy depression_lifetime depression_lifetime_proxy
+keep ID_ECS q0007a_result proxy depression_lifetime_s3 depression_lifetime_proxy_s3
 
-codebook depression_lifetime depression_lifetime_proxy
+codebook depression_lifetime_s3 depression_lifetime_proxy_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
