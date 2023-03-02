@@ -5,6 +5,10 @@ output: html_document
 
 # Description document generation process
 
+## Coding
+
+As coder:
+
 1.   Do "Pull" when opening R
 
 2.   Create Branch from "*development*" branch, **not "main"**, with name
@@ -30,7 +34,37 @@ output: html_document
 
 11.  Assign the designated "Reviewer" as a reviewer in the PR in Github
 
-# Double-coding procedure
+## Review
+
+As reviewer:
+
+1. Check out and "Pull" corresponding branch
+
+2. Knit document
+
+2. Use checklist.md to quality-check the new description document
+
+3. If there are non complied items in the checklist, "Request changes" to the
+   coder in the corresponding PR review in Github
+
+4. When the document complies with the whole checklist, assign the coordinator
+   as a reviewer in the PR in Github
+
+As coordinator:
+
+1. Check out and "Pull" corresponding branch
+
+2. Knit document "with parameter" `double-coding = TRUE`
+
+3. Move output document to double coding folder
+
+## Double-coding check procedure
+
+As coordinator:
+
+1. Copy document with double coding syntax to outcome coding folder
+
+2. Re-request review from the designated reviewer in the PR in Github and
 
 As reviewer:
 
@@ -55,6 +89,7 @@ As reviewer:
    specifying what are the mismatches between the two encodings. 
 
 As coder:
+
 1. Wait for the reviewer to do the double-coding review on github,
      
 2. Read the suggested changes or the mismatches between two encodings,
