@@ -141,37 +141,37 @@ recode q3017_days_s3 q3018_hours_s3 q3018_mins_s3 q3020_days_s3 q3021_hours_s3 q
 
 * Time doing vigorous activity (in minutes) (_3 suffix just expresses the repeated measure ID)
 
-gen q3018_3=q3018_hours_s3*60+q3018_mins_s3
-replace q3018_3=0 if original_q3018_hours_s3==.
+gen q3018_s3=q3018_hours_s3*60+q3018_mins_s3
+replace q3018_s3=0 if original_q3018_hours_s3==.
 
 * Time doing moderate activity (in minutes) (_3 suffix just expresses the repeated measure ID)
 
-gen q3021_3=q3021_hours_s3*60+q3021_mins_s3
-replace q3021_3=0 if original_q3021_hours_s3==.
+gen q3021_s3=q3021_hours_s3*60+q3021_mins_s3
+replace q3021_s3=0 if original_q3021_hours_s3==.
 
 * Time walking (in minutes) (_3 suffix just expresses the repeated measure ID)
 
-gen q3024_3=q3024_hours_s3*60+q3024_mins_s3
-replace q3024_3=0 if original_q3024_hours_s3==.
+gen q3024_s3=q3024_hours_s3*60+q3024_mins_s3
+replace q3024_s3=0 if original_q3024_hours_s3==.
 
 * Time of vigorous leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
 
-gen q3027_3=q3027_hours_s3*60+q3027_mins_s3 
-replace q3027_3=0 if original_q3027_hours_s3==.
+gen q3027_s3=q3027_hours_s3*60+q3027_mins_s3 
+replace q3027_s3=0 if original_q3027_hours_s3==.
 
 * Time of moderate leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
 
-gen q3030_3=q3030_hours_s3*60+q3030_mins_s3
-replace q3030_3=0 if original_q3030_hours_s3==.
+gen q3030_s3=q3030_hours_s3*60+q3030_mins_s3
+replace q3030_s3=0 if original_q3030_hours_s3==.
 
 
 * Generate MET (metabolic equivalent)-minutes per week as stablished by GPAQ guide
-generate MET3=((q3017_days_s3*q3018_3*8)+(q3020_days_s3*q3021_3*4)+(q3023_days_s3*q3024_3*4)+(q3026_days_s3*q3027_3*8)+(q3029_days_s3*q3030_3*4))
+generate MET3=((q3017_days_s3*q3018_s3*8)+(q3020_days_s3*q3021_s3*4)+(q3023_days_s3*q3024_s3*4)+(q3026_days_s3*q3027_s3*8)+(q3029_days_s3*q3030_s3*4))
 
 * More than 16 hours doing vigorous-intensity or moderate-intensity activities,
 * is considered to be a missing value. Also, original missings become missings again.
 
-replace MET3=. if (q3018_3>960|q3021_3>960|q3024_3>960|q3027_3>960|q3030_3>960)|((original_q3017_days_s3==. & q3018_3>0)| (original_q3020_days_s3==. & q3021_3>0)| (original_q3023_days_s3==. & q3024_3>0)|(original_q3026_days_s3==. & q3027_3>0)|(original_q3029_days_s3==. & q3030_3>0))
+replace MET3=. if (q3018_s3>960|q3021_s3>960|q3024_s3>960|q3027_s3>960|q3030_s3>960)|((original_q3017_days_s3==. & q3018_s3>0)| (original_q3020_days_s3==. & q3021_s3>0)| (original_q3023_days_s3==. & q3024_s3>0)|(original_q3026_days_s3==. & q3027_s3>0)|(original_q3029_days_s3==. & q3030_s3>0))
 
 
 * Generate physical_s3 as function of MET3
@@ -179,7 +179,7 @@ replace MET3=. if (q3018_3>960|q3021_3>960|q3024_3>960|q3027_3>960|q3030_3>960)|
 generate physical_s3=0 if ((q3017_days_s3+q3026_days_s3)>=3 & (MET>=1500)) | (((q3017_days_s3+q3020_days_s3+q3023_days_s3+q3026_days_s3+q3029_days_s3)>=7) & (MET>=3000))
 
 * Moderate physical activity
-replace physical_s3=1 if (((q3017_days_s3+q3026_days_s3)>=3 & ((q3017_days_s3*q3018_3)+(q3026_days_s3*q3027_3))>=60) |                           ((q3020_days_s3+q3023_days_s3+q3029_days_s3)>=5 & ((q3020_days_s3*q3021_3)+(q3023_days_s3*q3024_3)+(q3029_days_s3*q3030_3))>=150) |                   ((q3017_days_s3+q3020_days_s3+q3023_days_s3+q3026_days_s3+q3029_days_s3)>=5 & (MET>=600)))& (physical_s3!=0)
+replace physical_s3=1 if (((q3017_days_s3+q3026_days_s3)>=3 & ((q3017_days_s3*q3018_s3)+(q3026_days_s3*q3027_s3))>=60) |                           ((q3020_days_s3+q3023_days_s3+q3029_days_s3)>=5 & ((q3020_days_s3*q3021_s3)+(q3023_days_s3*q3024_s3)+(q3029_days_s3*q3030_s3))>=150) |                   ((q3017_days_s3+q3020_days_s3+q3023_days_s3+q3026_days_s3+q3029_days_s3)>=5 & (MET>=600)))& (physical_s3!=0)
 
 * Low physical activity
 replace physical_s3=2 if physical_s3==.
