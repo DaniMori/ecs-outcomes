@@ -44,10 +44,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                  | (c2011_w4)       |                  |                  |
 | lifetime_s3      |                  |                  | 1 yes            |
 +------------------+------------------+------------------+------------------+
-| depre            | Lifetime         | Binary           | 0 no             |
-| ssion_lifetime\_ | depression for   |                  |                  |
+| depression_l     | Lifetime         | Binary           | 0 no             |
+| ifetime_proxy_s3 | depression for   |                  |                  |
 |                  | proxy (c2011_w4) |                  | 1 yes            |
-| proxy_s3         |                  |                  |                  |
 +------------------+------------------+------------------+------------------+
 
 # Variable description
