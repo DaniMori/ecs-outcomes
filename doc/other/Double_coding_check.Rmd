@@ -41,7 +41,7 @@ options(knitr.kable.NA = '')
 
 **DO THE FOLLOWING:**
 
-1. Change the value of the object `DATASET_NAME` in line 37 to reflect the name
+1. Change the value of the object `DATASET_NAME` in line 50 to reflect the name
    of the dataset to check
 
 2. Run the chunk `load-data`
