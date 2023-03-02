@@ -56,7 +56,7 @@ indicating higher adherence to MD.
 
 # Explanation of how the variables were created
 
-Original variables include informations about: -fruits consumption (q3012_s3);
+Original variables include information about: -fruits consumption (q3012_s3);
 -vegetables consumption (q3013_s3); -consumption of olive oil (q3033_s3 and
 q3034_s3); -consumption of red meat, hamburger, or meat products per day
 (q3035_s3); -consumption of butter, margarine, or cream per day (q3036_s3);
