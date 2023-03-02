@@ -61,7 +61,7 @@ five groups.
 
 # Explanation of how the variables were created
 
-The annual household income level (hhincome_s3 and indincome_s3) was calcultated
+The annual household income level (hhincome_s3 and indincome_s3) was calculated
 using items q0410g and q1516_total giving respectively score through a bracket
 and the bracket's midpoint. These two items have been completed by three items
 that give information about gross income of the family (q0410i-k) after
@@ -84,7 +84,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 *# "Value labels (defined for all the outcome variables in the dataset)":
-label define quantile 1 "Higher quantile" 2 "Fourth quantile" 3 "Third quantile" 4 "Second quantile" 5 "Lower quantile"
+label define quantile 1 "First quantile" 2 "Second quantile" 3 "Third quantile" 4 "Fourth quantile" 5 "Last quantile"
 
 *# Annual household income level (bracket)
 
