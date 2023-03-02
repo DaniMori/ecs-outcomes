@@ -119,33 +119,17 @@ saveold "Outcome_IQCODE.dta", replace version(13)
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que
-perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que
-ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-```{=html}
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
-'<prefijo>' y '<teléfono>' -->
-```
--   Name: <Nombre y apellidos>
--   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
-
 \< Original version:
 
--   Name: <Nombre y apellidos>
+-   Name: Joan Domènech
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+    [\j.domenech@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
 
 # References
 
