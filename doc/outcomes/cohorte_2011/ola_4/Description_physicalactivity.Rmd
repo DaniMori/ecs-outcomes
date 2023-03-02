@@ -165,11 +165,11 @@ gen q3030_3=q3030_hours_s3*60+q3030_mins_s3
 replace q3030_3=0 if original_q3030_hours_s3==.
 
 
-* Generate MET (metabolic equivalent)-minutes per week
+* Generate MET (metabolic equivalent)-minutes per week as stablished by GPAQ guide
 generate MET3=((q3017_days_s3*q3018_3*8)+(q3020_days_s3*q3021_3*4)+(q3023_days_s3*q3024_3*4)+(q3026_days_s3*q3027_3*8)+(q3029_days_s3*q3030_3*4))
 
 * More than 16 hours doing vigorous-intensity or moderate-intensity activities,
-* is considered to be a missing value. 
+* is considered to be a missing value. Also, original missings become missings again.
 
 replace MET3=. if (q3018_3>960|q3021_3>960|q3024_3>960|q3027_3>960|q3030_3>960)|((original_q3017_days_s3==. & q3018_3>0)| (original_q3020_days_s3==. & q3021_3>0)| (original_q3023_days_s3==. & q3024_3>0)|(original_q3026_days_s3==. & q3027_3>0)|(original_q3029_days_s3==. & q3030_3>0))
 
