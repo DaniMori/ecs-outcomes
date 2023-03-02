@@ -3,8 +3,8 @@ title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Physical activity'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-#bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
-bibliography: ecs.data::get_proj_bib_file()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+#bibliography: ecs.data::get_proj_bib_file()
 csl: "`r ecs.data::get_proj_csl_file()`"
 nocite: '@world_health_organization_global_2012'
 editor_options: 
@@ -71,7 +71,8 @@ Physical activity has been categorized as follows:
   week - or - 7 or more days of any combination of walking, moderate or vigorous 
   intensity activities achieving a minimum of at least 3000 MET-minutes per 
   week.
-
+  
+<br>
 
 -	_Moderate physical activity_: three or more days of vigorous-intensity 
   activity of at least 20 minutes per day - or - five or more days of 
@@ -80,9 +81,12 @@ Physical activity has been categorized as follows:
   vigorous-intensity activities achieving a minimum of at least 600 MET-minutes
   per week.
   
+ <br>
   
 -	_Low physical activity_: a person not meeting any of the above-mentioned
   criteria.
+
+<br>
 
 **NOTE**: Items to create this variable were: `q3017_days_s3`, `q3018_hours_s3`, 
 `q3018_mins_s3`, `q3020_days_s3`, `q3021_hours_s3`, `q3021_mins_s3`, 
@@ -90,8 +94,19 @@ Physical activity has been categorized as follows:
 `q3027_hours_s3`, `q3027_mins_s3`, `q3029_days_s3`, `q3030_hours_s3`,
 `q3030_mins_s3`.
 
+<br>
+
 **NOTE**: More than 16 hours doing vigorous-intensity or moderate-intensity
 activities is considered to be a missing value.
+
+<br>
+
+**NOTE**: The version adapted for Wave 3 changed the results of time spent 
+performing an activity of less than one hour to 0. In this wave a change has 
+been made so that the 0's are treated as missing values when in the original 
+variables these missing values are given, in order to respect as much as 
+possible the nature of the variable but to be able to make the sum of times
+in a proper way. 
 
 # Syntax used to create the variable (Stata 15)
 
@@ -101,41 +116,62 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* Create a copy of the variables to make the transformation with
+
+clonevar original_q3017_days_s3 = q3017_days_s3
+clonevar original_q3018_hours_s3 = q3018_hours_s3
+clonevar original_q3018_mins_s3 = q3018_mins_s3
+clonevar original_q3020_days_s3 = q3020_days_s3
+clonevar original_q3021_hours_s3 = q3021_hours_s3
+clonevar original_q3021_mins_s3 = q3021_mins_s3
+clonevar original_q3023_days_s3 = q3023_days_s3
+clonevar original_q3024_hours_s3 = q3024_hours_s3
+clonevar original_q3024_mins_s3 = q3024_mins_s3
+clonevar original_q3026_days_s3 = q3026_days_s3
+clonevar original_q3027_hours_s3 = q3027_hours_s3
+clonevar original_q3027_mins_s3 = q3027_mins_s3
+clonevar original_q3029_days_s3 = q3029_days_s3
+clonevar original_q3030_hours_s3 = q3030_hours_s3
+clonevar original_q3030_mins_s3 = q3030_mins_s3
+
+
 * Recode missings to 0 for computing total time if the interview is valid
 
 recode q3017_days_s3 q3018_hours_s3 q3018_mins_s3 q3020_days_s3 q3021_hours_s3 q3021_mins_s3 q3023_days_s3 q3024_hours_s3 q3024_mins_s3 q3026_days_s3 q3027_hours_s3 q3027_mins_s3 q3029_days_s3 q3030_hours_s3 q3030_mins_s3 (.=0) if q0007a_result_s3==1
 
 * Time doing vigorous activity (in minutes) (_3 suffix just expresses the repeated measure ID)
-* It is replaced by 0 when in hours it is 0 (probably it was a missing value).
+
 gen q3018_3=q3018_hours_s3*60+q3018_mins_s3
-replace q3018_3=0 if q3018_hours_s3==0
+replace q3018_3=0 if original_q3018_hours_s3==.
 
 * Time doing moderate activity (in minutes) (_3 suffix just expresses the repeated measure ID)
-* It is replaced by 0 when in hours it is 0 (probably it was a missing value).
+
 gen q3021_3=q3021_hours_s3*60+q3021_mins_s3
-replace q3021_3=0 if q3021_hours_s3==0
+replace q3021_3=0 if original_q3021_hours_s3==.
 
 * Time walking (in minutes) (_3 suffix just expresses the repeated measure ID)
-* It is replaced by 0 when in hours it is 0 (probably it was a missing value).
+
 gen q3024_3=q3024_hours_s3*60+q3024_mins_s3
-replace q3024_3=0 if q3024_hours_s3==0
+replace q3024_3=0 if original_q3024_hours_s3==.
 
 * Time of vigorous leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
-* It is replaced by 0 when in hours it is 0 (probably it was a missing value).
+
 gen q3027_3=q3027_hours_s3*60+q3027_mins_s3 
-replace q3027_3=0 if q3027_hours_s3==0
+replace q3027_3=0 if original_q3027_hours_s3==.
 
 * Time of moderate leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
-* It is replaced by 0 when in hours it is 0 (probably it was a missing value).
+
 gen q3030_3=q3030_hours_s3*60+q3030_mins_s3
-replace q3030_3=0 if q3030_hours_s3==0
+replace q3030_3=0 if original_q3030_hours_s3==.
+
 
 * Generate MET (metabolic equivalent)-minutes per week
 generate MET3=((q3017_days_s3*q3018_3*8)+(q3020_days_s3*q3021_3*4)+(q3023_days_s3*q3024_3*4)+(q3026_days_s3*q3027_3*8)+(q3029_days_s3*q3030_3*4))
 
 * More than 16 hours doing vigorous-intensity or moderate-intensity activities,
 * is considered to be a missing value. 
-replace MET3=. if (q3018_3>960|q3021_3>960|q3024_3>960|q3027_3>960|q3030_3>960)|((q3017_days_s3==0 & q3018_3>0)| (q3020_days_s3==0 & q3021_3>0)| (q3023_days_s3==0 & q3024_3>0)|(q3026_days_s3==0 & q3027_3>0)|(q3029_days_s3==0 & q3030_3>0))
+
+replace MET3=. if (q3018_3>960|q3021_3>960|q3024_3>960|q3027_3>960|q3030_3>960)|((original_q3017_days_s3==. & q3018_3>0)| (original_q3020_days_s3==. & q3021_3>0)| (original_q3023_days_s3==. & q3024_3>0)|(original_q3026_days_s3==. & q3027_3>0)|(original_q3029_days_s3==. & q3030_3>0))
 
 
 * Generate physical_s3 as function of MET3
@@ -185,7 +221,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 -   Institution: Universidad Autónoma de Madrid / FIB-HU La Princesa
 -   Phone number: (+34) 91 497 54 92
 
-<br>
+\newpage
 
 Original version:
 
@@ -200,8 +236,7 @@ Original version:
 -   Name: Elvira Lara _(adapted the algorithm for wave 3)_
 -   e-mail:
     [elvira.lara@uam.es](mailto:elvira.lara@uam.es){.email}
--   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Ma
-    drid
+-   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Madrid
 -   Phone number: (+34) 91 497 46 01
 
 # References
