@@ -88,23 +88,23 @@ depression. These algorithms were created only for the non-proxy respondents.
 Although a variable (depression_self_s3) was created to assess an eventual
 presence of depression episode self-reported.
 
-As for the proxy participants, original variables include a self-diagnosis
-depression item (p4040_depression_s3) and self-reported treatment taking
+As for the proxy participants, original variables include a diagnosis
+depression item (p4040_depression_s3) and reported treatment taking
 (p4040a_age_s3). A diagnosis of depression was endorsed if the participant
 answered "yes" to p4040_depression_s3, but not 997 in p4040a_age_s3 (they
 affirmed they had never had depression). We also included a treatment code
 (depress_12treatment_s3) in those individuals who, apart from having reported
 depression, have received treatment for it in the previous 12 months.
 
-More precisely, the following criteria must be fulfilled: A) At least five of
+The following criteria must be fulfilled in order to diagnose depression: A) At least five of
 the following symptoms have been present during the same 2-week period and
 represent a change from previous functioning; (1) depressed mood, (2) loss of
 interest or pleasure, (3) significant weight loss, (4) insomnia or hypersomnia,
 (5) psychomotor agitation or retardation, (6) fatigue or loss of energy, (7)
 feelings of worthlessness, (8) diminished ability to think or concentrate, (9)
 recurrent thoughts of death. At least one of the symptoms is either (1)
-depressed mood or (2) loss of interest or pleasure. Note: Do not include
-symptoms that are clearly attributable to another medical condition. B) The
+depressed mood or (2) loss of interest or pleasure. (Note: Do not include
+symptoms that are clearly attributable to another medical condition.) B) The
 symptoms cause clinically significant distress or impairment in social,
 occupational, or other important areas of functioning.; C) The episode is not
 attributable to the physiological effects of a substance or to another medical
@@ -112,7 +112,7 @@ condition. ; D) The occurrence of the major depressive episode is not better
 explained by schizoaffective disorder, schizophrenia, schizophreniform disorder,
 delusional disorder, or other specified and unspecified schizophrenia spectrum
 and other psychotic disorders.; E) There has never been a manic episode or a
-hypomanic episode. Those criteria where used to create the variable related to
+hypomanic episode. These criteria where used to create the variable related to
 lifetime depression (depression_lifetime_s3). We also created a variable to
 assess the presence of a depressive episode during the last 12 months using only
 one item (q4227a_s3) which directly asks for the presence of a depressive
