@@ -37,22 +37,22 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +----------------------------+--------------------+-----------------+-----------------+
 | Main variable name         | Label              | Format          | Code            |
 +:===========================+:===================+:================+:================+
-| depression_lifetime_s3     | Lifetime           | Binary          | 0 no            |
+| depression_lifetime_s3     | Lifetime           | Binary          | 0 No            |
 |                            | depression         |                 |                 |
-|                            | (c2011_w4)         |                 | 1 yes           |
+|                            | (c2011_w4)         |                 | 1 Yes           |
 +----------------------------+--------------------+-----------------+-----------------+
-| depression_12m_s3          | 12 months          | Binary          | 0 no            |
+| depression_12m_s3          | 12 months          | Binary          | 0 No            |
 |                            | depression         |                 |                 |
-|                            | (c2011_w4)         |                 | 1 yes           |
+|                            | (c2011_w4)         |                 | 1 Yes           |
 +----------------------------+--------------------+-----------------+-----------------+
-| depression_12treatment_s3  | Treatment for      | Binary          | 0 no            |
+| depression_12treatment_s3  | Treatment for      | Binary          | 0 No            |
 |                            | depression in      |                 |                 |
-|                            | previous 12 months |                 | 1 yes           |
+|                            | previous 12 months |                 | 1 Yes           |
 |                            | (c2011_w4)         |                 |                 |
 +----------------------------+--------------------+-----------------+-----------------+
-| depression_self_s3         | Depression         | Binary          | 0 no            |
+| depression_self_s3         | Depression         | Binary          | 0 No            |
 |                            | self-reported      |                 |                 |
-|                            | (c2011_w4)         |                 | 1 yes           |
+|                            | (c2011_w4)         |                 | 1 Yes           |
 +----------------------------+--------------------+-----------------+-----------------+
 
 # Variable description
@@ -310,7 +310,7 @@ gen     depression_self_s3 = .
 replace depression_self_s3 = 0 if p4040_depression_s3!=1 & p4040_depression_s3!=.
 replace depression_self_s3 = 1 if p4040_depression_s3==1 & p4040a_age_s3!=997
 label values   depression_self_s3 yesno
-label variable depression_self_s3 "Depression self-reported(c2011_w4)"
+label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
 ```
 
