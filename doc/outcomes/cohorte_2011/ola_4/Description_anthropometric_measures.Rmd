@@ -94,7 +94,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
     ground. It is intended that the measurement is taken directly from the skin,
     if not, with light clothing. Constraints are set to allow only valid values.
 
--   **BMI**: BMI is defined as the weight in kilograms divided by the square of
+-   **BMI**: Defined as the weight in kilograms divided by the square of
     the height in meters (kg/m2) [@worldhealthorganization; @cdc2022]). Four
     categories are created using the WHO BMI cut-off points:
 
