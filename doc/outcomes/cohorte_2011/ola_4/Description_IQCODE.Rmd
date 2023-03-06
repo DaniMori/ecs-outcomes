@@ -97,6 +97,7 @@ foreach x in p1021_family_s3 p1022_recent_s3 p1023_recall_s3 p1024_address_s3 p1
 replace `x'=. if `x'>5
 }
 gen IQCODE_s3 = (p1021_family_s3 + p1022_recent_s3 + p1023_recall_s3 + p1024_address_s3 + p1025_day_s3 + p1026_kept_s3 + p1027_find_s3 + p1028_machin_s3 + p1029_gadget_s3 + p1030_newthin_s3 + p1031_book_s3 + p1032_decisio_s3 + p1033_money_s3 + p1034_financial_s3 + p1035_other_s3 + p1036_reason_s3) / 16
+label variable IQCODE_s3 "Cognitive decline level (c2011_w4)"
 
 ```
 
@@ -113,7 +114,7 @@ saveold "Outcome_IQCODE.dta", replace version(13)
 ```{stata save-data, eval=!TEST}
 
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_IQCODE.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_IQCODE.dta", replace version(13)
 
 ```
 
