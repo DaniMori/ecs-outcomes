@@ -54,7 +54,7 @@ span forward represented one dimension. Then, we calculated a global score for
 cognitive functioning as the average of the z-scores on each of the variables.
 We transformed this score into a 0-100 scale, with higher scores indicating
 better cognitive functioning. To realize this step we use the following formula
-$(x-min(x))/(max(x)-min(x))*100$where X represent the non-standardized values.
+$(x-min(x))/(max(x)-min(x))*100$ where X represent the non-standardized values.
 
 # Explanation of how the variables were created
 
