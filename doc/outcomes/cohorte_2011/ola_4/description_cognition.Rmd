@@ -100,7 +100,7 @@ egen cognition_std_s3 = std(z_cognitive_test)
 label variable cognition_std_s3 "Cognition score, standardized (c2011_w4)"
  
 /* The following step transforms the score generated into a 0-100 scale. */
-generate cognition_s3 = ((cognition_std + 3.459429) / (3.397 + 3.459429))*100
+generate cognition_s3 = ((cognition_std + 2.704853) / (2.704853 + 2.704853))*100
 label variable cognition_s3 "Cognition score, harmonized (c2011_w4)"
 ```
 
