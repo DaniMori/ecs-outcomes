@@ -53,7 +53,8 @@ immediate verbal recall, delayed verbal recall, digit span backward and digit
 span forward represented one dimension. Then, we calculated a global score for
 cognitive functioning as the average of the z-scores on each of the variables.
 We transformed this score into a 0-100 scale, with higher scores indicating
-better cognitive functioning.
+better cognitive functioning. To realize this step we use the following formula
+![](images/image-1395575495.png)where X represent the non-standardized values.
 
 # Explanation of how the variables were created
 
@@ -100,7 +101,7 @@ egen cognition_std_s3 = std(z_cognitive_test)
 label variable cognition_std_s3 "Cognition score, standardized (c2011_w4)"
  
 /* The following step transforms the score generated into a 0-100 scale. */
-generate cognition_s3 = ((cognition_std + 2.704853) / (2.704853 + 2.704853))*100
+generate cognition_s3 = (cognition_std_s3 + 2.49287) / (3.002676 + 2.49287)*100
 label variable cognition_s3 "Cognition score, harmonized (c2011_w4)"
 ```
 
