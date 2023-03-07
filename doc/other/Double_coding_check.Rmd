@@ -49,9 +49,9 @@ options(knitr.kable.NA = '')
 ```{r load-data}
 DATASET_NAME <- "Outcome_[varname_qualifier].dta"
 
-C2019W4_FOLDER <- "../outcomes/cohorte_2011/ola_4"
+C2011W4_FOLDER <- "../outcomes/cohorte_2011/ola_4"
 
-DATASET_PATH <- file.path(C2019W4_FOLDER, DATASET_NAME)
+DATASET_PATH <- file.path(C2011W4_FOLDER, DATASET_NAME)
 
 outcomes_original <- read_dta(DATASET_PATH, encoding = 'UTF-8')
 ```
