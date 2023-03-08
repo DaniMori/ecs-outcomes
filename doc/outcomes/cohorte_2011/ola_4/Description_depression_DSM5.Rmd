@@ -203,8 +203,8 @@ replace d_A6 = 1 if q4222e_s3==1
 
 *#A7:"Feelings of worthlessness or excessive or inappropriate guilt nearly every day (not merely self-reproach or guilt about being sick)"
 gen     d_A7 = .
-replace d_A7 = 0 if q4222n_s3!=1 & q4222n_s3!=.
-replace d_A7 = 1 if q4222n_s3==1
+replace d_A7 = 0 if q4222n_s3!=1 & q4222n_s3!=. &  q4222l_s3!=1 & q4222l_s3!=. &  q4222m_s3!=1 & q4222m_s3!=. 
+replace d_A7 = 1 if q4222n_s3==1 | q4222l_s3==1 | q4222m_s3==1
 
 *#A8:"Diminished ability to think or concentrate, or indecisiveness, nearly every day"
 gen     d_A8 = .
@@ -280,7 +280,7 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 
 ***#"Major depressive episode (DSM-5)"
 gen     depression_lifetime_s3 = .
-replace depression_lifetime_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 & proxy==2
+replace depression_lifetime_s3 = 0 if (d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0) & proxy==2
 replace depression_lifetime_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1 & d_crit_C==1
 label values   depression_lifetime_s3 yesno
 label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
