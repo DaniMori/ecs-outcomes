@@ -1,0 +1,230 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Physical activity'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+#bibliography: ecs.data::get_proj_bib_file()
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@world_health_organization_global_2012'
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) 
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++--------------------+------------------------------------------+------------+----------------------+
+| Main variable name | Label                                    | Format     | Code                 |
++:===================+:=========================================+:===========+:=====================+
+| physical_s3        | Physical activity (c2011w4)              | Ordinal    | 0 = High;            |
+|                    |                                          |            |                      |
+|                    |                                          |            | 1 = Moderate;        |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Low              |
+|                    |                                          |            |                      |          
++--------------------+------------------------------------------+------------+----------------------+
+
+
+# Variable description
+
+Physical activity has been assessed by means of the Global Physical Activity 
+Questionnaire version 2 (GPAQ v2). The GPAQ v2 has been developed by WHO for 
+physical activity surveillance in countries. It collects information on physical
+activity participation in three settings (or domains) and sedentary behavior, 
+comprising 16 questions. The three domains are: activity at work, travel to and
+from places, and recreational activities. The responses given by the 
+participants have been converted to Metabolic Equivalent to Task (MET) values. 
+Applying MET values to activity levels allows for calculating total physical 
+activities. A detailed description of the calculation and categorization of the
+physical activity levels (low, moderate or high) is available at the GPAQ v2 
+guidelines in the WHO website [@world_health_organization_global_2012].
+
+# Explanation of how the variables were created
+
+
+Physical activity has been categorized as follows:
+
+-  	_High physical activity_: vigorous-intensity activity on at least 3 days 
+  achieving a minimum of at least 1500 MET (metabolic equivalent)-minutes per 
+  week - or - 7 or more days of any combination of walking, moderate or vigorous 
+  intensity activities achieving a minimum of at least 3000 MET-minutes per 
+  week.
+  
+<br>
+
+-	_Moderate physical activity_: three or more days of vigorous-intensity 
+  activity of at least 20 minutes per day - or - five or more days of 
+  moderate-intensity activity or walking of at least 30 minutes per day - or - 
+  five or more days of any combination of walking, moderate or 
+  vigorous-intensity activities achieving a minimum of at least 600 MET-minutes
+  per week.
+  
+ <br>
+  
+-	_Low physical activity_: a person not meeting any of the above-mentioned
+  criteria.
+
+<br>
+
+**NOTE**: Items to create this variable were: `q3017_days_s3`, `q3018_hours_s3`, 
+`q3018_mins_s3`, `q3020_days_s3`, `q3021_hours_s3`, `q3021_mins_s3`, 
+`q3023_days_s3`, `q3024_hours_s3`,  `q3024_mins_s3`, `q3026_days_s3`, 
+`q3027_hours_s3`, `q3027_mins_s3`, `q3029_days_s3`, `q3030_hours_s3`,
+`q3030_mins_s3`.
+
+<br>
+
+**NOTE**: More than 16 hours doing vigorous-intensity or moderate-intensity
+activities is considered to be a missing value.
+
+<br>
+
+**NOTE**: The version adapted for Wave 3 changed the results of time spent 
+performing an activity of less than one hour to 0. In this wave a change has 
+been made so that the 0's are treated as missing values when in the original 
+variables these missing values are given, in order to respect as much as 
+possible the nature of the variable but to be able to make the sum of times
+in a proper way. 
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+
+* Recode missings to 0 for computing total time if the interview is valid
+
+recode q3017_days_s3 q3018_hours_s3 q3018_mins_s3 q3020_days_s3 q3021_hours_s3 q3021_mins_s3 q3023_days_s3 q3024_hours_s3 q3024_mins_s3 q3026_days_s3 q3027_hours_s3 q3027_mins_s3 q3029_days_s3 q3030_hours_s3 q3030_mins_s3 (.=0) if q0007a_result_s3==1
+
+* Time doing vigorous activity (in minutes) (_s3 suffix just expresses the repeated measure ID)
+gen q3018_s3=q3018_hours_s3*60+q3018_mins_s3
+
+
+* Time doing moderate activity (in minutes) (_s3 suffix just expresses the repeated measure ID)
+gen q3021_s3=q3021_hours_s3*60+q3021_mins_s3
+
+
+* Time walking (in minutes) (_3 suffix just expresses the repeated measure ID)
+gen q3024_s3=q3024_hours_s3*60+q3024_mins_s3
+
+
+* Time of vigorous leisure (in minutes) (_s3 suffix just expresses the repeated measure ID) 
+gen q3027_s3=q3027_hours_s3*60+q3027_mins_s3 
+
+* Time of moderate leisure (in minutes) (_s3 suffix just expresses the repeated measure ID) 
+
+gen q3030_s3=q3030_hours_s3*60+q3030_mins_s3
+
+
+
+* Generate MET (metabolic equivalent)-minutes per week as stablished by GPAQ guide
+generate MET3=((q3017_days_s3*q3018_s3*8)+(q3020_days_s3*q3021_s3*4)+(q3023_days_s3*q3024_s3*4)+(q3026_days_s3*q3027_s3*8)+(q3029_days_s3*q3030_s3*4))
+
+* More than 16 hours doing vigorous-intensity or moderate-intensity activities,
+* is considered to be a missing value. 
+
+replace MET3=. if (q3018_s3>960|q3021_s3>960|q3024_s3>960|q3027_s3>960|q3030_s3>960)|((q3017_days_s3==. & q3018_s3>0)| (q3020_days_s3==. & q3021_s3>0)| (q3023_days_s3==. & q3024_s3>0)|(q3026_days_s3==. & q3027_s3>0)|(q3029_days_s3==. & q3030_s3>0))
+
+
+* Generate physical_s3 as function of MET3
+* High physical activity
+generate physical_s3=0 if ((q3017_days_s3+q3026_days_s3)>=3 & (MET>=1500)) | (((q3017_days_s3+q3020_days_s3+q3023_days_s3+q3026_days_s3+q3029_days_s3)>=7) & (MET>=3000))
+
+* Moderate physical activity
+replace physical_s3=1 if (((q3017_days_s3+q3026_days_s3)>=3 & ((q3017_days_s3*q3018_s3)+(q3026_days_s3*q3027_s3))>=60) |                           ((q3020_days_s3+q3023_days_s3+q3029_days_s3)>=5 & ((q3020_days_s3*q3021_s3)+(q3023_days_s3*q3024_s3)+(q3029_days_s3*q3030_s3))>=150) |                   ((q3017_days_s3+q3020_days_s3+q3023_days_s3+q3026_days_s3+q3029_days_s3)>=5 & (MET>=600)))& (physical_s3!=0)
+
+* Low physical activity
+replace physical_s3=2 if physical_s3==.
+
+replace physical_s3=. if (q3016_vigorous_s3==.)&(q3019_moderate_s3==.)&(q3022_walk_s3==.)&(q3025_leisure_s3==.)&(q3028_moderate_s3==.)
+
+label define dPhysical 0 "High" 1 "Moderate" 2 "Low"
+label values physical_s3 dPhysical
+label variable physical_s3  "Physical activity (c2011w4)"
+
+```
+
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy physical_s3
+
+codebook physical_s3
+```
+
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_physicalactivity.dta", replace version(13)
+```
+
+
+```{stata save-data, eval=!TEST}
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_physicalactivity.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada _(adapted the algorithm for wave 4)_
+-   e-mail:
+    [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid / FIB-HU La Princesa
+-   Phone number: (+34) 91 497 54 92
+
+\newpage
+
+Original version:
+
+-   Name: Félix Caballero
+-   e-mail:
+    [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid
+-   Phone number: (+34) 91 497 50 88
+
+<br>
+
+-   Name: Elvira Lara _(adapted the algorithm for wave 3)_
+-   e-mail:
+    [elvira.lara@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Madrid
+-   Phone number: (+34) 91 497 46 01
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
