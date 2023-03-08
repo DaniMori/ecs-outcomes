@@ -355,13 +355,13 @@ replace d_lifetime_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_scree
 *#       severe one".
 
 *#"Final severity computation":
-gen     d_lifetime_severity = .
-replace d_lifetime_severity = 0 if (d_skipped==1 | d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0) & proxy==2
-replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-label values   d_lifetime_severity severity
-label variable d_lifetime_severity "Severity of lifetime depressive episode (c2011_w4)"
+gen     d_lifetime_severity_s3 = .
+replace d_lifetime_severity_s3 = 0 if (d_skipped==1 | d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0) & proxy==2
+replace d_lifetime_severity_s3 = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_s3 = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_s3 = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+label values   d_lifetime_severity_s3 severity
+label variable d_lifetime_severity_s3 "Severity of lifetime depressive episode (c2011_w4)"
 *#"NOTE: The criteria are applied incrementally, such that if a case
 *#       fulfills the criteria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
@@ -370,13 +370,13 @@ label variable d_lifetime_severity "Severity of lifetime depressive episode (c20
 
 ***#"Lifetime depression diagnostic variable":
 gen     depression_lifetime_s3 = .
-replace depression_lifetime_s3 = 0 if d_lifetime_severity==0 & proxy==2
-replace depression_lifetime_s3 = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
+replace depression_lifetime_s3 = 0 if d_lifetime_severity_s3==0 & proxy==2
+replace depression_lifetime_s3 = 1 if d_lifetime_severity_s3>=1 & d_lifetime_severity_s3 !=.
 label values   depression_lifetime_s3 yesno
 label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
-#Due to a 888 case to "p4040_depression" we know one interview is proxy but 
-#we don't know if it is a case of depression. We have to add "proxy = 2" to be 
-#the "don't know" case (888) in proxy is not considered as a 'no' but as missing. 
+*#Due to a 888 case to "p4040_depression" we know one interview is proxy but 
+*#we don't know if it is a case of depression. We have to add "proxy = 2" to be 
+*#the "don't know" case (888) in proxy is not considered as a 'no' but as missing. 
 
 ***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
 recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s3)
@@ -402,7 +402,7 @@ label variable depression_12m_s3 "12 month depression from lifetime diagnosis + 
 
 ***#"VARIABLE `d_12m_comparable_s3`: 12-month depression (comparable with COVID substudy) from lifetime diagnosis"
 
-*#"Lifetime "comparable" (does not take into account exclusion criteria G2 and G3)":
+*#"Lifetime "comparable" (does not take into account exclusion criteria G2 and G3)"
 gen     d_lifetime_comparable_s3 = .
 replace d_lifetime_comparable_s3 = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
 replace d_lifetime_comparable_s3 = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
@@ -418,9 +418,9 @@ label variable d_12m_comparable_s3 "12 month depression comparable with COVID su
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
+keep ID_ECS q0007a_result proxy d_lifetime_severity_s3 depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
 
-codebook d_lifetime_severity depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
+codebook d_lifetime_severity_s3 depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
