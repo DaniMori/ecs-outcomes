@@ -139,12 +139,12 @@ clonevar original_q3030_mins_s3 = q3030_mins_s3
 
 recode q3017_days_s3 q3018_hours_s3 q3018_mins_s3 q3020_days_s3 q3021_hours_s3 q3021_mins_s3 q3023_days_s3 q3024_hours_s3 q3024_mins_s3 q3026_days_s3 q3027_hours_s3 q3027_mins_s3 q3029_days_s3 q3030_hours_s3 q3030_mins_s3 (.=0) if q0007a_result_s3==1
 
-* Time doing vigorous activity (in minutes) (_3 suffix just expresses the repeated measure ID)
+* Time doing vigorous activity (in minutes) (_s3 suffix just expresses the repeated measure ID)
 
 gen q3018_s3=q3018_hours_s3*60+q3018_mins_s3
 replace q3018_s3=0 if original_q3018_hours_s3==.
 
-* Time doing moderate activity (in minutes) (_3 suffix just expresses the repeated measure ID)
+* Time doing moderate activity (in minutes) (_s3 suffix just expresses the repeated measure ID)
 
 gen q3021_s3=q3021_hours_s3*60+q3021_mins_s3
 replace q3021_s3=0 if original_q3021_hours_s3==.
@@ -154,12 +154,12 @@ replace q3021_s3=0 if original_q3021_hours_s3==.
 gen q3024_s3=q3024_hours_s3*60+q3024_mins_s3
 replace q3024_s3=0 if original_q3024_hours_s3==.
 
-* Time of vigorous leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
+* Time of vigorous leisure (in minutes) (_s3 suffix just expresses the repeated measure ID) 
 
 gen q3027_s3=q3027_hours_s3*60+q3027_mins_s3 
 replace q3027_s3=0 if original_q3027_hours_s3==.
 
-* Time of moderate leisure (in minutes) (_3 suffix just expresses the repeated measure ID) 
+* Time of moderate leisure (in minutes) (_s3 suffix just expresses the repeated measure ID) 
 
 gen q3030_s3=q3030_hours_s3*60+q3030_mins_s3
 replace q3030_s3=0 if original_q3030_hours_s3==.
