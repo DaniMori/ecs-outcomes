@@ -36,11 +36,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| **Main variable name** | **Label**                                                     | **Format** | **Code**   |
+| **Main variable name** | **Label**                                                            | **Format** | **Code**   |
 |:-------------------|:--------------------|:-------------------|:-------------------|
-| whodas12_s3            | disability whodas 12 (c2011_w4)                               | Continuous | 0-100      |
-| adl_s3                 | difficulties with activities of daily living (c2011_w4)       | Binary     | 0=no;1=yes |
-| iadl_s3                | difficulties with instrumental act of daily living (c2011_w4) | Binary     | 0=no;1=yes |
+| whodas12_s3            | disability whodas 12 (c2011_w4)                                      | Continuous | 0-100      |
+| adl_s3                 | difficulties with activities of daily living (c2011_w4)              | Binary     | 0=no;1=yes |
+| iadl_s3                | difficulties with instrumental activities of daily living (c2011_w4) | Binary     | 0=no;1=yes |
 
 # Variable description
 
@@ -76,6 +76,11 @@ answered to at least 80% of the items (i.e., at least 10 out of the 12 items).
 In those cases with one or two missing values, the score were obtained based on
 the items completed, replacing the missing values by the mean of the remaining
 items.
+ADL and IADL items are scored on a 5-point scale (none=1, mild=2, moderate=3,
+severe=4, extreme/cannot do=5). If the person has \'severe\' or \'extreme\'
+difficulty at least on one item, the overall score is going to be 1 (=yes,
+difficulties with ADL/IADL), otherwise is going to be 0 (=no difficulties with
+ADL/IADL).
 
 # Syntax used to create the variable (Stata 15)
 
