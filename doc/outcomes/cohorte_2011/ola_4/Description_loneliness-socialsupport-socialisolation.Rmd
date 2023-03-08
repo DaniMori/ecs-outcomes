@@ -34,11 +34,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| Main variable name | Label                      | Format     | Code  |
-|:-------------------|:---------------------------|:-----------|:------|
-| social_support_s3  | Social support(c2011_w4)   | Continuous | 0-100 |
-| loneliness_s3      | Loneliness(c2011_w4)       | Continuous | 0-100 |
-| isolation_s3       | Social isolation(c2011_w4) | Continuous | 0-6   |
+| Main variable name | Label                       | Format     | Code  |
+|:-------------------|:----------------------------|:-----------|:------|
+| social_support_s3  | Social support (c2011_w4)   | Continuous | 0-100 |
+| loneliness_s3      | Loneliness (c2011_w4)       | Continuous | 0-100 |
+| isolation_s3       | Social isolation (c2011_w4) | Continuous | 0-5   |
 
 # Variable description
 
@@ -62,9 +62,9 @@ isolation. All items are assessed on a scale ranging from 1, "hardly ever" to 3,
 perceived by the participant [@hughes2004].
 
 Social isolation is relate to structural aspects of the social network. This
-variable **isolation_s3**: was computed using aspects like the level of
+variable (**isolation_s3**) was computed using aspects like the level of
 frequency of interactions or the size of the social network)
-[@jennydejonggierveld].
+[@dejonggierveld2016].
 
 # Explanation of how the variables were created
 
@@ -72,39 +72,38 @@ frequency of interactions or the size of the social network)
 assessing the relationship with neighbors (items q6310), the number of close
 confidants (q6320), and the interest and concern of people in what the
 participant do (q6330). To simplify the understanding of the total scale items
-q6310 and q6330 were reverted in the syntax to obtain a scale where the higher
-the score, the higher the level of social support. The global score was created
-by adding up the three items and transforming the result into a percentile
-scale. To the question "Do you have neighbors?", eleven participants said not
-to. According to CIDI questionnaire [@kessler2004] those cases have to be
-considered as "not applicable" when asking about social support perceived from
-neighbors. To not lost information, the lowest score (\"very difficult\") was
-given to these participants for help received from neighbors item. The following
-formula was used in order to rescale the obtained scores from 0 to 100: global
-score = ((Factor score - min(factor scores))/(max(factor scores) - min(factor
+q6330 was reverted in the syntax to obtain a scale where the higher the score,
+the higher the level of social support. The global score was created by adding
+up the three items and transforming the result into a percentile scale. To the
+question "Do you have neighbors?", eleven participants said not to. According to
+CIDI questionnaire [@kessler2004] those cases have to be considered as "not
+applicable" when asking about social support perceived from neighbors. To avoid
+losing information, the lowest score ("very difficult") was given to these
+participants for help received from neighbors item. The following formula was
+used in order to rescale the obtained scores from 0 to 100: global score =
+((Factor score - min(factor scores))/(max(factor scores) - min(factor
 scores)))\*100
 
 **Loneliness** variable was created using items assessing companionship (q6351),
 exclusion (q6352), and isolation (q6353). The scores corresponding to each of
 the responses given to these three items were added up and transformed into a
 percentile scale, with higher scores indicating a higher subjective perception
-of loneliness. The same formula as used for social support variable has been
-used in order to rescale the obtained scores from 0 to 100.
+of loneliness. The same formula as the one used for social support variable has
+been used in order to rescale the obtained scores from 0 to 100.
 
 A **social isolation** index, based on the one proposed by [@shankar2011] was
-computed with respondents given a point if they (1) were not married/not
+computed with respondents having a point if they (1) were not married/not
 cohabiting with a partner (q6010a_spouse); (2) had less than monthly contact
 with children (q6010c_children); (3) had less than monthly contact with other
-immediate family (q6010b_parents, q6010d_grandch, q6010e_other, q6010f_cowork);
-(4) had less than monthly contact with friends (q6010g_friends); and (5) did not
-participate in any organizations, religious groups, or committees (q6618_relig,
-q6619_leave,q6613_club, and q6621_assoc). The total score was obtained by
-summing the answers given by the participants to the different items listed
-below. The total score ranged from 0 to 5, with higher scores representing
-greater social isolation. Items q6613_club, and q6621_assoc corresponded to
-"committees" ("participation in clubs or organizations" and "attend associations
-or senior community centres, or adult day care centres, or senior
-universities").
+immediate family (q6010b_parents, q6010d_grandch, q6010e_other); (4) had less
+than monthly contact with friends (q6010g_friends); and (5) did not participate
+in any organizations, religious groups, or committees (q6618_relig,
+q6619_leave,q6613_club, and q6621_assoc). Items q6613_club, and q6621_assoc
+corresponded to "committees" ("participation in clubs or organizations" and
+"attend associations or senior community centres, or adult day care centres, or
+senior universities"). The total score was obtained by summing the answers given
+by the participants to the different items listed below. The total score ranged
+from 0 to 5, with higher scores representing greater social isolation.
 
 The social support and loneliness scores have been generated without allowing
 missing values, taking into account that both scales (Oslo Social Support (OSLO)
@@ -121,7 +120,8 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 ***Social support 
-recode q6310_help_neig_s3 q6320_close_s3 q6330_concern_s3 (888=.) (999=.)
+recode q6310_help_neig_s3 q6320_close_s3 (888=.) (999=.)
+recode q6330_concern_s3 (888=0) 
 replace q6310_help_neig_s3 = 5 if q6010h_neighbours_s3==2 
 generate social_support_s3 =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
 replace social_support_s3 =((social_support-3)/11)*100
@@ -156,11 +156,6 @@ gen family=.
 replace family=0 if parents==0 | grandch==0 | otherfam==0
 replace family=1 if parents==1 & grandch==1 & otherfam==1
 
-gen coworker=.
-replace coworker=0 if q6010f_cowork_s3 ==1
-replace coworker=1 if q6010f_cowork_s3 ==2 | (q6216_cowork_s3 ==1 | q6216_cowork_s3 ==2)
-
-
 gen friends=.
 replace friends=0 if q6010g_friends_s3==1
 replace friends=1 if q6010g_friends_s3==2 | (q6217_friends_s3==1 | q6217_friends_s3==2)
@@ -169,8 +164,8 @@ gen activities=.
 replace activities=0 if (q6618_relig_s3>2 & q6618_relig_s3<.) | (q6619_leave_s3>2 & q6619_leave_s3<.) | (q6613_club_s3 >2 & q6613_club_s3 <.) | (q6621_assoc_s3 >2 & q6621_assoc_s3 <.)
 replace activities=1 if (q6618_relig_s3==1 | q6618_relig_s3==2) & (q6619_leave_s3==1 | q6619_leave_s3==2) & (q6613_club_s3==1 | q6613_club_s3==2) & (q6621_assoc_s3==1 | q6621_assoc_s3==2)
 
-egen obs2=rownonmiss(spouse children family coworker friends activities)
-egen isolation_s3=rowtotal(spouse children family coworker friends activities) if obs2>=2
+egen obs2=rownonmiss(spouse children family friends activities)
+egen isolation_s3=rowtotal(spouse children family friends activities) if obs2>=2
 label variable isolation_s3 "Social isolation (c2011_w4)"
 ```
 
