@@ -136,7 +136,7 @@ There is also a section of the interview for directly diagnosing 12-month
 depression based on the symptomatology. However, errors in the filters (i.e.
 skip logic) of the interview lead to most of the participants not responding to
 this part of the interview when they should. Therefore, these variables have
-been dropped. Finally, as as abbreviated version of the CIDI interview was used
+been dropped. Finally, as an abbreviated version of the CIDI interview was used
 for the post-lockdown telephonic interview in the COVID substudy, comparable
 versions of both lifetime (`d_lifetime_comparable_s3`) and recent
 (`d_12m_comparable_s3`) have been created, applying the same criteria and
