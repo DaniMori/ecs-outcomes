@@ -198,23 +198,18 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 -   Institution: Universidad Autónoma de Madrid / FIB-HU La Princesa
 -   Phone number: (+34) 91 497 54 92
 
-\newpage
-
 Original version:
 
 -   Name: Félix Caballero
 -   e-mail:
     [felix.caballero@uam.es](mailto:felix.caballero@uam.es){.email}
 -   Institution: Universidad Autónoma de Madrid
--   Phone number: (+34) 91 497 50 88
 
 <br>
 
 -   Name: Elvira Lara _(adapted the algorithm for wave 3)_
--   e-mail:
-    [elvira.lara@uam.es](mailto:elvira.lara@uam.es){.email}
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
 -   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Madrid
--   Phone number: (+34) 91 497 46 01
 
 # References
 

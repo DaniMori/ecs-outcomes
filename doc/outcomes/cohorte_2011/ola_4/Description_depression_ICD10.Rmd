@@ -449,15 +449,13 @@ Original version:
 <br>
 
 -   Name: Elvira Lara
--   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
--   Phone number: (+34) 914974601
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
 
 <br>
 
 -   Name: Daniel Morillo
 -   e-mail:
     [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
--   Phone number: (+34) 914975816
 
 # References
 
