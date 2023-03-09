@@ -129,7 +129,7 @@ gen q3018_s3=q3018_hours_s3*60+q3018_mins_s3
 gen q3021_s3=q3021_hours_s3*60+q3021_mins_s3
 
 
-* Time walking (in minutes) (_3 suffix just expresses the repeated measure ID)
+* Time walking (in minutes) (_s3 suffix just expresses the repeated measure ID)
 gen q3024_s3=q3024_hours_s3*60+q3024_mins_s3
 
 
