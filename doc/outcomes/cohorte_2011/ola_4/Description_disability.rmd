@@ -46,7 +46,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 The level of functional impairment has been assessed using the
 12-items-interviewer-administered version of the World Health Organization (WHO)
-Disability Assessment Schedule version II [@ustun2010a]. This instrument is
+Disability Assessment Schedule version II [@ustun2010]. This instrument is
 grounded in the conceptual framework of the International Classification of
 Functioning, Disability, and Health [@worldhealthorganization2023] and places
 health and disability on a continuum, with disability defined as "a decrement in
@@ -75,12 +75,11 @@ the summary scores were summed and converted into a metric ranging from 0 to
 answered to at least 80% of the items (i.e., at least 10 out of the 12 items).
 In those cases with one or two missing values, the score were obtained based on
 the items completed, replacing the missing values by the mean of the remaining
-items.
-ADL and IADL items are scored on a 5-point scale (none=1, mild=2, moderate=3,
-severe=4, extreme/cannot do=5). If the person has \'severe\' or \'extreme\'
-difficulty at least on one item, the overall score is going to be 1 (=yes,
-difficulties with ADL/IADL), otherwise is going to be 0 (=no difficulties with
-ADL/IADL).
+items. ADL and IADL items are scored on a 5-point scale (none=1, mild=2,
+moderate=3, severe=4, extreme/cannot do=5). If the person has 'severe' or
+'extreme' difficulty at least on one item, the overall score is going to be 1
+(=yes, difficulties with ADL/IADL), otherwise is going to be 0 (=no difficulties
+with ADL/IADL).
 
 # Syntax used to create the variable (Stata 15)
 
