@@ -37,28 +37,27 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------+---------------------------+---------------+---------------+
-| Main variable | Label                     | Format        | Code          |
-| name          |                           |               |               |
-+:==============+:==========================+:==============+:==============+
-| MNA_s3        | Mini Nutritional          | Continuous    | 0-14          |
-|               | Assessment-based          |               |               |
-|               | continuous score          |               |               |
-|               | (c2011_w4)                |               |               |
-+---------------+---------------------------+---------------+---------------+
-| MNA_cat_s3    | Mini Nutritional          | Categorical   | 0 normal      |
-|               | Assessment-based          |               | nutritional   |
-|               | categorical score         |               | status        |
-|               | (c2011_w4)                |               | (12-14)       |
-|               |                           |               |               |
-|               |                           |               | 1 at risk of  |
-|               |                           |               | malnutrition  |
-|               |                           |               | (8-11)        |
-|               |                           |               |               |
-|               |                           |               | 2             |
-|               |                           |               | malnourished  |
-|               |                           |               | (0-7)         |
-+---------------+---------------------------+---------------+---------------+
++----------------+-------------------------+----------------+----------------+
+| Main variable  | Label                   | Format         | Code           |
+| name           |                         |                |                |
++:===============+:========================+:===============+:===============+
+| MNA_s3         | Mini Nutritional        | Continuous     | 0-14           |
+|                | Assessment-based        |                |                |
+|                | continuous score        |                |                |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| MNA_cat_s3     | Mini Nutritional        | Categorical    | 0 = normal     |
+|                | Assessment-based        |                | nutritional    |
+|                | categorical score       |                | status (12-14) |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 = at risk of |
+|                |                         |                | malnutrition   |
+|                |                         |                | (8-11)         |
+|                |                         |                |                |
+|                |                         |                | 2 =            |
+|                |                         |                | malnourished   |
+|                |                         |                | (0-7)          |
++----------------+-------------------------+----------------+----------------+
 
 # Variable description
 
