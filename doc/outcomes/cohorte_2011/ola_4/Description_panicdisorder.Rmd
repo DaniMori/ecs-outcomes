@@ -57,7 +57,7 @@ system, and lower health-related quality of life.
 # Explanation of how the variables were created
 
 An adapted version of the Composite International Diagnostic Interview (CIDI
-3.0) was used to assess the presence of panic disorder @haro2006. An algorithm
+3.0) was used to assess the presence of panic disorder [@haro2006]. An algorithm
 based on the fifth edition of the Diagnostic and Statistical Manual of Mental
 Disorders was used [@americanpsychiatricassociation2013] (APA, 1994).
 Participants that reported crises of fear or anxiety in which they suddenly had
