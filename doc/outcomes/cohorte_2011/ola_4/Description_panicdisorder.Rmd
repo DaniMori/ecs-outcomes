@@ -35,18 +35,18 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+------------------+-------------------------+---------------+---------------+
-| Main variable    | Label                   | Format        | Code          |
-| name             |                         |               |               |
-+:=================+:========================+:==============+:==============+
-| panic_12m        | Panic disorder during   | Categorical   | 0 no          |
-|                  | last 12 months          |               |               |
-|                  | (c2011_w4)              |               | 1 yes         |
-+------------------+-------------------------+---------------+---------------+
-| panic_lifetime   | Lifetime panic disorder | Categorical   | 0no           |
-|                  | (c2011_w4)              |               |               |
-|                  |                         |               | 1 yes         |
-+------------------+-------------------------+---------------+---------------+
++----------------+-----------------------+----------------+----------------+
+| Main variable  | Label                 | Format         | Code           |
+| name           |                       |                |                |
++:===============+:======================+:===============+:===============+
+| panic_12m      | Panic disorder during | Categorical    | 0 = no         |
+|                | last 12 months        |                |                |
+|                | (c2011_w4)            |                | 1 = yes        |
++----------------+-----------------------+----------------+----------------+
+| panic_lifetime | Lifetime panic        | Categorical    | 0 = no         |
+|                | disorder (c2011_w4)   |                |                |
+|                |                       |                | 1 = yes        |
++----------------+-----------------------+----------------+----------------+
 
 # Variable description
 
@@ -57,7 +57,7 @@ system, and lower health-related quality of life.
 # Explanation of how the variables were created
 
 An adapted version of the Composite International Diagnostic Interview (CIDI
-3.0) was used to assess the presence of panic disorder [@haro2006]. An algorithm
+3.0) was used to assess the presence of panic disorder @haro2006. An algorithm
 based on the fifth edition of the Diagnostic and Statistical Manual of Mental
 Disorders was used [@americanpsychiatricassociation2013] (APA, 1994).
 Participants that reported crises of fear or anxiety in which they suddenly had
@@ -78,7 +78,8 @@ losing control, feeling distant from the situation, feeling that things are not
 real, fear of losing consciousness, fear of dying, chills or feelings of
 numbness (items from q4503_s3 to q4518_s3) have to be present. 3. Crisis started
 suddenly and got worse during the first 10 minutes (item q4519_s3) 4. Having had
-two or more crises in the lifetime (item q4520_s3).
+two or more crises in the lifetime (item q4520_s3). Item are all dichotomous (1
+= he symptom is present and 2 = the symptom is not present).
 
 # Syntax used to create the variable (Stata 15)
 
