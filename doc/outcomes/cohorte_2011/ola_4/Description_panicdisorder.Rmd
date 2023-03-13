@@ -35,24 +35,27 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------+-----------------------+----------------+----------------+
-| Main variable  | Label                 | Format         | Code           |
-| name           |                       |                |                |
-+:===============+:======================+:===============+:===============+
-| panic_12m      | Panic disorder during | Categorical    | 0 = no         |
-|                | last 12 months        |                |                |
-|                | (c2011_w4)            |                | 1 = yes        |
-+----------------+-----------------------+----------------+----------------+
-| panic_lifetime | Lifetime panic        | Categorical    | 0 = no         |
-|                | disorder (c2011_w4)   |                |                |
-|                |                       |                | 1 = yes        |
-+----------------+-----------------------+----------------+----------------+
++-----------------+----------------------+-----------------+-----------------+
+| Main variable   | Label                | Format          | Code            |
+| name            |                      |                 |                 |
++:================+:=====================+:================+:================+
+| panic_12m_s3    | Panic disorder       | Categorical     | 0 = no          |
+|                 | during last 12       |                 |                 |
+|                 | months (c2011_w4)    |                 | 1 = yes         |
++-----------------+----------------------+-----------------+-----------------+
+| pa              | Lifetime panic       | Categorical     | 0 = no          |
+| nic_lifetime_s3 | disorder (c2011_w4)  |                 |                 |
+|                 |                      |                 | 1 = yes         |
++-----------------+----------------------+-----------------+-----------------+
 
 # Variable description
 
-Panic disorder is among the most prevalent mental disorders. The trouble is
-associated with chronic medical conditions, a higher burden on the health care
-system, and lower health-related quality of life.
+Panic disorder has been officially speared from Anxiety Disorder in the 1960's.
+Panic disorder characterized by panic attacks (sudden feelings of terror without
+rational reason). It is among the most prevalent mental disorders and it is
+quite unpredictable. The trouble is associated with chronic medical conditions,
+a higher burden on the health care system, and lower health-related quality of
+life [@dick1994].
 
 # Explanation of how the variables were created
 
