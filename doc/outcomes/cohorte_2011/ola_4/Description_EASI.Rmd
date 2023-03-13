@@ -37,66 +37,66 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------+-----------------------+----------------+----------------+
-| Main variable  | Label                 | Format         | Code           |
-| name           |                       |                |                |
-+:===============+:======================+:===============+:===============+
-| dependency_s3  | Dependency status     | Ordinal        | 0 no           |
-|                | (c2011_w4)            |                | dependence     |
-|                |                       |                |                |
-|                |                       |                | 1 dependency   |
-|                |                       |                | served         |
-|                |                       |                |                |
-|                |                       |                | 2 problematic  |
-|                |                       |                | dependence     |
-|                |                       |                |                |
-|                |                       |                | 3 neglected    |
-|                |                       |                | dependence     |
-+----------------+-----------------------+----------------+----------------+
-| abuse_negli_s3 | Negligence (c2011_w4) | Ordinal        | 0 no abuse     |
-|                |                       |                |                |
-|                |                       |                | 1 occasional   |
-|                |                       |                |                |
-|                |                       |                | 2 sometimes    |
-|                |                       |                |                |
-|                |                       |                | 3 quite often  |
-|                |                       |                |                |
-|                |                       |                | 4 often        |
-+----------------+-----------------------+----------------+----------------+
-| a              | Psychological abuse   | Ordinal        | 0 no abuse     |
-| buse_psycho_s3 | (c2011_w4)            |                |                |
-|                |                       |                | 1 occasional   |
-|                |                       |                |                |
-|                |                       |                | 2 sometimes    |
-|                |                       |                |                |
-|                |                       |                | 3 quite ofen   |
-|                |                       |                |                |
-|                |                       |                | 4 often        |
-+----------------+-----------------------+----------------+----------------+
-| abuse_eco_s3   | Economical abuse      | Ordinal        | 0 no abuse     |
-|                | (c2011_w4)            |                |                |
-|                |                       |                | 1 occasional   |
-|                |                       |                |                |
-|                |                       |                | 2 sometimes    |
-|                |                       |                |                |
-|                |                       |                | 3 quite often  |
-|                |                       |                |                |
-|                |                       |                | 4 often        |
-+----------------+-----------------------+----------------+----------------+
-| abuse_phys_s3  | Physical and sexual   | Ordinal        | 0 no abuse     |
-|                | abuse (c2011_w4)      |                |                |
-|                |                       |                | 1 occasional   |
-|                |                       |                |                |
-|                |                       |                | 2 sometimes    |
-|                |                       |                |                |
-|                |                       |                | 3 quite often  |
-|                |                       |                |                |
-|                |                       |                | 4 often        |
-+----------------+-----------------------+----------------+----------------+
++-----------------+----------------------+-----------------+-----------------+
+| Main variable   | Label                | Format          | Code            |
+| name            |                      |                 |                 |
++:================+:=====================+:================+:================+
+| dependency_s3   | Dependency status    | Ordinal         | 0 = no          |
+|                 | (c2011_w4)           |                 | dependence      |
+|                 |                      |                 |                 |
+|                 |                      |                 | 1 = dependency  |
+|                 |                      |                 | served          |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 = problematic |
+|                 |                      |                 | dependence      |
+|                 |                      |                 |                 |
+|                 |                      |                 | 3 = neglected   |
+|                 |                      |                 | dependence      |
++-----------------+----------------------+-----------------+-----------------+
+| abuse_negli_s3  | Negligence           | Ordinal         | 0 = no abuse    |
+|                 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 1 = occasional  |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 = sometimes   |
+|                 |                      |                 |                 |
+|                 |                      |                 | 3 = quite often |
+|                 |                      |                 |                 |
+|                 |                      |                 | 4 = often       |
++-----------------+----------------------+-----------------+-----------------+
+| a               | Psychological abuse  | Ordinal         | 0 = no abuse    |
+| buse_psycho_s3  | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 1 = occasional  |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 = sometimes   |
+|                 |                      |                 |                 |
+|                 |                      |                 | 3 = quite ofen  |
+|                 |                      |                 |                 |
+|                 |                      |                 | 4 = often       |
++-----------------+----------------------+-----------------+-----------------+
+| abuse_eco_s3    | Economical abuse     | Ordinal         | 0 = no abuse    |
+|                 | (c2011_w4)           |                 |                 |
+|                 |                      |                 | 1 = occasional  |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 = sometimes   |
+|                 |                      |                 |                 |
+|                 |                      |                 | 3 = quite often |
+|                 |                      |                 |                 |
+|                 |                      |                 | 4 = often       |
++-----------------+----------------------+-----------------+-----------------+
+| abuse_phys_s3   | Physical and sexual  | Ordinal         | 0 = no abuse    |
+|                 | abuse (c2011_w4)     |                 |                 |
+|                 |                      |                 | 1 = occasional  |
+|                 |                      |                 |                 |
+|                 |                      |                 | 2 = sometimes   |
+|                 |                      |                 |                 |
+|                 |                      |                 | 3 = quite often |
+|                 |                      |                 |                 |
+|                 |                      |                 | 4 = often       |
++-----------------+----------------------+-----------------+-----------------+
 
 # Variable description
 
-The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008]is an
+The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008] is an
 adaptation of the Elder Abuse Suspicion Index (EASI), a brief instrument with
 direct questions aimed at detecting suspicion of abuse in older people without
 cognitive impairment. It is made up of five questions addressed to the elderly
@@ -142,7 +142,7 @@ gen dependency_s3=0 if q6701_s3==0
 replace dependency_s3=1 if q6701_s3==1
 replace dependency_s3=2 if q6701b_s3==1
 replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1
-label define dependency_l 0 "no dependency" 1 "dependency served" 2 "problematic dependency served" 3 "neglected dependency "
+label define dependency_l 0 "no dependency" 1 "dependency served" 2 "problematic dependency served" 3 "neglected dependency"
 label values dependency_s3 dependency_l
 label variable dependency_s3 "Dependency status (c2011_w4)"
 
@@ -154,7 +154,7 @@ gen abuse_negli_s3=q6702a_s3
 replace abuse_negli_s3=0 if q6702_s3==0
 label define abuse 0 "no abuse" 1 "occasionnal" 2 "sometimes" 3 "quite often" 4 "often"
 label values abuse_negli_s3 abuse
-label variable abuse_negli_s3 " Negligence (c2011_w4)"
+label variable abuse_negli_s3 "Negligence (c2011_w4)"
 
 * Psychological abuse 
 
