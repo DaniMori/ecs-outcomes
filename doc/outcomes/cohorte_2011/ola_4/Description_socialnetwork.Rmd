@@ -148,42 +148,42 @@ label variable size_s3 "Size of the social network (c2011_w4)"
 * QUALITY
 
 gen quality_a = q6102_spouse_s3
-recode quality_a (1=1) (2=1) (3=0) (4=0) (999=1)
+recode quality_a (1=1) (2=1) (3=0) (4=0) (999=0)
 replace quality_a = 0 if q6010a_spouse_s3 == 2 & proxy==2
 
 gen quality_b = q6111_parents_s3
-recode quality_b (1=0) (2=1) (3=1) (999=1)
+recode quality_b (1=0) (2=1) (3=1) (999=0)
 replace quality_b = 0 if q6010b_parents_s3 == 2 & proxy==2
 
 gen quality_c = q6112_children_s3
-recode quality_c (1=0) (2=1) (3=1) (999=1)
+recode quality_c (1=0) (2=1) (3=1) (999=0)
 replace quality_c = 0 if q6010c_children_s3 == 2 & proxy==2
 
 gen quality_d = q6113_grandch_s3
-recode quality_d (1=0) (2=1) (3=1) (999=1)
+recode quality_d (1=0) (2=1) (3=1) (999=0)
 replace quality_d = 0 if q6010d_grandch_s3 == 2 & proxy==2
 
 gen quality_e = q6114_other_s3
-recode quality_e (1=0) (2=1) (3=1) (999=1)
+recode quality_e (1=0) (2=1) (3=1) (999=0)
 replace quality_e = 0 if q6010e_other_s3 == 2 & proxy==2
 
 gen quality_f = q6115_cowork_s3
-recode quality_f (1=0) (2=1) (3=1) (999=1)
+recode quality_f (1=0) (2=1) (3=1) (999=0)
 replace quality_f = 0 if q6010f_cowork_s3 == 2 & proxy==2
 
 gen quality_g = q6116_friends_s3
-recode quality_g (1=0) (2=1) (3=1) (999=1)
+recode quality_g (1=0) (2=1) (3=1) (999=0)
 replace quality_g = 0 if q6010g_friends_s3 == 2 & proxy==2
 
 gen quality_h = q6117_neighbours_s3
-recode quality_h (1=0) (2=1) (3=1) (999=1)
+recode quality_h (1=0) (2=1) (3=1) (999=0)
 replace quality_h = 0 if q6010h_neighbours_s3 == 2 & proxy==2
 
 gen quality_s3 = (quality_a + quality_b + quality_c + quality_d + quality_e + quality_f + quality_g + quality_h )
 
 label variable quality_s3 "Quality of contact with the members of the social network (c2011_w4)"
 
-*/NOTE: In the questionnaire items about quality range from 1 to 3 and 999 */correspond to 'Not applicable' but in stata (and it seems to be the good code) */999 correspond to 'close relationship with all membres of this group'.
+*/NOTE: In the questionnaire items about quality range from 1 to 3 and 999 */correspond to 'Not applicable' and has been considered has 0 (none).
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
