@@ -37,24 +37,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------+----------------------------+---------------+---------------+
-| Main variable | Label                      | Format        | Code          |
-| name          |                            |               |               |
-+:==============+:===========================+:==============+:==============+
-| IQCODE_s3     | Cognitive decline level    | Categorial    | 1 = much      |
-|               | (c2011_w4)                 |               | better        |
-|               |                            |               |               |
-|               |                            |               | 2 = a little  |
-|               |                            |               | bit better    |
-|               |                            |               |               |
-|               |                            |               | 3 = no change |
-|               |                            |               |               |
-|               |                            |               | 4 = a little  |
-|               |                            |               | bit worst     |
-|               |                            |               |               |
-|               |                            |               | 5 = much      |
-|               |                            |               | worst         |
-+---------------+----------------------------+---------------+---------------+
+| Main variable name | Label                              | Format     | Code |
+|:-------------------|:-----------------------------------|:-----------|:-----|
+| IQCODE_s3          | Cognitive decline level (c2011_w4) | Continuous | 0-5  |
 
 # Variable description
 
@@ -62,9 +47,10 @@ Cognitive decline refers to the impairment of cognitive functions such as memory
 or information processing, to a greater extent than natural age-related decline.
 It may appear suddenly or gradually and can be permanent or temporary
 [@aarsland2017]. The IQCODE is a questionnaire which asks an informant about
-changes in an elderly person's everyday cognitive function. The questionnaire
+changes in an elderly person's everyday cognitive functions. The questionnaire
 aims to assess cognitive decline independent of premorbid ability
-[@forcanogarcía2002].
+[@forcanogarcía2002]. Using the IQCODE allow us to assess possible changes in
+the functioning of cognitive functions over time.
 
 # Explanation of how the variables were created
 
@@ -76,14 +62,19 @@ We used Short Form of the Informant Questionnaire on Cognitive Decline including
 (p1028_machin_s3), use of new gadget (p1029_gadget_s3), learn new things
 (p1030_newthin_s3), read a book (p1031_book_s3), take decision
 (p1032_decisio_s3), manege money (p1033_money_s3), finance (p1034_financial_s3),
-daily arithmetic problems (p1035_other_s3 and p1036_reason_s3). Responses rage
-from 1 (much improved) to 5 (much worse).
+daily arithmetic problems (p1035_other_s3 and p1036_reason_s3). Total score
+ranges from 0 to 5 where scores inferior or equal to 1 represent a much better
+functioning of cognitive functions; scores between 1 and 2 attest that cognitive
+functions are a little bit better; scores between 2 and 3 do not present any
+change; score between 3 and 4 attest that cognitive functions are a little bit
+worst over time; and, score above 4 represent a much worst functioning of
+cognitive functions over time.
 
-To score the IQCODE, we computed the mean of the 16 items by adding up the score
-for each question and divide by the number of questions (16). The result is a
-score that ranges from 1 to 5. An average score of 3 means that the subject is
-rated as 'no change'. A score of 4 means 'a bit worse', and a score of 5 is
-'much worse'.
+To assess the cognitive decline through the IQCODE, we computed the mean of the
+16 items by adding up the score for each question and divide by the number of
+questions (16). The result is a score that ranges from 1 to 5. An average score
+of 3 means that the subject is rated as 'no change'. A score of 4 means 'a bit
+worse', and a score of 5 is 'much worse'.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -129,8 +120,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 \< Original version:
 
 -   Name: Joan Domènech
--   e-mail:
-    [\j.domenech@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
+-   e-mail: [\j.domenech\@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
 
 # References
 
