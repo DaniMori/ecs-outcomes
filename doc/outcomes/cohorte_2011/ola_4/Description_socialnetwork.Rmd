@@ -75,8 +75,8 @@ variables, thus ranging from 0 (lower quality of contact with the members of the
 social network) to 8 (higher quality).
 
 The variable about the frequency of social contact with the social network
-(**frequency3**) was generated from the items q6211_s1 , q6212_s1, q6213_s1,
-q6214_s1, q6215_s1, q6216_s1, q6217_s1, q6218_s1, q6219_s1. Those items ask
+(**frequency3**) was generated from the items q6211_s3 , q6212_s3, q6213_s3,
+q6214_s3, q6215_s3, q6216_s3, q6217_s3, q6218_s3, q6219_s3. Those items ask
 information about the frequency of the social contact in the last 12 months,
 respectively, with wife/husband, parents, sons, grandchildren, other relatives,
 friends, neighbours, and other people. The original variables were dichotomized
