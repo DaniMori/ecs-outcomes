@@ -222,7 +222,7 @@ replace d_s2 = 1 if  q4220e_s3==1              | q4220f_s3==1
 *#S3: "Complaints or evidence of diminished ability to think or concentrate,
 *#    such as indecisiveness or vacillation"
 gen     d_s3 = .
-replace d_s3 = 0 if q4222h_s3!=1 & q4222h_s3!=. & q4222i_s3!=1 & q4222j_s3!=1
+replace d_s3 = 0 if (q4222h_s3!=1 & q4222h_s3!=.) & q4222i_s3!=1 & q4222j_s3!=1
 replace d_s3 = 1 if q4222h_s3==1             | q4222i_s3==1 | q4222j_s3==1
 *#"NOTE: When `q4222i_s3` and `q4222j_s3` are 'missing' it may be due to the
 *#       interview skip logic in `q4222h_s3`. Therefore, only `q4222h_s3` needs
@@ -246,7 +246,7 @@ replace d_s5 = 1 if q4220d_s3==1
 
 *#S6: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_s6 = .
-replace d_s6 = 0 if q4222r_s3!=1 & q4222r_s3!=. & q4222s_s3!=1 & q4222t_s3!=1 & q4222u!=1 & q4222v!=1
+replace d_s6 = 0 if (q4222r_s3!=1 & q4222r_s3!=.) & q4222s_s3!=1 & q4222t_s3!=1 & q4222u!=1 & q4222v!=1
 replace d_s6 = 1 if q4222r_s3==1             | q4222s_s3==1 | q4222t_s3==1 | q4222u_s3==1 | q4222v_s3==1
 *#"NOTE: When any of the two last items are 'missing' it may be due to
 *#       the interview skip logic in `q4222t_s3`. But if there is a
@@ -302,7 +302,7 @@ egen d_afftotal = rowtotal (d_s1 d_s2), missing
 *# be present".
 gen     d_crit5 = .
 replace d_crit5 = 0 if d_afftotal <1 
-replace d_crit5 = 1 if d_afftotal==1 | d_afftotal==1
+replace d_crit5 = 1 if d_afftotal>=1
 
 
 ***#"Has the person skipped the lifetime depression module?"
