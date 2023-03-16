@@ -302,7 +302,7 @@ egen d_afftotal = rowtotal (d_s1 d_s2), missing
 *# be present".
 gen     d_crit5 = .
 replace d_crit5 = 0 if d_afftotal <1 
-replace d_crit5 = 1 if d_afftotal==1 | d_afftotal==2
+replace d_crit5 = 1 if d_afftotal==1 | d_afftotal==1
 
 
 ***#"Has the person skipped the lifetime depression module?"
