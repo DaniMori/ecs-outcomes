@@ -54,24 +54,24 @@ the functioning of cognitive functions over time.
 
 # Explanation of how the variables were created
 
-We used Short Form of the Informant Questionnaire on Cognitive Decline including
-16 questions about remember things about family (p1021_family_s3), recent events
-(p1022_recent_s3), past conversations (p1023_recall_s3), personal infromations
-(p1024_address_s3), localisation (p1025_day_s3), location of things
-(p1026_kept_s3), find things (p1027_find_s3), use of household machines
-(p1028_machin_s3), use of new gadget (p1029_gadget_s3), learn new things
-(p1030_newthin_s3), read a book (p1031_book_s3), take decision
-(p1032_decisio_s3), manege money (p1033_money_s3), finance (p1034_financial_s3),
-daily arithmetic problems (p1035_other_s3 and p1036_reason_s3). These items were
+We used the Short Form of the Informant Questionnaire on Cognitive Decline
+(SF-IQCD) including 16 questions about remember things about family
+(p1021_family_s3), recent events (p1022_recent_s3), past conversations
+(p1023_recall_s3), personal infromations (p1024_address_s3), localisation
+(p1025_day_s3), location of things (p1026_kept_s3), find things (p1027_find_s3),
+use of household machines (p1028_machin_s3), use of new gadget
+(p1029_gadget_s3), learn new things (p1030_newthin_s3), read a book
+(p1031_book_s3), take decision (p1032_decisio_s3), manege money
+(p1033_money_s3), finance (p1034_financial_s3), daily arithmetic problems
+(p1035_other_s3 and p1036_reason_s3). All the items previously cited were
 assessed on a scale ranging from 1 (much better functioning of cognitive
-functions) to 5 (much worst functioning of cognitive functions over time). (2 =
-cognitive functions are a little bit better; 3 = any change; and, 4 = little bit
-worst).
+functions) to 5 (much worst functioning of cognitive functions over time).
 
 To assess the cognitive decline through the IQCODE, we computed the mean of the
 16 items by adding up the score for each question and divide by the number of
 questions (16). The result is a score that ranges from 1 to 5. Higher scores
-indicate greater impairment.
+indicate greater impairment, 3 = any changes, and 1 and 2 = improvement of
+cognitive functions.
 
 Note: An average score above 3,44 may indicate that participant is suffering
 from demencia (see [@forcanogarcía2002]).
