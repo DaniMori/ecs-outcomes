@@ -39,14 +39,14 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                                                  | Format     | Code   |
-|:------------------|:------------------------|:------------------|:------------------|
+|:------------------|:----------------------|:------------------|:------------------|
 | size_s3            | Size of the social network (c2011_w4)                                  | Continuous | 0-inf. |
 | quality_s3         | Quality of contact with the members of the social network (c2011_w4)   | Continuous | 0-8    |
 | frequency_s3       | Frequency of contact with the members of the social network (c2011_w4) | Continuous | 0-9    |
 
 # Variable description
 
-Social network is define as "the relatively organized set of relationships that
+Social network is defined as "the relatively organized set of relationships that
 an individual or group has with others, including types and methods of
 communication, patterns of liking and disliking, and the strength of
 interpersonal connections" [@americanpsychologicalassociation2023].The
@@ -56,13 +56,13 @@ members of the network as components of the social network [@berkman1979].
 
 # Explanation of how the variables were created
 
-The variable related to the size of the social network (**size3**) corresponds
-to the item q6101_s3 (how many people composed the social network). This
-variable ranges from 0 to infinite, with the datum indicating the number of
+The variable related to the size of the social network (**size3_s3**)
+corresponds to the item q6101_s3 (how many people composed the social network).
+This variable ranges from 0 to infinite, with the datum indicating the number of
 social ties. The more higher is the number, the bigger is the size of the social
 network.
 
-The variable related to the quality of the social network (**quality3**) was
+The variable related to the quality of the social network (**quality3_s3**) was
 generated from information about close relationship with husband/wife
 (q6102_s3), parents (q6111_s3), sons (q6112_s3), grandchildren (q6113_s3), other
 relatives (q6114_s3), work colleagues (q6115_s3), friends (q6116_s3), and
@@ -75,7 +75,7 @@ variables, thus ranging from 0 (lower quality of contact with the members of the
 social network) to 8 (higher quality).
 
 The variable about the frequency of social contact with the social network
-(**frequency3**) was generated from the items q6211_s3 , q6212_s3, q6213_s3,
+(**frequency3_s3**) was generated from the items q6211_s3 , q6212_s3, q6213_s3,
 q6214_s3, q6215_s3, q6216_s3, q6217_s3, q6218_s3, q6219_s3. Those items ask
 information about the frequency of the social contact in the last 12 months,
 respectively, with wife/husband, parents, sons, grandchildren, other relatives,
