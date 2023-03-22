@@ -15,68 +15,18 @@ params:
   double-coding: false
 ---
 
-<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
-
-**Aviso preliminar**
-
-Esta plantilla está diseñada para la generación de "variables outcome" del
-proyecto Edad con Salud. Su objetivo es ayudar a automatizar las tareas de
-procesamiento de datos del proyecto.
-
-Esta plantilla está basada en el documento
-[Outcome variable generation guidelines.docx](https://dauam.sharepoint.com/:w:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos%20compartidos/Outcomes%20C2011%20W4/Outcome%20variable%20generation%20guidelines.docx?d=w70913a46b3de40fa9fa5f27e3b3f44f0&csf=1&web=1&e=xxES6R)
-. Sin embargo, **esta plantilla no sustituye a ese documento**. Por favor, lee
-dicho documento para conocer todas las instrucciones y convenciones del proceso
-de generación de variables outcome de Edad con Salud.
-
-<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
-
-<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
-
-**Consideraciones generales**
-
--   Puesto que nuestros datos son analizados por investigadores/as procedentes
-de distintas partes del mundo, **todos los documentos deben estar en inglés**.
-
--   El **nombre de este archivo** debe tener la siguiente estructura:
-"Description\_<variablename>\_<qualifiers>". En '<qualifiers>' se añadirá
-cualquier particularidad, en caso que exista/n variable/s generadas en base a
-distintos criterios (e.g., diagnóstico, versión reducida). Por favor, evita en
-los nombres los espacios (sustituir por "\_"), tildes, "ñ" y "Ñ". Por ejemplo:
-"Description_cognitivereserve".
-
--   Si se trata de una variable que ya estaba generada en evaluaciones
-anteriores/otras cohortes, puedes adaptar la información de ese documento. En
-ese caso, por favor, **revisa cuidadosamente que la información contenida se
-ajusta a las particularidades de los datos**.
-
-<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
-
 ```{r setup, include=FALSE}
-# Activar los paquetes que R necesita para ejecutar el código:
-
 library(Statamarkdown)
 
-# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 
-## TODO: sustituir '<path\to\>' por la ubicación de Stata
-##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
-##       o eliminar linea 62:
-# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
-
-
-# Opciones de configuración de las salidas de R y Stata:
-
-options(width = 88) # Ancho de salida de texto en R
-
-knitr::opts_chunk$set( # Para todos los 'chunks' de código:
-  ## TODO: Descomentar si hace falta
-  # engine.path = list(stata = STATA_PATH),
-  echo        = FALSE, #   - No muestra la sintaxis en el documento
-  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
-  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
-  comment     = ''     #   - No añade ningún prefijo a los resultados
+options(width = 88) 
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
 )
 
 TEST          <- params$test
@@ -111,7 +61,8 @@ la primera evaluación (línea base).
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| <var_name>         | <Etiqueta>                               | <Formato>  | <Categorías / Rango> |
+| burden_guilt_s3    | Feelings of guilt for being a burden     |            | <Categorías / Rango> |
+|                    | (c2011_w4)                               |            | <Categorías / Rango> |
 +--------------------+------------------------------------------+------------+----------------------+
 | bmi_cont           | Body mass index, continuous (c2011_w4)   | Continuous | 16-40                |
 +--------------------+------------------------------------------+------------+----------------------+
@@ -133,6 +84,32 @@ la primera evaluación (línea base).
 # Variable description
 
 <!--# TODO: Leer párrafo a continuación -->
+Uno de las principales preocupaciones para adultos mayores relacionadas con la
+salud es convertirse en dependientes y ser una carga para los demás. 
+El constructo "sentimientos de culpabilidad por ser una carga" (feelings of being
+a burden) es un fenómeno muktifacético que incluye
+
+- El sentimiento de culpa por ser resposnsable por las dificultades del cuidador,
+- Percepción de transfresoón moral, al creer que se está haciendo daño a otra persona,
+
+La escala original (Self-Perceived Burden Scale; Cousineau et al. 2003) se diseña
+para la evaluación de sentimientos de culpa por percibirse a uno mismo como una
+carga para la amilia en adultos mayores sin ningún impairment funcional o conitivo. 
+
+Se destacan las siguientes facetas:
+Guilt associated with self-perception as a burden
+- Culpa asociada a la percepción por ser una carga (no sólo al cuidador, sino a
+la familia entera)
+-- I feel that I am a burden to my family
+--- I feel guilty for overburdening my famility to care for me 
+
+16 items were included in the scale. All the items were answered on a 5-point
+Likert scale, from 1 ('never or almost never') to 5 ('almost always'). 
+
+- Self-perceived burden on the family: a single item - 'I feel that I am a burden to
+my caregiver' (I feel that I am a burden to my family). 
+
+Scores on the 25-item measure were converted to 0 a 100 scale, with rising scores indicating incresing burden. 
 
 Por favor, incluye aquí una breve descripción de la variable o constructo que
 estás trabajando. Qué significa o qué evalúa esa variable y por qué es
