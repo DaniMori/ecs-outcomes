@@ -67,24 +67,29 @@ to anxiety -- of which at least one may be nerves on edge, tiredness,
 irritability, concentration difficulty, muscle pain, or insomnia -- were
 considered to be suffering from Generalized Anxiety Disorder.
 
-More exactly the criteria used to created the syntaxe was the following ones: A.
-Excessive anxiety and worry for at least six months (q4552_s3).
+More exactly the criteria used to created the syntax was the following ones:
 
-B. Difficulty to control the worry (q4556_s3).
+1.  Excessive anxiety and worry for at least six months (filter: q4559).
+2.  Difficulty to control the worry (q4556_s3).
+3.  At least three of the following six symptoms:
+    -   Restlessness or feeling keyed up or on edge (q4560a_S3);
 
-C. At least three of the following six symptoms: -Restlessness or feeling keyed
-up or on edge (q4560a_S3) -Being easily fatigued (q4560b_S3) -Irritability
-(q4560c_S3) -Difficulty concentrating or mind going blank (q4560d_S3) -Muscle
-tension (q4560e_S3) -Sleep disturbance (difficulty falling or staying asleep, or
-restless unsatisfying sleep) (q4560e_S3)
+    -   Being easily fatigued (q4560b_S3);
 
-D. The worries are related to diffuse concerns such as personal problems, phobic
-and obsessive-compulsive situations, social problems (q4554_s3)
+    -   Irritability (q4560c_S3);
 
-E. The symptoms are not attributable to psychoactive substance use or to any
-organic mental disorder
+    -   Difficulty concentrating or mind going blank (q4560d_S3);
 
-NB: There is no major difference between the DSM-4 and DSM-5 critera. See
+    -   Muscle tension (q4560e_S3);
+
+    -   Sleep disturbance (difficulty falling or staying asleep, or restless
+        unsatisfying sleep) (q4560e_S3).
+4.  The worries are related to diffuse concerns such as personal problems,
+    phobic and obsessive-compulsive situations, social problems (filter: q4554).
+5.  The symptoms are not attributable to psychoactive substance use or to any
+    organic mental disorder
+
+NB: There is no major difference between the DSM-4 and DSM-5 criteria. See
 <https://www.ncbi.nlm.nih.gov/books/NBK519704/table/ch3.t15/> for more
 information.
 
@@ -99,17 +104,16 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 *# "Value labels (defined for all the outcome variables in the dataset)":
 label define yesno    0 "No" 1 "Yes"
 
-*#Criterion A: "Excessive anxiety and worry for at least six months"
+*#Criterion 1: "Excessive anxiety and worry for at least six months"
 gen gad_crit_a = .
-replace gad_crit_a = 0 if (q4550_worrylife_s3!=1 & q4550_worrylife_s3!=.) 
-replace gad_crit_a = 1 if  q4550_worrylife_s3==1   
+**Note: There is a filter for that in the questionnaire (q4559)
 
-*#Criterion B: "Difficulty to control the worry"
+*#Criterion 2: "Difficulty to control the worry"
 gen gad_crit_b = .
 replace gad_crit_b = 0 if (q4556_control_s3!=1 & q4556_control_s3!=2 & q4556_control_s3!=.) 
 replace gad_crit_b = 1 if  q4556_control_s3==1 | q4556_control_s3==2
 
-*#Criterion C: "At least three of the following six symptoms":
+*#Criterion 3: "At least three of the following six symptoms":
 *#s1: "Restlessness or feeling keyed up or on edge" 
   gen gad_S1 = .
 replace gad_S1 = 0 if (q4560a_restless_s3!=1 & q4560a_restless_s3!=.) 
@@ -143,13 +147,12 @@ gen     gad_crit_c = .
 replace gad_crit_c= 0 if d_symptot<3 
 replace gad_crit_c = 1 if d_symptot>=3 & d_symptot!=.
 
-*#Criterion D: "Worries are related to diffuse concerns"
+*#Criterion 4: "Worries are related to diffuse concerns"
   gen gad_crit_d = .
-replace gad_crit_d = 0 if (q4554_worry1_s3!=1 & q4554_worry1_s3!=.) 
-replace gad_crit_d = 1 if  q4554_worry1_s3==1  
+**Note: There is a filter for that in the questionnaire, we don't have to take it **into acount here (q4554)
 
   
-*#Criterion E: "The episode is not attributable to psychoactive substance use or
+*#Criterion 5: "The episode is not attributable to psychoactive substance use or
 *#             to any organic mental disorder"
 gen     gad_crit_e = .
 replace gad_crit_e = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
