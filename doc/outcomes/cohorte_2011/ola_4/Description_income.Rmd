@@ -81,7 +81,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 *# "Value labels (defined for all the outcome variables in the dataset)":
-label define quintile  1 "First quintile " 2 "Second quintile " 3 "Third quintile " 4 "Fourth quintile " 5 "Fifth quintile "
+label define quintile  1 "First quintile" 2 "Second quintile" 3 "Third quintile" 4 "Fourth quintile" 5 "Fifth quintile"
 
 *# Mid Brackets of income level
 recode q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3 q0410k_other_s3 (1=0) (2=500) (3=1500) (4=2500) (5=3500) (6=4500) (7=5500) (8=6500) (9=7500) (10=8500) (11=9500) (12=10500) (13=11500) (14=12500) (15=13500) (16=14500) (17=15500) (18=16500) (19=17500) (20=18500) (21=19500) (22=22500) (23=27500) (24=32500) (25=37500) (26=42500) (27=47500) (28=62500) (29=87500) (30=125000) (31=175500) (32=250000) (33=400000) (34=750000) (35=1000000) (else=.)
