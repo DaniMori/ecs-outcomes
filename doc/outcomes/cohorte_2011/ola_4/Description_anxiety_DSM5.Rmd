@@ -105,13 +105,12 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 label define yesno    0 "No" 1 "Yes"
 
 *#Criterion 1: "Excessive anxiety and worry for at least six months"
-gen gad_crit_a = .
 **Note: There is a filter for that in the questionnaire (q4559)
 
 *#Criterion 2: "Difficulty to control the worry"
-gen gad_crit_b = .
-replace gad_crit_b = 0 if (q4556_control_s3!=1 & q4556_control_s3!=2 & q4556_control_s3!=.) 
-replace gad_crit_b = 1 if  q4556_control_s3==1 | q4556_control_s3==2
+gen gad_crit_2 = .
+replace gad_crit_2 = 0 if (q4556_control_s3!=1 & q4556_control_s3!=2 & q4556_control_s3!=.) 
+replace gad_crit_2 = 1 if  q4556_control_s3==1 | q4556_control_s3==2
 
 *#Criterion 3: "At least three of the following six symptoms":
 *#s1: "Restlessness or feeling keyed up or on edge" 
@@ -143,28 +142,27 @@ replace gad_S6 = 1 if  q4560f_sleep_s3==1
 egen d_symptot = rowtotal (gad_S1 gad_S2 gad_S3 gad_S4 gad_S5 gad_S6), missing
 
 *#"To fulfill Criterion C, at least three symptoms should be present".
-gen     gad_crit_c = .
-replace gad_crit_c= 0 if d_symptot<3 
-replace gad_crit_c = 1 if d_symptot>=3 & d_symptot!=.
+gen     gad_crit_3 = .
+replace gad_crit_3= 0 if d_symptot<3 
+replace gad_crit_3 = 1 if d_symptot>=3 & d_symptot!=.
 
 *#Criterion 4: "Worries are related to diffuse concerns"
-  gen gad_crit_d = .
 **Note: There is a filter for that in the questionnaire, we don't have to take it **into acount here (q4554)
 
   
 *#Criterion 5: "The episode is not attributable to psychoactive substance use or
 *#             to any organic mental disorder"
-gen     gad_crit_e = .
-replace gad_crit_e = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
-replace gad_crit_e = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed12_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
+gen     gad_crit_5 = .
+replace gad_crit_5 = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
+replace gad_crit_5 = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed12_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
 *#"NOTE: When `q4224b==1` it is necessarily the case that `q4224a==1`,
 *#       so only `q4224b` out of these two needs to be checked for considering
 *#       the criterion negative."
 
 ***#"Lifetime generalized anxiety disorder diagnostic variable":
 gen     gad_s3  = .
-replace gad_s3  = 0 if gad_crit_a==0 | gad_crit_b==0 | gad_crit_c==0 
-replace gad_s3  = 1 if gad_crit_a==1 & gad_crit_b==1 & gad_crit_c==1 
+replace gad_s3  = 0 if gad_crit_2==0 | gad_crit_3==0 | gad_crit_5==0 
+replace gad_s3  = 1 if gad_crit_2==1 & gad_crit_3==1 & gad_crit_5==1 
 label values   gad_s3  yesno
 label variable gad_s3  "Lifetime generalized anxiety disorder (c2011_w4)"
 
@@ -182,7 +180,7 @@ label variable gad_12m_s3  "Generalized anxiety disorder during last 12 months (
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result proxy gad_s3 gad_12m_s3
 
-codebook gad_s3 gad_12m_s3
+codebook gad_s3 gad_12m_s3 
 ```
 
 ```{stata save-data-test, eval=TEST}
