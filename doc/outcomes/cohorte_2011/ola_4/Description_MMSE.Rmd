@@ -36,13 +36,13 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| Main variable name | Label                                             | Format    | Code |
-|:------------------|:----------------------|:------------------|:------------------|
-| sum_MMSEc_s3       | Rounded and corrected MMSE total score (c2011_w4) | Continous | 0-30 |
+| Main variable name | Label                                             | Format     | Code |
+|:-------------------|:---------------------|:-------------------|:-------------------|
+| sum_MMSEc_s3       | Rounded and corrected MMSE total score (c2011_w4) | Continuous | 0-30 |
 
 # Variable description
 
-The Mini Mental State Examination (MMSE) [@folstein1983 is effective as a
+The Mini Mental State Examination (MMSE) [@folstein1983] is effective as a
 screening tool for cognitive impairment with older, community dwelling,
 hospitalized and institutionalized adults, being able to separate patients with
 cognitive impairment from those without it, and to measure changes in cognitive
