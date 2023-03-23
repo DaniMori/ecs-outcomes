@@ -40,39 +40,39 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable  | Label                   | Format         | Code           |
 | name           |                         |                |                |
 +:===============+:========================+:===============+:===============+
-| height_s3      | Height, in cms          | Continuous     | 50 - 200       |
+| height_s3      | Height, in cm           | Continuous     | 120 - 200      |
 |                | (c2011_w4)              |                |                |
 +----------------+-------------------------+----------------+----------------+
-| weight_s3      | Weight, in kgs          | Continuous     | 20 - 200       |
+| weight_s3      | Weight, in kg           | Continuous     | 20 - 200       |
 |                | (c2011_w4)              |                |                |
 +----------------+-------------------------+----------------+----------------+
 | waist_s3       | Waist circumference, in | Continuous     | 40 - 300       |
-|                | cms (c2011_w4)          |                |                |
+|                | cm (c2011_w4)           |                |                |
 +----------------+-------------------------+----------------+----------------+
-| bmi_s3         | Body mass index,        | Continuous     | 14.86 - 47.60  |
+| bmi_s3         | Body mass index (kg/m2),| Continuous     | 14.86 - 47.60  |
 |                | continuous (c2011_w4)   |                |                |
 +----------------+-------------------------+----------------+----------------+
-| bmi_cat_s3     | Body mass index,        | Categorical    | 1 =            |
-|                | categorical (c2011_w4)  |                | Underweight;   |
-|                |                         |                |                |
-|                |                         |                | 2 = Normal     |
+| bmi_cat_s3     | Body mass index,        | Categorical    | 0 =            |
+|                | categorical (c2011_w4)  |                | Normal         |
 |                |                         |                | weight;        |
 |                |                         |                |                |
-|                |                         |                | 3 =            |
+|                |                         |                |1 = Underweight;|
+|                |                         |                |                |
+|                |                         |                | 2 =            |
 |                |                         |                | Overweight;    |
 |                |                         |                |                |
-|                |                         |                | 4 = Obese      |
+|                |                         |                | 3 = Obese      |
 +----------------+-------------------------+----------------+----------------+
 
 # Variable description
 
--   **Height** refers to the height in centimeters.
+-   **Height** refers to the height in centimetres.
 
 -   **Weight** refers to the weight in kilograms.
 
--   **Waist circumference** refers to waist circumference in cms.
+-   **Waist circumference** refers to waist circumference in cm.
 
--   **BMI**, body mass index, provides a fairly reliable indictor of body
+-   **BMI**, body mass index, provides a fairly reliable indicator of body
     fatness for most people and is used to screen for weight categories that may
     lead to health problems. BMI does not measure body fat directly, but
     research has shown that BMI correlates to direct measures of body fat, such
