@@ -76,7 +76,7 @@
 - [ ] If the document is based on a previous version, created by another person,
   the contact information of the previous version (in which this one is based)
   are in section "For any further questions regarding this variable please
-  contact:" (Name, institutional email, telephone)
+  contact:" (Name, institutional email)
 
 - [ ] Al final "Session info" section is included
 
