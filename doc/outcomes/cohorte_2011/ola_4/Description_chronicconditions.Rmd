@@ -897,7 +897,7 @@ label variable migr_s3 "Migraine self-reported and treatment (c2011_w4)"
 *CHRONIC BACK PAIN
 **Lower back pain
 recode q4112_s3 (888=.) (2=0), gen (lowback_self_s3)
-
+replace lowback_self=0 if q4112a_s3==997
 recode q4113c_s3 (888=.) (2=0), gen (low_treatment_s3)
 label values (lowback_self_s3 low_treatment_s3) labels0
 label variable lowback_self_s3 "Lower back pain self-reported"
