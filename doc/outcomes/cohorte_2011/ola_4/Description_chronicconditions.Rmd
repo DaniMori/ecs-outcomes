@@ -80,7 +80,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                 | algorithm test or  |                 |                 |
 |                 | self-reported      |                 | 1 Yes           |
 |                 | (c2011_w4)         |                 |                 |
-|                 |                    |                 | 2 Treatment     |
 +-----------------+--------------------+-----------------+-----------------+
 | oral_s3         | oral problems      | dummy           | 0 No            |
 |                 | algorithm test or  |                 |                 |
@@ -592,47 +591,47 @@ label variable stroke_s3 "Stroke self-reported or test (c2011_w4)"
 
 *ANGINA. 
 * Symptoms for angina. 
-recode q4016_symptoms_s3 (3=2), gen (q4016_s)
-rename q4017_symptoms_s3 q4017_s
-recode q4018_resp_s3 (1=1) (2=1) (3=2), gen (q4018_r)
-recode q4019_stand_s3 (888=.), gen (q4019_s)
-replace q4018_r=9 if q4017_s==2
-replace q4019_s=9 if q4017_s==2
-gen angina_test_s3=2
-replace angina_test_s3=1 if (q4016_s==1 | q4017_s==1) & q4018_r==1 & q4019_s==1 & (q4020_where_6_s3==1 | q4020_where_8_s3==1 | q4020_where_8_s3==1 | q4020_where_11_s3==1)
-replace angina_test_s3=. if q4016_s==. | q4017_s==. | q4018_r==. | q4019_s==.
-label values angina_test_s3 labels1
+recode q4016_symptoms_s3 (3=0) (2=0) (888=.) (999=.), gen (q4016_s)
+recode q4017_symptoms_s3 (888=.) (999=.) (2=0), gen (q4017_s)
+recode q4018_resp_s3 (1=1) (2=1) (3=0) (888=.) (999=.), gen (q4018_r)
+recode q4019_stand_s3 (888=.) (999=.) (2=0), gen (q4019_s)
+recode q4019a_stop_s3 (3=.) (2=0), gen (q4019a_s)
+
+gen angina_test_s3=0
+replace angina_test_s3=1 if (q4016_s==1 | q4017_s==1) & q4018_r==1 & q4019_s==1 & q4019a_s==1 & (q4020_where_6_s3==1 | q4020_where_7_s3==1 | q4020_where_8_s3==1 | q4020_where_11_s3==1)
+replace angina_test_s3=. if q4016_s==. & q4017_s==. & q4018_r==. & q4019_s==.
 label variable angina_test_s3 "Angina test"
 
 * Angina self-reported. 
-recode q4014_angina_s3 (888=.), gen (ang_1)
-replace ang_1=2 if q4014a_s3==997
+recode q4014_angina_s3 (888=.) (999=.) (2=0), gen (ang_1)
+replace ang_1=0 if q4014a_s3==997
 gen ang_self_s3=.
 replace ang_self_s3=1 if ang_1==1
-replace ang_self_s3=2 if ang_1==2
-label values ang_self_s3 labels1
+replace ang_self_s3=0 if ang_1==0
 label variable ang_self_s3 "Angina self-reported"
+
 * Final algorithm for angina. 
-gen angina_s3=0
-replace angina_s3=1 if angina_test_s3==1 | ang_self_s3==1
-replace angina_s3=. if angina_test_s3==. & ang_self_s3==.
+gen angina_s3=.
+replace angina_s3=1 if (angina_test_s3==1 | ang_self_s3==1)
+replace angina_s3=0 if (angina_test_s3==0 & ang_self_s3==0)
 label values angina_s3 labels0
 label variable angina_s3 "Angina test or self-reported (c2011_w4)"
 
 
 * DIABETES.
 * Diabetes self-reported.
-recode q4022_diabetes_s3 (888=.), gen (diab_self_s3)
+recode q4022_diabetes_s3 (888=.) (999=.) (2=0), gen (diab_self_s3)
 replace diab_self_s3=0 if q4022a_s3==997
-label values diab_self_s3 labels1
+
 label variable diab_self_s3 "Diabetes self-reported"
 recode q4023b_treated (888=.) (2=0), gen (diab_treatment_s3)
-label values diab_treatment_s3 labels1
+recode q4024_diet_s3 (888=.) (999=.) (2=0), gen (diab_diet_S3)
+
 label variable diab_treatment_s3 "Treatment for diabetes"
 gen diab_s3=.
 replace diab_s3=0 if diab_self_s3==0
 replace diab_s3=1 if diab_self_s3==1 
-replace diab_s3=2 if diab_self_s3==1 & diab_treatment_s3==1
+replace diab_s3=2 if diab_self_s3==1 & (diab_treatment_s3==1 | diab_diet_S3==1)
 label values diab_s3 labels2
 label variable diab_s3 "Diabetes self-reported and treatment (c2011_w4)"
 
@@ -720,15 +719,14 @@ label values catar_test_s3 labels1
 label variable catar_test_s3 "Cataract test"
 label values catar_self_s3 labels1
 label variable catar_self_s3 "Cataract self-reported"
-recode q4063_surgery_s3 (888=.) (2=0), gen (catar_treatment_s3)
-label values catar_treatment_s3 labels1
-label variable catar_treatment_s3 "Treatment for cataract"
+recode q4063_surgery_s3 (888=.) (2=0), gen (catar_surgery_s3)
+label values catar_surgery_s3 labels1
+label variable catar_surgery_s3 "Surgery for cataract"
 * Final algorithm for cataracts.
 gen cataracts_s3=.
-replace cataracts_s3=1 if catar_self_s3==1 | catar_test_s3==1
+replace cataracts_s3=1 if catar_self_s3==1 | catar_test_s3==1 | catar_surgery_s3==1
 replace cataracts_s3=0 if catar_self_s3==2 & catar_test_s3==2
-replace cataracts_s3=2 if catar_treatment_s3==1
-label values cataracts_s3 labels2
+label values cataracts_s3 labels0
 label variable cataracts_s3 "Cataract test or self-reported (c2011_w4)"
 
 
@@ -753,9 +751,11 @@ recode q4085_s3 (888=.) (2=0), gen (kidney_self_s3)
 replace kidney_self_s3=0 if q4085a_s3==997
 label values kidney_self_s3 labels1
 label variable kidney_self_s3 "Kidney problems self-reported"
+
 recode q4086c (888=.) (2=0), gen (kidney_treatment_s3)
 label values kidney_treatment_s3 labels1
 label variable kidney_treatment_s3 "Treatment for kidney disease"
+
 gen kidney_s3=.
 replace kidney_s3=0 if kidney_self_s3 ==0
 replace kidney_s3=1 if kidney_self_s3==1 
@@ -896,12 +896,13 @@ label variable migr_s3 "Migraine self-reported and treatment (c2011_w4)"
 
 *CHRONIC BACK PAIN
 **Lower back pain
-recode q4112_s3 (888=.) (999=.) (2=0), gen (lowback_self_s3)
-replace lowback_self_s3=0 if q4112_s3==997
+recode q4112_s3 (888=.) (2=0), gen (lowback_self_s3)
+
 recode q4113c_s3 (888=.) (2=0), gen (low_treatment_s3)
-label values (lowback_self_s3 low_treatment_s3) labels1
+label values (lowback_self_s3 low_treatment_s3) labels0
 label variable lowback_self_s3 "Lower back pain self-reported"
 label variable low_treatment_s3 "Treatment for lower back pain"
+
 gen lowback_s3=.
 replace lowback_s3=0 if lowback_self_s3==0 
 replace lowback_s3=1 if lowback_self_s3==1 
