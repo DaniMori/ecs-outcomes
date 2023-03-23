@@ -47,6 +47,10 @@
 - [ ] Section "Explanation on how the variable was created"
   **explains clearly the procedure to create the variable(s)**
 
+- [ ] All the raw variables needed for creating the outcome variable(s) are
+  listed in section "Explanation on how the variable was created"
+  (formated as code, i.e., enclosed in `backticks`)
+
 - [ ] Title in section "Syntax used to create the variable" includes the
   software used to apply the generating syntax
 
