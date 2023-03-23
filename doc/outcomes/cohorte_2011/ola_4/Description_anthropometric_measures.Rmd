@@ -84,7 +84,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
     of the participant (cms). It is obtained by using a measuring tape. 
     Constraints are set to allow only valid values.
 
--   **Weight** is renamed from `q2507_weight` to `weight_s3`. Is the weight of 
+-   **Weight** is renamed from `q2507_weight_s3` to `weight_s3`. Is the weight of 
     the participant in kilograms. It is obtained using a weight scale without
     shoes. Constraints are set to allow only valid values.
 
@@ -137,32 +137,30 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
-
 * Cohorte 2011, ola 4:
 use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 recode q2506_height_s3 (997=.)(998=.), gen (height_s3)
-label variable height_s3 "Height in cms (c2011w4)"
+label variable height_s3 "Height, in cm (c2011w4)"
 
 recode q2507_weight_s3 (997=.)(998=.), gen (weight_s3)
-label variable weight_s3 "Weight in kgs (c2011w4)"
+label variable weight_s3 "Weight, in kg (c2011w4)"
 
 recode q2508_waist_s3 (997=.)(998=.), gen (waist_s3)
-label variable waist_s3 "Waist circumference in cms (c2011w4)"
+label variable waist_s3 "Waist circumference, in cm (c2011w4)"
 
 gen height=.
 replace height=height_s3/100 if height_s3>=120 & height_s3<=200
 
 gen bmi_s3=.
 replace bmi_s3= weight_s3/(height*height) if weight_s3>=27.3 & weight_s3<=200
-label variable bmi_s3 "Body mass index, continuous (c2011w4)"
+label variable bmi_s3 "Body mass index (kg/m2), continuous (c2011w4)"
 
 gen bmi_cat_s3=.
-	replace bmi_cat_s3=1 if bmi_s3<18.5
 	replace bmi_cat_s3=0 if bmi_s3>=18.5 & bmi_s3<25
+	replace bmi_cat_s3=1 if bmi_s3<18.5
 	replace bmi_cat_s3=2 if bmi_s3>=25 & bmi_s3<30
 	replace bmi_cat_s3=3 if bmi_s3>=30 & bmi_s3<50
 	
@@ -175,9 +173,10 @@ label variable bmi_cat_s3 "Body mass index, categorical (c2011w4)"
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy height_s3 weight_s3 waist_s3 bmi_s3 bmi_cat_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 height_s3 weight_s3 waist_s3 bmi_s3 bmi_cat_s3
 
 codebook height_s3 weight_s3 waist_s3 bmi_s3 bmi_cat_s3
+sum bmi_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
@@ -187,7 +186,7 @@ saveold "Outcome_anthropometric_measures.dta", replace version(13)
 ```{stata save-data, eval=!TEST}
 
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometric_measures.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta", replace version(13)
 ```
 
 <br>
