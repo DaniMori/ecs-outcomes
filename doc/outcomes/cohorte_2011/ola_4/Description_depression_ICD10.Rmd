@@ -112,22 +112,32 @@ prevalence; variable `depression_lifetime_s3`) and in the previous 12 months
 (point prevalence; variable `depression_12m_s3`). More precisely, the following
 criteria must be fulfilled:
 
-i)  The depressive episode should last for at least 2 weeks;
+i)  The depressive episode should last for at least 2 weeks (q4211_s3,
+    q4213_s3);
 
 ii) There have been no hypomanic or manic symptoms sufficient to meet the
-    criteria for hypomanic or manic episode at any time in the individual's
-    life;
+    criteria for hypomanic or manic episode at any time in the individual's life
+    (q4233_s3, q4225_causemed2_s3);
 
 iii) The episode is not attributable to psychoactive substance use or to any
-     organic mental disorder;
+     organic mental disorder (q4224b_s3, q4224_s3, q4225_causemed12_s3,
+     q4225_causemed23_s3, q4225_causemed24_s3, q4225_causemed25_s3,
+     q4225_causemed30_s3, q4225_causemed31_s3);
 
-iv) The general criteria for depressive episode must be met;
+iv) The general criteria for depressive episode must be met (criteria i, ii,
+    iii);
 
-v)  At least two of the following three symptoms must be present: Depressed
-    mood, loss of interest and decreased energy;
+v)  At least two of the following three symptoms must be present: depressed mood
+    (q4220a_s3:q4220d_s3), loss of interest (q4220e_s3, q4220f_s3) and decreased
+    energy (q4222e_s3);
 
-vi) an additional symptom or symptoms should be present, to give a total of at
-    least four (please see criteria C1-C7).
+vi) An additional symptom or symptoms from the following ones should be present,
+    to give a total of at least four: loss of confidence (q4222k_s3:q4222l_s3),
+    excessive guilt (q4222n_s3), recurrent thoughts of death
+    (q4222r_s3:q4222v_s3), diminished ability to concentrate
+    (q4222h_s3:q4222j_s3), agitation or retardation (q4222f_s3, q4222fa_s3,
+    q4222g_s3, q4222ga_s3), sleep disturbance (q4222c_s3, q4222d_s3), change in
+    appetite (q4222a_s3, q4222b_s3) (please see criteria C1-C7).
 
 We also included a severity variable according to the ICD-10 criteria for the
 lifetime prevalence (variable `d_lifetime_severity`) based upon the number of
