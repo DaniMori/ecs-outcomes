@@ -82,6 +82,19 @@ difficulty at least on one item, the overall score is going to be 1 (=yes,
 difficulties with ADL/IADL), otherwise is going to be 0 (=no difficulties with
 ADL/IADL).
 
+**Items to create this variable**: 
+- _WHODAS_: `q2028_stand_s3`, `q2032_hh_resp_s3`, `q2011_learn_s3`, `q2033_activ_s3` ,
+            `q2047_affect_s3`, `q2035_concent_s3`, `q2036_walk_s3`, `q2037_wash_s3`,
+            `q2038_dress_s3`, `q2015_strang_s3`, `q2014_friend_s3`, `q2039_daily_s3`.
+
+- _ADL and IADL_: `q2025_sitting_s3`, `q2026_walk_s3`,`q2027_stand_s3`,               
+                  `q2028_stand_s3`, `q2029_climb_s3`, `q2030_crouch_s3`,  
+                  `q2031_pickup_s3`, `q2032_hh_resp_s3`, `q2033_activ_s3`,     
+                  `q2034_reach_s3`, `q2035_concent_s3`, `q2036_walk_s3`, 
+                  `q2037_wash_s3`, `q2038_dress_s3`, `q2039_daily_s3`, `q2040_carry_s3`
+                  `q2041_movement_s3`, `q2042_eating_s3`, `q2043_arising_s3`,
+                  `q2044_toilet_s3`, `q2045_movement_s3`, `q2046_going_s3`
+
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
