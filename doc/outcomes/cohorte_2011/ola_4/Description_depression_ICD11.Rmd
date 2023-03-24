@@ -85,25 +85,30 @@ endorsement of depressive episode at some point in their lives (lifetime
 prevalence; variable `depression_lifetime`). More precisely, the following
 criteria must be fulfilled:
 
-i)  Symptoms should last at least two weeks;
+i)  Symptoms should last at least two weeks (q4211_s3, q4213_s3);
 
 ii) The clinical presentation does not fulfill the diagnostic requirements for a
-    Mixed Episode;
+    Mixed Episode ((q4233_s3, q4225_causemed2_s3);
 
 iii) The episode is not attributable to psychoactive substance use or to any
-     organic mental disorder
+     organic mental disorder (q4224b_s3, q4224_s3, q4225_causemed12_s3,
+     q4225_causemed23_s3, q4225_causemed24_s3, q4225_causemed25_s3,
+     q4225_causemed30_s3, q4225_causemed31_s3);
 
 iv) The concurrent presence of at least five of the following symptoms:
 
-    -   **Affective cluster:** (1) Depressed mood, (2) Markedly diminished
-        interest or pleasure;
+    -   **Affective cluster:** (1) Depressed mood (q4220a_s3:q4220c_s3), (2)
+        Markedly diminished interest or pleasure (q4220e_s3, q4220f_s3);
     -   **Cognitive-behavioural cluster:** (3) Reduced ability to concentrate
-        and sustain attention, (4) Beliefs of low self-worth or excessive and
-        inappropriate guilt, (5) Hopelessness about the future, (6) Recurrent
-        thoughts of death;
-    -   **Neurovegetative cluster:** (7) Significantly disrupted sleep, (8)
-        Significant change in appetite or weight, (9) Psychomotor agitation or
-        retardation, (10) Reduce energy, or fatigue;
+        and sustain attention (q4222h_s3:q4222j_s3), (4) Beliefs of low
+        self-worth or excessive and inappropriate guilt (q4222k_s3:q4222l_s3),
+        (5) Hopelessness about the future (q4220d_s3), (6) Recurrent thoughts of
+        death (q4222r_s3:q4222v_s3);
+    -   **Neurovegetative cluster:** (7) Significantly disrupted sleep
+        (q4222c_s3, q4222d_s3), (8) Significant change in appetite or weight
+        (q4222a_s3, q4222b_s3), (9) Psychomotor agitation or retardation
+        (q4222f_s3, q4222fa_s3, q4222g_s3, q4222ga_s3), (10) Reduce energy, or
+        fatigue (q4222e_s3);
 
 v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
