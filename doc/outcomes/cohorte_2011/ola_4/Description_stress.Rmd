@@ -1,0 +1,117 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Stress'"
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name  | Label                       | Format     | Code |
+|:--------------------|:----------------------------|:-----------|:-----|
+| perceived_stress_s3 | Perceived stress (c2011_w4) | Continuous | 0-6  |
+
+# Variable description
+
+Although once more related to the field of biology, today the term "stress" is
+commonly used in different fields such as physiology and medicine. In
+psychology, stress refers to a disturbance of the homeostasis system. It is
+therefore referred to as stress when the emotional (or physical) balance of an
+individual is modified by an external (e.g. aggressor) or internal (e.g. virus)
+agent. This modification then has an impact on certain physical and biological
+aspects of the individual. It is also important to note that stress can be
+negative, for example when it is too intense and impacts on the normal
+functioning of the individual, but it can also be positive, for example when it
+motivates and pushes the individual to run away from a problem [@lu2021].
+
+# Explanation of how the variables were created
+
+The level of stress was measured using 3 items corresponding to the same
+question (how stressed/anguished do you feel?) asked with reference to 3
+different times of the day, (1) morning (q7033), (2) evening (q7073), (3) night
+(q7118). The total perceived stress score was obtained by adding the responses
+given to these 3 items. The stress scale ranges from 0 to 6, the higher the
+number the higher the perceived stress level.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* Perceived stress 
+egen perceived_stress_s3 = rowtotal (q7033_tense_s3 q7073_tense_s3 q7118_tense_s3), missing
+label variable perceived_stress_s3 "Perceived stress (c2011_w4)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy perceived_stress
+codebook perceived_stress
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_stress.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_stress.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914975492
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
