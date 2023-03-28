@@ -51,7 +51,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+---------------------------------------------+-------------+--------------------------------+
 | Main variable name | Label                                       | Format      | Code                           |
 +:===================+:============================================+:============+:===============================+
-| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Categorical | 0 = Life time abstainers;      |
+| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Categorical | 0 = Lifetime abstainers;       |
 |                    |                                             |             |                                |
 |                    |                                             |             | 1 = Occasional drinkers;       |
 |                    |                                             |             |                                |
@@ -88,183 +88,101 @@ day it was (monday-sunday): `q3009a_s3` `q3009b_s3` `q3009c_s3` `q3009d_s3`
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
 * Cohorte 2011, ola 4:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+**q3007_everalc_s3 q3008_last30_s3 q3008b_last7_s3 q3009a_s3 q3009b_s2 q3009c_s2 q3009d_s2 q3009e_s2 q3009f_s2 q3009g_s2**
+recode q3007_everalc_s3 (888=.), gen (q3007)
+recode q3008b_last7_s3 (888=.), gen (q3008b)
+recode q3009a_s3 (888=.) (999=.), gen (q3009a)
+recode q3009b_s3 (888=.) (999=.), gen (q3009b)
+recode q3009c_s3 (888=.) (999=.), gen (q3009c)
+recode q3009d_s3 (888=.) (999=.), gen (q3009d)
+recode q3009e_s3 (888=.) (999=.), gen (q3009e)
+recode q3009f_s3 (888=.) (999=.), gen (q3009f)
+recode q3009g_s3 (888=.) (999=.), gen (q3009g)
+
+
+**contamos el número de missing en las variables q3009a-q3009f
+
+egen missq3009= rowmiss(q3009a q3009b q3009c q3009d q3009e q3009f q3009g)
+
+
+**excluiremos los que tienen missing en 5 o más días
+**días de la semana en el que beben 5 o más unidades de alcohol (hombres) y 4 o más unidades (mujeres)
+
+egen daysalc5= anycount (q3009a q3009b q3009c q3009d q3009e q3009f q3009g), v(5/40)
+egen daysalc4= anycount (q3009a q3009b q3009c q3009d q3009e q3009f q3009g), v(4/40)
+
+**la q3007 (ha bebido alguna vez alcohol) será “no” si en la q3008 nos contestan que “nunca han bebido”
+recode q3007 (1=2) if q3008_last30_s3==3
+recode q3008_last30_s3 (3=.), gen (q3008)
+
+**Creamos variables separadas para hombres y mujeres y luego las combinamos
+**men
+gen alcoholm_s3=. 
+replace alcoholm_s3=0 if q3007==2 & q1009_sex==1
+replace alcoholm_s3=1 if q3007==1 & (q3008==2 | q3008b==2) & q1009_sex==1
+replace alcoholm_s3=2 if q3007==1 & (q3008==1 & q3008b==1) & (daysalc5<1) & q1009_sex==1
+replace alcoholm_s3=3 if q3007==1 & (q3008==1 & q3008b==1) & missq3009<5 & (daysalc5>0 & daysalc5<3)  & q1009_sex==1
+replace alcoholm_s3=4 if q3007==1 & (q3008==1 & q3008b==1) & missq3009<5 & (daysalc5>2) & q1009_sex==1
+
+**women
+gen alcoholw_s3=. 
+replace alcoholw_s3=0 if q3007==2 & q1009_sex==2
+replace alcoholw_s3=1 if q3007==1 & (q3008==2 | q3008b==2) & q1009_sex==2
+replace alcoholw_s3=2 if q3007==1 & (q3008==1 & q3008b==1) & (daysalc5<1) & q1009_sex==2
+replace alcoholw_s3=3 if q3007==1 & (q3008==1 & q3008b==1) & missq3009<5 & (daysalc4>0 & daysalc4<3)  & q1009_sex==2
+replace alcoholw_s3=4 if q3007==1 & (q3008==1 & q3008b==1) & missq3009<5 & (daysalc4>2) & q1009_sex==2
+
+gen alcohol_s3= alcoholm_s3 if q1009_sex==1
+replace alcohol_s3=alcoholw_s3 if q1009_sex==2
+
+label define alc_labels_value 0 "Lifetime abstainers" 1 "Occasional drinkers" 2 "Non-heavy drinkers" 3 "Infrequent heavy drinkers" 4 "Frequent heavy drinkers"
+label values alcohol_s3 alc_labels_value
+label variable alcohol_s3 "Alcohol consumption, categorical (c2011_w4)"
 ```
 
-<!--# TODO: Leer texto "Otras consideraciones a continuación -->
-
-**Otras consideraciones**
-
-```         
--   El **número de participantes (n) que debe aparecer en cada base de
-datos** debe ser correspondiente con aquella que aparece en la base de datos
-maestra u original. Para la **base de datos de la muestra completa serán
-3002 participantes**. En el caso de la **muestra pre-confinamiento serán
-1935 participantes**.
-
--   Es recomendable que revises los descriptivos de la/s variable/s
-generadas. De esta forma podrás detectar posibles errores (e.g., un
-porcentaje de datos perdidos que no responde a lo esperado; una prevalencia
-de x patología muy superior o inferior a lo que la evidencia científica
-señala).
-```
-
-<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
-
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+<br> 
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
-
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-codebook <variable(s) generada(s)>
+keep ID_ECS q0007a_result_s3 proxy_s3 alcohol_s3
+codebook alcohol_s3
 ```
-
-<!--# TODO: Leer párrafos a continuación -->
-
--   Variable/s de identificación
-
-**La variable de identificación que debes incluir para la cohorte 2019 es ID_ECS**. Para conocer la equivalencia y las particularidades de las distintas variables de identificación, por favor, revisa la tabla 1 en el documento [LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i) .
-
--   Variable(s) generada(s)
-
-Debes incluir la variable principal, así como las transformaciones pertinentes asociadas a esta variable. En el caso de que la/s variable/s generada/s que requiera/n la creación previa de otras variables, solo se incluirán aquellas que pueden resultar clave para entender o analizar la variable final. Por ejemplo, si creas una variable a partir de otra existente en la que eliminas casos con datos inválidos o modificas las etiquetas, no es necesario que incluyas esta información en este punto (tampoco en el documento de descripción). Los/as investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre qué variables incluir en este punto, por favor, pregunta a alguno de los/as compañeros responsables del proyecto.
-
--   Variables de apoyo
-
-Puesto que en ocasiones no todos los individuos contactados participan en el estudio (porque no quieren, porque no pueden, porque no los encontramos...) y dado que no todos los participantes responden a todos los ítems, se incluirán las siguientes variables como apoyo para la interpretación de los resultados:
-
-```         
--   **Variable estado de entrevista**: `q0007a_result`. El código 1 hace
-referencia a todas las personas que han participado en el estudio.
-
--   **Variable proxy**: proxy El código 1 hace referencia a los
-participantes que realizaron una entrevista proxy. Esto quiere decir que el
-individuo seleccionado no contestó las preguntas, sino que otra persona
-respondió en su lugar a una versión reducida del cuestionario. El código 2
-hace referencia a los participantes que hicieron entrevista directa.
-```
-
-Otras consideraciones:
-
--   Las bases de datos deben tener formato Stata 13 (.dta)
-
--   El nombre de estos archivos debe tener la siguiente estructura: "Outcome\_[variablename]\_[qualifier]". Se añadirá cualquier particularidad en caso que exista/n variable/s generadas en base a distintos criterios (e.g., diagnóstico, versión reducida).
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 ```{stata save-data-test, eval=TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "Outcome_alcoholconsumption.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 3:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-```{=html}
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
-'<prefijo>' y '<teléfono>' -->
-```
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+-   Name: Cristina Rodríguez Prada
+-   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
 
-\< Original version:
+Original version:
 
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya@pssjd.org](mailto:beatriz.olaya@pssjd.org){.email}
 
 # References
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta información será igualmente útil para citar apropiadamente en nuestros artículos científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
 
 ::: {#refs}
 :::
 
 \newpage
-
-<!--# TODO: Leer párrafos a continuación -->
-
-He terminado de generar la/s variable/s.
-
-¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s, por favor, actualiza el documento
-
-```         
-[C2011_W4_Planning_outcomes.xlsxl](https://dauam.sharepoint.com/:x:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos compartidos/Outcomes C2011 W4/C2011_W4_Planning_outcomes.xlsx?d=w3e49821bd21047ab8f57ab5837db2393&csf=1&web=1&e=QQRWdn)
-```
-
-\*Este documento hace referencia exclusiva a las variables de cohorte 2011, Ola 4.
-
-Así, el/la compañero/a al que le corresponda podrá examinar los distintos archivos y, sobre todo, el algoritmo. En caso de que se detecten inconsistencias, errores o surjan dudas, se te comunicará para proceder con su revisión.
-
-Finalmente, cuando todas las variables estén generadas y revisadas se creará una base de datos común con todas ellas y los datos sociodemográficos principales de los participantes.
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 # Session info
 
