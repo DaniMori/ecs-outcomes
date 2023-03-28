@@ -1,0 +1,394 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- '<ALCOHOL CONSUMPTION'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
+
+**Aviso preliminar**
+
+Esta plantilla está diseñada para la generación de "variables outcome" del
+proyecto Edad con Salud. Su objetivo es ayudar a automatizar las tareas de
+procesamiento de datos del proyecto.
+
+Esta plantilla está basada en el documento
+[Outcome variable generation guidelines.docx](https://dauam.sharepoint.com/:w:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos%20compartidos/Outcomes%20C2011%20W4/Outcome%20variable%20generation%20guidelines.docx?d=w70913a46b3de40fa9fa5f27e3b3f44f0&csf=1&web=1&e=xxES6R)
+. Sin embargo, **esta plantilla no sustituye a ese documento**. Por favor, lee
+dicho documento para conocer todas las instrucciones y convenciones del proceso
+de generación de variables outcome de Edad con Salud.
+
+<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
+
+<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
+
+**Consideraciones generales**
+
+-   Puesto que nuestros datos son analizados por investigadores/as procedentes
+de distintas partes del mundo, **todos los documentos deben estar en inglés**.
+
+-   El **nombre de este archivo** debe tener la siguiente estructura:
+"Description\_<variablename>\_<qualifiers>". En '<qualifiers>' se añadirá
+cualquier particularidad, en caso que exista/n variable/s generadas en base a
+distintos criterios (e.g., diagnóstico, versión reducida). Por favor, evita en
+los nombres los espacios (sustituir por "\_"), tildes, "ñ" y "Ñ". Por ejemplo:
+"Description_cognitivereserve".
+
+-   Si se trata de una variable que ya estaba generada en evaluaciones
+anteriores/otras cohortes, puedes adaptar la información de ese documento. En
+ese caso, por favor, **revisa cuidadosamente que la información contenida se
+ajusta a las particularidades de los datos**.
+
+<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
+##       o eliminar linea 62:
+# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+<!--# TODO: Leer párrafos a continuación -->
+
+Aquí debes incluir una tabla con los datos principales de todas la/s variable/s
+finales generada/s. Esto es, el nombre de la/s variable/s (tal y como aparece/n
+en la base de datos), la/s etiqueta/s, el formato (discreta, continua, nominal,
+ordinal, binaria) y los valores posibles (e.g., rango para continuas, opciones
+de respuesta para variables categóricas).
+
+En esta tabla debes incluir la variable principal, así como las transformaciones
+pertinentes asociadas a esta variable, como ocurre con el ejemplo anterior. En
+el caso de que la/s variable/s generada/s que requiera/n la creación previa de otras variables, solo se incluirán aquellas que pueden resultar clave para entender o analizar la variable final. Por ejemplo, si creas una variable a partir de otra existente en la que eliminas casos con datos inválidos o modificas las etiquetas, no es necesario que incluyas esta información en este punto (tampoco en la base de datos). Los/as investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre qué variables incluir en este punto, por favor, pregunta a alguno de los/as compañeros responsables del proyecto.
+
+En la etiqueta de la/s variable/s generadas, por favor **incluye información
+acerca de la cohorte y la evaluación de la que se trata**. El patrón es un
+sufijo como (c<cohorte>\_w<ola>), donde <cohorte> puede tomar los valores 2011 o
+2019, y <ola> puede tomar los valores: 1, 2, 3, 4, etc. (COVID para el
+subestudio COVID).
+
+**Ejemplos:** (c2011_w1), (c2019_w3), (c2019_wCOVID). "w1" se correspondería con
+la primera evaluación (línea base).
+
+<!--# TODO: Borrar párrafos anteriores -->
+
++--------------------+------------------------------------------+------------+----------------------+
+| Main variable name | Label                                    | Format     | Code                 |
++:===================+:=========================================+:===========+:=====================+
+| <var_name>         | <Etiqueta>                               | <Formato>  | <Categorías / Rango> |
++--------------------+------------------------------------------+------------+----------------------+
+| bmi_cont           | Body mass index, continuous (c2011_w4)   | Continuous | 16-40                |
++--------------------+------------------------------------------+------------+----------------------+
+| bmi_cont_std       | Body mass index, standardized (c2011_w4) | Continuous | standardized         |
++--------------------+------------------------------------------+------------+----------------------+
+| bmi                | Body mass index, categories (c2011_w4)   | Ordinal    | 1 = Underweight;     |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Normal weight;   |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = Overweight;      |
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = Obese            |
++--------------------+------------------------------------------+------------+----------------------+
+
+<!--# TODO: Añadir variables outcome a la tabla -->
+
+<!--# TODO: Eliminar ejemplos -->
+
+# Variable description
+
+<!--# TODO: Leer párrafo a continuación -->
+
+Por favor, incluye aquí una breve descripción de la variable o constructo que
+estás trabajando. Qué significa o qué evalúa esa variable y por qué es
+importante. Incluye las referencias bibliográficas necesarias.
+
+<!--# TODO: Borrar párrafo anterior -->
+
+<!--# TODO: Redactar descripción de variable(s) -->
+
+# Explanation of how the variables were created
+
+<!--# TODO: Leer párrafos a continuación -->
+
+Este apartado es complementario al siguiente. Trata de describir, de forma clara
+y concisa, cómo has generado la variable. El objetivo de esta sección es doble.
+Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no
+estar familiarizados con el código utilizado para generar la/s variable/s (e.g.,
+R, Stata). Por otro, facilitar la información suficiente para describir
+adecuadamente la/s variable/s en los artículos científicos.
+
+Si se trata de variable/s que ya se había/n generado en ocasiones anteriores
+(e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales
+particularidades o modificaciones que realices (e.g., versión reducida,
+detección de errores).
+
+Como criterio general, **esta sección debería ser suficiente para entender cómo
+ha de generarse la variable sin necesidad de entender la sintaxis**.
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+<!--# TODO: Redactar explicación de la creación de variable(s) -->
+
+# Syntax used to create the variable (Stata 15)
+
+<!--# TODO: Cambiar software y versión en el título según correponda a la
+sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
+
+<!--# TODO: Leer párrafo a continuación -->
+
+Aquí debes incluir el algoritmo o código empleado para generar la/s variable/s.
+Es fundamental que revises minuciosamente esta sección. **Cualquier
+investigador/a debería poder generar la/s variable/s y obtener los mismos
+resultados**. Por favor, indica también el programa utilizado (e.g., Stata, R),
+si bien ten en cuenta que **el consenso es utilizar Stata**. Incluye también una
+pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n,
+frecuencia absoluta y relativa, rango, media...).
+
+<!--# TODO: Borrar párrafo anterior -->
+
+```{stata load-data}
+* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
+* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
+
+* Cohorte 2011, linea base:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
+
+* Cohorte 2011, ola 2:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
+
+* Cohorte 2011, ola 3:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
+
+* Cohorte 2011, ola 4:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+* Cohorte 2019, linea base:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
+
+* Cohorte 2019, ola post-confinamiento:
+* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* TODO: Escribir aquí la sintaxis de generación de las variables
+```
+
+<!--# TODO: Leer texto "Otras consideraciones a continuación -->
+
+**Otras consideraciones**
+
+    -   El **número de participantes (n) que debe aparecer en cada base de
+    datos** debe ser correspondiente con aquella que aparece en la base de datos
+    maestra u original. Para la **base de datos de la muestra completa serán
+    3002 participantes**. En el caso de la **muestra pre-confinamiento serán
+    1935 participantes**.
+
+    -   Es recomendable que revises los descriptivos de la/s variable/s
+    generadas. De esta forma podrás detectar posibles errores (e.g., un
+    porcentaje de datos perdidos que no responde a lo esperado; una prevalencia
+    de x patología muy superior o inferior a lo que la evidencia científica
+    señala).
+
+<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
+* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
+keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+
+* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
+codebook <variable(s) generada(s)>
+```
+
+<!--# TODO: Leer párrafos a continuación -->
+
+-   Variable/s de identificación
+
+**La variable de identificación que debes incluir para la cohorte 2019 es
+ID_ECS**. Para conocer la equivalencia y las particularidades de las distintas
+variables de identificación, por favor, revisa la tabla 1 en el documento
+[LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i)
+.
+
+-   Variable(s) generada(s)
+
+Debes incluir la variable principal, así como las transformaciones pertinentes
+asociadas a esta variable. En el caso de que la/s variable/s generada/s que
+requiera/n la creación previa de otras variables, solo se incluirán aquellas que
+pueden resultar clave para entender o analizar la variable final. Por ejemplo,
+si creas una variable a partir de otra existente en la que eliminas casos con
+datos inválidos o modificas las etiquetas, no es necesario que incluyas esta
+información en este punto (tampoco en el documento de descripción). Los/as
+investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre
+qué variables incluir en este punto, por favor, pregunta a alguno de los/as
+compañeros responsables del proyecto.
+
+-   Variables de apoyo
+
+Puesto que en ocasiones no todos los individuos contactados participan en el
+estudio (porque no quieren, porque no pueden, porque no los encontramos...) y
+dado que no todos los participantes responden a todos los ítems, se incluirán
+las siguientes variables como apoyo para la interpretación de los resultados:
+
+    -   **Variable estado de entrevista**: `q0007a_result`. El código 1 hace
+    referencia a todas las personas que han participado en el estudio.
+
+    -   **Variable proxy**: proxy El código 1 hace referencia a los
+    participantes que realizaron una entrevista proxy. Esto quiere decir que el
+    individuo seleccionado no contestó las preguntas, sino que otra persona
+    respondió en su lugar a una versión reducida del cuestionario. El código 2
+    hace referencia a los participantes que hicieron entrevista directa.
+
+Otras consideraciones:
+
+-   Las bases de datos deben tener formato Stata 13 (.dta)
+
+-   El nombre de estos archivos debe tener la siguiente estructura:
+"Outcome_[variablename]_[qualifier]". Se añadirá cualquier particularidad en
+caso que exista/n variable/s generadas en base a distintos criterios (e.g.,
+diagnóstico, versión reducida).
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+```{stata save-data-test, eval=TEST}
+* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
+saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+```
+
+
+```{stata save-data, eval=!TEST}
+* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
+* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
+* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
+
+* Cohorte 2011, ola 1:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
+
+* Cohorte 2011, ola 2:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+
+* Cohorte 2011, ola 3:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+
+* Cohorte 2011, ola 4:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+
+* Cohorte 2019, ola 1:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+
+* Cohorte 2019, ola post-confinamiento:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+<!--# TODO: Leer párrafo a continuación -->
+
+Incluye tu nombre completo, correo electrónico, teléfono e institución a la que
+perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que
+ya había hecho otro/a compañero/a, por favor, indícalo.
+
+<!--# TODO: Borrar párrafo anterior -->
+
+<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
+'<prefijo>' y '<teléfono>' -->
+
+-   Name: <Nombre y apellidos>
+-   e-mail:
+    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
+-   Phone number: (+<prefijo>) <teléfono>
+
+<br>
+
+<!--# TODO: Completar / eliminar "original version" según corresponda -->
+
+\< Original version:
+
+-   Name: <Nombre y apellidos>
+-   e-mail:
+    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
+-   Phone number: (+<prefijo>) <teléfono> \>
+
+# References
+
+<!--# TODO: Leer párrafo a continuación -->
+
+Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta
+información será igualmente útil para citar apropiadamente en nuestros artículos
+científicos.
+
+<!--# TODO: Borrar párrafo anterior -->
+
+::: {#refs}
+:::
+
+\newpage
+
+<!--# TODO: Leer párrafos a continuación -->
+
+He terminado de generar la/s variable/s.
+
+¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s,
+por favor, actualiza el documento
+
+    [C2011_W4_Planning_outcomes.xlsxl](https://dauam.sharepoint.com/:x:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos compartidos/Outcomes C2011 W4/C2011_W4_Planning_outcomes.xlsx?d=w3e49821bd21047ab8f57ab5837db2393&csf=1&web=1&e=QQRWdn)
+
+\*Este documento hace referencia exclusiva a las variables de cohorte 2011, Ola
+4.
+
+Así, el/la compañero/a al que le corresponda podrá examinar los distintos
+archivos y, sobre todo, el algoritmo. En caso de que se detecten
+inconsistencias, errores o surjan dudas, se te comunicará para proceder con su
+revisión.
+
+Finalmente, cuando todas las variables estén generadas y revisadas se creará una
+base de datos común con todas ellas y los datos sociodemográficos principales de
+los participantes.
+
+<!--# TODO: Borrar párrafos anteriores -->
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
