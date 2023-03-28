@@ -6,7 +6,7 @@ output:
 # bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
 bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+nocite: '@world_health_organization_tobacco_2023' ## TODO: Descomentar y añadir cita(s) o borrar campo
 editor_options: 
   markdown:
     wrap: 80
@@ -109,87 +109,32 @@ saveold "Outcome_tobaccoconsumption.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 3:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-```{=html}
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
-'<prefijo>' y '<teléfono>' -->
-```
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+-   Name: Cristina Rodríguez Prada
+-   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
 
-\< Original version:
 
--   Name: <Nombre y apellidos>
--   e-mail: [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+Original version:
+
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya@pssjd.org](mailto:beatriz.olaya@pssjd.org){.email}
 
 # References
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta información será igualmente útil para citar apropiadamente en nuestros artículos científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
 
 ::: {#refs}
 :::
 
 \newpage
-
-<!--# TODO: Leer párrafos a continuación -->
-
-He terminado de generar la/s variable/s.
-
-¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s, por favor, actualiza el documento
-
-```         
-[C2011_W4_Planning_outcomes.xlsxl](https://dauam.sharepoint.com/:x:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos compartidos/Outcomes C2011 W4/C2011_W4_Planning_outcomes.xlsx?d=w3e49821bd21047ab8f57ab5837db2393&csf=1&web=1&e=QQRWdn)
-```
-
-\*Este documento hace referencia exclusiva a las variables de cohorte 2011, Ola 4.
-
-Así, el/la compañero/a al que le corresponda podrá examinar los distintos archivos y, sobre todo, el algoritmo. En caso de que se detecten inconsistencias, errores o surjan dudas, se te comunicará para proceder con su revisión.
-
-Finalmente, cuando todas las variables estén generadas y revisadas se creará una base de datos común con todas ellas y los datos sociodemográficos principales de los participantes.
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 # Session info
 
