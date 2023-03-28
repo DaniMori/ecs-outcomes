@@ -15,43 +15,6 @@ params:
   double-coding: false
 ---
 
-<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
-
-**Aviso preliminar**
-
-Esta plantilla está diseñada para la generación de "variables outcome" del
-proyecto Edad con Salud. Su objetivo es ayudar a automatizar las tareas de
-procesamiento de datos del proyecto.
-
-Esta plantilla está basada en el documento
-[Outcome variable generation guidelines.docx](https://dauam.sharepoint.com/:w:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos%20compartidos/Outcomes%20C2011%20W4/Outcome%20variable%20generation%20guidelines.docx?d=w70913a46b3de40fa9fa5f27e3b3f44f0&csf=1&web=1&e=xxES6R)
-. Sin embargo, **esta plantilla no sustituye a ese documento**. Por favor, lee
-dicho documento para conocer todas las instrucciones y convenciones del proceso
-de generación de variables outcome de Edad con Salud.
-
-<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
-
-<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
-
-**Consideraciones generales**
-
--   Puesto que nuestros datos son analizados por investigadores/as procedentes
-de distintas partes del mundo, **todos los documentos deben estar en inglés**.
-
--   El **nombre de este archivo** debe tener la siguiente estructura:
-"Description\_<variablename>\_<qualifiers>". En '<qualifiers>' se añadirá
-cualquier particularidad, en caso que exista/n variable/s generadas en base a
-distintos criterios (e.g., diagnóstico, versión reducida). Por favor, evita en
-los nombres los espacios (sustituir por "\_"), tildes, "ñ" y "Ñ". Por ejemplo:
-"Description_cognitivereserve".
-
--   Si se trata de una variable que ya estaba generada en evaluaciones
-anteriores/otras cohortes, puedes adaptar la información de ese documento. En
-ese caso, por favor, **revisa cuidadosamente que la información contenida se
-ajusta a las particularidades de los datos**.
-
-<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
-
 ```{r setup, include=FALSE}
 # Activar los paquetes que R necesita para ejecutar el código:
 
@@ -62,7 +25,7 @@ library(Statamarkdown)
 ## TODO: sustituir '<path\to\>' por la ubicación de Stata
 ##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
 ##       o eliminar linea 62:
-# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 
 
 # Opciones de configuración de las salidas de R y Stata:
@@ -84,46 +47,23 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 ```
 
 # Variable information
-
-<!--# TODO: Leer párrafos a continuación -->
-
-Aquí debes incluir una tabla con los datos principales de todas la/s variable/s
-finales generada/s. Esto es, el nombre de la/s variable/s (tal y como aparece/n
-en la base de datos), la/s etiqueta/s, el formato (discreta, continua, nominal,
-ordinal, binaria) y los valores posibles (e.g., rango para continuas, opciones
-de respuesta para variables categóricas).
-
-En esta tabla debes incluir la variable principal, así como las transformaciones
-pertinentes asociadas a esta variable, como ocurre con el ejemplo anterior. En
-el caso de que la/s variable/s generada/s que requiera/n la creación previa de otras variables, solo se incluirán aquellas que pueden resultar clave para entender o analizar la variable final. Por ejemplo, si creas una variable a partir de otra existente en la que eliminas casos con datos inválidos o modificas las etiquetas, no es necesario que incluyas esta información en este punto (tampoco en la base de datos). Los/as investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre qué variables incluir en este punto, por favor, pregunta a alguno de los/as compañeros responsables del proyecto.
-
-En la etiqueta de la/s variable/s generadas, por favor **incluye información
-acerca de la cohorte y la evaluación de la que se trata**. El patrón es un
-sufijo como (c<cohorte>\_w<ola>), donde <cohorte> puede tomar los valores 2011 o
-2019, y <ola> puede tomar los valores: 1, 2, 3, 4, etc. (COVID para el
-subestudio COVID).
-
-**Ejemplos:** (c2011_w1), (c2019_w3), (c2019_wCOVID). "w1" se correspondería con
-la primera evaluación (línea base).
-
-<!--# TODO: Borrar párrafos anteriores -->
-
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| <var_name>         | <Etiqueta>                               | <Formato>  | <Categorías / Rango> |
-+--------------------+------------------------------------------+------------+----------------------+
-| bmi_cont           | Body mass index, continuous (c2011_w4)   | Continuous | 16-40                |
-+--------------------+------------------------------------------+------------+----------------------+
-| bmi_cont_std       | Body mass index, standardized (c2011_w4) | Continuous | standardized         |
-+--------------------+------------------------------------------+------------+----------------------+
-| bmi                | Body mass index, categories (c2011_w4)   | Ordinal    | 1 = Underweight;     |
+| alcohol_s3         | Body mass index, categories (c2011_w4)   | Categorical| 0 = Life time        |
+|                    |                                          |            | abstainers;          |
 |                    |                                          |            |                      |
-|                    |                                          |            | 2 = Normal weight;   |
+|                    |                                          |            | 1 = Occasional       |
+|                    |                                          |            | drinkers;            |
 |                    |                                          |            |                      |
-|                    |                                          |            | 3 = Overweight;      |
+|                    |                                          |            | 2 = Non-heavy        |
+|                    |                                          |            | drinkers;            |
 |                    |                                          |            |                      |
-|                    |                                          |            | 4 = Obese            |
+|                    |                                          |            | 3 = Infrequent heavy |
+|                    |                                          |            | drinkers;            |
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = Frequent heavy   |
+|                    |                                          |            | drinkers;            |
 +--------------------+------------------------------------------+------------+----------------------+
 
 <!--# TODO: Añadir variables outcome a la tabla -->
