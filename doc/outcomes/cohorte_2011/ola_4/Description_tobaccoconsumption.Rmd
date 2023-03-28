@@ -100,7 +100,7 @@ label variable tobacco_s3 "Tobacco consumption, categorical (c2011_w4)"
 <br> 
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy tobacco_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 tobacco_s3
 codebook tobacco_s3
 ```
 
