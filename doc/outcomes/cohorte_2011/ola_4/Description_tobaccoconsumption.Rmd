@@ -58,83 +58,25 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            | 3 = Not current smoker |
 +--------------------+------------------------------------------+------------+------------------------+
 
-<!--# TODO: Añadir variables outcome a la tabla -->
-
-<!--# TODO: Eliminar ejemplos -->
-
 # Variable description
 
-<!--# TODO: Leer párrafo a continuación -->
+**Tobacco products** are made entirely or partly of leaf tobacco as raw material, 
+which are intended to be smoked, sucked, chewed or snuffed. All contain the 
+highly addictive psychoactive ingredient, nicotine. 
 
-Por favor, incluye aquí una breve descripción de la variable o constructo que
-estás trabajando. Qué significa o qué evalúa esa variable y por qué es
-importante. Incluye las referencias bibliográficas necesarias.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Redactar descripción de variable(s) -->
+**Tobacco use** is one of the main risk factors for a number of chronic diseases,
+including cancer, lung diseases, and cardiovascular diseases.
 
 # Explanation of how the variables were created
-
-<!--# TODO: Leer párrafos a continuación -->
-
-Este apartado es complementario al siguiente. Trata de describir, de forma clara
-y concisa, cómo has generado la variable. El objetivo de esta sección es doble.
-Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no
-estar familiarizados con el código utilizado para generar la/s variable/s (e.g.,
-R, Stata). Por otro, facilitar la información suficiente para describir
-adecuadamente la/s variable/s en los artículos científicos.
-
-Si se trata de variable/s que ya se había/n generado en ocasiones anteriores
-(e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales
-particularidades o modificaciones que realices (e.g., versión reducida,
-detección de errores).
-
-Como criterio general, **esta sección debería ser suficiente para entender cómo
-ha de generarse la variable sin necesidad de entender la sintaxis**.
-
-<!--# TODO: Borrar párrafos anteriores -->
-
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
+This variable describes the smoking habit of the participants, including the use
+of smokeless tobacco. 
+Original variables include `q3001_used_tobac_s3` and `q3002_use_tobaco_s3`. 
 
 # Syntax used to create the variable (Stata 15)
 
-<!--# TODO: Cambiar software y versión en el título según correponda a la
-sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Aquí debes incluir el algoritmo o código empleado para generar la/s variable/s.
-Es fundamental que revises minuciosamente esta sección. **Cualquier
-investigador/a debería poder generar la/s variable/s y obtener los mismos
-resultados**. Por favor, indica también el programa utilizado (e.g., Stata, R),
-si bien ten en cuenta que **el consenso es utilizar Stata**. Incluye también una
-pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n,
-frecuencia absoluta y relativa, rango, media...).
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
 * Cohorte 2011, ola 4:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
