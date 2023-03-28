@@ -77,15 +77,12 @@ codebook <variable(s) generada(s)>
 ```
 
 ```{stata save-data-test, eval=TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "Outcome_trailmakingtest.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+* # Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_trailmakingtest.dta", replace version(13)
 ```
 
 <br>
