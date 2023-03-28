@@ -77,6 +77,8 @@ Our final variable has four levels, product of the combination of both variables
 -   2 = Smoker, not daily; if `q3001_used_tobac_s3`==1 & `q3002_use_tobaco_s3`==2
 -   3 = Not current smoker if `q3001_used_tobac_s3`==1 & `q3002_use_tobaco_s3`==3
 
+\newpage
+
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
@@ -129,12 +131,13 @@ Original version:
 -   Name: Beatriz Olaya
 -   e-mail: [beatriz.olaya@pssjd.org](mailto:beatriz.olaya@pssjd.org){.email}
 
+\newpage
+
 # References
 
 ::: {#refs}
 :::
 
-\newpage
 
 # Session info
 
