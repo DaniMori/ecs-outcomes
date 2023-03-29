@@ -62,12 +62,12 @@ It consists of 25 Likert-type scale items, from 1 ("never or almost never")
 to 5 ("almost always"). 
 
 The version adapted by Pedroso-Chaparro et al. (2021) uses an abbreviated 
-version of 16 items. In Wave 4 in Age with Health a reduced version of this 
-abbreviated version of only 5 items has been used.
+version of 16 items. In Cohort 2011, wave 4 of Edad con Salud, a reduced version 
+of this abbreviated version of only 5 items has been used.
 
 Mainly two facets are distinguished:
 - __Guilt associated with the perception of being a burden.__ In Edad con Salud
-these items would be composed of items `q6724_guilt1_s3` (I feel guilty for 
+this scale would be composed of items `q6724_guilt1_s3` (I feel guilty for 
 overburdening my family for taking care of me); 
 `q6727_extra_s3` (I feel good receiving care from my family); 
 `q6725_guilt2_s3` (I feel guilty because my family has lost control of their
@@ -89,10 +89,11 @@ overburdening my family for taking care of me);
 `q6725_guilt2_s3` (I feel guilty because my family has lost control of their
 life in order to take care of me); `q6726_guilt3_s3` (I feel guilty because my 
 family is helping me beyond their capacity). 
-  - __guilt_burden_s3__: Sum of the aforementioned items. Item `q6727_extra_s3`
+  - __`guilt_burden_s3`__: Sum of the aforementioned items. Item `q6727_extra_s3`
     is an inverse item, so it is necessary to recode the values for a correct
-    interpretation of the score. This is a direct score.
-  - __guilt_burden_100_s3__: Same as above, but in 0 to 100 scale. This 
+    interpretation of the score. Direct score, resulting from the sum of the
+    aforementioned items.
+  - __`guilt_burden_100_s3`__: Same as above, but in 0 to 100 scale. This 
   transformation is done following the formula `newvar = ((var - min)/(max-min))*100`,
   which first subtracts the minimum value of the original range (4) from each 
   value of var. It then divides the result by the range of the original variable
@@ -101,10 +102,10 @@ family is helping me beyond their capacity).
 
 - __Self-perception of being a burden to the family.__ Item `q6728_extra_s3` 
 (I think I make things easy for my family). 
-   - __burden_to_family_s3__: Direct score of the item, which has to be reversed
+   - __`burden_to_family_s3`__: Direct score of the item, which has to be reversed
     for score to maintain its correct interpretation.
 
-Rising scores indicating increasing burden. 
+Rising scores indicate increasing feelings of guilt for being a burden. 
 
 # Syntax used to create the variable (Stata 15)
 
@@ -117,7 +118,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 * Guilt associated with the perception of being a burden
 recode q6724_guilt1_s3 q6727_extra_s3 q6725_guilt2_s3 q6726_guilt3_s3 (888=.) (999=.)
 
-recode q6727_extra_s3 (1 = 5) (2 = 4) (3 = 3) (4 = 2) (5 = 1)
+replace q6727_extra_s3 = 6 - q6727_extra_s3
 
 gen guilt_burden_s3 = (q6724_guilt1_s3 + q6727_extra_s3 + q6725_guilt2_s3 + q6726_guilt3_s3)
 label variable guilt_burden_s3 "Feelings of guilt for being a burden in direct scores (c2011_w4)"
@@ -126,8 +127,8 @@ gen guilt_burden_100_s3 = ((guilt_burden_s3-4) / (18-4))*100
 label variable guilt_burden_100_s3 "Feelings of guilt for being a burden (transformed to 0-100) (c2011_w4)"
 
 *Self-perception of being a burden to the family
-recode q6728_extra_s3 (1 = 5) (2 = 4) (3 = 3) (4 = 2) (5 = 1) (888=.) (999=.)
-gen burden_to_family_s3 = q6728_extra_s3
+recode q6728_extra_s3 (888=.) (999=.)
+gen burden_to_family_s3 = 6 - q6728_extra_s3
 label variable burden_to_family_s3 "Self-perception of being a burden to the family (c2011_w4)"
 ```
 
@@ -141,13 +142,13 @@ codebook guilt_burden_s3 guilt_burden_100_s3 burden_to_family_s3
 
 
 ```{stata save-data-test, eval=TEST}
-saveold "Outcome_burdenguilt.dta", replace version(13)
+saveold "Outcome_selfperceivedburden.dta", replace version(13)
 ```
 
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_burdenguilt.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_selfperceivedburden.dta", replace version(13)
 
 ```
 
