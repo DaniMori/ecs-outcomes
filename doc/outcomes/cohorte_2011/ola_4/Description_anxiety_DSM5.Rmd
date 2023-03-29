@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'anxiety_DSM5'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'anxiety_DSM5'" 
 output:
   word_document:
    reference_docx: !expr ecs.data::get_pkg_docx_template()
