@@ -48,7 +48,20 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
-<!--# TODO: Redactar descripción de variable(s) -->
+The Trail Making Test is a neuropsychological assessment tool used to evaluate a
+person's visual-motor processing speed, attention, and executive function. The
+test consists of two parts, A and B.
+
+Part A requires the person to connect a series of 25 numbered circles, arranged
+randomly on a sheet of paper, in ascending order as quickly as possible. Part B
+is similar, but it includes both numbered circles (1-13) and letter circles
+(A-L), and the person must alternate between connecting the two types of circles
+in ascending order (1-A-2-B-3-C, etc.).
+
+The time taken to complete each part is recorded, and the difference between the
+times for Part B and Part A (known as the "Trail Making Ratio") can provide
+information about the person's cognitive flexibility and ability to shift
+between different mental tasks.
 
 # Explanation of how the variables were created
 
@@ -64,7 +77,6 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 * TODO: Escribir aquí la sintaxis de generación de las variables
 ```
-
 
 <br>
 
