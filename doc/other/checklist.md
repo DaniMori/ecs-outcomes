@@ -28,6 +28,8 @@
 - [ ] The labels in the metadata table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
 
+- [ ] All the variable labels in column "Label" are written in "Sentence case"
+
 - [ ] All labels have suffix "(c\<cohorte\>_w\<ola\>)"
 
 - [ ] All variables have a format (column "format")
@@ -36,6 +38,8 @@
 
 - [ ] Labels in column "Code" in the table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
+  
+- [ ] All the value labels in column "Code" are written in "Sentence case"
 
 - [ ] Section "Variable description" is filled in
 
