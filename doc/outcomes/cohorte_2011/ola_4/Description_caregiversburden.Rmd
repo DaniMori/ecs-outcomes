@@ -119,20 +119,16 @@ saveold "Outcome_caregivers_burden_s3.dta", replace version(13)
 
 # Contact person:
 
--   Name: <Nombre y apellidos>
--   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
-
+-   Name: Cristina Rodríguez Prada
+-   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 <br>
 
 
 Original version:
 
--   Name: <Nombre y apellidos>
+-   Name: Joan Domènech
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+    [\j.domenech@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
 
 # References
 
