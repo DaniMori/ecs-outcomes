@@ -53,21 +53,8 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | caregivers_burden_s3 | Caregiver's burden, continuous (c2011_w4)| Continuous | 0 - 48               |
 +----------------------+------------------------------------------+------------+----------------------+
 
-<!--# TODO: Añadir variables outcome a la tabla -->
-
-<!--# TODO: Eliminar ejemplos -->
-
 # Variable description
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Por favor, incluye aquí una breve descripción de la variable o constructo que
-estás trabajando. Qué significa o qué evalúa esa variable y por qué es
-importante. Incluye las referencias bibliográficas necesarias.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Redactar descripción de variable(s) -->
 
 # Explanation of how the variables were created
 
