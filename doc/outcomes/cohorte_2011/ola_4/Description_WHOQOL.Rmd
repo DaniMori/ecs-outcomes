@@ -51,7 +51,7 @@ factor scores.
 
 **Quality of Life** was assessed by means of 13 items: `q7001`, `q7002`, 
 `q7003`, `q7004`, `q7005`, `q7006`, `q7007`, `q7008`, `q7009a`, `q7009b`, 
-`q7009c`, `q7009d`, and `q7010b.`.
+`q7009c`, `q7009d`, and `q7010b`.
 
 Details of the validation process were explained in @caballero_validation_2013.
 
@@ -61,6 +61,8 @@ factor scores was used:
 -   `F1=  q7001/2+q7002+(q7003+q7005)/2+q7004+q7006+q7007+q7008`
 
 -   `F2=  q7001/2+(q7009a+q7009b+q7009c)/3+q7009d+q7010b`
+
+<br>
 
 Factor scores were transformed into a 0-100 scale and their sum was divided by
 two in order to obtain the global score in quality of life.
