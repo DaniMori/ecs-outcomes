@@ -1,5 +1,5 @@
 ---
-title: "Edad con Salud -- cohort 2011 -- wave 4 -- '<ALCOHOL CONSUMPTION'" ## TODO: Añadir "cohort", "assessment" y "variable name(s)/domain"
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'ALCOHOL CONSUMPTION'" 
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
@@ -68,13 +68,14 @@ This variable describes the alcohol consumption habit of the respondents.
 
 # Explanation of how the variables were created
 
-Four categories have been created, as follows:
+Five categories have been created, as follows:
 
--   **Life-time abstainers** (never consumed alcohol) Occasional drinkers 
-(did not consume alcohol in the last 30 days or in the last 7 days)
+-   **Life-time abstainers** (never consumed alcohol) 
+- **Occasional drinkers** (did not consume alcohol in the last 30 days or in the
+last 7 days);
 -   **Non-heavy drinkers** (did consume alcohol in the last 30 days and in 
 the last 7 days);
--   I**nfrequent heavy drinkers** (did consume alcohol 1-2 days per week, with 
+-   **Infrequent heavy drinkers** (did consume alcohol 1-2 days per week, with 
 5 or more standard drinks in last 7 days for men and 4 or more for women);
 -   **Frequent heavy drinkers** (did consume alcohol 3 or more days per week 
 with 5 or more standard drinks in last 7 days for men and 4 or more for women).
@@ -82,7 +83,7 @@ with 5 or more standard drinks in last 7 days for men and 4 or more for women).
 Items used: `q3007_everalc_s3` _(ever consumed alcohol?)_; `q3008_last30_s3` 
 _(alcohol last 30 days?)_; `q3008b_last7_s3` _(alcohol last 7 days?)_ and in which
 day it was (monday-sunday): `q3009a_s3` `q3009b_s3` `q3009c_s3` `q3009d_s3` 
-`q3009e_s3` `q3009f_s3` `q3009g_s3`
+`q3009e_s3` `q3009f_s3` `q3009g_s3`.
 
 
 # Syntax used to create the variable (Stata 15)
