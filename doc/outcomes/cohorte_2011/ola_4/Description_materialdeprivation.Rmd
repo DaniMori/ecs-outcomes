@@ -50,7 +50,7 @@ usually associated with a minimum quality on living conditions).
 **Material deprivation** is an indicator used in the Spanish Life 
 Conditions Survey (ECV, Encuesta de Condiciones de Vida) designed by the Spanish
 National Institute of Statistics (INE, Instituto Nacional de Estadística). It is
-based on 7 items that include non-monetary indicators of household deprivation, 
+composed of 7 items that include non-monetary indicators of household deprivation, 
 including problems making ends meet, level of indebtedness and lack of access to
 basic necessities. In the questionnaire, material deprivation is defined when 
 the household can’t afford at least 3 items out of 7.
@@ -58,6 +58,7 @@ the household can’t afford at least 3 items out of 7.
 # Explanation of how the variables were created
 Households with material deprivation was assessed through 7 items, 
 considering the threshold for material deprivation when 3 of the 7 were met.
+
 Original variables include `q0411c_s3`(being able to afford to go on 
 vacation at least one week a year), `q0411d_s3` (afford a meal of meat, 
 poultry or fish at least every two days), `q0411e_s3` (being able to afford
