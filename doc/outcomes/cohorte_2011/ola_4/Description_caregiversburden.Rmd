@@ -15,43 +15,6 @@ params:
   double-coding: false
 ---
 
-<!--# TODO: Leer texto "Aviso preliminar" a continuación -->
-
-**Aviso preliminar**
-
-Esta plantilla está diseñada para la generación de "variables outcome" del
-proyecto Edad con Salud. Su objetivo es ayudar a automatizar las tareas de
-procesamiento de datos del proyecto.
-
-Esta plantilla está basada en el documento
-[Outcome variable generation guidelines.docx](https://dauam.sharepoint.com/:w:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos%20compartidos/Outcomes%20C2011%20W4/Outcome%20variable%20generation%20guidelines.docx?d=w70913a46b3de40fa9fa5f27e3b3f44f0&csf=1&web=1&e=xxES6R)
-. Sin embargo, **esta plantilla no sustituye a ese documento**. Por favor, lee
-dicho documento para conocer todas las instrucciones y convenciones del proceso
-de generación de variables outcome de Edad con Salud.
-
-<!--# TODO: Borrar texto "Aviso preliminar" más arriba -->
-
-<!--# TODO: Leer texto "Consideraciones generales" a continuación -->
-
-**Consideraciones generales**
-
--   Puesto que nuestros datos son analizados por investigadores/as procedentes
-de distintas partes del mundo, **todos los documentos deben estar en inglés**.
-
--   El **nombre de este archivo** debe tener la siguiente estructura:
-"Description\_<variablename>\_<qualifiers>". En '<qualifiers>' se añadirá
-cualquier particularidad, en caso que exista/n variable/s generadas en base a
-distintos criterios (e.g., diagnóstico, versión reducida). Por favor, evita en
-los nombres los espacios (sustituir por "\_"), tildes, "ñ" y "Ñ". Por ejemplo:
-"Description_cognitivereserve".
-
--   Si se trata de una variable que ya estaba generada en evaluaciones
-anteriores/otras cohortes, puedes adaptar la información de ese documento. En
-ese caso, por favor, **revisa cuidadosamente que la información contenida se
-ajusta a las particularidades de los datos**.
-
-<!--# TODO: Borrar texto "Consideraciones generales" más arriba -->
-
 ```{r setup, include=FALSE}
 # Activar los paquetes que R necesita para ejecutar el código:
 
@@ -62,7 +25,7 @@ library(Statamarkdown)
 ## TODO: sustituir '<path\to\>' por la ubicación de Stata
 ##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
 ##       o eliminar linea 62:
-# STATA_PATH <- r"(<path\to\>StataSE-64.exe)"
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 
 
 # Opciones de configuración de las salidas de R y Stata:
