@@ -82,46 +82,19 @@ Higher indexes indicate higher burden.
 
 # Syntax used to create the variable (Stata 15)
 
-<!--# TODO: Cambiar software y versión en el título según correponda a la
-sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Aquí debes incluir el algoritmo o código empleado para generar la/s variable/s.
-Es fundamental que revises minuciosamente esta sección. **Cualquier
-investigador/a debería poder generar la/s variable/s y obtener los mismos
-resultados**. Por favor, indica también el programa utilizado (e.g., Stata, R),
-si bien ten en cuenta que **el consenso es utilizar Stata**. Incluye también una
-pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n,
-frecuencia absoluta y relativa, rango, media...).
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
 * Cohorte 2011, ola 4:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+recode q6712_s3 q6713_s3 q6714_s3 q6715_s3 q6716_s3 q6717_s3 q6718_s3 q6719_s3 q6720_s3 q6721_s3 q6722_s3 q6723_s3 (1=0) (2=1) (3=2) (4=3) (5=4) (else=.)
+
+
+gen caregivers_burden_s3= q6712_s3 + q6713_s3 + q6714_s3 + q6715_s3 + q6716_s3 + q6717_s3 + q6718_s3 + q6719_s3 + q6720_s3 + q6721_s3 + q6722_s3 + q6723_s3
+
+
+label variable caregivers_burden_s3 "Caregiver's burden, continuous (c2011_w4)"
 ```
 
 <!--# TODO: Leer texto "Otras consideraciones a continuación -->
