@@ -62,15 +62,23 @@ participants and to measure change over time resulting from progression of the
 care recipient's condition, or from interventions aimed at reducing burden. 
 A significant advantage of the popularity of the ZBI is that results obtained in
 studies can be easily compared and synthesized. We used a reduced version of 12 
-items bedard_zarit_2001.
+items @bedard_zarit_2001.
 
 Each item on the interview is a statement which the caregiver is 
 asked to endorse using a 5-point scale. Response options range from 0 (Never) 
 to 4 (Nearly Always).
 
 # Explanation of how the variables were created
+The variable is created as the product of the sum of the reduced version' items:
+`q6712_s3` (insufficient time), `q6713_s3` (stress), `q6714_s3` (irritated),
+`q6715_s3` (negative impact on social networks), `q6716_s3` (exhausted), 
+`q6717_s3` (health), `q6718_s3` (limited private life), `q6719_s3` (worse social
+networks), `q6720_s3` (life out of control), `q6721_s3` (insecure), `q6722_s3` 
+(could do more) and `q6723_s3` (could do better).
 
+Obtenemos una escala de 0 a 48, mayores índices indican mayor carga.
 
+Higher indexes indicate higher burden.
 
 # Syntax used to create the variable (Stata 15)
 
