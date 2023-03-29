@@ -58,12 +58,8 @@ motivates and pushes the individual to run away from a problem [@lu2021].
 
 # Explanation of how the variables were created
 
-The level of stress was measured using 3 items corresponding to the same
-question (how stressed/anguished do you feel?) asked with reference to 3
-different times of the day, (1) morning (q7033), (2) evening (q7073), (3) night
-(q7118). The total perceived stress score was obtained by adding the responses
-given to these 3 items. The stress scale ranges from 0 to 6, the higher the
-number the higher the perceived stress level.
+The level of stress was measured using 2 items: q7008a (how often did you feel that you were unable to control the important things in your life?) and q7008b (how often did you feel that you could not cope with all the things you had to do?). The total perceived stress score was obtained by adding the responses
+given to these 2 items. The stress scale ranges from 1 (never) to 5(many times).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -75,7 +71,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 * Perceived stress 
-egen perceived_stress_s3 = rowtotal (q7033_tense_s3 q7073_tense_s3 q7118_tense_s3), missing
+egen perceived_stress_s3 = rowtotal (q7008a_s3 q7008b_s3), missing
 label variable perceived_stress_s3 "Perceived stress (c2011_w4)"
 ```
 
