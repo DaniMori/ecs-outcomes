@@ -55,6 +55,18 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
+The 22-item version of the Zarit Burden Interview (ZBI) is the most widely used 
+caregiver self-report measure used by many aging agencies @zarit_relatives_1980.
+It has been used in a variety of research designs, to discriminate among study 
+participants and to measure change over time resulting from progression of the 
+care recipient's condition, or from interventions aimed at reducing burden. 
+A significant advantage of the popularity of the ZBI is that results obtained in
+studies can be easily compared and synthesized. We used a reduced version of 12 
+items bedard_zarit_2001.
+
+Each item on the interview is a statement which the caregiver is 
+asked to endorse using a 5-point scale. Response options range from 0 (Never) 
+to 4 (Nearly Always).
 
 # Explanation of how the variables were created
 
