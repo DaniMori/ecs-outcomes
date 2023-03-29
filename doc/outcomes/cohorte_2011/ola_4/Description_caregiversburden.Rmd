@@ -70,26 +70,7 @@ to 4 (Nearly Always).
 
 # Explanation of how the variables were created
 
-<!--# TODO: Leer párrafos a continuación -->
 
-Este apartado es complementario al siguiente. Trata de describir, de forma clara
-y concisa, cómo has generado la variable. El objetivo de esta sección es doble.
-Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no
-estar familiarizados con el código utilizado para generar la/s variable/s (e.g.,
-R, Stata). Por otro, facilitar la información suficiente para describir
-adecuadamente la/s variable/s en los artículos científicos.
-
-Si se trata de variable/s que ya se había/n generado en ocasiones anteriores
-(e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales
-particularidades o modificaciones que realices (e.g., versión reducida,
-detección de errores).
-
-Como criterio general, **esta sección debería ser suficiente para entender cómo
-ha de generarse la variable sin necesidad de entender la sintaxis**.
-
-<!--# TODO: Borrar párrafos anteriores -->
-
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
 
 # Syntax used to create the variable (Stata 15)
 
