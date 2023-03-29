@@ -6,7 +6,7 @@ output:
 # bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
 bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
 csl: "`r ecs.data::get_proj_csl_file()`"
-# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+nocite: '@bedard_zarit_2001, @zarit_relatives_1980' ## TODO: Descomentar y añadir cita(s) o borrar campo
 editor_options: 
   markdown:
     wrap: 80
@@ -50,19 +50,19 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +----------------------+------------------------------------------+------------+----------------------+
 | Main variable name   | Label                                    | Format     | Code                 |
 +:=====================+:=========================================+:===========+:=====================+
-| caregivers_burden_s3 | Caregiver's burden, continuous (c2011_w4)| Continuous | 0 - 48               |
+| caregivers_burden_s3 | Caregiver's burden, continuous (c2011_w4)| Continuous |  0 - 43              |
 +----------------------+------------------------------------------+------------+----------------------+
 
 # Variable description
 
 The 22-item version of the Zarit Burden Interview (ZBI) is the most widely used 
-caregiver self-report measure used by many aging agencies @zarit_relatives_1980.
+caregiver self-report measure used by many aging agencies (@zarit_relatives_1980).
 It has been used in a variety of research designs, to discriminate among study 
 participants and to measure change over time resulting from progression of the 
 care recipient's condition, or from interventions aimed at reducing burden. 
 A significant advantage of the popularity of the ZBI is that results obtained in
 studies can be easily compared and synthesized. We used a reduced version of 12 
-items @bedard_zarit_2001.
+items (@bedard_zarit_2001).
 
 Each item on the interview is a statement which the caregiver is 
 asked to endorse using a 5-point scale. Response options range from 0 (Never) 
@@ -76,9 +76,7 @@ The variable is created as the product of the sum of the reduced version' items:
 networks), `q6720_s3` (life out of control), `q6721_s3` (insecure), `q6722_s3` 
 (could do more) and `q6723_s3` (could do better).
 
-Obtenemos una escala de 0 a 48, mayores índices indican mayor carga.
-
-Higher indexes indicate higher burden.
+It is a scale from 0 to 48 (empirically 43). Higher indexes indicate higher burden. 
 
 # Syntax used to create the variable (Stata 15)
 
@@ -121,6 +119,8 @@ saveold "Outcome_caregiversburden.dta", replace version(13)
 
 -   Name: Cristina Rodríguez Prada
 -   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+
+
 <br>
 
 
@@ -128,7 +128,7 @@ Original version:
 
 -   Name: Joan Domènech
 -   e-mail:
-    [\j.domenech@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
+    [j.domenech@pssjd.org](mailto:j.domenech@pssjd.org){.email}
 
 # References
 
