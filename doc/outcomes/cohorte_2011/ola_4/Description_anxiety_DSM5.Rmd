@@ -147,7 +147,7 @@ replace gad_crit_3= 0 if d_symptot<3
 replace gad_crit_3 = 1 if d_symptot>=3 & d_symptot!=.
 
 *#Criterion 4: "Worries are related to diffuse concerns"
-**Note: There is a filter for that in the questionnaire, we don't have to take it **into acount here (q4554)
+**Note: There is a filter for that in the questionnaire, we do not have to take it into acount here (q4554)
 
   
 *#Criterion 5: "The episode is not attributable to psychoactive substance use or
@@ -167,6 +167,7 @@ label values   gad_s3  yesno
 label variable gad_s3  "Lifetime generalized anxiety disorder (c2011_w4)"
 
 ***#"12 months generalized anxiety disorder diagnostic variable":
+  
   gen gad_12m_s3 = .
 replace gad_12m_s3 = 0 if (q4573_episode12_s3!=1 & q4573_episode12_s3!=.) 
 replace gad_12m_s3 = 1 if  q4573_episode12_s3==1 
