@@ -62,13 +62,21 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
-**Tobacco products** are made entirely or partly of leaf tobacco as raw material, which are intended to be smoked, sucked, chewed or snuffed. All contain the highly addictive psychoactive ingredient, nicotine.
+**Tobacco products** are made entirely or partly of leaf tobacco as raw material,
+which are intended to be smoked, sucked, chewed or snuffed. All contain the 
+highly addictive psychoactive ingredient, nicotine.
 
-**Tobacco use** is one of the main risk factors for a number of chronic diseases, including cancer, lung diseases, and cardiovascular diseases.
+**Tobacco use** is one of the main risk factors for a number of chronic diseases,
+including cancer, lung diseases, and cardiovascular diseases 
+@world_health_organization_tobacco_2023.
 
 # Explanation of how the variables were created
 
-This variable describes the smoking habit of the participants, including the use of smokeless tobacco. Original variables include `q3001_used_tobac_s3` *(Have you used tobaco?* *(1 = Yes, 2 = No))* and `q3002_use_tobaco_s3` *(Do you use tobaco?)* *(1 = Yes, daily; 2 = Yes, not daily; 3 = No; 4 = The participant said that he/* *she has never smoked before)*
+This variable describes the smoking habit of the participants, including the use
+of smokeless tobacco. Original variables include `q3001_used_tobac_s3` 
+*(Have you used tobaco?* *(1 = Yes, 2 = No))* and `q3002_use_tobaco_s3`
+*(Do you use tobaco?)* *(1 = Yes, daily; 2 = Yes, not daily; 3 = No; *
+*4 = The participant said that he/* *she has never smoked before)*
 
 Our final variable has four levels, product of the combination of both variables:
 
