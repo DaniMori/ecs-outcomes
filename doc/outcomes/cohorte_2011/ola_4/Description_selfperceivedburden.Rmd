@@ -5,7 +5,6 @@ output:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 bibliography: "`r ecs.data::get_proj_bib_file()`" 
 csl: "`r ecs.data::get_proj_csl_file()`"
-nocite: '@pedroso-chaparro_validation_2021, @cousineau_measuring_2003' 
 editor_options: 
   markdown:
     wrap: 80
@@ -55,13 +54,13 @@ discomforts experienced by the elderly. It is one of the most common
 health-related concerns as they become dependent and take a toll on the 
 resources of their family members. 
 
-The original scale proposed by Cousineau et al. (2003) "Self-Perceived Burden
+The original scale proposed by @cousineau_measuring_2003 "Self-Perceived Burden
 Scale" assesses the feeling of guilt for perceiving oneself as a burden to the 
 family in older adults without any functional or cognitive impairment.  
 It consists of 25 Likert-type scale items, from 1 ("never or almost never") 
 to 5 ("almost always"). 
 
-The version adapted by Pedroso-Chaparro et al. (2021) uses an abbreviated 
+The version adapted by @pedroso-chaparro_validation_2021 uses an abbreviated 
 version of 16 items. In Cohort 2011, wave 4 of Edad con Salud, a reduced version 
 of this abbreviated version of only 5 items has been used.
 
