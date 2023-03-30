@@ -38,25 +38,34 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+--------------------+------------------------------------------+------------+----------------------+
-| Main variable name | Label                                    | Format     | Code                 |
-+:===================+:=========================================+:===========+:=====================+
-| <var_name>         | <Etiqueta>                               | <Formato>  | <Categorías / Rango> |
-+--------------------+------------------------------------------+------------+----------------------+
+| Main variable name | Label                                            | Format       | Code |
+|:-------------------|:-------------------------------------------------|:-------------|:-----|
+| tmt_time_a\_s3     | TMT completion time (seconds), part A (c1011_w4) | Cuantitative | 0+   |
+| tmt_errors_a\_s3   | TMT errors, part A (c1011_w4)                    | Cuantitative | 0+   |
+| tmt_time_b\_s3     | TMT completion time (seconds), part B (c1011_w4) | Cuantitative | 0+   |
+| tmt_errors_b\_s3   | TMT errors, part A (c1011_w4)                    | Cuantitative | 0+   |
+| tmt_ratio_s3       | Trail making ratio (seconds) (c1011_w4)          | Cuantitative | 0+   |
 
 <!--# TODO: Añadir variables outcome a la tabla -->
 
 # Variable description
 
 The Trail Making Test is a neuropsychological assessment tool used to evaluate a
-person's visual-motor processing speed, attention, and executive function. The
-test consists of two parts, A and B.
+person's visual-motor processing speed, attention, and executive function. This
+version is adapted from a neuropsychological battery [@benedet_evaluacion_2013],
+and has been previously validated in Spanish in a sample of adult argentinian
+population [@fernández2002]. Herein we apply the same scoring and application
+method, which consists of correcting the errors the participant makes in
+application time; as a result, the errors are taken into account in the
+completion time [@reitan1971; @reitan1958], although the method has been
+criticized for its dependence of the examiner's response time [@fernández2002].
 
-Part A requires the person to connect a series of 25 numbered circles, arranged
-randomly on a sheet of paper, in ascending order as quickly as possible. Part B
-is similar, but it includes both numbered circles (1-13) and letter circles
-(A-L), and the person must alternate between connecting the two types of circles
-in ascending order (1-A-2-B-3-C, etc.).
+The test consists of two parts, A and B. Part A requires the person to connect a
+series of 25 numbered circles, arranged randomly on a sheet of paper, in
+ascending order as quickly as possible. Part B is similar, but it includes both
+numbered circles (1-13) and letter circles (A-L), and the person must alternate
+between connecting the two types of circles in ascending order (1-A-2-B-3-C,
+etc.).
 
 The time taken to complete each part is recorded, and the difference between the
 times for Part B and Part A (known as the "Trail Making Ratio") can provide
@@ -75,17 +84,31 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+* "Recode the missing value categories as system missing values:"
+recode q2549_sequence1_time_s3 q2552_sequence2_time_s3 (888=.) (999=.)
+label values q2549_sequence1_time_s3
+label values q2552_sequence2_time_s3
+
+rename q2549_sequence1_time_s3  tmt_time_a_s3
+rename q2550_sequence1_error_s3 tmt_errors_a_s3
+rename q2552_sequence2_time_s3  tmt_time_b_s3
+rename q2553_sequence2_error_s3 tmt_errors_b_s3
+
+gen tmt_ratio_s3 = tmt_time_b_s3 - tmt_time_a_s3
+
+label variable tmt_time_a_s3   "TMT completion time (seconds), part A (c1011_w4)"
+label variable tmt_errors_a_s3 "TMT errors, part A (c1011_w4)"
+label variable tmt_time_b_s3   "TMT completion time (seconds), part B (c1011_w4)"
+label variable tmt_errors_b_s3 "TMT errors, part B (c1011_w4)"
+label variable tmt_ratio_s3    "Trail making ratio (seconds) (c1011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+keep ID_ECS q0007a_result_s3 proxy_s3 tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3
 
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-codebook <variable(s) generada(s)>
+codebook tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
@@ -107,12 +130,6 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 -   Phone number: (+34) 91 497 58 16
 
 # References
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta
-información será igualmente útil para citar apropiadamente en nuestros artículos
-científicos.
 
 ::: {#refs}
 :::
