@@ -131,7 +131,7 @@ gen burden_to_family_s3 = 6 - q6728_extra_s3
 label variable burden_to_family_s3 "Self-perception of being a burden to the family (c2011_w4)"
 ```
 
-<br> 
+<br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result_s3 proxy_s3 guilt_burden_s3 guilt_burden_100_s3 burden_to_family_s3
@@ -139,11 +139,9 @@ keep ID_ECS q0007a_result_s3 proxy_s3 guilt_burden_s3 guilt_burden_100_s3 burden
 codebook guilt_burden_s3 guilt_burden_100_s3 burden_to_family_s3
 ```
 
-
 ```{stata save-data-test, eval=TEST}
 saveold "Outcome_selfperceivedburden.dta", replace version(13)
 ```
-
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
@@ -157,10 +155,9 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 -   Name: Cristina Rodríguez Prada
 -   e-mail:
-    [cristina.rodriguez@inv.uam.es](cristina.rodriguez@inv.uam.es){.email}
+    [cristina.rodriguez\@inv.uam.es](cristina.rodriguez@inv.uam.es){.email}
 
 <br>
-
 
 # References
 
