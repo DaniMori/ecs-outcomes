@@ -74,7 +74,14 @@ between different mental tasks.
 
 # Explanation of how the variables were created
 
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
+Missing value categories from the two time variables (`q2549_sequence1_time_s3`
+and `q2552_sequence2_time_s3`) are recoded as system missing values, prior to
+renaming them as their corresponding outcomes (`tmt_time_a_s3` and
+`tmt_time_b_s3`, respectively). Variable `tmt_ratio_s3` is computed as the
+difference of the two previous ones, i.e. `tmt_time_b_s3` - `tmt_time_a_s3`.
+
+The two "number of error" variables are simply renamed as their corresponding
+outcomes (`tmt_errors_a_s3` and `tmt_errors_a_s3`, respectively).
 
 # Syntax used to create the variable (Stata 15)
 
