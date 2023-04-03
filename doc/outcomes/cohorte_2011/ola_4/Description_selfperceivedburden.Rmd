@@ -97,7 +97,7 @@ family is helping me beyond their capacity).
   transformation is done following the formula `newvar = ((var - min)/(max-min))*100`,
   which first subtracts the minimum value of the original range (4) from each 
   value of var. It then divides the result by the range of the original variable
-  (18-4=14) to get a proportion between 0 and 1. Finally, it multiplies this 
+  (20-4=16) to get a proportion between 0 and 1. Finally, it multiplies this 
   proportion by the range of the new variable (100) to get the rescaled value.
 
 - __Self-perception of being a burden to the family.__ Item `q6728_extra_s3` 
