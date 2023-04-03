@@ -36,7 +36,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| guilt_burden_s3    | Feelings of guilt for being a burden in  | Continuous | 4-18                 |
+| guilt_burden_s3    | Feelings of guilt for being a burden in  | Continuous | 4-20                 |
 |                    | direct scores (c2011_w4)                 |            |                      |
 +--------------------+------------------------------------------+------------+----------------------+
 | guilt_burden_100_s3| Feelings of guilt for being a burden     | Continuous | 0-100                |
@@ -122,7 +122,7 @@ replace q6727_extra_s3 = 6 - q6727_extra_s3
 gen guilt_burden_s3 = (q6724_guilt1_s3 + q6727_extra_s3 + q6725_guilt2_s3 + q6726_guilt3_s3)
 label variable guilt_burden_s3 "Feelings of guilt for being a burden in direct scores (c2011_w4)"
 
-gen guilt_burden_100_s3 = ((guilt_burden_s3-4) / (18-4))*100
+gen guilt_burden_100_s3 = ((guilt_burden_s3-4) / (20-4))*100
 label variable guilt_burden_100_s3 "Feelings of guilt for being a burden (transformed to 0-100) (c2011_w4)"
 
 *Self-perception of being a burden to the family
