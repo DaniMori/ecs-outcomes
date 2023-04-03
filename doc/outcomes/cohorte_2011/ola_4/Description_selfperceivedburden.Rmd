@@ -65,6 +65,7 @@ version of 16 items. In Cohort 2011, wave 4 of Edad con Salud, a reduced version
 of this abbreviated version of only 5 items has been used.
 
 Mainly two facets are distinguished:
+
 - __Guilt associated with the perception of being a burden.__ In Edad con Salud
 this scale would be composed of items `q6724_guilt1_s3` (I feel guilty for 
 overburdening my family for taking care of me); 
