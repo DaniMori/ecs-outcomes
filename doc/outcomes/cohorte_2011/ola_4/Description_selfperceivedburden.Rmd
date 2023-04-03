@@ -92,7 +92,8 @@ family is helping me beyond their capacity).
   - __`guilt_burden_s3`__: Sum of the aforementioned items. Item `q6727_extra_s3`
     is an inverse item, so it is necessary to recode the values for a correct
     interpretation of the score. Direct score, resulting from the sum of the
-    aforementioned items.
+    aforementioned items. Theoretically it must have a range from 4 to 20;
+    empirically we got 4 to 18.
   - __`guilt_burden_100_s3`__: Same as above, but in 0 to 100 scale. This 
   transformation is done following the formula `newvar = ((var - min)/(max-min))*100`,
   which first subtracts the minimum value of the original range (4) from each 
