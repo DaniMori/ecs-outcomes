@@ -40,11 +40,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                            | Format       | Code |
 |:-------------------|:-------------------------------------------------|:-------------|:-----|
-| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4) | Cuantitative | 0+   |
-| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                    | Cuantitative | 0+   |
-| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4) | Cuantitative | 0+   |
-| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                    | Cuantitative | 0+   |
-| tmt_ratio_s3       | Trail making ratio (seconds) (c2011_w4)          | Cuantitative | 0+   |
+| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4) | Quantitative | 0+   |
+| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                    | Quantitative | 0+   |
+| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4) | Quantitative | 0+   |
+| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                    | Quantitative | 0+   |
+| tmt_ratio_s3       | Trail making ratio (seconds) (c2011_w4)          | Quantitative | 0+   |
 
 <!--# TODO: Añadir variables outcome a la tabla -->
 
