@@ -40,11 +40,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                            | Format       | Code |
 |:-------------------|:-------------------------------------------------|:-------------|:-----|
-| tmt_time_a\_s3     | TMT completion time (seconds), part A (c1011_w4) | Cuantitative | 0+   |
-| tmt_errors_a\_s3   | TMT errors, part A (c1011_w4)                    | Cuantitative | 0+   |
-| tmt_time_b\_s3     | TMT completion time (seconds), part B (c1011_w4) | Cuantitative | 0+   |
-| tmt_errors_b\_s3   | TMT errors, part A (c1011_w4)                    | Cuantitative | 0+   |
-| tmt_ratio_s3       | Trail making ratio (seconds) (c1011_w4)          | Cuantitative | 0+   |
+| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4) | Cuantitative | 0+   |
+| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                    | Cuantitative | 0+   |
+| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4) | Cuantitative | 0+   |
+| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                    | Cuantitative | 0+   |
+| tmt_ratio_s3       | Trail making ratio (seconds) (c2011_w4)          | Cuantitative | 0+   |
 
 <!--# TODO: Añadir variables outcome a la tabla -->
 
@@ -103,11 +103,11 @@ rename q2553_sequence2_error_s3 tmt_errors_b_s3
 
 gen tmt_ratio_s3 = tmt_time_b_s3 - tmt_time_a_s3
 
-label variable tmt_time_a_s3   "TMT completion time (seconds), part A (c1011_w4)"
-label variable tmt_errors_a_s3 "TMT errors, part A (c1011_w4)"
-label variable tmt_time_b_s3   "TMT completion time (seconds), part B (c1011_w4)"
-label variable tmt_errors_b_s3 "TMT errors, part B (c1011_w4)"
-label variable tmt_ratio_s3    "Trail making ratio (seconds) (c1011_w4)"
+label variable tmt_time_a_s3   "TMT completion time (seconds), part A (c2011_w4)"
+label variable tmt_errors_a_s3 "TMT errors, part A (c2011_w4)"
+label variable tmt_time_b_s3   "TMT completion time (seconds), part B (c2011_w4)"
+label variable tmt_errors_b_s3 "TMT errors, part B (c2011_w4)"
+label variable tmt_ratio_s3    "Trail making ratio (seconds) (c2011_w4)"
 ```
 
 <br>
