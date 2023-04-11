@@ -126,9 +126,9 @@ label variable tmt_diff_s3     "Trail making test difference (seconds) (c2011_w4
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result_s3 proxy_s3 tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3 tmt_diff_s3
 
-codebook tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3
+codebook tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3 tmt_diff_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
