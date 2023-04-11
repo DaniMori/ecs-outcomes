@@ -46,8 +46,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                    | Quantitative | 0+   |
 | tmt_ratio_s3       | Trail making ratio (seconds) (c2011_w4)          | Quantitative | 0+   |
 
-<!--# TODO: Añadir variables outcome a la tabla -->
-
 # Variable description
 
 The Trail Making Test is a neuropsychological assessment tool used to evaluate a
