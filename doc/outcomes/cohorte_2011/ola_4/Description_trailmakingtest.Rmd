@@ -120,7 +120,7 @@ label variable tmt_errors_a_s3 "TMT errors, part A (c2011_w4)"
 label variable tmt_time_b_s3   "TMT completion time (seconds), part B (c2011_w4)"
 label variable tmt_errors_b_s3 "TMT errors, part B (c2011_w4)"
 label variable tmt_ratio_s3    "Trail making test ratio (c2011_w4)"
-label variable tmt_ratio_s3    "Trail making test difference (seconds) (c2011_w4)"
+label variable tmt_diff_s3     "Trail making test difference (seconds) (c2011_w4)"
 ```
 
 <br>
