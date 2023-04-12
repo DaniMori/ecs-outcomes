@@ -14,6 +14,7 @@ params:
   test: true
   double-coding: false
 ---
+
 ```{r setup, include=FALSE}
 library(Statamarkdown)
 
@@ -37,13 +38,13 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| cantril_present_s3 | Evaluative wellbeing.Satisfaction with   |            |                      |
+| cantril_present_s3 | Evaluative wellbeing. Satisfaction with  |            |                      |
 |                    | life (present) (c2011_w4)                |Quantitative| 0-10                 |
 +--------------------+------------------------------------------+------------+----------------------+
 | cantril_future_s3  | Evaluative wellbeing. Satisfaction with  |            |                      |
 |                    | life (future, in 5 years) (c2011_w4)     |Quantitative| 0-10                 |
 +--------------------+------------------------------------------+------------+----------------------+
-| flourising_scale_s3| Eudaimonic wellbeing. Flourishing Scale  |Quantitative| 8 (lowest wellbeing)-|
+|flourishing_scale_s3| Eudaimonic wellbeing. Flourishing Scale  |Quantitative| 8 (lowest wellbeing)-|
 |                    | Score (c2011_w4)                         |            |56 (highest wellbeing)|
 +--------------------+------------------------------------------+------------+----------------------+
 | positiveaffect_s3  | Experiential wellbeing. Positive affect  |Quantitative| 0-6                  |
@@ -65,8 +66,8 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 __Subjective wellbeing__ is a psychological phenomenon that can be divided into
 three dimensions:
 
-- __Evaluative wellbeing__ _(Cantril Self-Anchoring Striving Scale,_ 
-@cantril_pattern_1966) (`cantril_present_s3` and `cantril_future_s3`). In words
+- __Evaluative wellbeing__ _(Cantril Self-Anchoring Striving Scale,_ @cantril_pattern_1966)
+(`cantril_present_s3` and `cantril_future_s3`). In words
 of Cantril, “A person is asked to define on the basis of his own assumptions,
 perceptions, goals and values the two extremes or anchoring points of the 
 spectrum on which some scale measurement is desired – for example he may
@@ -212,17 +213,14 @@ label variable netaffect_s3 "Experiential wellbeing. Net affect (DRM) (c2011w4)"
 
 ```
 
-
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy cantril_present_s3  cantril_future_s3  flourising_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3   
-codebook cantril_present_s3  cantril_future_s3  flourising_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 cantril_present_s3  cantril_future_s3  flourishing_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3   
+codebook cantril_present_s3  cantril_future_s3  flourishing_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3
 ```
-
 
 ```{stata save-data-test, eval=TEST}
 saveold "Outcome_wellbeing.dta", replace version(13)
 ```
-
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
@@ -233,15 +231,14 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 # Contact person:
 
--   Name: Cristina Rodríguez Prada (adapted algorithms for wave 4 & creates originally cantril variables)
+-   Name: Cristina Rodríguez Prada (adapted algorithms for wave 4 & creates
+    originally cantril variables)
 -   e-mail:
-    [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+    [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
-
-Original version (DRM):
+**Original version (DRM):**
 
 -   Name: Félix Caballero
 -   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
@@ -264,11 +261,10 @@ Original version (DRM):
 
 <br>
 
-Original version (Flourishing Scale):
+**Original version (Flourishing Scale):**
 
 -   Name: Darío Moreno Agostino
--   e-mail: [dario.moreno@uam.es](mailto:dario.moreno@uam.es)
-
+-   e-mail: [dario.moreno\@uam.es](mailto:dario.moreno@uam.es)
 
 # References
 
@@ -276,7 +272,6 @@ Original version (Flourishing Scale):
 :::
 
 \newpage
-
 
 # Session info
 
