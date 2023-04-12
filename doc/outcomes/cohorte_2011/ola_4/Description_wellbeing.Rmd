@@ -1,0 +1,285 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Wellbeing'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) 
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++--------------------+------------------------------------------+------------+----------------------+
+| Main variable name | Label                                    | Format     | Code                 |
++:===================+:=========================================+:===========+:=====================+
+| cantril_present_s3 | Evaluative wellbeing.Satisfaction with   |            |                      |
+|                    | life (present) (c2011_w4)                |Quantitative| 0-10                 |
++--------------------+------------------------------------------+------------+----------------------+
+| cantril_future_s3  | Evaluative wellbeing. Satisfaction with  |            |                      |
+|                    | life (future, in 5 years) (c2011_w4)     |Quantitative| 0-10                 |
++--------------------+------------------------------------------+------------+----------------------+
+| flourising_scale_s3| Eudaimonic wellbeing. Flourishing Scale  |Quantitative| 8 (lowest wellbeing)-|
+|                    | Score (c2011_w4)                         |            |56 (highest wellbeing)|
++--------------------+------------------------------------------+------------+----------------------+
+| positiveaffect_s3  | Experiential wellbeing. Positive affect  |Quantitative| 0-6                  |
+|                    | (DRM) (c2011w4)                          |            |                      |                  
++--------------------+------------------------------------------+------------+----------------------+
+| negativeaffect_s3  | Experiential wellbeing. Negative affect  |Quantitative| 0-6                  |
+|                    | (DRM) (c2011w4)                          |            |                      |  
++--------------------+------------------------------------------+------------+----------------------+
+| netaffect_s3       | Experiential wellbeing. Net affect       |Quantitative| -6 - +6              |
+|                    | (DRM) (c2011w4)                          |            |                      | 
++--------------------+------------------------------------------+------------+----------------------+
+
+<!--# TODO: Añadir variables outcome a la tabla -->
+
+<!--# TODO: Eliminar ejemplos -->
+
+# Variable description
+
+__Subjective wellbeing__ is a psychological phenomenon that can be divided into
+three dimensions:
+
+- __Evaluative wellbeing__ _(Cantril Self-Anchoring Striving Scale,_ 
+@cantril_pattern_1966) (`cantril_present_s3` and `cantril_future_s3`). In words
+of Cantril, “A person is asked to define on the basis of his own assumptions,
+perceptions, goals and values the two extremes or anchoring points of the 
+spectrum on which some scale measurement is desired – for example he may
+be asked to define the ‘top’ and ‘bottom,’ the ‘good’ and ‘bad,’ the ‘best’ 
+and the ‘worst.’ This well-defined continuum is then used as our measuring
+device”. The Cantril self-anchoring striving scale or in short the 
+Cantril-ladder is an instrument to measure people’s attitudes towards their 
+life and its components in various respects (_evaluative wellbeing_). 
+The original scale contains a ladder with 11 steps, and the end points of
+the scale are defined by the respondents in terms of their best and their worst 
+life experience.
+
+
+- __Eudaimonic wellbeing__ _(Flourishing Scale_, @diener_new_2009) 
+(`flourishing_scale_s3`). Several authors, based on earlier humanistic 
+psychology theories, suggest that there are several universal human psychological
+needs, such as the need for competence, relatedness, and self-acceptance. 
+Additionally, other approaches have proposed the importance of interest and 
+engagement, and purpose and meaning, as basic components of human wellbeing. 
+These aspects of wellbeing have been conceptualized as “eudaimonic wellbeing”. 
+The _Flourishing Scale_ allows assessing them in a brief and reliable way. 
+
+
+- __Experiential wellbeing__. The _Day Reconstruction Method (DRM)_ (@kahneman_survey_2004,
+@kahneman_developments_2006) measures how people spend their time and how they
+emotionally experience the various activities of life. In the extended version,
+it contains 12 items, including 4 positive and 8 negative. An example of a DRM
+item follows: \_"Indicate to what extent you\_ *felt happy during specific
+activities of your day"*. Response options are conformed by a 7-point Likert
+scale ranging from 0,"not at all" to 6, "very much".
+
+In Edad con Salud, respondents were asked to complete an abbreviated version
+of the DRM (@miret_validation_2012, @ayuso-mateos_multi-country_2013,
+@caballero_evaluation_2014, @mellor-marsa_measurement_2016). Each participant
+provided information about the activities conducted the previous day and rated
+the emotions experienced during these activities. By means of Computer-Assisted
+Personal Interviewing, one activity was randomly selected for each time frame
+(morning, afternoon and evening).
+
+-   **Positive affect** (`positiveaffect_s3`) refers to emotions of happiness, 
+    warminess, friendliness and enjoyment with myself.
+-   **Negative affect** (`negativeaffect_s3`) is defined by emotions of 
+    frustration, annoyment, depression, feeling blue, hassled/pushed around, 
+    angry/hostile, worried/anxious, criticized/put down.
+-   **Net affect** (`netaffect_s3`) is defined as the average of two positive 
+    emotions (calm/relaxed and enjoying) minus the average of the five negative
+    ones (worried, rushed, irritated/angry, depressed, and tense/stressed), 
+    i.e., positive affect minus negative affect.
+
+
+# Explanation of how the variables were created
+
+Variables of __"evaluative wellbeing"__ (`cantril_present_s3` and `cantril_future_s3`)
+are conformed by the independent score of two items of the Cantril 
+Self-Anchoring Striving Scale. Original items were`q7008d_cantril_s3` for the 
+present life satisfaction, and `cantril_future_s3` for the life satisfaction 
+respondants expect to have in 5 years. These variables are not modified, 
+just have been recoded their values for missing cases (999 and 888). 
+They have been renamed too. Theoretically, the score ranges from 0 to 10, 
+highest scores indicating higher evaluative wellbeing.
+
+<br>
+
+From __"eudaimonic wellbeing"__, variable `flourishing_scale_s3` is created 
+based on items `q7528_s3:q7535_s3`.
+First, we recoded 888 and 999 values as missing values. Second, all variables are
+added together. Theoretically, the score ranges from 8 (lowest  wellbeing possible) 
+to 56 (highest wellbeing possible).
+
+<br>
+
+In the case of __"experiential wellbeing"__:
+
+Three measures were obtained from the Day Reconstruction Method (DRM): *positive*
+*affect*, *negative affect* and *net affect*.
+
+-   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
+    emotions (calm/relaxedand enjoying).
+
+-   **Negative affect** (`negativeaffect_s3`): the average of the five negative 
+    ones (worried, rushed, irritated/angry, depressed, and tense/stressed).
+
+-   **Net affect** (`netaffect_s3`): the average of the two positive emotions 
+    (calm/relaxed and enjoying) minus the average of the five negative ones 
+    (worried, rushed, irritated/angry, depressed, and tense/stressed), i.e., 
+    positive affect minus negative affect (Kahneman & Krueger, 2006). 
+    Individual net affect was calculated adding up the net-affect in each 
+    activity performed weighted by its duration. Net affect scores ranged from
+    -6 to 6, with higher scores representing a better affective state.
+
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*EVALUATIVE WELLBEING
+
+recode q7008d_cantril_s3 (999 =.) (888=.), gen(cantril_present_s3)
+label variable cantril_present_s3 "Evaluative wellbeing. Satisfaction with life (present) (c2011_w4)"  
+
+recode q7008e_cantril_future_s3 (999 =.) (888=.), gen(cantril_future_s3)
+label variable cantril_future_s3 "Evaluative wellbeing. Satisfaction with life (future, in 5 years) (c2011_w4)"  
+
+
+*EUDAIMONIC WELLBEING
+recode q7528_s3 q7529_s3 q7530_s3 q7531_s3 q7532_s3 q7533_s3 q7534_s3 q7535_s3 (888 999 = .)
+gen flourishing_scale_s3  = q7528_s3 + q7529_s3 + q7530_s3 + q7531_s3 + q7532_s3 + q7533_s3 + q7534_s3 + q7535_s3
+label variable flourishing_scale_s3 "Eudaimonic wellbeing. Flourishing Scale Score (c2011_w4)"
+
+
+*EXPERIENTIAL WELLBEING
+* Duration of the three activities randomly chosen in the DRM at wave 4
+
+gen duration_DRM4=q7026_s3 + q7066_s3 + q7111_s3
+label variable duration_DRM4 "Total duration of the three activities randomly chosen (c2011w4)"
+
+* Negative affect per activity
+egen neg_activity1=rowmean(q7029_worr_s3-q7033_tense_s3)
+egen neg_activity2=rowmean(q7069_worr_s3-q7073_tense_s3)
+egen neg_activity3=rowmean(q7114_worr_s3-q7118_tense_s3)
+
+* Positive affect per activity
+egen pos_activity1=rowmean(q7034_calm_s3 q7035_enjoy_s3)
+egen pos_activity2=rowmean(q7074_calm_s3 q7075_enjoy_s3)
+egen pos_activity3=rowmean(q7119_calm_s3 q7120_enjoy_s3)
+
+* Mean of negative and positive affect
+gen negativeaffect_s3=((q7026_s3*neg_activity1) + (q7066_s3*neg_activity2) + (q7111_s3*neg_activity3))/duration_DRM4
+gen positiveaffect_s3=((q7026_s3*pos_activity1) + (q7066_s3*pos_activity2) + (q7111_s3*pos_activity3))/duration_DRM4
+replace negativeaffect_s3=((neg_activity1+neg_activity2+neg_activity3)/3) if duration_DRM4>1
+replace positiveaffect_s3=((pos_activity1+pos_activity2+pos_activity3)/3) if duration_DRM4>1
+
+*Net affect
+gen netaffect_s3=positiveaffect_s3-negativeaffect_s3
+
+label variable positiveaffect_s3 "Experiential wellbeing. Positive affect (DRM) (c2011w4)"
+label variable negativeaffect_s3 "Experiential wellbeing. Negative affect (DRM) (c2011w4)"
+label variable netaffect_s3 "Experiential wellbeing. Net affect (DRM) (c2011w4)"
+
+```
+
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy cantril_present_s3  cantril_future_s3  flourising_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3   
+codebook cantril_present_s3  cantril_future_s3  flourising_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3
+```
+
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_wellbeing.dta", replace version(13)
+```
+
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_wellbeing.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada (adapted algorithms for wave 4 & creates originally cantril variables)
+-   e-mail:
+    [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+
+<br>
+
+<!--# TODO: Completar / eliminar "original version" según corresponda -->
+
+Original version (DRM):
+
+-   Name: Félix Caballero
+-   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid
+-   Phone number: (+34) 91 497 50 88
+
+<br>
+
+-   Name: Marta Miret
+-   e-mail: [marta.miret\@uam.es](mailto:marta.miret@uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid
+-   Phone number: (+34) 91 497 27 16
+
+<br>
+
+-   Name: Elvira Lara *(adapted the algorithm for wave 3)*
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid / Universidad Complutense de Ma
+    drid
+
+<br>
+
+Original version (Flourishing Scale):
+
+-   Name: Darío Moreno Agostino
+-   e-mail: [dario.moreno@uam.es](mailto:dario.moreno@uam.es)
+
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
