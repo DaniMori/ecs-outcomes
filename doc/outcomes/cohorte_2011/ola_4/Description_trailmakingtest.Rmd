@@ -66,7 +66,7 @@ numbered circles (1-13) and letter circles (A-L), and the person must alternate
 between connecting the two types of circles in ascending order (1-A-2-B-3-C,
 etc.).
 
-The time taken to complete each part is recorded. Alont with it, the Trail
+The time taken to complete each part is recorded. Along with it, the Trail
 Making Test (TMT) Ratio and Difference are commonly used to analyze the
 performance. The TMT Ratio is calculated by dividing the time taken to complete
 Part B by the time taken to complete Part A, while the TMT Difference is
