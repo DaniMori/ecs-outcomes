@@ -232,7 +232,7 @@ replace d_crit_A = 1 if (d_symtotal>4 & d_symtotal!=.) & d_symprior==1
 *#"Follow of A critierion"
 
 recode q4214_s3 (1=0) (2=1) (3=1) (4=1) (else=.) 
-recode q4215_s3 (1=1) (2=1) (3=0) (4=0) (else=.)
+recode q4215_s3 (1=1) (2=1) (3=1) (4=0) (else=.)
 recode q4216_s3 (1=0) (2=1) (3=1) (4=0) (else=.)
 recode q4700a_s3 q4700b_s3 q4700c_s3 q4700d_s3 (999=.) (888=.)
 gen discomfort=. 
@@ -241,7 +241,7 @@ replace discomfort=0 if (q4700a_s3<4 & q4700a_s3!=.) & (q4700b_s3<4 & q4700b_s3!
 
 gen     d_crit_B = .
 replace d_crit_B = 0 if q4214_s3==0 | q4215_s3==0 | q4216_s3==0 | discomfort==0
-replace d_crit_B = 1 if q4214_s3==1 & q4215_s3==1 & q4216_s3==1 & discomfort==1
+replace d_crit_B = 1 if q4214_s3==1 | q4215_s3==1 | q4216_s3==1 | discomfort==1
   
   
 *#C criterion:"The episode is not attributable to the physiological effects of a substance or to another medical condition"
