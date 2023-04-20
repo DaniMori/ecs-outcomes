@@ -103,7 +103,7 @@ iv) The concurrent presence of at least five of the following symptoms:
         and sustain attention (q4222h_s3:q4222j_s3), (4) Beliefs of low
         self-worth or excessive and inappropriate guilt (q4222k_s3:q4222l_s3),
         (5) Hopelessness about the future (q4220d_s3), (6) Recurrent thoughts of
-        death (q4222r_s3:q4222v_s3);
+            death (q4222r_s3:q4222v_s3);
     -   **Neurovegetative cluster:** (7) Significantly disrupted sleep
         (q4222c_s3, q4222d_s3), (8) Significant change in appetite or weight
         (q4222a_s3, q4222b_s3), (9) Psychomotor agitation or retardation
@@ -179,7 +179,7 @@ replace d_crit1 = 1 if  q4211_s3==1             |  q4213_s3==1
 *#Criterion 2: "The clinical presentation does not fulfil the diagnostic
 *#             requirements for a Mixed Episode"
 gen d_crit2 =. 
-replace d_crit2 = 1 if (q4233!=1 & q4233!=.) | (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
+replace d_crit2 = 1 if (q4233!=1 & q4233!=.) & (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
 replace d_crit2 = 0 if q4233_s3==1 & q4225_causemed2_s3==1
 
 
