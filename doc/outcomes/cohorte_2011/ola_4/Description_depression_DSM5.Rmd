@@ -259,7 +259,7 @@ replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s
 *#Ecriterion:"There is no hyper or hypomanic crisis"
 
 gen d_crit_E =. 
-replace d_crit_E = 1 if (q4233!=1 & q4233!=.) | (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
+replace d_crit_E = 1 if (q4233!=1 & q4233!=.) & (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
 replace d_crit_E = 0 if q4233_s3==1 & q4225_causemed2_s3==1
 
  
