@@ -37,7 +37,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                             | Format     | Code |
-|:-------------------|:---------------------|:-------------------|:-------------------|
+|:-------------------|:--------------------|:-------------------|:-------------------|
 | sum_MMSEc_s3       | Rounded and corrected MMSE total score (c2011_w4) | Continuous | 0-30 |
 
 # Variable description
@@ -88,7 +88,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 * Generating a variable for people with NA in any of the MMSE items 
 gen na_mmse=0
 replace na_mmse=1 if (q1041_s3==999 | q1043_s3==999 | q1045_s3==999 | q1046_s3==999 | q1047_s3==999 | q1048_s3==999) | (q1041_s3==888 | q1043_s3==888 | q1045_s3==888 | q1046_s3==888 | q1047_s3==888 | q1048_s3==888)
-replace na_mmse=. if (q1038_s3==1  | q0007a_result!=1) 
+replace na_mmse=. if (q1038_s3==2  | q0007a_result!=1) 
 label variable na_mmse "Individuals with NA answers in MMSE"
 
 * Converting 999 and 888 in missing values
