@@ -95,7 +95,7 @@ label variable na_mmse "Individuals with NA answers in MMSE"
 recode q1041_s3 q1043_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3 (999=.) (888=.)
 
 * Sum of MMSE items for individuals without NA answers (all items were applied) */
-egen sum_MMSE_v1=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1042_s3 q1043_s3 q1044_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3) if na_mmse==0, missing
+egen sum_MMSE_v1=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041_s3 q1043_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3) if na_mmse==0, missing
 label variable sum_MMSE_v1 "MMSE total score for individuals with no NA answers"
 
 * Sum of MMSE items for individuals with NA answers
