@@ -70,15 +70,13 @@ based on those included in the original screening questionnaire.
 # Explanation of how the variables were created
 
 Three out of the six questionnaire's items were directly available (changes in
-appetite, weight loss, and acute illness; corresponding to q3045, q3046, and
-q3047, respectively). The information on the three remaining items was extracted
-from similar questions available in the interview (mobility, neuropsychological
-problems, and BMI; corresponding to q2041 and q2046 for mobility, recent
-depression in the CIDI module, and q2506 and q2507 for IMC). These items were
-coded and the resulting score obtained following the MNA-SF's scoring
-instructions. The total score was obtained summing the answer given by the
-participant to each of the 6 items. The higher the score, the better the
-participant's nutrition. The six screening question was the following ones:
+appetite, weight loss, and acute illness). The information on the three
+remaining items was extracted from similar questions available in the interview
+(mobility, neuropsychological problems, and BMI). These items were coded and the
+resulting score obtained following the MNA-SF's scoring instructions. The total
+score was obtained summing the answer given by the participant to each of the 6
+items. The higher the score, the better the participant's nutrition. The six
+screening question was the following ones:
 
 -   A (q3045_s3): Has food intake declined over the past 3 months due to loss of
     appetite, digestive problems, chewing or swallowing difficulties? (ranging
@@ -105,8 +103,8 @@ participant's nutrition. The six screening question was the following ones:
 
 ```{stata load-data}
 * Cohorte 2011, ola 4:
-use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
+use "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+merge 1:1 _n using "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
@@ -130,10 +128,8 @@ gen MNA_E = 2
 replace MNA_E = 0 if q4233_s3==1 | (q4224_s3==1 & (q4225_causemed1_s3==1 | q4225_causemed2_s3==1 | q4225_causemed3_s3==1 | q4225_causemed4_s3==1))
 
 *# BMI
-recode q2507_weight_s3 (997 = .) (998 = .)
-recode q2506_height_s3 (997 = .) (998 = .)
-gen MNA_F = q2507_weight_s3/((q2506_height_s3/100)^2)
-recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3)
+gen MNA_F = bmi_s3 
+recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3) 
 
 *# Total scale MNA
 gen MNA_s3 = MNA_A + MNA_B + MNA_C + MNA_D + MNA_E + MNA_F
