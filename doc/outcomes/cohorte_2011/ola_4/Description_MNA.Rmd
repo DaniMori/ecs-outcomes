@@ -103,8 +103,9 @@ screening question was the following ones:
 
 ```{stata load-data}
 * Cohorte 2011, ola 4:
-use "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
-merge 1:1 _n using "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+use  "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", generate(newvar)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
@@ -125,8 +126,7 @@ gen MNA_D = q3047_s3
 
 *# Neuropsychological problems
 gen MNA_E = 2
-replace MNA_E = 0 if q4233_s3==1 | (q4224_s3==1 & (q4225_causemed1_s3==1 | q4225_causemed2_s3==1 | q4225_causemed3_s3==1 | q4225_causemed4_s3==1))
-
+replace MNA_E = 0 if depression_lifetime_s3==1
 *# BMI
 gen MNA_F = bmi_s3 
 recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3) 
