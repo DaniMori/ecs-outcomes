@@ -99,7 +99,7 @@ label define dOccupation 0 "Not qualified" 1 "Manual qualification" 2 "Not manua
 label values occupation dOccupation
 
 /* cognitive reserve */
-egen t_CR_s3 =rowtotal(level_edu edu_parent q1051_s3 q1052_s3 occupation q1053_s3 q1054_s3 q1055_s3)
+egen t_CR_s3 =rowtotal(level_edu edu_parent q1051_s3 q1052_s3 occupation q1053_s3 q1054_s3 q1055_s3) if proxy==2
 label variable t_CR_s3 "cognitive reserve total score (c2011_w4)"
 ```
 
