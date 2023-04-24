@@ -55,8 +55,8 @@ process tasks in a more efficient manner.
 
 We have included the cognitive questionnaire from [@ramigonzález2011], which is
 composed by the following items: q1016_highest_s3 (education level), q1052_s3
-(training course), q1053_s3 (musicalinstrument), q1051_s3 (languages perfectly spoken), q1054_s3 (number of books read per year),
-q1055_s3 (intellectual games), q1050_s3 (education level of parents). Transformations were set to allow only valid values for q1016_highest_s3 (0 "No education" 1"Basic or primary" 2 "Secondary") and q1501b_s3 (0 "Not qualified" 1 "Manualqualification" 2 "Not manual qualification" 3 "Professional" 4 "Manager"). We have created a composite score by adding the score obtained for each item, with higher scores indicating better cognitive reserve. Values range from 0 to 25.
+(training course), q1053_s3 (musical instrument), q1051_s3 (languages perfectly spoken), q1054_s3 (number of books read per year),
+q1055_s3 (intellectual games), q1050_s3 (education level of parents) and q1051_s3 (occupational level of parents). Transformations were set to allow only valid values for q1016_highest_s3 (0 "No education" 1"Basic or primary" 2 "Secondary") and q1501b_s3 (0 "Not qualified" 1 "Manualqualification" 2 "Not manual qualification" 3 "Professional" 4 "Manager"). We have created a composite score by adding the score obtained for each item, with higher scores indicating better cognitive reserve. Values range from 0 to 25.
 
 # Syntax used to create the variable (Stata 15)
 
