@@ -65,6 +65,10 @@
 
 - [ ] Section "Syntax used to create the variable" includes descriptives of ALL
   the created variables (see chunk `descriptives`)
+  
+- [ ] The range of all quantitative variables, as appears in the descriptives,
+  **does not exceed** the theoretical range stated in the "Variable description"
+  table
 
 - [ ] **The interpretation of the syntax in section "Syntax used to create the
   variable" coincides with the explanation in section "Explanation on how the
@@ -82,7 +86,7 @@
   are in section "For any further questions regarding this variable please
   contact:" (Name, institutional email)
 
-- [ ] Al final "Session info" section is included
+- [ ] A final "Session info" section is included
 
 - [ ] All the TODO's in the template are addressed and deleted
 
