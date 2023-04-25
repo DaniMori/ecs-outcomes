@@ -94,7 +94,7 @@ recode q3013_s3 (min/1.9=0) (2/50=1)
 recode q3012_s3 (min/2.9=0) (3/50=1)
 
 egen medas_s3 = rowtotal (q3033_s3 q3034_s3 q3013_s3 q3012_s3 q3035_s3 q3036_s3 q3037_s3 q3038_s3 q3039_s3 q3040_s3 q3041_s3 q3042_s3 q3043_s3 q3044_s3), missing
-replace medas_s3 = medas_s3 / 13 * 14 if q3043_s3 == 999
+replace medas_s3 = medas_s3 / 13 * 14 if q3043_s3 == .
 label variable medas_s3 "Mediterranean Diet Adherence score (c2011_w4)"
 ```
 
