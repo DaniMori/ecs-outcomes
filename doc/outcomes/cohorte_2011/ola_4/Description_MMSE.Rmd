@@ -1,0 +1,188 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Mini Mental State Examination'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                             | Format     | Code |
+|:-------------------|:--------------------|:-------------------|:-------------------|
+| sum_MMSEc_s3       | Rounded and corrected MMSE total score (c2011_w4) | Continuous | 0-30 |
+
+# Variable description
+
+The Mini Mental State Examination (MMSE) [@folstein1983] is effective as a
+screening tool for cognitive impairment with older, community dwelling,
+hospitalized and institutionalized adults, being able to separate patients with
+cognitive impairment from those without it, and to measure changes in cognitive
+status that may benefit from intervention. It is an 11-question measure that
+tests five areas of cognitive function: orientation, registration, attention and
+calculation, memory, and language. The maximum score is 30. A score of 23 or
+lower is indicative of cognitive impairment.
+
+# Explanation of how the variables were created
+
+The total score of MMSE was calculated as the sum of the following items:
+q1038a-e_s3 (temporal orientation), q1039a-e_s3 (spacial orientation), q1040_s3
+(fixing), q1041_s3 (attention and calculation), q1042_s3 (memory), q1043_s3
+(denomination), q1044_s3 (repetition), q1045_s3 (comprehension), q1046_s3
+(reading), q1047_s3 (writing), and q1048_s3 (drawing). The total score ranges
+from 0 to 30 (higher scores, better cognition).
+
+There are some items which can contain "Not Applicable" (NA) [999], if
+respondent has no education or whether has some physical impairment preventing
+them from answering (e.g., blindness). For these people, we first created a
+variable indicating whether the respondent had some NA (i.e. q1041_s3, q1043_s3,
+q1045_s3, q1046_s3, q1047_s3, q1048_s3. Then, we recoded NA answers (999) into
+missing values. We summed up all the items for people with no NA and for people
+with special conditions. Then we calculated the corrected score using with the
+following formula: (sum_MMSE_v2\*30)/ (30+d1+d2+d3+d4+d5+d6), being d1=-5 if
+q1041=NA d2=-2 if q1043_s3=NA d3=-3 if q1045_s3=NA d4=-1 if q1046_s3=NA d5=-1 if
+q1047=NA d6=-1 if q1048_s3=NA Finally, we rounded these corrected scores to the
+nearest unit.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* Filter: q1038 (incapacidad de hacer mini mental) 
+
+***Cases excluding NA ***
+
+* Generating a variable for people with NA in any of the MMSE items 
+gen na_mmse=0
+replace na_mmse=1 if (q1041_s3==999 | q1043_s3==999 | q1045_s3==999 | q1046_s3==999 | q1047_s3==999 | q1048_s3==999) | (q1041_s3==888 | q1043_s3==888 | q1045_s3==888 | q1046_s3==888 | q1047_s3==888 | q1048_s3==888)
+replace na_mmse=. if (q1038_s3==2  | q0007a_result!=1) 
+label variable na_mmse "Individuals with NA answers in MMSE"
+
+* Converting 999 and 888 in missing values
+recode q1041_s3 q1043_s3 q1045_s3 q1046_s3 q1047_s3 q1048_s3 (999=.) (888=.), gen (q1041 q1043 q1045 q1046 q1047 q1048)
+
+* Sum of MMSE items for individuals without NA answers (all items were applied) */
+egen sum_MMSE_v1=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041 q1042_s3 q1043 q1044_s3 q1045 q1046 q1047 q1048) if na_mmse==0, missing
+label variable sum_MMSE_v1 "MMSE total score for individuals with no NA answers"
+
+* Sum of MMSE items for individuals with NA answers
+egen sum_MMSE_v2=rowtotal(q1038a_s3 q1038b_s3 q1038c_s3 q1038d_s3 q1038e_s3 q1039a_s3 q1039b_s3 q1039c_s3 q1039d_s3 q1039e_s3 q1040_s3 q1041 q1042_s3 q1043 q1044_s3 q1045 q1046 q1047 q1048) if na_mmse==1, missing
+label variable sum_MMSE_v2 "MMSE total score for individuals with NA answers"
+
+* Variables to correct total scores in case of NA answers
+gen d1=0
+replace d1=-5 if (q1041_s3==999)
+gen d2=0
+replace d2=-2 if (q1043_s3==999)
+gen d3=0
+replace d3=-3 if (q1045_s3==999)
+gen d4=0
+replace d4=-1 if (q1046_s3==999)
+gen d5=0
+replace d5=-1 if (q1047_s3==999)
+gen d6=0
+replace d6=-1 if (q1048_s3==999)
+
+
+* Corrected MMSE total score
+gen sum_MMSE_v3=.
+replace sum_MMSE_v3= sum_MMSE_v1
+replace sum_MMSE_v3= (sum_MMSE_v2*30)/ (30+d1+d2+d3+d4+d5+d6) if na_mmse==1
+label variable sum_MMSE_v3 "Crude and corrected MMSE total score "   
+
+gen sum_MMSEc_s3=round(sum_MMSE_v3)
+label variable sum_MMSEc_s3 "Rounded and corrected MMSE total score (c2011_w4)"   
+
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+
+keep ID_ECS q0007a_result proxy sum_MMSEc_s3
+
+codebook sum_MMSEc_s3
+
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_MMSE.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_MMSE.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+<br>
+
+-   Name: Elvira Lara
+-   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+-   Name: Daniel Morillo
+-   e-mail:
+    [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 914975816
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
