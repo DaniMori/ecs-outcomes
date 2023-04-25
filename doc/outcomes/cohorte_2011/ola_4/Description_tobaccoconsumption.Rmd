@@ -80,10 +80,10 @@ of smokeless tobacco. Original variables include `q3001_used_tobac_s3`
 
 Our final variable has four levels, product of the combination of both variables:
 
--   0 = Never smoked;if `q3001_used_tobac_s3` == 2 and`q3002_use_tobaco_s3` == 1 & 4
--   1 = Daily smoker; if `q3001_used_tobac_s3`==1 & `q3002_use_tobaco_s3`==1     
--   2 = Smoker, not daily; if `q3001_used_tobac_s3`==1 & `q3002_use_tobaco_s3`==2
--   3 = Not current smoker if `q3001_used_tobac_s3`==1 & `q3002_use_tobaco_s3`==3
+-   0 = Never smoked;if `q3001_used_tobac_s3` == 2 and `q3002_use_tobaco_s3` == 1 & `q3002_use_tobaco_s3` == 4
+-   1 = Daily smoker; if `q3001_used_tobac_s3` == 1 & `q3002_use_tobaco_s3` == 1     
+-   2 = Smoker, not daily; if `q3001_used_tobac_s3` == 1 & `q3002_use_tobaco_s3` == 2
+-   3 = Not current smoker if `q3001_used_tobac_s3` == 1 & `q3002_use_tobaco_s3` == 3
 
 \newpage
 
