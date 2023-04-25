@@ -142,12 +142,12 @@ codebook guilt_burden_s3 guilt_burden_100_s3 burden_to_family_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
-saveold "Outcome_selfperceivedburden.dta", replace version(13)
+saveold "Outcome_feelingsofguilt.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_selfperceivedburden.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_feelingsofguilt.dta", replace version(13)
 
 ```
 
