@@ -78,11 +78,9 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-/* First, we would need to create the BMI variable */
-
-generate weight=q2507_weight_s3 if (q2507_weight_s3 >= 27.3) & (q2507_weight_s3<= 200)
-generate height=q2506_height_s3/100 if (q2506_height_s3 >= 120) & (q2506_height_s3 <= 200)
-generate bmi_raw=weight/(height*height)
+/* First, we would need to take the BMI variable from the anthropometrics measures outcomes dataset */
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+generate bmi_raw=bmi_s3
 
 generate grip_max=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
 replace grip_max=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
