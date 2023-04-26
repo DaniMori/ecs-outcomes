@@ -43,93 +43,87 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
+_Frailty_ is an index that considers the various biopsychosocial factors that can
+influence the presence of frailty in the elderly. This index originally includes
+a total of 31 ratings, covering the three dimensions assessed: “Chronic Health 
+Conditions,” “Cognitive functions” and “Disability and daily-life functioning.” 
+Each of these ratings receive a specific score (Tyrovolas et al., 2018). 
+Note though that presence of injury was not assessed in this wave, so 30 
+out of 31 scales were considered here.
+
+- __Chronic Health Conditions__: Considers the variables Obesity, Hypertension, 
+  Stroke, Lung disease, Angina, Asthma, Arthritis, Oral impairment, Diabetes,
+  Cataracts, Use of technical aids and Grip Strength.
+-	__Cognitive Functions__: Comprises the assessment of _Learning and Short-term_
+  _Memory_ (Delayed Recall task), _Learning and Short-term Memory_ (Immediate Recall
+  task), _Working memory_ (Forwards and Backwards Digit tasks), and _Verbal fluency_
+  (Animal Naming task).
+	Verbal Fluency and the Immediate Recall task was assessed using the Consortium
+	to Establish a Registry for Alzheimer Disease Word List Memory 
+	(Moms et al., 1989).
+	The Delayed Recall task and the Forwards and Backwards Digit tasks were based 
+	on the WAIS III (Wechsler, 2002).
+-	__Disability and daily-life functioning__: Assesses the participant’s 
+  functionality based on the WHODAS version 2.0 scale, and adds questions that 
+  cover the self-perception of the health status. Items such as Mobility, 
+  Interpersonal activities, Activities of domestic life, Sleep, Rest, Hearing, 
+  and Pain are considered @wilson2006, @measurin2010.
+	Participants were asked to report the level of difficulty they had in 
+	performing some activities over the past 30 days using a five-point scale 
+	(none = 1, mild = 2, moderate = 3, severe = 4, extreme / can’t do = 5). 
+	However, in the case of the scales for Attention, Mobility, and Interpersonal 
+	activities, there are different number of items, so the additive scores have 
+	ranges 13-65, 5-25 and 6-30, respectively.
+	In the case of mobility, items 2026 and 2041 were omitted (Tyrovolas et al., 2018).
+	Quintiles of the aforementioned scores were used to classify participants: 
+	without difficulty, mild, moderate, severe, and extreme.
+
+<br>
+
+For further details on the frailty index, please see Tyrovolas et al. (2018) 
+(section 2.3.1 in p. 139, and Table 1).
+
 
 # Explanation of how the variables were created
 
-<!--# TODO: Leer párrafos a continuación -->
+The scores are given according to the following components assessed:
 
-Este apartado es complementario al siguiente. Trata de describir, de forma clara
-y concisa, cómo has generado la variable. El objetivo de esta sección es doble.
-Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no
-estar familiarizados con el código utilizado para generar la/s variable/s (e.g.,
-R, Stata). Por otro, facilitar la información suficiente para describir
-adecuadamente la/s variable/s en los artículos científicos.
+•	**Dichotomous rating**: Assigned to the first 12 items (obesity, hypertension,
+  stroke, lung disease, angina, asthma, arthritis, oral impairment, diabetes, 
+  cataracts, use of aid machines, grip strength). 
+  Integer values 0 or 1 are given depending on whether the participant has (1) 
+  or does not have (0) the condition assessed.
+  
+•	**3-point scale rating**: Given to the four components of cognitive function 
+  and the physical activity outcome. Values of 0, 0.5 and, 1 are assigned, where
+  0 means “no alterations,” 0.5 implies intermediate function, and 1 a low 
+  function for the “cognitive function” components, and for physical activity 0
+  means “high,” 0.5 “moderate, and 1 ”low”.
+  
+•	**4-point scale rating**: Values of 0, 0.33, 0.66 and 1 are given to the
+  vision deficit assessment. A higher value represents a greater visual 
+  alteration.
+  
+•	**5-point scale rating**: Used for the daily life activities domain; 
+  scores of 0, 0.25, 0.5, 0.75 and 1 are assigned, where the higher the assigned 
+  score, the greater the limitation in the activities.
+  All the subscales are then averaged, and a threshold of 0.25 is applied; 
+  if the total score is below 0.25, the Non-frail category is assigned (0), 
+  while a value of 0.25 or higher indicates frailty (1).
 
-Si se trata de variable/s que ya se había/n generado en ocasiones anteriores
-(e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales
-particularidades o modificaciones que realices (e.g., versión reducida,
-detección de errores).
-
-Como criterio general, **esta sección debería ser suficiente para entender cómo
-ha de generarse la variable sin necesidad de entender la sintaxis**.
-
-<!--# TODO: Borrar párrafos anteriores -->
-
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
 
 # Syntax used to create the variable (Stata 15)
 
-<!--# TODO: Cambiar software y versión en el título según correponda a la
-sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Aquí debes incluir el algoritmo o código empleado para generar la/s variable/s.
-Es fundamental que revises minuciosamente esta sección. **Cualquier
-investigador/a debería poder generar la/s variable/s y obtener los mismos
-resultados**. Por favor, indica también el programa utilizado (e.g., Stata, R),
-si bien ten en cuenta que **el consenso es utilizar Stata**. Incluye también una
-pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n,
-frecuencia absoluta y relativa, rango, media...).
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
 * Cohorte 2011, ola 4:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 * TODO: Escribir aquí la sintaxis de generación de las variables
 ```
 
-<!--# TODO: Leer texto "Otras consideraciones a continuación -->
-
-**Otras consideraciones**
-
-    -   El **número de participantes (n) que debe aparecer en cada base de
-    datos** debe ser correspondiente con aquella que aparece en la base de datos
-    maestra u original. Para la **base de datos de la muestra completa serán
-    3002 participantes**. En el caso de la **muestra pre-confinamiento serán
-    1935 participantes**.
-
-    -   Es recomendable que revises los descriptivos de la/s variable/s
-    generadas. De esta forma podrás detectar posibles errores (e.g., un
-    porcentaje de datos perdidos que no responde a lo esperado; una prevalencia
-    de x patología muy superior o inferior a lo que la evidencia científica
-    señala).
-
-<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
-
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+<br> 
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 * TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
@@ -140,154 +134,49 @@ keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
 codebook <variable(s) generada(s)>
 ```
 
-<!--# TODO: Leer párrafos a continuación -->
-
--   Variable/s de identificación
-
-**La variable de identificación que debes incluir para la cohorte 2019 es
-ID_ECS**. Para conocer la equivalencia y las particularidades de las distintas
-variables de identificación, por favor, revisa la tabla 1 en el documento
-[LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i)
-.
-
--   Variable(s) generada(s)
-
-Debes incluir la variable principal, así como las transformaciones pertinentes
-asociadas a esta variable. En el caso de que la/s variable/s generada/s que
-requiera/n la creación previa de otras variables, solo se incluirán aquellas que
-pueden resultar clave para entender o analizar la variable final. Por ejemplo,
-si creas una variable a partir de otra existente en la que eliminas casos con
-datos inválidos o modificas las etiquetas, no es necesario que incluyas esta
-información en este punto (tampoco en el documento de descripción). Los/as
-investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre
-qué variables incluir en este punto, por favor, pregunta a alguno de los/as
-compañeros responsables del proyecto.
-
--   Variables de apoyo
-
-Puesto que en ocasiones no todos los individuos contactados participan en el
-estudio (porque no quieren, porque no pueden, porque no los encontramos...) y
-dado que no todos los participantes responden a todos los ítems, se incluirán
-las siguientes variables como apoyo para la interpretación de los resultados:
-
-    -   **Variable estado de entrevista**: `q0007a_result`. El código 1 hace
-    referencia a todas las personas que han participado en el estudio.
-
-    -   **Variable proxy**: proxy El código 1 hace referencia a los
-    participantes que realizaron una entrevista proxy. Esto quiere decir que el
-    individuo seleccionado no contestó las preguntas, sino que otra persona
-    respondió en su lugar a una versión reducida del cuestionario. El código 2
-    hace referencia a los participantes que hicieron entrevista directa.
-
-Otras consideraciones:
-
--   Las bases de datos deben tener formato Stata 13 (.dta)
-
--   El nombre de estos archivos debe tener la siguiente estructura:
-"Outcome_[variablename]_[qualifier]". Se añadirá cualquier particularidad en
-caso que exista/n variable/s generadas en base a distintos criterios (e.g.,
-diagnóstico, versión reducida).
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 ```{stata save-data-test, eval=TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "Outcome_frailty.dta", replace version(13)
 ```
 
 
 ```{stata save-data, eval=!TEST}
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 3:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_frailty.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que
-perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que
-ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
-'<prefijo>' y '<teléfono>' -->
-
--   Name: <Nombre y apellidos>
+-   Name: Cristina Rodríguez Prada _(adapted algorithms for wave 4)_
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+    [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
 
-\< Original version:
 
--   Name: <Nombre y apellidos>
+Original version:
+
+-   Name: Viviana Contreras Pizarro
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+    [vcontrer@ucm.es](mailto:vcontrer@ucm.es){.email}
+
+<br>
+
+-   Name: Daniel Morillo Cuadrado
+-   e-mail:
+    [daniel.morillo@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+
+<br>
 
 # References
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta
-información será igualmente útil para citar apropiadamente en nuestros artículos
-científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
 
 ::: {#refs}
 :::
 
 \newpage
-
-<!--# TODO: Leer párrafos a continuación -->
-
-He terminado de generar la/s variable/s.
-
-¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s,
-por favor, actualiza el documento
-
-    [C2011_W4_Planning_outcomes.xlsxl](https://dauam.sharepoint.com/:x:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos compartidos/Outcomes C2011 W4/C2011_W4_Planning_outcomes.xlsx?d=w3e49821bd21047ab8f57ab5837db2393&csf=1&web=1&e=QQRWdn)
-
-\*Este documento hace referencia exclusiva a las variables de cohorte 2011, Ola
-4.
-
-Así, el/la compañero/a al que le corresponda podrá examinar los distintos
-archivos y, sobre todo, el algoritmo. En caso de que se detecten
-inconsistencias, errores o surjan dudas, se te comunicará para proceder con su
-revisión.
-
-Finalmente, cuando todas las variables estén generadas y revisadas se creará una
-base de datos común con todas ellas y los datos sociodemográficos principales de
-los participantes.
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 # Session info
 
