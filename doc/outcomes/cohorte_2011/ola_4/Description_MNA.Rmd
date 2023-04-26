@@ -99,16 +99,21 @@ screening question was the following ones:
 -   F (q2507_weight_s3, q2506_height_s3): Body Mass Index (ranging from 0 BMI
     less than 19 to 3 BMI 23 or greater).
 
+    Note: To created this outcome a merge of two other outcomes is necessary. We
+    will use the BMI variable from the data of antropometrics and the variable
+    lifetime_depression from depression_ICD10 data.
+
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
 * Cohorte 2011, ola 4:
 use  "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", generate(newvar)
-merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", generate(newvar)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+
 *# Declined food intake
 gen MNA_A = q3045_s3
 recode MNA_A (3=2)
