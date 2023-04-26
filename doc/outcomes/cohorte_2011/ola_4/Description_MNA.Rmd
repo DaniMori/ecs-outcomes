@@ -1,0 +1,186 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'MNA'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set(
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++----------------+-------------------------+----------------+----------------+
+| Main variable  | Label                   | Format         | Code           |
+| name           |                         |                |                |
++:===============+:========================+:===============+:===============+
+| MNA_s3         | Mini Nutritional        | Continuous     | 0-14           |
+|                | Assessment-based        |                |                |
+|                | continuous score        |                |                |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| MNA_cat_s3     | Mini Nutritional        | Categorical    | 0 = normal     |
+|                | Assessment-based        |                | nutritional    |
+|                | categorical score       |                | status (12-14) |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 = at risk of |
+|                |                         |                | malnutrition   |
+|                |                         |                | (8-11)         |
+|                |                         |                |                |
+|                |                         |                | 2 =            |
+|                |                         |                | malnourished   |
+|                |                         |                | (0-7)          |
++----------------+-------------------------+----------------+----------------+
+
+# Variable description
+
+The Mini Nutritional Assessment - Short Form (MNA-SF) is a valid and sensitive
+rapid nutrition screen instrument that allows identifying elderly individuals as
+well nourished or at risk of malnutrition [@kaiser2009]. A nutritional index
+based on the MNA-SF was obtained, with geriatric-specific assessment questions
+based on those included in the original screening questionnaire.
+
+# Explanation of how the variables were created
+
+Three out of the six questionnaire's items were directly available (changes in
+appetite, weight loss, and acute illness). The information on the three
+remaining items was extracted from similar questions available in the interview
+(mobility, neuropsychological problems, and BMI). These items were coded and the
+resulting score obtained following the MNA-SF's scoring instructions. The total
+score was obtained summing the answer given by the participant to each of the 6
+items. The higher the score, the better the participant's nutrition. The six
+screening question was the following ones:
+
+-   A (q3045_s3): Has food intake declined over the past 3 months due to loss of
+    appetite, digestive problems, chewing or swallowing difficulties? (ranging
+    from 0 severe decrease in food intake to 2 no decrease in food intake);
+
+-   B (q3046_s3): Weight loss during the last 3 months (ranging from 0 weight
+    loss greater than 3kg to 3 no weight loss);
+
+-   C (q2041_movement_s3, q2046_going_s3): Mobility (rangin from 0 bed or chair
+    bound to 2 goes out);
+
+-   D (q3047_s3): Has suffered psychological stress or acute disease in the past
+    3 months? (coding as 0 yes; 2 no);
+
+-   E (q4233_s3, q4224_s3, q4225_causemed1_s3, q4225_causemed2_s3,
+    q4225_causemed3_s3, q4225_causemed4_s3): Neuropsychological problems
+    (ranging from 0 severe dementia or depression to 2 no psychological
+    problems);
+
+-   F (q2507_weight_s3, q2506_height_s3): Body Mass Index (ranging from 0 BMI
+    less than 19 to 3 BMI 23 or greater).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use  "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", generate(newvar)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# Declined food intake
+gen MNA_A = q3045_s3
+recode MNA_A (3=2)
+
+*# Weight loss
+gen MNA_B = q3046_s3
+
+*# Mobility
+gen MNA_C = 0
+replace MNA_C = 1 if q2041_movement_s3==1
+replace MNA_C = 2 if q2046_going_s3==1
+
+*# Psychological stress or acute disease in the last 3 months
+gen MNA_D = q3047_s3
+
+*# Neuropsychological problems
+gen MNA_E = 2
+replace MNA_E = 0 if depression_lifetime_s3==1
+*# BMI
+gen MNA_F = bmi_s3 
+recode MNA_F (min/18.9999 = 0) (19/20.9999 = 1) (21/22.9999 = 2) (23/60 = 3) 
+
+*# Total scale MNA
+gen MNA_s3 = MNA_A + MNA_B + MNA_C + MNA_D + MNA_E + MNA_F
+gen MNA_cat_s3 = MNA_s3
+recode MNA_cat_s3 (0/7 = 2) (8/11 = 1) (12/14 = 0)
+label variable MNA_s3 "Mini Nutritional Assessment-based continuous score (c2011_w4)"
+label variable MNA_cat_s3 "Mini Nutritional Assessment-based categorical score (c2011_w4)"
+label define MNA_cat 0 "Normal nutritional status (12-14)" 1 "At risk of malnutrition (8-11)" 2 "Malnourished (0-7)"
+label values MNA_cat_s3 MNA_cat
+
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy MNA_cat_s3 MNA_s3
+
+codebook MNA_cat_s3 MNA_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_MNA.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_MNA.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
