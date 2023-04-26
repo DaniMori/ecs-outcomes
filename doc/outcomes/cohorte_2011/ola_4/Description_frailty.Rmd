@@ -35,8 +35,8 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| frailty_index_s3   | Frailty (c2011_w4)                       | Dichotomous| 0 non frail;         |
-|                    |                                          |            | 1 frail              |
+| frailty_index_s3   | Frailty (c2011_w4)                       | Dichotomous| 0 Non frail;         |
+|                    |                                          |            | 1 Frail              |
 +--------------------+------------------------------------------+------------+----------------------+
 | frailty_score_s3   | Frailty score (c2011_w4)                 |Quantitative| 0-1                  |
 +--------------------+------------------------------------------+------------+----------------------+
@@ -120,18 +120,158 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+* Health deficits
+
+** Obesity
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta", keepusing(bmi_cat_s3) gen(merge_bmi)
+
+recode bmi_cat 0/2=0 3=1, gen(obesity)
+
+** Chronic conditions
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_chronicconditions.dta", keepusing(hypertension_s3 stroke_s3 oral_s3 lung_s3 diab_s3 angina_s3 asthma_s3 arthritis_s3 cataracts_s3) gen(merge_chronic)
+*** Merges in variables `hypertension_s3`, `stroke_s3`,  `oral_s3`,
+***   `lung_s3`, `diab_s3`, `angina_s3`, `asthma_s3`, `cataracts_s3`
+***   and `arthritis_s3`.
+recode hypertension_s3 stroke_s3 oral_s3 lung_s3 diab_s3 angina_s3 asthma_s3 arthritis_s3 cataracts_s3 (2=0)
+
+** Use of aid machines (Recode value `2` (= 'No') into `0`)
+recode q2049_aids_s3 2=0, gen(aid_machines)
+
+
+** Grip strength (weakness) (grip: 2 levels)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_gripstrength.dta", keepusing(grip_s3) gen(merge_grip)
+
+
+** Vision difficulties (vision: 4 levels; note this does not match the
+**   visual acuity measure explained in Tyrovolas, 2018)
+recode q2023_vis_diff_s3 q2024_vis_diff_s3 (888=.)
+gen    vision = q2023_vis_diff_s3 + q2024_vis_diff_s3
+recode vision 2=0 3/4=0.33 5/7=.66 8/10=1
+
+** Hearing difficulties (WARNING!! These items do NOT correspond to the
+**   domains described in Tyrovolas, 2018; the items refer to
+**   "difficulty hearing someone on the other side of the room with a normal voice", `q2051`, and
+**   "difficulty hearing in a conversation with another person in a silent room", `q2052`.
+
+recode q2051_hear_diff 1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(hearing_room)
+recode q2052_hear_diff_s3 1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(hearing_conv)
+
+** Pain
+recode q2007_pains_s3 q2009_difficulty_s3 (888=.)
+gen    pain = q2007_pains_s3 + q2009_difficulty_s3
+recode pain 2/3=0 4=0.25 5/6=0.5 7/8=0.75 9/10=1
+
+** Sleep difficulties
+* Changed from previous version: `q2017_rested` is considered in another
+* domain later on, so this section takes only into account
+* `q2016_sleep`.
+recode q2016_sleep_s3  1=0 2=0.25 3=0.5 4=0.75 5=1 888=., gen(sleep)
+
+* Cognitive functions
+recode q2525_recal1_s3 q2528_recal2_s3 q2531_recal3_s3 q2534_score_s3 q2535_score_s3 q2536_score_s3 q2544_recall_s3 (999=.)
+
+** Learning and short-term memory (delayed recall task)
+xtile  delayed_recall = q2544_recall_s3, n(3)
+recode delayed_recall 1=1 2=0.5 3=0
+
+** Learning and short-term memory (immediate recall task)
+egen   imm_recall_mean  = rowmean(q2525_recal1_s3 q2528_recal2_s3 q2531_recal3_s3)
+xtile  immediate_recall = imm_recall_mean, n(3)
+recode immediate_recall 1=1 2=0.5 3=0
+
+** Working Memory (digit span forward and backward tasks)
+egen   work_mem_mean  = rowmean(q2534_score_s3 q2535_score_s3)
+xtile  working_memory = work_mem_mean, n(3)
+recode working_memory 1=1 2=0.5 3=0
+
+** Verbal Fluency
+xtile  verbal_fluency = q2536_score_s3, n(3)
+recode verbal_fluency 1=1 2=0.5 3=0
+
+
+* Physical activity (peer week)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_physicalactivity.dta", keepusing(physical_s3) gen(merge_physical)
+
+generate physical_week = physical_s3 / 2
+
+* Disability and daily life functioning
+recode q2003_vigor_s3 q2005_appear_s3 q2006_stay_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2025_sitting_s3 q2027_stand_s3 q2028_stand_s3 q2029_climb_s3 q2030_crouch_s3 q2031_pickup_s3 q2032_hh_resp_s3 q2033_activ_s3 q2034_reach_s3 q2036_walk_s3 q2037_wash_s3 q2038_dress_s3 q2039_daily_s3 q2040_carry_s3 q2042_eating_s3 q2043_arising_s3 q2044_toilet_s3 q2045_movement_s3 q2046_going_s3 (888=.)
+
+
+** Self-care activities
+gen    self_care_sum = (q2037_wash_s3 + q2038_dress_s3 + q2044_toilet_s3 + q2042_eating_s3 + q2005_appear_s3 + q2006_stay_s3)
+xtile  self_care = self_care_sum, n(5)
+recode self_care 1=0 2=.25 3=.5 4=.75 5=1
+
+** Mobility
+
+gen    m_score = (q2003_vigor_s3 + q2025_sitting_s3 + q2027_stand_s3 + q2028_stand_s3 + q2029_climb_s3 + q2030_crouch_s3 + q2031_pickup_s3 + q2034_reach_s3 + q2036_walk_s3 + q2040_carry_s3 + q2043_arising_s3 + q2045_movement_s3 + q2046_going_s3)
+xtile  mobility = m_score, n(5)
+recode mobility 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Interpersonal activities
+
+gen    interpersonal_sum = (q2033_activ_s3 + q2012_relat_s3 + q2013_confl_s3 + q2014_friend_s3 + q2015_strang_s3)
+xtile  interpersonal = interpersonal_sum, n(5)
+recode interpersonal 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in taking care of household responsibilities
+
+xtile  hh_responsibilities = q2032_hh_resp_s3, n(5)
+recode hh_responsibilities 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in day to day work
+
+xtile  daily_work = q2039_daily_s3, n(5)
+recode daily_work 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Difficulties in not feeling rested and refreshed during the day
+
+recode q2017_rested_s3 888=.
+xtile  rested = q2017_rested_s3, n(5)
+recode rested 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Learning difficulties
+
+recode q2011_learn_s3 (888=.)
+xtile  learning = q2011_learn_s3, n(5)
+recode learning 1=0 2=.25 3=.5 4=.75 5=1
+
+
+** Concentration difficulties
+
+recode q2035_concent_s3 (888=.)
+xtile  concentration = q2035_concent_s3, n (5)
+recode concentration 1=0 2=.25 3=.5 4=.75 5=1
+
+* Frailty algoritm
+
+egen frailty_score_s3 = rowmean(obesity hypertension stroke oral aid_machines lung diab_s3 angina asthma arthritis cataracts vision grip hearing_room hearing_conv pain sleep delayed_recall immediate_recall working_memory verbal_fluency physical_week mobility self_care interpersonal hh_responsibilities daily_work rested learning concentration)
+
+label variable frailty_score_s3 "Frailty score (c2011_w4)"
+
+gen     frailty_index_s3 = frailty_score_s3
+replace frailty_index_s3 = 0 if frailty_index_s3  < 0.25
+replace frailty_index_s3 = 1 if frailty_index_s3 >= 0.25 & frailty_index_s3 !=.
+
+label variable frailty_index "Frailty (c2011_w4)"
+
+label define frailty_levels 0 "Non-frail" 1 "Frail"
+label values frailty_index frailty_levels
+
 ```
 
 <br> 
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+keep ID_ECS q0007a_result_s3 proxy_s3 frailty_index_s3 frailty_score_s3 
 
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-codebook <variable(s) generada(s)>
+codebook frailty_index_s3 frailty_score_s3
 ```
 
 
