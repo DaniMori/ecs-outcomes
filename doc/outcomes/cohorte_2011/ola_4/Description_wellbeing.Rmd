@@ -57,10 +57,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    | (DRM) (c2011w4)                          |            |                      | 
 +--------------------+------------------------------------------+------------+----------------------+
 
-<!--# TODO: Añadir variables outcome a la tabla -->
-
-<!--# TODO: Eliminar ejemplos -->
-
 # Variable description
 
 __Subjective wellbeing__ is a psychological phenomenon that can be divided into
