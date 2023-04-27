@@ -47,7 +47,7 @@ _Frailty_ is an index that considers the various biopsychosocial factors that ca
 influence the presence of frailty in the elderly. This index originally includes
 a total of 31 ratings, covering the three dimensions assessed: “Chronic Health 
 Conditions,” “Cognitive functions” and “Disability and daily-life functioning.” 
-Each of these ratings receive a specific score (Tyrovolas et al., 2018). 
+Each of these ratings receive a specific score (@tyrovolas_frailty_2018). 
 Note though that presence of injury was not assessed in this wave, so 30 
 out of 31 scales were considered here.
 
@@ -59,28 +59,27 @@ out of 31 scales were considered here.
   task), _Working memory_ (Forwards and Backwards Digit tasks), and _Verbal fluency_
   (Animal Naming task).
 	Verbal Fluency and the Immediate Recall task was assessed using the Consortium
-	to Establish a Registry for Alzheimer Disease Word List Memory 
-	(Moms et al., 1989).
+	to Establish a Registry for Alzheimer Disease Word List Memory (@moms_consortium_1989).
 	The Delayed Recall task and the Forwards and Backwards Digit tasks were based 
-	on the WAIS III (Wechsler, 2002).
+	on the WAIS III (@wechsler_wais-iii_1997).
 -	__Disability and daily-life functioning__: Assesses the participant’s 
   functionality based on the WHODAS version 2.0 scale, and adds questions that 
   cover the self-perception of the health status. Items such as Mobility, 
   Interpersonal activities, Activities of domestic life, Sleep, Rest, Hearing, 
-  and Pain are considered @wilson2006, @measurin2010.
+  and Pain are considered (@wilson_improving_2006).
 	Participants were asked to report the level of difficulty they had in 
 	performing some activities over the past 30 days using a five-point scale 
 	(none = 1, mild = 2, moderate = 3, severe = 4, extreme / can’t do = 5). 
 	However, in the case of the scales for Attention, Mobility, and Interpersonal 
 	activities, there are different number of items, so the additive scores have 
 	ranges 13-65, 5-25 and 6-30, respectively.
-	In the case of mobility, items 2026 and 2041 were omitted (Tyrovolas et al., 2018).
+	In the case of mobility, items 2026 and 2041 were omitted (@tyrovolas_frailty_2018).
 	Quintiles of the aforementioned scores were used to classify participants: 
 	without difficulty, mild, moderate, severe, and extreme.
 
 <br>
 
-For further details on the frailty index, please see Tyrovolas et al. (2018) 
+For further details on the frailty index, please see @tyrovolas_frailty_2018 
 (section 2.3.1 in p. 139, and Table 1).
 
 
