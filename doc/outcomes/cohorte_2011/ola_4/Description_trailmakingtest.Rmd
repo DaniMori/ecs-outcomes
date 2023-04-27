@@ -1,0 +1,163 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Trail Making Test'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`"
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                             | Format       | Code |
+|:-------------------|:--------------------------------------------------|:-------------|:-----|
+| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4)  | Quantitative | 0+   |
+| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+   |
+| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4)  | Quantitative | 0+   |
+| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+   |
+| tmt_ratio_s3       | Trail making test ratio (c2011_w4)                | Quantitative | 0+   |
+| tmt_diff_s3        | Trail making test difference (seconds) (c2011_w4) | Quantitative | 0+   |
+
+# Variable description
+
+The Trail Making Test is a neuropsychological assessment tool used to evaluate a
+person's visual-motor processing speed, attention, and executive function. This
+version is adapted from a neuropsychological battery [@benedet_evaluacion_2013],
+and has been previously validated in Spanish in a sample of adult argentinian
+population [@fernández2002]. Herein we apply the same scoring and application
+method, which consists of correcting the errors the participant makes in
+application time; as a result, the errors are taken into account in the
+completion time [@reitan1971; @reitan1958], although the method has been
+criticized for its dependence of the examiner's response time [@fernández2002].
+
+The test consists of two parts, A and B. Part A requires the person to connect a
+series of 25 numbered circles, arranged randomly on a sheet of paper, in
+ascending order as quickly as possible. Part B is similar, but it includes both
+numbered circles (1-13) and letter circles (A-L), and the person must alternate
+between connecting the two types of circles in ascending order (1-A-2-B-3-C,
+etc.).
+
+The time taken to complete each part is recorded. Along with it, the Trail
+Making Test (TMT) Ratio and Difference are commonly used to analyze the
+performance. The TMT Ratio is calculated by dividing the time taken to complete
+Part B by the time taken to complete Part A, while the TMT Difference is
+calculated by computing their difference [@arango-lasprilla2015]. They are
+considered useful indices of cognitive flexibility and executive function
+because they reflect the ability to switch between tasks and plan and organize
+multiple steps to complete them. A higher TMT Ratio or Difference indicates
+poorer performance on the test and may suggest deficits in cognitive flexibility
+and executive functioning. Although both measures can provide valuable
+information, the TMT Ratio is generally considered more sensitive to cognitive
+impairment than the TMT Difference [@lamberty1994]. However, both measures can
+be useful in assessing cognitive function, so it's important to consider other
+factors such as age, education, and comorbid conditions when interpreting TMT
+scores.
+
+# Explanation of how the variables were created
+
+Missing value categories from the two time variables (`q2549_sequence1_time_s3`
+and `q2552_sequence2_time_s3`) are recoded as system missing values, prior to
+renaming them as their corresponding outcomes (`tmt_time_a_s3` and
+`tmt_time_b_s3`, respectively). Variables `tmt_ratio_s3` and `tmt_diff_s3` are
+computed as the ratio and difference, respectively, of the two previous ones
+(i.e. `tmt_time_b_s3` / `tmt_time_a_s3` and `tmt_time_b_s3` - `tmt_time_a_s3`).
+
+The two "number of error" variables are simply renamed as their corresponding
+outcomes (`tmt_errors_a_s3` and `tmt_errors_a_s3`, respectively).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* # Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* "Recode the missing value categories as system missing values:"
+recode q2549_sequence1_time_s3 q2552_sequence2_time_s3 (888=.) (999=.)
+label values q2549_sequence1_time_s3
+label values q2552_sequence2_time_s3
+
+rename q2549_sequence1_time_s3  tmt_time_a_s3
+rename q2550_sequence1_error_s3 tmt_errors_a_s3
+rename q2552_sequence2_time_s3  tmt_time_b_s3
+rename q2553_sequence2_error_s3 tmt_errors_b_s3
+
+gen tmt_ratio_s3 = tmt_time_b_s3 / tmt_time_a_s3
+gen tmt_diff_s3  = tmt_time_b_s3 - tmt_time_a_s3
+
+label variable tmt_time_a_s3   "TMT completion time (seconds), part A (c2011_w4)"
+label variable tmt_errors_a_s3 "TMT errors, part A (c2011_w4)"
+label variable tmt_time_b_s3   "TMT completion time (seconds), part B (c2011_w4)"
+label variable tmt_errors_b_s3 "TMT errors, part B (c2011_w4)"
+label variable tmt_ratio_s3    "Trail making test ratio (c2011_w4)"
+label variable tmt_diff_s3     "Trail making test difference (seconds) (c2011_w4)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3 tmt_diff_s3
+
+codebook tmt_time_a_s3 tmt_errors_a_s3 tmt_time_b_s3 tmt_errors_b_s3 tmt_ratio_s3 tmt_diff_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_trailmakingtest.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* # Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_trailmakingtest.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo Cuadrado
+-   e-mail:
+    [\<daniel.morillo\@inv.uam.es\>](mailto:daniel.morillo@inv.uam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
