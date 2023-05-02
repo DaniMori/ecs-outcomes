@@ -20,6 +20,11 @@ params:
 
 library(Statamarkdown)
 
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
 # Opciones de configuración de las salidas de R y Stata:
 
 options(width = 88) # Ancho de salida de texto en R
@@ -84,8 +89,44 @@ creating the metric of health status.
 
 # Syntax used to create the variable (Stata 15)
 
-```{r generate-outcomes, echo=!DOUBLE_CODING}
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+recode q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff q2052_hear_diff_s3 (888=.) (2=0) (3=0) (4=0) (5=0)
+
+irt 1pl q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff q2052_hear_diff_s3
+
+predict theta, latent
+generate health_s3 = (theta + 2.5594499) / (1.4086262 + 2.5594499) * 100
+label var health_s3 "Health, comparable across waves (c2011_w4)"
+```
+
+<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
+* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
+keep ID_ECS q0007a_result proxy health_s3
+
+* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
+codebook health_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_healthstatus_comparable.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_healthstatus_comparable.dta", replace version(13)
+```
+
+```{r generate-outcomes-r, echo=!DOUBLE_CODING, eval=FALSE, echo=FALSE}
 library(haven)
+library(tidyverse)
 library(mirt)
 
 survey_data <- read_dta(
