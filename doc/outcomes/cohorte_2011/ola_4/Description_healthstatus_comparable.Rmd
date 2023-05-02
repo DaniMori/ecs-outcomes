@@ -38,16 +38,15 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+-----------------+-------------------+-----------------+-----------------+
-| Main variable   | Label             | Format          | Code            |
-| name            |                   |                 |                 |
-+:================+:==================+:================+:================+
-| health_s3       | Health,           |                 |                 |
-|                 | comparable across |                 |                 |
-|                 | waves (c2011_w4)  |                 |                 |
-|                 | \| continuous \|  |                 |                 |
-|                 | 0-100 \|          |                 |                 |
-+-----------------+-------------------+-----------------+-----------------+
++------------------+------------------+------------------+------------------+
+| Main variable    | Label            | Format           | Code             |
+| name             |                  |                  |                  |
++:=================+:=================+:=================+:=================+
+| health_s3        | Health,          | continuous       | 0-100            |
+|                  | comparable       |                  |                  |
+|                  | across waves     |                  |                  |
+|                  | (c2011_w4)       |                  |                  |
++------------------+------------------+------------------+------------------+
 
 # Variable description
 
@@ -62,350 +61,368 @@ each of the items considered to build the metric.
 
 # Explanation of how the variables were created
 
-All the original self-reported health questions were dichotomised as the
-presence or absence of difficulties. A similar categorisation was employed for
-the measured tests, considering the 25th percentile of the distribution as
-cut-off point: a score lower than the 25th percentile of the distribution was
-considered as indicator of difficulties, whereas scores higher than the 25th
-percentile of the distribution indicate the absence of difficulties. A total of
-43 self-reported health questions and seven measured tests were identified in
-both waves. The measured tests employed in this survey included grip strength,
-walking speed and cognitive functioning tests as: immediate verbal recall,
-delayed verbal recall, digit span backwards, digit span forward and verbal
-fluency. Specific details about these self-reported health questions and
-measured tests are provided in Table 1, together with the dichotomisation made
-in each case and the items identified in each wave. After applying the IRT
-approach, the latent score obtained was transformed into a 0-100 scale with
-higher scores indicating a better a health status. A maximum of a 20% of missing
-values across the 50 items considered was allowed before creating the metric of
-health.
+All the original self-reported health questions, responded on a 5-point Likert
+scale from 1 ("None") to 5 ("Extreme / Cannot do") were dichotomized as "presence"
+or "absence of difficulties", recoding every value higher than 1 to a 0.
+Variables recoded this way were the responses to the following items: `Q2001`,
+`Q2003`, `Q2005`, `Q2006`, `Q2007`, `Q2009`, `Q2011`, `Q2012`, `Q2013`, `Q2014`,
+`Q2015`, `Q2016`, `Q2017`, `Q2018`, `Q2019`, `Q2023`, `Q2024`, `Q2025`, `Q2026`,
+`Q2027`, `Q2028`, `Q2029`, `Q2030`, `Q2031`, `Q2032`, `Q2034`, `Q2035`, `Q2036`,
+`Q2037`, `Q2038`, `Q2039`, `Q2040`, `Q2041`, `Q2042`, `Q2043`, `Q2044`, `Q2045`,
+`Q2046`, `Q2047`, `Q2048`, `Q2051`, and `Q2052`.
 
-+------------------+------------------+------------------+------------------+
-| **Name**         | **Description**  | **Original       | *                |
-|                  |                  | categories**     | *Dichotomisation |
-|                  |                  |                  | proposed**       |
-+------------------+------------------+------------------+------------------+
-| Overall, in the  |                  |                  |                  |
-| last 30 days,    |                  |                  |                  |
-| how much         |                  |                  |                  |
-| difficulty did   |                  |                  |                  |
-| you have\...     |                  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2001**        | \...with work or | 1 = None;        | 1 = 1;           |
-|                  | household        |                  |                  |
-|                  | activities?      | 2 = Mild;        | 2 = 0;           |
-|                  |                  |                  |                  |
-|                  |                  | 3 = Moderate;    | 3 = 0;           |
-|                  |                  |                  |                  |
-|                  |                  | 4 = Severe;      | 4 = 0;           |
-|                  |                  |                  |                  |
-|                  |                  | 5 = Extreme /    | 5 = 0;           |
-|                  |                  | Cannot do;       |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2007**        | \... [how much   |                  |                  |
-|                  | of] bodily aches |                  |                  |
-|                  | or pains did you |                  |                  |
-|                  | have?            |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2009**        | \... in your     |                  |                  |
-|                  | daily life       |                  |                  |
-|                  | because of your  |                  |                  |
-|                  | pain?            |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2003**        | \... in vigorous |                  |                  |
-|                  | activities?      |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2036**        | \... in walking  |                  |                  |
-|                  | a long distance  |                  |                  |
-|                  | such as a        |                  |                  |
-|                  | kilometre (or    |                  |                  |
-|                  | equivalent)?     |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2026**        | \... in walking  |                  |                  |
-|                  | 100 meters?      |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2041**        | \... with moving |                  |                  |
-|                  | around inside    |                  |                  |
-|                  | your home?       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2029**        | \... with        |                  |                  |
-|                  | climbing around  |                  |                  |
-|                  | inside your      |                  |                  |
-|                  | home?            |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2046**        | \... getting out |                  |                  |
-|                  | of your home?    |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2045**        | \... with        |                  |                  |
-|                  | getting where    |                  |                  |
-|                  | you want to go,  |                  |                  |
-|                  | using private or |                  |                  |
-|                  | public transport |                  |                  |
-|                  | if needed?       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2030**        | \... with        |                  |                  |
-|                  | stooping,        |                  |                  |
-|                  | kneeling or      |                  |                  |
-|                  | crouching?       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2027**        | \... in standing |                  |                  |
-|                  | up from sitting  |                  |                  |
-|                  | down?            |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2043**        | \... with        |                  |                  |
-|                  | getting up from  |                  |                  |
-|                  | lying down?      |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2025**        | \... in setting  |                  |                  |
-|                  | for long         |                  |                  |
-|                  | periods?         |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2028**        | \... in standing |                  |                  |
-|                  | for long periods |                  |                  |
-|                  | such as 30       |                  |                  |
-|                  | minutes?         |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2031**        | \... picking up  |                  |                  |
-|                  | things with your |                  |                  |
-|                  | fingers (such as |                  |                  |
-|                  | picking up a     |                  |                  |
-|                  | coin from a      |                  |                  |
-|                  | table)?          |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2034**        | \... in          |                  |                  |
-|                  | extending your   |                  |                  |
-|                  | arms above       |                  |                  |
-|                  | shoulder level?  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2040**        | \... with        |                  |                  |
-|                  | carrying things? |                  |                  |
-|                  | (such as         |                  |                  |
-|                  | carrying grocery |                  |                  |
-|                  | bags, water      |                  |                  |
-|                  | bottles, etc.)   |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2037**        | \... in washing  |                  |                  |
-|                  | your whole body? |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2038**        | \... in getting  |                  |                  |
-|                  | dressed?         |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2044**        | \... with        |                  |                  |
-|                  | getting to and   |                  |                  |
-|                  | using the        |                  |                  |
-|                  | toilet?          |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2042**        | \... with eating |                  |                  |
-|                  | (including       |                  |                  |
-|                  | cutting up your  |                  |                  |
-|                  | food)?           |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2005**        | \... in taking   |                  |                  |
-|                  | care of and      |                  |                  |
-|                  | maintaining your |                  |                  |
-|                  | general          |                  |                  |
-|                  | appearance (for  |                  |                  |
-|                  | example,         |                  |                  |
-|                  | grooming,        |                  |                  |
-|                  | looking neat and |                  |                  |
-|                  | tidy)?           |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2006**        | \... in staying  |                  |                  |
-|                  | by yourself for  |                  |                  |
-|                  | a few days?      |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2035**        | \...             |                  |                  |
-|                  | concentrating on |                  |                  |
-|                  | doing something  |                  |                  |
-|                  | for 10 minutes?  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2011**        | \... did you     |                  |                  |
-|                  | have in learning |                  |                  |
-|                  | a new task (for  |                  |                  |
-|                  | example,         |                  |                  |
-|                  | learning how to  |                  |                  |
-|                  | get to a new     |                  |                  |
-|                  | place)?          |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2012**        | \... with        |                  |                  |
-|                  | personal         |                  |                  |
-|                  | relationships or |                  |                  |
-|                  | participation in |                  |                  |
-|                  | the community?   |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2013**        | \... in dealing  |                  |                  |
-|                  | with conflicts   |                  |                  |
-|                  | and tensions     |                  |                  |
-|                  | with others?     |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2014**        | \... with making |                  |                  |
-|                  | new friendships? |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2015**        | \... with        |                  |                  |
-|                  | dealing with     |                  |                  |
-|                  | people you do    |                  |                  |
-|                  | not know?        |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2032**        | \... in taking   |                  |                  |
-|                  | care of your     |                  |                  |
-|                  | household r      |                  |                  |
-|                  | esponsibilities? |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2039**        | \... in your day |                  |                  |
-|                  | to day work?     |                  |                  |
-+------------------+------------------+------------------+------------------+
-| Overall, in the  |                  |                  |                  |
-| last 30 days,    |                  |                  |                  |
-| how much of a    |                  |                  |                  |
-| problem did      |                  |                  |                  |
-| you\...          |                  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2016**        | \... have with   | 1 = None;        | 1 = 1;           |
-|                  | sleeping, such   |                  |                  |
-|                  | as falling       | 2 = Mild;        | 2 = 0;           |
-|                  | asleep, waking   |                  |                  |
-|                  | up frequently    | 3 = Moderate;    | 3 = 0;           |
-|                  | during the night |                  |                  |
-|                  | or waking up too | 4 = Severe;      | 4 = 0;           |
-|                  | early in the     |                  |                  |
-|                  | morning?         | 5 = Extreme /    | 5 = 0;           |
-|                  |                  | Cannot do;       |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2017**        | \... have due to |                  |                  |
-|                  | not feeling      |                  |                  |
-|                  | rested and       |                  |                  |
-|                  | refreshed during |                  |                  |
-|                  | the day (for     |                  |                  |
-|                  | example, feeling |                  |                  |
-|                  | tired, not       |                  |                  |
-|                  | having energy)?  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2018**        | \... have with   |                  |                  |
-|                  | feeling sad, low |                  |                  |
-|                  | or depressed?    |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2019**        | \... have with   |                  |                  |
-|                  | worry or         |                  |                  |
-|                  | anxiety?         |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2047**        | In the last 30   |                  |                  |
-|                  | days, how much   |                  |                  |
-|                  | have you been    |                  |                  |
-|                  | emotionally      |                  |                  |
-|                  | affected by your |                  |                  |
-|                  | health problems? |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2048**        | Overall, how     |                  |                  |
-|                  | much did these   |                  |                  |
-|                  | difficulties     |                  |                  |
-|                  | interfere with   |                  |                  |
-|                  | your life?       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| In the last 30   |                  |                  |                  |
-| days, how much   |                  |                  |                  |
-| difficulty did   |                  |                  |                  |
-| you have in\...  |                  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2023**        | \... seeing and  | 1 = None;        | 1 = 1;           |
-|                  | recognising an   |                  |                  |
-|                  | object or a      | 2 = Mild;        | 2 = 0;           |
-|                  | person you know  |                  |                  |
-|                  | across the road  | 3 = Moderate;    | 3 = 0;           |
-|                  | (from a distance |                  |                  |
-|                  | of about 20      | 4 = Severe;      | 4 = 0;           |
-|                  | meters)?         |                  |                  |
-|                  |                  | 5 = Extreme /    | 5 = 0;           |
-|                  |                  | Cannot do;       |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2024**        | \... seeing and  |                  |                  |
-|                  | recognising an   |                  |                  |
-|                  | object at arm's  |                  |                  |
-|                  | length (for      |                  |                  |
-|                  | example,         |                  |                  |
-|                  | reading)?        |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2051**        | \... hearing     |                  |                  |
-|                  | someone talking  |                  |                  |
-|                  | on the other     |                  |                  |
-|                  | side of the room |                  |                  |
-|                  | in a normal      |                  |                  |
-|                  | voice (even with |                  |                  |
-|                  | your hearing aid |                  |                  |
-|                  | on if you use    |                  |                  |
-|                  | one)?            |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **Q2052**        | \... hearing     |                  |                  |
-|                  | what is said in  |                  |                  |
-|                  | a conversation   |                  |                  |
-|                  | between several  |                  |                  |
-|                  | people (even     |                  |                  |
-|                  | with your        |                  |                  |
-|                  | hearing aid on   |                  |                  |
-|                  | if you use one)? |                  |                  |
-+------------------+------------------+------------------+------------------+
-| **grip**         | Grip strength    | Measured test    | Score higher or  |
-|                  |                  |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **wlkspeed**     | Walking speed    | Measured test    | Score higher or  |
-|                  |                  |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **vrecall**      | Inmediate verbal | Measured test    | Score higher or  |
-|                  | recall           |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **dsbackwards**  | Digit span       | Measured test    | Score higher or  |
-|                  | backwards        |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **dsforward**    | Digit span       | Measured test    | Score higher or  |
-|                  | forward          |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **vfluency**     | Verbal fluency   | Measured test    | Score higher or  |
-|                  |                  |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
-| **dvrecall**     | Delayed verbal   | Measured test    | Score higher or  |
-|                  | recall           |                  | equal than the   |
-|                  |                  |                  | 25^th^           |
-|                  |                  |                  | percentile = 1;  |
-|                  |                  |                  |                  |
-|                  |                  |                  | Score lower than |
-|                  |                  |                  | the 25^th^       |
-|                  |                  |                  | percentile = 0;  |
-+------------------+------------------+------------------+------------------+
+A similar categorization was employed for the measured tests, considering the
+25^th^ percentile of the distribution as cut-off point: A score lower than the
+25^th^ percentile of the distribution was considered as indicator of
+difficulties, whereas scores higher than the 25^th^ percentile of the
+distribution indicated the absence of difficulties.
+
+A total of 43 self-reported health questions and seven measured tests were
+identified in both waves. The measured tests employed in this survey included
+_grip strength_, _walking speed_, and the following cognitive functioning tests:
+_immediate verbal recall_, _delayed verbal recall_, _digit span backwards_,
+_digit span forward_ and _verbal fluency_.
+
+After applying the Rasch IRT model, the latent score obtained was transformed
+into a 0-100 scale, with higher scores indicating a better a health status. A
+maximum of a 20% of missing values across the 50 variables was allowed before
+creating the metric of health status.
+
++-----------------+-----------------+-----------------+-------------------+
+| **Code**        | **Description** | **Original      | **Dichotomisation |
+|                 |                 | categories**    | proposed**        |
++-----------------+-----------------+-----------------+-------------------+
+| Overall, in the last 30 days, how much difficulty did you have\...      |
++-----------------+-----------------+-----------------+-------------------+
+| **Q2001**       | \...with work   | 1 = None;       | 1 = 1;            |
+|                 | or household    |                 |                   |
+|                 | activities?     | 2 = Mild;       | 2 = 0;            |
+|                 |                 |                 |                   |
+|                 |                 | 3 = Moderate;   | 3 = 0;            |
+|                 |                 |                 |                   |
+|                 |                 | 4 = Severe;     | 4 = 0;            |
+|                 |                 |                 |                   |
+|                 |                 | 5 = Extreme /   | 5 = 0;            |
+|                 |                 | Cannot do;      |                   |
++-----------------+-----------------+                 |                   |
+| **Q2007**       | \... [how much  |                 |                   |
+|                 | of] bodily      |                 |                   |
+|                 | aches or pains  |                 |                   |
+|                 | did you have?   |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2009**       | \... in your    |                 |                   |
+|                 | daily life      |                 |                   |
+|                 | because of your |                 |                   |
+|                 | pain?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2003**       | \... in         |                 |                   |
+|                 | vigorous        |                 |                   |
+|                 | activities?     |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2036**       | \... in walking |                 |                   |
+|                 | a long distance |                 |                   |
+|                 | such as a       |                 |                   |
+|                 | kilometre (or   |                 |                   |
+|                 | equivalent)?    |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2026**       | \... in walking |                 |                   |
+|                 | 100 meters?     |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2041**       | \... with       |                 |                   |
+|                 | moving around   |                 |                   |
+|                 | inside your     |                 |                   |
+|                 | home?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2029**       | \... with       |                 |                   |
+|                 | climbing around |                 |                   |
+|                 | inside your     |                 |                   |
+|                 | home?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2046**       | \... getting    |                 |                   |
+|                 | out of your     |                 |                   |
+|                 | home?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2045**       | \... with       |                 |                   |
+|                 | getting where   |                 |                   |
+|                 | you want to go, |                 |                   |
+|                 | using private   |                 |                   |
+|                 | or public       |                 |                   |
+|                 | transport if    |                 |                   |
+|                 | needed?         |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2030**       | \... with       |                 |                   |
+|                 | stooping,       |                 |                   |
+|                 | kneeling or     |                 |                   |
+|                 | crouching?      |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2027**       | \... in         |                 |                   |
+|                 | standing up     |                 |                   |
+|                 | from sitting    |                 |                   |
+|                 | down?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2043**       | \... with       |                 |                   |
+|                 | getting up from |                 |                   |
+|                 | lying down?     |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2025**       | \... in setting |                 |                   |
+|                 | for long        |                 |                   |
+|                 | periods?        |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2028**       | \... in         |                 |                   |
+|                 | standing for    |                 |                   |
+|                 | long periods    |                 |                   |
+|                 | such as 30      |                 |                   |
+|                 | minutes?        |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2031**       | \... picking up |                 |                   |
+|                 | things with     |                 |                   |
+|                 | your fingers    |                 |                   |
+|                 | (such as        |                 |                   |
+|                 | picking up a    |                 |                   |
+|                 | coin from a     |                 |                   |
+|                 | table)?         |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2034**       | \... in         |                 |                   |
+|                 | extending your  |                 |                   |
+|                 | arms above      |                 |                   |
+|                 | shoulder level? |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2040**       | \... with       |                 |                   |
+|                 | carrying        |                 |                   |
+|                 | things? (such   |                 |                   |
+|                 | as carrying     |                 |                   |
+|                 | grocery bags,   |                 |                   |
+|                 | water bottles,  |                 |                   |
+|                 | etc.)           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2037**       | \... in washing |                 |                   |
+|                 | your whole      |                 |                   |
+|                 | body?           |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2038**       | \... in getting |                 |                   |
+|                 | dressed?        |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2044**       | \... with       |                 |                   |
+|                 | getting to and  |                 |                   |
+|                 | using the       |                 |                   |
+|                 | toilet?         |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2042**       | \... with       |                 |                   |
+|                 | eating          |                 |                   |
+|                 | (including      |                 |                   |
+|                 | cutting up your |                 |                   |
+|                 | food)?          |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2005**       | \... in taking  |                 |                   |
+|                 | care of and     |                 |                   |
+|                 | maintaining     |                 |                   |
+|                 | your general    |                 |                   |
+|                 | appearance (for |                 |                   |
+|                 | example,        |                 |                   |
+|                 | grooming,       |                 |                   |
+|                 | looking neat    |                 |                   |
+|                 | and tidy)?      |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2006**       | \... in staying |                 |                   |
+|                 | by yourself for |                 |                   |
+|                 | a few days?     |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2035**       | \...            |                 |                   |
+|                 | concentrating   |                 |                   |
+|                 | on doing        |                 |                   |
+|                 | something for   |                 |                   |
+|                 | 10 minutes?     |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2011**       | \... did you    |                 |                   |
+|                 | have in         |                 |                   |
+|                 | learning a new  |                 |                   |
+|                 | task (for       |                 |                   |
+|                 | example,        |                 |                   |
+|                 | learning how to |                 |                   |
+|                 | get to a new    |                 |                   |
+|                 | place)?         |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2012**       | \... with       |                 |                   |
+|                 | personal        |                 |                   |
+|                 | relationships   |                 |                   |
+|                 | or              |                 |                   |
+|                 | participation   |                 |                   |
+|                 | in the          |                 |                   |
+|                 | community?      |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2013**       | \... in dealing |                 |                   |
+|                 | with conflicts  |                 |                   |
+|                 | and tensions    |                 |                   |
+|                 | with others?    |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2014**       | \... with       |                 |                   |
+|                 | making new      |                 |                   |
+|                 | friendships?    |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2015**       | \... with       |                 |                   |
+|                 | dealing with    |                 |                   |
+|                 | people you do   |                 |                   |
+|                 | not know?       |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2032**       | \... in taking  |                 |                   |
+|                 | care of your    |                 |                   |
+|                 | household r e   |                 |                   |
+|                 | sponsibilities? |                 |                   |
++-----------------+-----------------+                 |                   |
+| **Q2039**       | \... in your    |                 |                   |
+|                 | day to day      |                 |                   |
+|                 | work?           |                 |                   |
++-----------------+-----------------+-----------------+-------------------+
+| Overall, in the last 30 days, how much of a problem did you\...         |
++-----------------+-----------------+-----------------+-------------------+
+| **Q2016**       | \... have with  | 1 = None;       | 1 = 1;            |
+|                 | sleeping, such  |                 |                   |
+|                 | as falling      | 2 = Mild;       | 2 = 0;            |
+|                 | asleep, waking  |                 |                   |
+|                 | up frequently   | 3 = Moderate;   | 3 = 0;            |
+|                 | during the      |                 |                   |
+|                 | night or waking | 4 = Severe;     | 4 = 0;            |
+|                 | up too early in |                 |                   |
+|                 | the morning?    | 5 = Extreme /   | 5 = 0;            |
+|                 |                 | Cannot do;      |                   |
++-----------------+-----------------+-----------------+-------------------+
+| **Q2017**       | \... have due   |                 |                   |
+|                 | to not feeling  |                 |                   |
+|                 | rested and      |                 |                   |
+|                 | refreshed       |                 |                   |
+|                 | during the day  |                 |                   |
+|                 | (for example,   |                 |                   |
+|                 | feeling tired,  |                 |                   |
+|                 | not having      |                 |                   |
+|                 | energy)?        |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2018**       | \... have with  |                 |                   |
+|                 | feeling sad,    |                 |                   |
+|                 | low or          |                 |                   |
+|                 | depressed?      |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2019**       | \... have with  |                 |                   |
+|                 | worry or        |                 |                   |
+|                 | anxiety?        |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2047**       | In the last 30  |                 |                   |
+|                 | days, how much  |                 |                   |
+|                 | have you been   |                 |                   |
+|                 | emotionally     |                 |                   |
+|                 | affected by     |                 |                   |
+|                 | your health     |                 |                   |
+|                 | problems?       |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2048**       | Overall, how    |                 |                   |
+|                 | much did these  |                 |                   |
+|                 | difficulties    |                 |                   |
+|                 | interfere with  |                 |                   |
+|                 | your life?      |                 |                   |
++-----------------+-----------------+-----------------+-------------------+
+| In the last 30 days, how much difficulty did you have in\...            |
++-----------------+-----------------+-----------------+-------------------+
+| **Q2023**       | \... seeing and | 1 = None;       | 1 = 1;            |
+|                 | recognising an  |                 |                   |
+|                 | object or a     | 2 = Mild;       | 2 = 0;            |
+|                 | person you know |                 |                   |
+|                 | across the road | 3 = Moderate;   | 3 = 0;            |
+|                 | (from a         |                 |                   |
+|                 | distance of     | 4 = Severe;     | 4 = 0;            |
+|                 | about 20        |                 |                   |
+|                 | meters)?        | 5 = Extreme /   | 5 = 0;            |
+|                 |                 | Cannot do;      |                   |
++-----------------+-----------------+-----------------+-------------------+
+| **Q2024**       | \... seeing and |                 |                   |
+|                 | recognising an  |                 |                   |
+|                 | object at arm's |                 |                   |
+|                 | length (for     |                 |                   |
+|                 | example,        |                 |                   |
+|                 | reading)?       |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2051**       | \... hearing    |                 |                   |
+|                 | someone talking |                 |                   |
+|                 | on the other    |                 |                   |
+|                 | side of the     |                 |                   |
+|                 | room in a       |                 |                   |
+|                 | normal voice    |                 |                   |
+|                 | (even with your |                 |                   |
+|                 | hearing aid on  |                 |                   |
+|                 | if you use      |                 |                   |
+|                 | one)?           |                 |                   |
++-----------------+-----------------|                 |                   |
+| **Q2052**       | \... hearing    |                 |                   |
+|                 | what is said in |                 |                   |
+|                 | a conversation  |                 |                   |
+|                 | between several |                 |                   |
+|                 | people (even    |                 |                   |
+|                 | with your       |                 |                   |
+|                 | hearing aid on  |                 |                   |
+|                 | if you use      |                 |                   |
+|                 | one)?           |                 |                   |
++-----------------+-----------------+-----------------+-------------------+
+| **grip**        | Grip strength   | Measured test   | Score higher or   |
+|                 |                 |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **wlkspeed**    | Walking speed   | Measured test   | Score higher or   |
+|                 |                 |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **vrecall**     | Inmediate       | Measured test   | Score higher or   |
+|                 | verbal recall   |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **dsbackwards** | Digit span      | Measured test   | Score higher or   |
+|                 | backwards       |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **dsforward**   | Digit span      | Measured test   | Score higher or   |
+|                 | forward         |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **vfluency**    | Verbal fluency  | Measured test   | Score higher or   |
+|                 |                 |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
+| **dvrecall**    | Delayed verbal  | Measured test   | Score higher or   |
+|                 | recall          |                 | equal than the    |
+|                 |                 |                 | 25^th^ percentile |
+|                 |                 |                 | = 1;              |
+|                 |                 |                 |                   |
+|                 |                 |                 | Score lower than  |
+|                 |                 |                 | the 25^th^        |
+|                 |                 |                 | percentile = 0;   |
++-----------------+-----------------+-----------------+-------------------+
 
 # Syntax used to create the variable (Stata 15)
 
