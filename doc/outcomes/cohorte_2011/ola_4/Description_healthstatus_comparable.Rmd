@@ -139,6 +139,7 @@ survey_data <- read_dta(
   encoding = 'UTF-8'
 )
 
+WAVE4_SUFFIX <- '_s3'
 
 HEALTH_ITEMS <- c(
   # General health status:
@@ -178,73 +179,51 @@ HEALTH_ITEMS <- c(
   
   # Hearing:
   "q2051_hear_diff", "q2052_hear_diff"
-)
+) |>
+  paste0(WAVE4_SUFFIX)
 
-OTHER_VARS <- c(
-  "grip",        "wlkspeed",  "vrecall",
-  "dsbackwards", "dsforward", "vfluency",
-  "dvrecall"
-)
+# OTHER_VARS <- c(
+#   "grip",
+#   "wlkspeed",
+#   "vrecall",         # TODO: Dependent on "cognition"
+#   "q2535_score_s3",  # Digits backwards
+#   "q2534_score_s3",  # Digits forwards
+#   "q2536_score_s3",  # Verbal fluency
+#   "q2544_recall_s3", # Delayed verbal recall
+# )
 
+health_status_data <- survey_data              |>
+  rename(q2051_hear_diff_s3 = q2051_hear_diff) |> # Fix incorrect name
+  transmute(
+    ID_ECS,
+    across(
+      all_of(HEALTH_ITEMS),
+      ~case_match(., 888 ~ NA, 2:5 ~ 0, .default = .)
+    )
+  )
 
-survey_data <- survey_data %>%
-  mutate(across(all_of(HEALTH_VARS), na_if, 888))
+# health_status_data <- survey_data |> select_at(HEALTH_VARS)
 
-health_status_data <- survey_data %>% select_at(HEALTH_VARS)
-
-hs_irt_model <- health_status_data %>%
+hs_irt_model <- health_status_data |>
+  select(-ID_ECS)                  |>
   mirt(model = 1, itemtype = "Rasch")
 
-hs_scores <- hs_irt_model %>% fscores() %>% drop()
-
-# Invert the scores so a higher score means a better health status
-hs_scores <- -hs_scores
+hs_scores <- hs_irt_model |>
+  fscores()               |>
+  drop()
 
 # Normalize the range to 0-100
-range_hs           <- hs_scores %>% range()
-hs_scores_rescaled <- (hs_scores - range_hs[1]) /
-  (range_hs[2] - range_hs[1]) *
-  100
-```
+min_hs           <- hs_scores |> min()
+max_hs           <- hs_scores |> max()
+hs_scores_rescaled <- (hs_scores - min_hs) / (max_hs - min_hs) * 100
 
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
-```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+hs_scores_stata <- read_stata(
+  "doc/outcomes/cohorte_2011/ola_4/Outcome_healthstatus_comparable.dta",
+  encoding = 'UTF-8'
+)
 
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-codebook <variable(s) generada(s)>
-```
-
-```{stata save-data-test, eval=TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
-```
-
-```{stata save-data, eval=!TEST}
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 3:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+cor(hs_scores_rescaled, hs_scores_stata$health_s3)
 ```
 
 <br>
