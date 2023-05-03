@@ -111,9 +111,9 @@ label variable cognition_s3 "Cognition score, harmonized (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-sum cognition_s3 cognition_std_s3
+sum cognition_s3 cognition_std_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 animals_s3
 
-keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3
+keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 animals_s3
 
 codebook cognition_std_s3 cognition_s3
 ```
