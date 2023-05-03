@@ -28,6 +28,8 @@
 - [ ] The labels in the metadata table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
 
+- [ ] All the variable labels in column "Label" are written in "Sentence case"
+
 - [ ] All labels have suffix "(c\<cohorte\>_w\<ola\>)"
 
 - [ ] All variables have a format (column "format")
@@ -36,6 +38,8 @@
 
 - [ ] Labels in column "Code" in the table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
+  
+- [ ] All the value labels in column "Code" are written in "Sentence case"
 
 - [ ] Section "Variable description" is filled in
 
@@ -46,6 +50,10 @@
   
 - [ ] Section "Explanation on how the variable was created"
   **explains clearly the procedure to create the variable(s)**
+
+- [ ] All the raw variables needed for creating the outcome variable(s) are
+  listed in section "Explanation on how the variable was created"
+  (formated as code, i.e., enclosed in `backticks`)
 
 - [ ] Title in section "Syntax used to create the variable" includes the
   software used to apply the generating syntax
@@ -72,7 +80,7 @@
 - [ ] If the document is based on a previous version, created by another person,
   the contact information of the previous version (in which this one is based)
   are in section "For any further questions regarding this variable please
-  contact:" (Name, institutional email, telephone)
+  contact:" (Name, institutional email)
 
 - [ ] Al final "Session info" section is included
 

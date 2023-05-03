@@ -1,0 +1,143 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'mediterranean diet adherence'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                         | Format     | Code |
+|:------------------|:------------------------|:------------------|:------------------|
+| medas_s3           | Mediterranean Diet Adherence score (c2011_w4) | Continuous | 0-14 |
+
+# Variable description
+
+Mediterranean Diet (MD) is based on high consumption of fruits, vegetables,
+cereals, pulses, nuts and seeds. In this diet, there is a moderate consumption
+of dairy products, fish, poultry, and eggs and little use of red meat.
+Additionally, there is usually a low to moderate amount of wine. Olive oil is
+the main cooking and dressing oil. This dietary pattern has been shown to be
+beneficial to cardiac functions. The Mediterranean Adherence Screener (MEDAS) is
+a 14-item screening questionnaire with questions on food intake and cooking and
+eating habits considered characteristic of a Mediterranean dietary pattern
+[@martínez-gonzález2012]. MEDAS score ranges from 0 to 14, with higher scores
+indicating higher adherence to MD.
+
+# Explanation of how the variables were created
+
+Original variables include information about: -fruits consumption (q3012_s3);
+-vegetables consumption (q3013_s3); -consumption of olive oil (q3033_s3 and
+q3034_s3); -consumption of red meat, hamburger, or meat products per day
+(q3035_s3); -consumption of butter, margarine, or cream per day (q3036_s3);
+-consumption of sweet or carbonated beverages per day (q3037_s3); -consumption
+of wine per week (q3038_s3); -consumption of legumes per week (q3039_s3);
+-consumption of fish or shellfish per week (q3040_s3); -consumption of
+commercial sweets or pastries per week (q3041_s3); -consumption of nuts per week
+(q3042_s3); -preferential consumption of chicken, turkey, or rabbit meat instead
+of veal, pork, hamburger, or sausage (q3043_s3) -consumption of sofrito per week
+(q3044_s3).
+
+Fruit and vegetable consumption items were dichotomized following the previously
+stated scoring criteria. The MEDAS score was calculated as the sum of the 14
+dichotomized items above. For those participants that chose the "Not applicable"
+option in the q3043_poultry variable, a correction formula ([SCORE / 13] \* 14)
+was applied to account for their adherence despite the absence of meat
+consumption.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define yesno    0 "No" 1 "Yes"
+
+***#"VARIABLE `Mediterranean Diet Adherance total score`"
+recode q3013_s3 q3012_s3 (888 =.) 
+recode q3043_s3 (999=.)
+recode q3013_s3 (min/1.9=0) (2/50=1)
+recode q3012_s3 (min/2.9=0) (3/50=1)
+
+egen medas_s3 = rowtotal (q3033_s3 q3034_s3 q3013_s3 q3012_s3 q3035_s3 q3036_s3 q3037_s3 q3038_s3 q3039_s3 q3040_s3 q3041_s3 q3042_s3 q3043_s3 q3044_s3), missing
+replace medas_s3 = medas_s3 / 13 * 14 if q3043_s3 == .
+label variable medas_s3 "Mediterranean Diet Adherence score (c2011_w4)"
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy medas_s3
+
+codebook medas_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_mediterraneandiet.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_mediterraneandiet.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+Contact:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
