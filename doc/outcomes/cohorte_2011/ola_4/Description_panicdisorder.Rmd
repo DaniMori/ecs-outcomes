@@ -76,7 +76,7 @@ related to the DSM were considered and all of them must be present:
 1.  Crisis of fear or anxiety in which appears a sudden feeling such as fear,
     anxiety, anguished, restlessness, discomfort, etc. (items q4501_s3 and
     q4502_s3);
-2.  More than three physical symptoms such as pounding or very fast heartbeat,
+2.  Three or more physical symptoms such as pounding or very fast heartbeat,
     feeling short of breath, nausea or upset stomach, dizziness, sweating,
     shaking, dry mouth, feeling of choking, chest discomfort, fear of losing
     control, feeling distant from the situation, feeling that things are not
