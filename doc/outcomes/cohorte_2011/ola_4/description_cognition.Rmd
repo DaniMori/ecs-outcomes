@@ -115,7 +115,7 @@ sum cognition_s3 cognition_std_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_b
 
 keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 animals_s3
 
-codebook cognition_std_s3 cognition_s3
+codebook cognition_std_s3 cognition_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 animals_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
