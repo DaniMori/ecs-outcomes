@@ -1,0 +1,174 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Quality of life (WHOQOL-AGE)'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@caballero_validation_2013' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+options(width = 88) 
+knitr::opts_chunk$set( 
+  echo        = FALSE, 
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
+)
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                      | Format     | Code    |
+|:-------------------|:---------------------------|:-----------|:--------|
+| WHOQOL_AGE_s3      | Quality of life (c2011_w4) | Continuous | 0 - 100 |
+
+# Variable description
+
+A global score in quality of life was obtained by means of WHOQOL-AGE
+(World Health Organization Quality Of Life - AGE), which is composed by 13 
+positive/direct items measured on a 1-5 Likert scale. Two factors were 
+identified after conducting an Exploratory Factor Analysis. As a previous step, 
+a Graded Response Model was run and then scores were obtained for each factor 
+based on these models. Finally, the factor scores were transformed into a 0-100 
+scale and the WHOQOL-AGE global score was obtained as the average in the two
+factor scores.
+
+# Explanation of how the variables were created
+
+**Quality of Life** was assessed by means of 13 items: `q7001`, `q7002`, 
+`q7003`, `q7004`, `q7005`, `q7006`, `q7007`, `q7008`, `q7009a`, `q7009b`, 
+`q7009c`, `q7009d`, and `q7010b`.
+
+Details of the validation process were explained in @caballero_validation_2013.
+
+Two factors were obtained, F1 and F2, and the following formula to calculate
+factor scores was used:
+
+-   `F1=  q7001/2+q7002+(q7003+q7005)/2+q7004+q7006+q7007+q7008`
+
+-   `F2=  q7001/2+(q7009a+q7009b+q7009c)/3+q7009d+q7010b`
+
+<br>
+
+Factor scores were transformed into a 0-100 scale and their sum was divided by
+two in order to obtain the global score in quality of life.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+recode q7001_life_s3 q7002_senses_s3 q7003_health_s3 q7004_yourself_s3 q7005_daily_s3 q7006_relation_s3 q7007_home_s3 q7008_time_s3 q7009a_energy_s3 q7009b_control_s3 q7009c_achieve_s3 q7009d_money_s3 q7010b_intimate_s3 (888=.) (999=.)
+
+egen missing_values_s3 = rowmiss(q7001_life_s3 q7002_senses_s3 q7003_health_s3 q7004_yourself_s3 q7005_daily_s3 q7006_relation_s3 q7007_home_s3 q7008_time_s3 q7009a_energy_s3 q7009b_control_s3 q7009c_achieve_s3 q7009d_money_s3 q7010b_intimate_s3)
+
+generate qol_factor1_s3=(q7001_life_s3/2)+q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3+q7008_time_s3
+replace qol_factor1_s3=((qol_factor1_s3-6.5)/26)*100
+
+generate qol_factor2_s3=(q7001_life_s3/2)+((q7009a_energy_s3+q7009b_control_s3+q7009c_achieve_s3)/3)+q7009d_money_s3+q7010b_intimate_s3
+replace qol_factor2_s3=((qol_factor2_s3-3.5)/14)*100
+
+replace qol_factor1_s3=(((q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3+q7008_time_s3)-6)/24)*100 if (missing_values_s3==1)&(missing(q7001_life_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3+q7008_time_s3)-5.5)/22)*100 if (missing_values_s3==1)&(missing(q7002_senses_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+q7005_daily_s3+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3+q7008_time_s3)-6.5)/26)*100 if (missing_values_s3==1)&(missing(q7003_health_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7006_relation_s3+q7007_home_s3+q7008_time_s3)-5.5)/22)*100 if (missing_values_s3==1)&(missing(q7004_yourself_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+q7003_health_s3+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3+q7008_time_s3)-6.5)/26)*100 if (missing_values_s3==1)&(missing(q7005_daily_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7007_home_s3+q7008_time_s3)-5.5)/22)*100 if (missing_values_s3==1)&(missing(q7006_relation_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7006_relation_s3+q7008_time_s3)-5.5)/22)*100 if (missing_values_s3==1)&(missing(q7007_home_s3))
+
+replace qol_factor1_s3=((((q7001_life_s3/2)+q7002_senses_s3+((q7003_health_s3+q7005_daily_s3)/2)+q7004_yourself_s3+q7006_relation_s3+q7007_home_s3)-5.5)/22)*100 if (missing_values_s3==1)&(missing(q7008_time_s3))
+
+replace qol_factor2_s3=(((((q7009a_energy_s3+q7009b_control_s3+q7009c_achieve_s3)/3)+q7009d_money_s3+q7010b_intimate_s3)-3)/12)*100 if (missing_values_s3==1)&(missing(q7001_life_s3))
+
+replace qol_factor2_s3=((((q7001_life_s3/2)+((q7009b_control_s3+q7009c_achieve_s3)/2)+q7009d_money_s3+q7010b_intimate_s3)-3.5)/14)*100 if (missing_values_s3==1)&(missing(q7009a_energy_s3))
+
+replace qol_factor2_s3=((((q7001_life_s3/2)+((q7009a_energy_s3+q7009c_achieve_s3)/2)+q7009d_money_s3+q7010b_intimate_s3)-3.5)/14)*100 if (missing_values_s3==1)&(missing(q7009b_control_s3))
+
+replace qol_factor2_s3=((((q7001_life_s3/2)+((q7009a_energy_s3+q7009b_control_s3)/2)+q7009d_money_s3+q7010b_intimate_s3)-3.5)/14)*100 if (missing_values_s3==1)&(missing(q7009c_achieve_s3))
+
+replace qol_factor2_s3=((((q7001_life_s3/2)+((q7009a_energy_s3+q7009b_control_s3+q7009c_achieve_s3)/3)+q7010b_intimate_s3)-2.5)/10)*100 if (missing_values_s3==1)&(missing(q7009d_money_s3))
+
+replace qol_factor2_s3=((((q7001_life_s3/2)+((q7009a_energy_s3+q7009b_control_s3+q7009c_achieve_s3)/3)+q7009d_money_s3)-2.5)/10)*100 if (missing_values_s3==1)&(missing(q7010b_intimate_s3))
+
+replace qol_factor1_s3=. if missing_values_s3>1
+replace qol_factor2_s3=. if missing_values_s3>1
+generate WHOQOL_AGE_s3=(qol_factor1_s3+qol_factor2_s3)/2
+label variable WHOQOL_AGE_s3 "Quality of life (c2011_w4)"
+
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 WHOQOL_AGE_s3
+codebook WHOQOL_AGE_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_WHOQOL.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_WHOQOL.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada *(adapted algorithm for wave 4)*
+-   e-mail: [cristina.rodriguez\@inv.uam.es](cristina.rodriguez@inv.uam.es){.email}
+
+<br>
+
+<!--# TODO: Completar / eliminar "original version" según corresponda -->
+
+Original version:
+
+-   Name: Elvira Lara *(adapted algorithm for wave 3)*
+-   e-mail: [elvilara\@ucm.es](elvilara@ucm.es){.email}
+
+<br>
+
+-   Name: Marta Miret
+-   e-mail: [marta.miret\@uam.es](marta.miret@uam.es){.email}
+
+<br>
+
+-   Name: Félix Caballero
+-   e-mail: [mailto:felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

@@ -133,7 +133,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 -   Name: Lea Francia
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
--   Phone number: (+34) 914974601
+-   Phone number: (+34) 914975492
 
 Original version:
 
@@ -141,13 +141,11 @@ Original version:
 
 -   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
 
--   Phone number: (+34) 91 497 24 47 <br>
+<br>
 
 -   Name: Elvira Lara
 
--   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
-
--   Phone number: (+34) 914974601
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
 
 <br>
 

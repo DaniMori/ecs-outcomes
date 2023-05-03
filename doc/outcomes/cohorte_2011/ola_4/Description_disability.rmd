@@ -36,17 +36,17 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| **Main variable name** | **Label**                                                     | **Format** | **Code**   |
+| **Main variable name** | **Label**                                                            | **Format** | **Code**   |
 |:-------------------|:--------------------|:-------------------|:-------------------|
-| whodas12_s3            | disability whodas 12 (c2011_w4)                               | Continuous | 0-100      |
-| adl_s3                 | difficulties with activities of daily living (c2011_w4)       | Binary     | 0=no;1=yes |
-| iadl_s3                | difficulties with instrumental act of daily living (c2011_w4) | Binary     | 0=no;1=yes |
+| whodas12_s3            | disability whodas 12 (c2011_w4)                                      | Continuous | 0-100      |
+| adl_s3                 | difficulties with activities of daily living (c2011_w4)              | Binary     | 0=no;1=yes |
+| iadl_s3                | difficulties with instrumental activities of daily living (c2011_w4) | Binary     | 0=no;1=yes |
 
 # Variable description
 
 The level of functional impairment has been assessed using the
 12-items-interviewer-administered version of the World Health Organization (WHO)
-Disability Assessment Schedule version II [@ustun2010a]. This instrument is
+Disability Assessment Schedule version II [@ustun2010]. This instrument is
 grounded in the conceptual framework of the International Classification of
 Functioning, Disability, and Health [@worldhealthorganization2023] and places
 health and disability on a continuum, with disability defined as "a decrement in
@@ -75,7 +75,24 @@ the summary scores were summed and converted into a metric ranging from 0 to
 answered to at least 80% of the items (i.e., at least 10 out of the 12 items).
 In those cases with one or two missing values, the score were obtained based on
 the items completed, replacing the missing values by the mean of the remaining
-items.
+items. ADL and IADL items are scored on a 5-point scale (none=1, mild=2,
+moderate=3, severe=4, extreme/cannot do=5). If the person has 'severe' or
+'extreme' difficulty at least on one item, the overall score is going to be 1
+(=yes, difficulties with ADL/IADL), otherwise is going to be 0 (=no difficulties
+with ADL/IADL).
+
+**Items to create this variable**: 
+- _WHODAS_: `q2028_stand_s3`, `q2032_hh_resp_s3`, `q2011_learn_s3`, `q2033_activ_s3` ,
+            `q2047_affect_s3`, `q2035_concent_s3`, `q2036_walk_s3`, `q2037_wash_s3`,
+            `q2038_dress_s3`, `q2015_strang_s3`, `q2014_friend_s3`, `q2039_daily_s3`.
+
+- _ADL and IADL_: `q2025_sitting_s3`, `q2026_walk_s3`,`q2027_stand_s3`,               
+                  `q2028_stand_s3`, `q2029_climb_s3`, `q2030_crouch_s3`,  
+                  `q2031_pickup_s3`, `q2032_hh_resp_s3`, `q2033_activ_s3`,     
+                  `q2034_reach_s3`, `q2035_concent_s3`, `q2036_walk_s3`, 
+                  `q2037_wash_s3`, `q2038_dress_s3`, `q2039_daily_s3`, `q2040_carry_s3`
+                  `q2041_movement_s3`, `q2042_eating_s3`, `q2043_arising_s3`,
+                  `q2044_toilet_s3`, `q2045_movement_s3`, `q2046_going_s3`
 
 # Syntax used to create the variable (Stata 15)
 
@@ -175,7 +192,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 -   Name: Lea Francia
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
--   Phone number: (+34) 914974601
+-   Phone number: (+34) 914975492
 
 Original version:
 
@@ -185,15 +202,13 @@ Original version:
 <br>
 
 -   Name: Elvira Lara
--   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
--   Phone number: (+34) 914974601
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
 
 <br>
 
 -   Name: Daniel Morillo
 -   e-mail:
     [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
--   Phone number: (+34) 914975816
 
 # References
 

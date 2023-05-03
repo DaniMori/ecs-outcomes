@@ -1,0 +1,219 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Anthropometric measures'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@worldhealthorganization, @cdc2022'
+editor_options: 
+  markdown:
+    wrap: 80 ; 
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) 
+
+knitr::opts_chunk$set( 
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE,
+  results     = 'hide',
+  cleanlog    = TRUE,  
+  collectcode = TRUE,  
+  comment     = ''     
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++----------------+-------------------------+----------------+----------------+
+| Main variable  | Label                   | Format         | Code           |
+| name           |                         |                |                |
++:===============+:========================+:===============+:===============+
+| height_s3      | Height, in cm           | Continuous     | 120 - 200      |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| weight_s3      | Weight, in kg           | Continuous     | 20 - 200       |
+|                | (c2011_w4)              |                |                |
++----------------+-------------------------+----------------+----------------+
+| waist_s3       | Waist circumference, in | Continuous     | 40 - 300       |
+|                | cm (c2011_w4)           |                |                |
++----------------+-------------------------+----------------+----------------+
+| bmi_s3         | Body mass index (kg/m2),| Continuous     | 14.86 - 47.60  |
+|                | continuous (c2011_w4)   |                |                |
++----------------+-------------------------+----------------+----------------+
+| bmi_cat_s3     | Body mass index,        | Categorical    | 0 =            |
+|                | categorical (c2011_w4)  |                | Normal         |
+|                |                         |                | weight;        |
+|                |                         |                |                |
+|                |                         |                |1 = Underweight;|
+|                |                         |                |                |
+|                |                         |                | 2 =            |
+|                |                         |                | Overweight;    |
+|                |                         |                |                |
+|                |                         |                | 3 = Obese      |
++----------------+-------------------------+----------------+----------------+
+
+# Variable description
+
+-   **Height** refers to the height in centimetres.
+
+-   **Weight** refers to the weight in kilograms.
+
+-   **Waist circumference** refers to waist circumference in cm.
+
+-   **BMI**, body mass index, provides a fairly reliable indicator of body
+    fatness for most people and is used to screen for weight categories that may
+    lead to health problems. BMI does not measure body fat directly, but
+    research has shown that BMI correlates to direct measures of body fat, such
+    as underwater weighing and dual energy x-ray absorptiometry (DXA).
+
+# Explanation of how the variables were created
+
+-   **Height** is renamed from `q2506_height_s3` to `height_s3`. Is the height
+    of the participant (cms). It is obtained by using a measuring tape. 
+    Constraints are set to allow only valid values.
+
+-   **Weight** is renamed from `q2507_weight_s3` to `weight_s3`. Is the weight of 
+    the participant in kilograms. It is obtained using a weight scale without
+    shoes. Constraints are set to allow only valid values.
+
+-   **Waist circumference** is renamed from `q2508_waist_s3` to `waist_s3`. It
+    is obtained by identifying the midpoint between the last rib and the illiac
+    crest, ensuring that the tape measure around the body is parallel to the
+    ground. It is intended that the measurement is taken directly from the skin,
+    if not, with light clothing. Constraints are set to allow only valid values.
+
+-   **BMI**: Defined as the weight in kilograms divided by the square of
+    the height in meters (kg/m2) [@worldhealthorganization; @cdc2022]). Four
+    categories are created using the WHO BMI cut-off points:
+
++--------------------+---------------------------+----------------------------+
+| Classification of  |                           |                            |
+| BMI                |                           |                            |
++====================+===========================+============================+
+|                    | **Principal cut-off       | **Additional cut-off       |
+|                    | points**                  | points**                   |
++--------------------+---------------------------+----------------------------+
+| **Underweight**    | **\<18.50**               | \<18.50                    |
++--------------------+---------------------------+----------------------------+
+| Severe thinness    | \<16.00                   | \<16.00                    |
++--------------------+---------------------------+----------------------------+
+| Moderate thinness  | 16.00 - 16.99             | 16.00 - 16.99              |
++--------------------+---------------------------+----------------------------+
+| Mild thiness       | 17.00 - 18.49             | 17.00 - 18.49              |
++--------------------+---------------------------+----------------------------+
+| **Normal range**   | 18.50 - 24.99             | 18.50 - 22.99              |
++--------------------+---------------------------+----------------------------+
+| Normal range       | 18.50 - 24.99             | 23.00 - 24.99              |
++--------------------+---------------------------+----------------------------+
+| **Overweight**     | \>= 25.00                 | \>= 25.00                  |
++--------------------+---------------------------+----------------------------+
+| Pre-obese          | 25.00 - 29.99             | 27.50 - 29.99              |
++--------------------+---------------------------+----------------------------+
+| **Obese**          | \>= 30.00                 | \>= 30.00                  |
++--------------------+---------------------------+----------------------------+
+| Obese class I      | 30.00 - 34.99             | 30.00 - 32.49 / 32.50 -    |
+|                    |                           | 34.99                      |
++--------------------+---------------------------+----------------------------+
+| Obese class II     | 35.00 - 39.99             | 35.00 - 37.49 / 37.50 -    |
+|                    |                           | 39.99                      |
++--------------------+---------------------------+----------------------------+
+| Obese class III    | \>= 40.00                 | \>= 40.00                  |
++--------------------+---------------------------+----------------------------+
+
+: BMI cut-offs classification
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+recode q2506_height_s3 (997=.)(998=.), gen (height_s3)
+label variable height_s3 "Height, in cm (c2011w4)"
+
+recode q2507_weight_s3 (997=.)(998=.), gen (weight_s3)
+label variable weight_s3 "Weight, in kg (c2011w4)"
+
+recode q2508_waist_s3 (997=.)(998=.), gen (waist_s3)
+label variable waist_s3 "Waist circumference, in cm (c2011w4)"
+
+gen height=.
+replace height=height_s3/100 if height_s3>=120 & height_s3<=200
+
+gen bmi_s3=.
+replace bmi_s3= weight_s3/(height*height) if weight_s3>=27.3 & weight_s3<=200
+label variable bmi_s3 "Body mass index (kg/m2), continuous (c2011w4)"
+
+gen bmi_cat_s3=.
+	replace bmi_cat_s3=0 if bmi_s3>=18.5 & bmi_s3<25
+	replace bmi_cat_s3=1 if bmi_s3<18.5
+	replace bmi_cat_s3=2 if bmi_s3>=25 & bmi_s3<30
+	replace bmi_cat_s3=3 if bmi_s3>=30 & bmi_s3<50
+	
+label define obese1 0 "Normal weight" 1 "Underweight" 2 "Overweight" 3 "Obese"
+label values bmi_cat_s3 obese1
+label variable bmi_cat_s3 "Body mass index, categorical (c2011w4)"
+
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 height_s3 weight_s3 waist_s3 bmi_s3 bmi_cat_s3
+
+codebook height_s3 weight_s3 waist_s3 bmi_s3 bmi_cat_s3
+sum bmi_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_anthropometric_measures.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada *(adapted the algorithm for wave 4)*
+-   e-mail:
+    [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+-   Institution: Universidad Autónoma de Madrid / FIB-HU La Princesa
+-   Phone number: (+34) 914975492 <br>
+
+Original version:
+
+-   Name: Beatriz Olaya
+-   e-mail: [beatriz.olaya\@pssjd.org](mailto:beatriz.olaya@pssjd.org){.email}
+-   Phone number: (+34) 936406350 ext (1) 2540
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
