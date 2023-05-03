@@ -54,19 +54,19 @@ out of 31 scales were considered here.
 - __Chronic Health Conditions__: Considers the variables Obesity, Hypertension, 
   Stroke, Lung disease, Angina, Asthma, Arthritis, Oral impairment, Diabetes,
   Cataracts, Use of technical aids and Grip Strength.
--	__Cognitive Functions__: Comprises the assessment of _Learning and Short-term_
+- __Cognitive Functions__: Comprises the assessment of _Learning and Short-term_
   _Memory_ (Delayed Recall task), _Learning and Short-term Memory_ (Immediate Recall
   task), _Working memory_ (Forwards and Backwards Digit tasks), and _Verbal fluency_
   (Animal Naming task).
-	Verbal Fluency and the Immediate Recall task was assessed using the Consortium
+  - Verbal Fluency and the Immediate Recall task was assessed using the Consortium
 	to Establish a Registry for Alzheimer Disease Word List Memory (@moms_consortium_1989).
 	The Delayed Recall task and the Forwards and Backwards Digit tasks were based 
 	on the WAIS III (@wechsler_wais-iii_1997).
--	__Disability and daily-life functioning__: Assesses the participant’s 
-  functionality based on the WHODAS version 2.0 scale, and adds questions that 
-  cover the self-perception of the health status. Items such as Mobility, 
-  Interpersonal activities, Activities of domestic life, Sleep, Rest, Hearing, 
-  and Pain are considered (@wilson_improving_2006).
+- __Disability and daily-life functioning__: Assesses the participant’s 
+  functionality based on the WHODAS version 2.0 scale (_World Health Organisation Disability
+  Assessment Schedule_) , and adds questions that cover the self-perception of the 
+  health status. Items such as Mobility, Interpersonal activities, Activities of domestic
+  life, Sleep, Rest, Hearing, and Pain are considered (@wilson_improving_2006).
 	Participants were asked to report the level of difficulty they had in 
 	performing some activities over the past 30 days using a five-point scale 
 	(none = 1, mild = 2, moderate = 3, severe = 4, extreme / can’t do = 5). 
