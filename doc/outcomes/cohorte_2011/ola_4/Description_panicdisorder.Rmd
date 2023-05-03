@@ -1,0 +1,237 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'panic disorder'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++--------------------+---------------------------------+-------------+---------+
+| Main variable name | Label                           | Format      | Code    |
++:===================+:================================+:============+:========+
+| panic_12m_s3       | Panic disorder during last 12   | Categorical | 0 = no  |
+|                    | months (c2011_w4)               |             |         |
+|                    |                                 |             | 1 = yes |
++--------------------+---------------------------------+-------------+---------+
+| panic_lifetime_s3  | Lifetime panic disorder         | Categorical | 0 = no  |
+|                    | (c2011_w4)                      |             |         |
+|                    |                                 |             | 1 = yes |
++--------------------+---------------------------------+-------------+---------+
+
+# Variable description
+
+Panic disorder has been officially speared from Anxiety Disorder in the 1960's.
+Panic disorder characterized by panic attacks (sudden feelings of terror without
+rational reason). It is among the most prevalent mental disorders and it is
+quite unpredictable. The trouble is associated with chronic medical conditions,
+a higher burden on the health care system, and lower health-related quality of
+life [@dick1994].
+
+# Explanation of how the variables were created
+
+An adapted version of the Composite International Diagnostic Interview (CIDI
+3.0) was used to assess the presence of panic disorder [@haro2006]. An algorithm
+based on the fifth edition of the Diagnostic and Statistical Manual of Mental
+Disorders was used [@americanpsychiatricassociation2013] (APA, 1994).
+Participants that reported crises of fear or anxiety in which they suddenly had
+feelings such as fear, anxiety, anguished, restlessness, discomfort, etc., with
+more than three physical symptoms such as pounding or very fast heartbeat,
+feeling short of breath, nausea, or upset stomach, dizziness, sweating, shaking,
+dry mouth, etc., and with two or more crises during their lifetime that had
+started suddenly and got worse during the first 10 minutes, were considered to
+be suffering from panic disorder.
+
+To generate the lifetime variable (panic_lifetime_s3), the following criteria
+related to the DSM were considered and all of them must be present:
+
+1.  Crisis of fear or anxiety in which appears a sudden feeling such as fear,
+    anxiety, anguished, restlessness, discomfort, etc. (items q4501_s3 and
+    q4502_s3);
+2.  More than three physical symptoms such as pounding or very fast heartbeat,
+    feeling short of breath, nausea or upset stomach, dizziness, sweating,
+    shaking, dry mouth, feeling of choking, chest discomfort, fear of losing
+    control, feeling distant from the situation, feeling that things are not
+    real, fear of losing consciousness, fear of dying, chills or feelings of
+    numbness (items from q4503_s3 to q4518_s3) have to be present;
+3.  Crisis started suddenly and got worse during the first 10 minutes (item
+    q4519_s3);
+4.  Having had two or more crises in the lifetime (item q4520_s3). Items are all
+    dichotomous (1 = the symptom is present and 2 = the symptom is not present).
+
+To generate the variable panic_12m_s3, the item q4524_s3 has been considered
+(Have you had any of these crises in the last 12 months?).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define yesno    0 "No" 1 "Yes"
+
+*# "Criterion 1": "Crisis of fear or anxiety in which appears a sudden feeling"
+recode q4501_anxlife_s3 q4502_unclife_s3 (888=.) (999=.) (2=0)
+gen     d_crit1 = .
+replace d_crit1 = 0 if (q4501_anxlife_s3!=1 & q4501_anxlife_s3!=.) & (q4502_unclife_s3!=1 & q4502_unclife_s3!=.)
+replace d_crit1 = 1 if  q4501_anxlife_s3==1             |  q4502_unclife_s3==1
+  
+*# "Criterion 2": "More than three physical symptoms"
+
+  *#s1: "Pounding or very fast heartbeat"
+recode q4503_beat_s3 (888=.) (999=.) (2=0), gen     (d_s1)
+
+  *#s2: "Feeling short of breath"
+recode q4504_air_s3 (888=.) (999=.) (2=0), gen     (d_s2)
+
+  *#s3: "Nausea or upset stomach"
+recode q4505_nausea_s3 (888=.) (999=.) (2=0), gen     (d_s3)
+ 
+  *#s4: "Dizziness"
+recode q4506_dizziness_s3 (888=.) (999=.) (2=0), gen     (d_s4)
+
+  *#s5: "Sweating"
+recode q4507_sweat_s3 (888=.) (999=.) (2=0), gen     (d_s5)
+
+  *#s6: "Shaking/trembling" 
+recode q4508_trembling_s3 (888=.) (999=.) (2=0), gen     (d_s6)
+
+  *#s7: "Dry mouth"
+recode q4509_mouth_s3 (888=.) (999=.) (2=0), gen     (d_s7)
+
+  *#s8: "Feeling of choking" 
+recode q4510_choke_s3 (888=.) (999=.) (2=0), gen     (d_s8)
+
+  *#s9: "Chest discomfort"
+recode q4511_chest_s3 (888=.) (999=.) (2=0), gen     (d_s9)
+
+  *#s10: "Fear of losing control"
+recode q4512_control_s3 (888=.) (999=.) (2=0), gen     (d_s10)
+     
+  *#s11: "Feeling distant from the situation"
+recode q4513_deper_s3 (888=.) (999=.) (2=0), gen     (d_s11)
+
+  *#s12: "Feeling that things are not real"
+recode q4514_disreal_s3 (888=.) (999=.) (2=0), gen     (d_s12)
+
+  *#s13: "Fear of losing consciousness"
+recode q4515_cons_s3 (888=.) (999=.) (2=0), gen     (d_s13)
+
+  *#s14: "Fear of dying"
+recode q4516_dying_s3 (888=.) (999=.) (2=0), gen     (d_s14) 
+
+  *#s15: "Suffocation"
+recode q4517_suffoc_s3 (888=.) (999=.) (2=0), gen     (d_s15)
+
+  *#s16: "Tingling"
+recode q4518_tingling_s3 (888=.) (999=.) (2=0), gen     (d_s16)
+
+
+*#"Sum of physical symptoms"
+gen  d_symptot = d_s1 + d_s2 + d_s3 + d_s4 + d_s5 + d_s6 + d_s7 + d_s8 + d_s9 + d_s10 + d_s11 + d_s12 + d_s13 + d_s14 + d_s15 + d_s16
+
+*#"To fulfill Criterion 2, at least three physical symptoms should be present".
+gen     d_crit2 = .
+replace d_crit2 = 1 if d_symptot>=3 & d_symptot<17
+replace d_crit2 = 0 if d_symptot<4 
+
+
+*# "Criterion 3": "Crisis started suddenly and got worse during the first 10 minutes"
+recode q4519_sudden_s3 (888=.) (999=.) (3=1) (2=0)
+gen     d_crit3 = .
+replace d_crit3 = 0 if (q4519_sudden_s3!=1 & q4519_sudden_s3!=.)
+replace d_crit3 = 1 if  q4519_sudden_s3==1
+  
+*# "Criterion 4": "Having had two or more crises in the lifetime"
+recode q4520_times_s3 (888=.) (999=.) 
+gen     d_crit4 = .
+replace d_crit4 = 0 if (q4520_times_s3<2 & q4520_times_s3!=.)
+replace d_crit4 = 1 if  q4520_times_s3>=2 & q4520_times_s3<996
+
+***#"Lifetime panic disorder diagnostic variable"
+gen     panic_lifetime_s3 = .
+replace panic_lifetime_s3 = 0 if  d_crit1==0 | d_crit2==0 | d_crit3==0 | d_crit4==0
+replace panic_lifetime_s3 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1 & d_crit4==1
+label values   panic_lifetime_s3 yesno
+label variable panic_lifetime_s3 "Lifetime panic disorder (c2011_w4)"
+
+***#"12 months panic disorder diagnostic variable"
+recode q4524_crisis12_s3 (888=.) (999=.) (2=0)
+gen panic_12m_s3 = .
+replace panic_12m_s3 = 0 if (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
+replace panic_12m_s3 = 1 if q4524_crisis12_s3==1
+label values   panic_12m_s3 yesno
+label variable panic_12m_s3 "Panic disorder during last 12 months (c2011_w4)"
+
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy panic_12m_s3 panic_lifetime_s3
+
+codebook panic_12m_s3 panic_lifetime_s3
+```
+
+```{stata save-data-test, eval=TEST}
+
+saveold "Outcome_panicdisorder.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_panicdisorder.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
