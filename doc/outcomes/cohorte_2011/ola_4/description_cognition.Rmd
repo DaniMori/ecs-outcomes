@@ -36,8 +36,13 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                    | Format     | Code     |
 |:-----------------|:--------------------------|:-----------------|:-----------------|
-| cognition_std_s3   | Cognition score, standardized (c2011_w4) | continuous | standard |
-| cognition_s3       | Cognition score, harmonized (c2011_w4)   | continuous | 0-100    |
+| cognition_std_s3   | Cognition score, standardized (c2011_w4) | Quantitative | standard |
+| cognition_s3       | Cognition score, harmonized (c2011_w4)   | Quantitative | 0-100    |
+| immediate_c_s3     | Number of words recalled correctly in immediate Verbal recall (c2011w4) | Quantitative | +0 |
+| delayed_c_s3       | Number of words recalled correctly in delayed Verbal recall (c2011w4) | Quantitative | +0 |
+| ds_forward_s3      | Digit span - Digits forward (c2011w4)    | Quantitative | +0 |
+| ds_backward_s3     | Digit span - Digits backward (c2011w4)   | Quantitative | +0 |
+| animals_s3         | Number of animals named correctly (c2011w4) | Quantitative | +0 |
 
 <br>
 
