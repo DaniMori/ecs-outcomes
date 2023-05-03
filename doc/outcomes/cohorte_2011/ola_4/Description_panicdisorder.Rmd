@@ -104,11 +104,14 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 label define yesno    0 "No" 1 "Yes"
 
 *# "Criterion 1": "Crisis of fear or anxiety in which appears a sudden feeling"
+recode q4501_anxlife_s3 q4502_unclife_s3 (888=.) (999=.)
 gen     d_crit1 = .
 replace d_crit1 = 0 if (q4501_anxlife_s3!=1 & q4501_anxlife_s3!=.) | (q4502_unclife_s3!=1 & q4502_unclife_s3!=.)
 replace d_crit1 = 1 if  q4501_anxlife_s3==1             |  q4502_unclife_s3==1
   
 *# "Criterion 2": "More than three physical symptoms"
+recode q4503_beat_s3 q4504_air_s3 q4505_nausea_s3 q4506_dizziness_s3 q4507_sweat_s3 q4508_trembling_s3 q4509_mouth_s3 q4510_choke_s3 q4511_chest_s3 q4512_control_s3 q4513_deper_s3 q4514_disreal_s3 q4515_cons_s3 q4516_dying_s3 q4517_suffoc_s3 q4518_tingling_s3 (888=.) (999=.) (2=0) 
+
   *#s1: "Pounding or very fast heartbeat"
 gen     d_s1 = .
 replace d_s1 = 0 if (q4503_beat_s3!=1 & q4503_beat_s3!=.)
@@ -200,11 +203,13 @@ replace d_crit2 = 1 if d_symptot>=4 & d_symptot!=.
 
 
 *# "Criterion 3": "Crisis started suddenly and got worse during the first 10 minutes"
+recode q4519_sudden_s3 (888=.) (999=.) (3=1) (2=0)
 gen     d_crit3 = .
 replace d_crit3 = 0 if (q4519_sudden_s3!=1 & q4519_sudden_s3!=.)
 replace d_crit3 = 1 if  q4519_sudden_s3==1
   
 *# "Criterion 4": "Having had two or more crises in the lifetime"
+recode q4520_times_s3 (888=.) (999=.) 
 gen     d_crit4 = .
 replace d_crit4 = 0 if (q4520_times_s3<2 & q4520_times_s3!=.)
 replace d_crit4 = 1 if  q4520_times_s3>=2
