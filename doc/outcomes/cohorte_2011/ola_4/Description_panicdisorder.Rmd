@@ -165,8 +165,8 @@ gen  d_symptot = d_s1 + d_s2 + d_s3 + d_s4 + d_s5 + d_s6 + d_s7 + d_s8 + d_s9 + 
 
 *#"To fulfill Criterion 2, at least three physical symptoms should be present".
 gen     d_crit2 = .
-replace d_crit2 = 0 if d_symptot<4 
 replace d_crit2 = 1 if d_symptot>=3 & d_symptot<17
+replace d_crit2 = 0 if d_symptot<4 
 
 
 *# "Criterion 3": "Crisis started suddenly and got worse during the first 10 minutes"
