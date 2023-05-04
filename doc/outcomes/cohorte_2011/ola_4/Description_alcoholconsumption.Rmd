@@ -51,7 +51,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+---------------------------------------------+-------------+--------------------------------+
 | Main variable name | Label                                       | Format      | Code                           |
 +:===================+:============================================+:============+:===============================+
-| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Categorical | 0 = Lifetime abstainers;       |
+| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Ordinal     | 0 = Lifetime abstainers;       |
 |                    |                                             |             |                                |
 |                    |                                             |             | 1 = Occasional drinkers;       |
 |                    |                                             |             |                                |
@@ -94,7 +94,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-**q3007_everalc_s3 q3008_last30_s3 q3008b_last7_s3 q3009a_s3 q3009b_s2 q3009c_s2 q3009d_s2 q3009e_s2 q3009f_s2 q3009g_s2**
+**Variables used: q3007_everalc_s3 q3008_last30_s3 q3008b_last7_s3 q3009a_s3 q3009b_s3 q3009c_s3 q3009d_s3 q3009e_s3 q3009f_s3 q3009g_s3**
 recode q3007_everalc_s3 (888=.), gen (q3007)
 recode q3008b_last7_s3 (888=.), gen (q3008b)
 recode q3009a_s3 (888=.) (999=.), gen (q3009a)
@@ -106,22 +106,22 @@ recode q3009f_s3 (888=.) (999=.), gen (q3009f)
 recode q3009g_s3 (888=.) (999=.), gen (q3009g)
 
 
-**contamos el número de missing en las variables q3009a-q3009f
+**Count the number of missings in variables q3009a-q3009f
 
 egen missq3009= rowmiss(q3009a q3009b q3009c q3009d q3009e q3009f q3009g)
 
 
-**excluiremos los que tienen missing en 5 o más días
-**días de la semana en el que beben 5 o más unidades de alcohol (hombres) y 4 o más unidades (mujeres)
+**Exclude cases that have missing in 5 or more days
+**Days of the week on which they drink 5 or more units of alcohol (men) and 4 or more units of alcohol (women)
 
 egen daysalc5= anycount (q3009a q3009b q3009c q3009d q3009e q3009f q3009g), v(5/40)
 egen daysalc4= anycount (q3009a q3009b q3009c q3009d q3009e q3009f q3009g), v(4/40)
 
-**la q3007 (ha bebido alguna vez alcohol) será “no” si en la q3008 nos contestan que “nunca han bebido”
+**the answer for q3007 (ha bebido alguna vez alcohol ("have you ever drunk alcohol")) it will be "no" if in q3008 they answer that they have "never drank" (“nunca han bebido”)
 recode q3007 (1=2) if q3008_last30_s3==3
 recode q3008_last30_s3 (3=.), gen (q3008)
 
-**Creamos variables separadas para hombres y mujeres y luego las combinamos
+**Create separate variables for men and women and then combine them.
 **men
 gen alcoholm_s3=. 
 replace alcoholm_s3=0 if q3007==2 & q1009_sex==1
@@ -166,7 +166,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 
 # Contact person:
 
--   Name: Cristina Rodríguez Prada
+-   Name: Cristina Rodríguez Prada (_adapted algorithm for Wave 4_)
 -   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
