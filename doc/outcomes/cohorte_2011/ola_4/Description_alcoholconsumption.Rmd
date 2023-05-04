@@ -51,7 +51,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+---------------------------------------------+-------------+--------------------------------+
 | Main variable name | Label                                       | Format      | Code                           |
 +:===================+:============================================+:============+:===============================+
-| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Categorical | 0 = Lifetime abstainers;       |
+| alcohol_s3         | Alcohol consumption, categorical (c2011_w4) | Ordinal     | 0 = Lifetime abstainers;       |
 |                    |                                             |             |                                |
 |                    |                                             |             | 1 = Occasional drinkers;       |
 |                    |                                             |             |                                |
