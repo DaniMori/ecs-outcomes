@@ -306,7 +306,7 @@ codebook d_30d_severity depression_30d
 keep ID_ECS ESTADO_ENTREVISTA d_30d_severity depression_30d
 
 *Cohorte 2019, ola postconfinamiento:
-saveold "~\UAM\marta.miret@uam.es - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
 ```
 
 # Contact person:
