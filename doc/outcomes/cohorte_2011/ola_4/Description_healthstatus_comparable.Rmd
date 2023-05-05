@@ -85,7 +85,8 @@ identified in both waves. The measured tests employed in this survey included
 After applying the Rasch IRT model, the latent score obtained was transformed
 into a 0-100 scale, with higher scores indicating a better a health status. A
 maximum of a 20% of missing values across the 50 variables was allowed before
-creating the metric of health status.
+creating the metric of health status; that is, if there were more than 10
+missing values, the estimated score was recoded as a "missing".
 
 # Syntax used to create the variable (Stata 15)
 
@@ -95,23 +96,51 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# Merge in ancillary datasets:
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_gripstrength.dta", gen(merge_gs)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", gen(merge_cog)
+
+
+*# "Create new binary variables from the measured tests":
+
+**# "Recode first into quartiles":
+xtile ws_binary = q2513_4m_s3, nquantiles(4)
+xtile ivr_binary = immediate_c_s3, nquantiles(4)
+xtile dvr_binary = delayed_c_s3, nquantiles(4)
+xtile dsb_binary = ds_backward_s3, nquantiles(4)
+xtile dsf_binary = ds_forward_s3, nquantiles(4)
+xtile vf_binary  = verbal_fluency_s3, nquantiles(4)
+
+**# "Recode then as 0 (1st quartile) or 1 (the rest)":
+recode ws_binary-vf_binary (1=0) (2=1) (3=1) (4=1)
+
+*# TODO: Use 25-th centile cutoff instead of computed grip strength?
+**# "Recode grip strength":
+recode grip_s3 (1=0) (0=1)
+
+
+*# "Recode item values":
 recode q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff q2052_hear_diff_s3 (888=.) (2=0) (3=0) (4=0) (5=0)
 
+*# "Run IRT model and estimate person parameter":
 irt 1pl q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff q2052_hear_diff_s3
 
 predict theta, latent
+
+*# "Compute number of missing values and drop estimates when missing > 20%":
+egen missing_count = rowmiss(q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff q2052_hear_diff_s3 grip_s3 ws_binary-vf_binary)
+replace theta = . if missing_count>10
+
+*# "Rescale and label":
 generate health_s3 = (theta + 2.5594499) / (1.4086262 + 2.5594499) * 100
 label var health_s3 "Health, comparable across waves (c2011_w4)"
 ```
 
 <br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
-```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
+```{stata descriptives, cleanlog=FALSE, collectcode=TRUE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result proxy health_s3
 
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
 codebook health_s3
 ```
 
