@@ -7,11 +7,11 @@ bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
 editor_options: 
   markdown: 
-    wrap: 72
+    wrap: 80
 ---
 
 ```{r setup, include=FALSE}
-# Activar los paquetes que R necesita para ejecutar el cÃ³digo:
+# Activar los paquetes que R necesita para ejecutar el código:
 
 library(Statamarkdown)
 
@@ -20,16 +20,16 @@ library(Statamarkdown)
 STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 
 
-# Opciones de configuraciÃ³n de las salidas de R y Stata:
+# Opciones de configuración de las salidas de R y Stata:
 
 options(width = 88) # Ancho de salida de texto en R
 
-knitr::opts_chunk$set( # Para todos los 'chunks' de cÃ³digo:
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
   engine.path = list(stata = STATA_PATH),
   echo        = FALSE, #   - No muestra la sintaxis en el documento
   results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
   cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
-  collectcode = TRUE,  #   - Reutiliza el cÃ³digo de Stata de 'chunks' anteriores
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
   comment     = ''     #   - No aÃ±ade ningÃºn prefijo a los resultados
 )
 ```
@@ -152,69 +152,76 @@ use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudi
 
 ```{stata generate-outcomes, echo=TRUE}
 
-***Depressive episode (F32)
+***# Depressive episode (F32)
 
-*#G1 criterion: "The depressive episode should last for at least 2 weeks"
+*# G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
 replace d_crit_g1 = 0 if SM4!=1 & SM4!=.
 replace d_crit_g1 = 1 if SM4==1
 
-***#"Mild depressive episode (F32.0)"
+***# "Mild depressive episode (F32.0)"
 
-*#A criterion: "The general criteria for depressive episode must be met"
+*# A criterion: "The general criteria for depressive episode must be met"
 gen d_crit_a = d_crit_g1
 *#"NOTE: Criterion A, 'The general criteria for depressive episode must
 *#       be met', is just criterion G1 in this variable as no other
 *#       exclusion criteria are applied".
 
-*#B criterion: "At least two of the following three symptoms must be present"
+*# B criterion: "At least two of the following three symptoms must be present"
 
-*#B1: "Depressed mood to a degree that is definitely abnormal for the individual, present for most of the day and almost every day, largely uninfluenced by circumstances, and sustained for at least 2 weeks".
+*# B1: "Depressed mood to a degree that is definitely abnormal for the
+*# individual, present for most of the day and almost every day, largely
+*# uninfluenced by circumstances, and sustained for at least 2 weeks".
 gen     d_b1 = .
 replace d_b1 = 0 if (SM_1!=1 & SM_1!=.) | (SM4!=1 & SM4!=.)
 replace d_b1 = 1 if  SM_1==1            &  SM4==1
 
-*#B2: "Loss of interest or pleasure in activities that are normally pleasurable"
+*# B2: "Loss of interest or pleasure in activities that are normally
+*# pleasurable"
 gen     d_b2 = .
 replace d_b2 = 0 if SM_3!=1 & SM_3!=.
 replace d_b2 = 1 if SM_3==1 
 
-*#B3: "Decreased energy or increased fatigability"
+*# B3: "Decreased energy or increased fatigability"
 gen     d_b3 = .
 replace d_b3 = 0 if SM8_6!=1 & SM8_6!=.
 replace d_b3 = 1 if SM8_6==1
 
-*#"Sum of depressive screening symptoms"
+*# "Sum of depressive screening symptoms"
 egen d_screentotal = rowtotal (d_b1-d_b3), missing
 
-*#"To fulfil B criterion >=2 screening symptoms should be present".
+*# "To fulfil B criterion >=2 screening symptoms should be present".
 gen     d_crit_b = .
 replace d_crit_b = 0 if d_screentotal< 2
 replace d_crit_b = 1 if d_screentotal>=2 & d_screentotal!=.
 
-*#C criterion: "An additional symptom or symptoms from the following list should be present, to give a total of at least four"
+*# C criterion: "An additional symptom or symptoms from the following list
+*# should be present, to give a total of at least four"
 
 *#C1: "Loss of confidence and self-esteem"
 gen     d_c1 = .
 replace d_c1 = 0 if SM8_9!=1 & SM8_9!=.
 replace d_c1 = 1 if SM8_9==1
 
-*#C2: "Unreasonable feelings of self-reproach or excessive and inappropriate guilt"
+*# C2: "Unreasonable feelings of self-reproach or excessive and inappropriate
+*# guilt"
 gen     d_c2 = .
 replace d_c2 = 0 if SM8_7!=1 & SM8_7!=.
 replace d_c2 = 1 if SM8_7==1
 
-*#C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
+*# C3: "Recurrent thoughts of death or suicide, or any suicidal behaviour"
 gen     d_c3 = .
 replace d_c3 = 0 if SM8_10!=1 & SM8_10!=.
 replace d_c3 = 1 if SM8_10==1
 
-*#C4: "Complaints or evidence of diminished ability to think or concentrate, such as indecisiveness or vacillation"
+*# C4: "Complaints or evidence of diminished ability to think or concentrate,
+*# such as indecisiveness or vacillation"
 gen     d_c4 = .
 replace d_c4 = 0 if SM8_8!=1 & SM8_8!=.
 replace d_c4 = 1 if SM8_8==1
 
-*#C5: "Change in psychomotor activity, with agitation or retardation (either subjective or objective)"
+*# C5: "Change in psychomotor activity, with agitation or retardation (either
+*# subjective or objective)"
 gen     d_c5 = .
 replace d_c5 = 0 if SM8_4!=1 & SM8_4!=. & SM8_5!=1 & SM8_5!=.
 replace d_c5 = 1 if SM8_4==1            | SM8_5==1
@@ -224,37 +231,46 @@ gen     d_c6 = .
 replace d_c6 = 0 if SM8_2!=1 & SM8_3!=. & SM8_2!=1 & SM8_3!=.
 replace d_c6 = 1 if SM8_2==1            | SM8_3==1
 
-*#C7: "Change in appetite (decrease or increase) with corresponding weight change"
+*# C7: "Change in appetite (decrease or increase) with corresponding weight
+*# change"
 gen     d_c7 = .
 replace d_c7 = 0 if SM8_1!=1 & SM8_1!=.
 replace d_c7 = 1 if SM8_1==1
 
-*#Sum of depressive symptoms
+*# "Sum of depressive symptoms"
 egen d_symtotal = rowtotal (d_c1-d_c7), missing
 label variable d_symtotal "Symptoms for depression"
 
-*#Has the person skipped the depression module?
+*# "Has the person skipped the depression module?"
 gen     d_skipped = .
 replace d_skipped = 0 if (SM_1!=2 & SM_1!=. & SM_2!=2 & SM_2!=. & SM_3!=2 & SM_3!=.) | SM4==1
 replace d_skipped = 1 if (SM_1==2           & SM_2==2           & SM_3==2          ) | SM4==2 | SM4==9
 
 
-***#"Severity of depressive episode"
+***# "Severity of depressive episode"
 
-*#"To meet the criteria for 'Mild depressive episode (F32.0)', at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of 'Moderate depressive episode (F32.1)', there must be at least two screening symptoms and a total of at least six symptoms. In the case of 'Severe depressive episode (F32.3)', the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight".
+*# "To meet the criteria for 'Mild depressive episode (F32.0)', at least two of
+*# the screening symptoms (B1-B3) must be present, and an additional symptom or
+*# symptoms from the rest of them (B1-C7) should be present to give a total of
+*# at least four. In the case of 'Moderate depressive episode (F32.1)', there
+*# must be at least two screening symptoms and a total of at least six symptoms.
+*# In the case of 'Severe depressive episode (F32.3)', the three screening
+*# symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be
+*# present to give a total of at least eight".
 
-*#"Severity according to total symptom tally (prior to applying the "screening symtpoms" criterion)":
+*# "Severity according to total symptom tally (prior to applying the "screening
+*# symtpoms" criterion)":
 gen     d_30d_severity_total = .
 replace d_30d_severity_total = 0 if (d_screentotal+d_symtotal)< 4
 replace d_30d_severity_total = 1 if (d_screentotal+d_symtotal)>=4 & d_screentotal!=. & d_symtotal !=.
 replace d_30d_severity_total = 2 if (d_screentotal+d_symtotal)>=6 & d_screentotal!=. & d_symtotal !=.
 replace d_30d_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_screentotal!=. & d_symtotal !=.
-*#"NOTE: The criteria are applied incrementally, such that if a case
-*#       fulfills the crieria for a higher severity level, it is first
-*#       encoded as the milder level and then recoded into the more
-*#       severe one".
+*# "NOTE: The criteria are applied incrementally, such that if a case
+*#        fulfills the crieria for a higher severity level, it is first
+*#        encoded as the milder level and then recoded into the more
+*#        severe one".
 
-*#"Final severity computation":
+*# "Final severity computation":
 gen     d_30d_severity = .
 replace d_30d_severity = 0 if ESTADO_ENTREVISTA==1 & (d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_30d_severity_total==0)
 replace d_30d_severity = 1 if ESTADO_ENTREVISTA==1 &  d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_30d_severity_total>=1 & d_30d_severity_total!=.
@@ -263,21 +279,21 @@ replace d_30d_severity = 3 if ESTADO_ENTREVISTA==1 &  d_skipped==0 & d_crit_a==1
 label define   severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label values   d_30d_severity severity
 label variable d_30d_severity "Severity of 30-day depressive episode (c2019_w1)"
-*#"NOTE: The criteria are applied incrementally, such that if a case
-*#       fulfills the crieria for a higher severity level, it is first
-*#       encoded as the milder level and then recoded into the more
-*#       severe one".
+*# "NOTE: The criteria are applied incrementally, such that if a case
+*#        fulfills the crieria for a higher severity level, it is first
+*#        encoded as the milder level and then recoded into the more
+*#        severe one".
 
 
-***#"Depression in the previous 30 days".
+***# "Depression in the previous 30 days".
 gen     depression_30d= .
 replace depression_30d = 0 if d_30d_severity==0                    
 replace depression_30d = 1 if d_30d_severity>=1 & d_30d_severity!=.
 label define   yesno 0 "No" 1 "Yes"
 label values   depression_30d yesno
 label variable depression_30d "30-day depression (c2019_wCOVID)"
-*#"NOTE: The cases where a valid interview has not been completed are
-*#       discarded".
+*# "NOTE: The cases where a valid interview has not been completed are
+*#        discarded".
 ```
 
 <br>
