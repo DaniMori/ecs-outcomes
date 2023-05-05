@@ -165,9 +165,9 @@ recode q4518_tingling_s3 (888=.) (999=.) (2=0), gen     (d_s16)
 *#"Sum of physical symptoms"
 gen  d_symptot = d_s1 + d_s2 + d_s3 + d_s4 + d_s5 + d_s6 + d_s7 + d_s8 + d_s9 + d_s10 + d_s11 + d_s12 + d_s13 + d_s14 + d_s15 + d_s16
 
-*#"To fulfill Criterion 2, at least three physical symptoms should be present".
+*#"To fulfill Criterion 2, three or more physical symptoms should be present".
 gen     d_crit2 = .
-replace d_crit2 = 1 if d_symptot>=3 & d_symptot<17
+replace d_crit2 = 1 if d_symptot>3 & d_symptot<17
 replace d_crit2 = 0 if d_symptot<4 
 
 
