@@ -36,41 +36,41 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------------------+----------------+----------------+----------------+
-| Main variable name        | Label          | Format         | Code           |
-+:==========================+:===============+:===============+:===============+
-| depression_3y_s3          | Depression     | Binary         | 0 no           |
-|                           | during the     |                |                |
-|                           | last 3 years   |                | 1 yes          |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
-| depression_3y_proxy_s3    | Depression     | Binary         | 0 no           |
-|                           | during the     |                |                |
-|                           | last 3 years   |                | 1 yes          |
-|                           | for proxy      |                |                |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
-| d_12m_item_s3             | 12 month       | Binary         | 0 no           |
-|                           | depression,    |                |                |
-|                           | one item       |                | 1 yes          |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
-| depression_12m_s3         | 12 month       | Binary         | 0 no           |
-|                           | depression     |                |                |
-|                           | diagnosis      |                | 1 yes          |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
-| d_lifetime_comparable_s3  | Severity of    | Binary         | 0 no           |
-|                           | depressive     |                |                |
-|                           | episode        |                | 1 yes          |
-|                           | comparable     |                |                |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
-| d_12m_comparable_s3       | 12 month       | Binary         | 0 no           |
-|                           | depression     |                |                |
-|                           | comparable     |                | 1 yes          |
-|                           | (c2011_w4)     |                |                |
-+---------------------------+----------------+----------------+----------------+
++------------------------+----------------+----------------+----------------+
+| Main variable name     | Label          | Format         | Code           |
++:=======================+:===============+:===============+:===============+
+| depression_3y_s3       | Depression     | Binary         | 0 no           |
+|                        | during the     |                |                |
+|                        | last 3 years   |                | 1 yes          |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| depression_3y_proxy_s3 | Depression     | Binary         | 0 no           |
+|                        | during the     |                |                |
+|                        | last 3 years   |                | 1 yes          |
+|                        | for proxy      |                |                |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| d_12m_item_s3          | 12 month       | Binary         | 0 no           |
+|                        | depression,    |                |                |
+|                        | one item       |                | 1 yes          |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| depression_12m_s3      | 12 month       | Binary         | 0 no           |
+|                        | depression     |                |                |
+|                        | diagnosis      |                | 1 yes          |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| d_3y_comparable_s3     | Severity of    | Binary         | 0 no           |
+|                        | depressive     |                |                |
+|                        | episode        |                | 1 yes          |
+|                        | comparable     |                |                |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| d_12m_comparable_s3    | 12 month       | Binary         | 0 no           |
+|                        | depression     |                |                |
+|                        | comparable     |                | 1 yes          |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
 
 # Variable description
 
@@ -91,7 +91,7 @@ severity depending on the amount of criteria present in each case, from mild to
 severe. The ICD-11 [@worldhealthorganization2019] refers to the same symptoms
 but strengthens the criteria, making the diagnosis of depression more demanding
 than its predecessor. In order to address these criteria and be able to assess
-the lifetime presence or absence of a depressive episode, as well as its
+the 3 years presence or absence of a depressive episode, as well as its
 severity, we used an adapted version of the Composite International Diagnostic
 Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be
 used by trained lay interviewers for the assessment of mental disorders
@@ -202,7 +202,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 label define yesno    0 "No" 1 "Yes"
 
 
-***#"VARIABLE `depression_lifetime`: Depressive episode (6A70)"
+***#"VARIABLE `depression_3y`: Depressive episode (6A70)"
 
 *#Criterion 1: "The depressive episode should last for at least 2 weeks"
 gen     d_crit1 = .
@@ -344,7 +344,7 @@ replace d_crit5 = 0 if d_afftotal <1
 replace d_crit5 = 1 if d_afftotal>=1
 
 
-***#"Has the person skipped the lifetime depression module?"
+***#"Has the person skipped the depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
 recode q4220a_s3-q4222v_s3 (1=1) (2=0) (888 999=.)
