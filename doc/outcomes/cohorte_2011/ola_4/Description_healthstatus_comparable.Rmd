@@ -80,7 +80,10 @@ A total of 43 self-reported health questions and seven measured tests were
 identified in both waves. The measured tests employed in this survey included
 *grip strength*, *walking speed*, and the following cognitive functioning tests:
 *immediate verbal recall*, *delayed verbal recall*, *digit span backwards*,
-*digit span forward* and *verbal fluency*.
+*digit span forward* and *verbal fluency*. In the case of *grip strength*,
+instead of applying the 25^th^ percentile cut-off point, the previously computed
+outcome variable was used, recoding the values so that `0` means "weak" and `1`
+"normal" grip strength.
 
 After applying the Rasch IRT model, the latent score obtained was transformed
 into a 0-100 scale, with higher scores indicating a better a health status. A
