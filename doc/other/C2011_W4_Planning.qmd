@@ -44,11 +44,9 @@ planning_data <- PLANNING_DATA_PATH |>
   rename(!!!col_names)              |>
   select(-matches("COMPLETE"))
 
-coding_data <- planning_data      |>
-  filter(!ASIGNEE...7 |> is.na()) |>
+coding_data <- planning_data |>
   select(ASIGNEE = ASIGNEE...7,  `DUE DATE` = `DUE DATE...8`,  points = Coding)
-review_data <- planning_data       |>
-  filter(!ASIGNEE...10 |> is.na()) |>
+review_data <- planning_data |>
   select(ASIGNEE = ASIGNEE...10, `DUE DATE` = `DUE DATE...11`, points = Review)
 ```
 
