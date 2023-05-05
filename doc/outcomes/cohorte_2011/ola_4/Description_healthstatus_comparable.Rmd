@@ -3,8 +3,7 @@ title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Health status'"
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-# bibliography: "`r ecs.data::get_proj_bib_file()`"
-bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
+bibliography: "`r ecs.data::get_proj_bib_file()`"
 csl: "`r ecs.data::get_proj_csl_file()`"
 nocite: '@caballero2017, @delafuente2018'
 editor_options: 
@@ -30,6 +29,7 @@ STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
 options(width = 88) # Ancho de salida de texto en R
 
 knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
   echo        = FALSE, #   - No muestra la sintaxis en el documento
   results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
   cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
