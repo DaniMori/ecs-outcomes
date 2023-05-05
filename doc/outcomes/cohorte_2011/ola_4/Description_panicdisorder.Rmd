@@ -193,8 +193,8 @@ label variable panic_3y_s3 "Three years panic disorder (c2011_w4)"
 ***#"12 months panic disorder diagnostic variable"
 recode q4524_crisis12_s3 (888=.) (999=.) (2=0)
 gen panic_12m_s3 = .
-replace panic_12m_s3 = 0 if (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
-replace panic_12m_s3 = 1 if q4524_crisis12_s3==1
+replace panic_12m_s3 = 0 if panic_3y_s3 ==0 & (q4524_crisis12_s3!=1 & q4524_crisis12_s3!=.)
+replace panic_12m_s3 = 1 if panic_3y_s3 ==1 & q4524_crisis12_s3==1
 label values   panic_12m_s3 yesno
 label variable panic_12m_s3 "Panic disorder during last 12 months (c2011_w4)"
 
