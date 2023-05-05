@@ -147,7 +147,7 @@ The following general principles have been followed when possible:
 
 ```{stata load-data}
 * Cohorte 2019, ola postconfinamiento:
-use "~\UAM\marta.miret@uam.es - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
 ```
 
 ```{stata generate-outcomes, echo=TRUE}
@@ -286,7 +286,7 @@ label variable d_30d_severity "Severity of 30-day depressive episode (c2019_w1)"
 
 
 ***# "Depression in the previous 30 days".
-gen     depression_30d= .
+gen     depression_30d = .
 replace depression_30d = 0 if d_30d_severity==0                    
 replace depression_30d = 1 if d_30d_severity>=1 & d_30d_severity!=.
 label define   yesno 0 "No" 1 "Yes"
