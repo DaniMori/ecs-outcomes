@@ -27,33 +27,36 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+---------------------------+-------------------+------------+-----------------+
-| **Main variable name**    | **Label**         | **Format** | **Code**        |
-+:==========================+:==================+============+=================+
-| d_lifetime_severity       | Severity of       | Ordinal    | -   0=No;       |
-|                           | lifetime          |            | -   1=Mild;     |
-|                           | depressive        |            | -   2=Moderate; |
-|                           | episode           |            | -   3=Severe    |
-|                           | (c2011_w3)        |            |                 |
-+---------------------------+-------------------+------------+-----------------+
-| depression_lifetime       | Lifetime          | Binary     | -   0=no;       |
-|                           | depression        |            | -   1=yes       |
-|                           | (c2011_w3)        |            |                 |
-+---------------------------+-------------------+------------+-----------------+
-| depression_lifetime_proxy | Lifetime          | Binary     | -   0=no;       |
-|                           | depression for    |            | -   1=yes       |
-|                           | proxy (c2011_w3)  |            |                 |
-+---------------------------+-------------------+------------+-----------------+
-| d_12m_item                | 12 month          | Binary     | -   0=no;       |
-|                           | depression, one   |            | -   1=yes       |
-|                           | item (c2011_w3)   |            |                 |
-+---------------------------+-------------------+------------+-----------------+
-| depression_12m            | 12 month          | Binary     | -   0=no;       |
-|                           | depression from   |            | -   1=yes       |
-|                           | lifetime          |            |                 |
-|                           | diagnosis + q4227 |            |                 |
-|                           | items (c2011_w3)  |            |                 |
-+---------------------------+-------------------+------------+-----------------+
++-----------------------------------+----------------+----------------+----------------+
+| **Main variable name**            | **Label**      | **Format**     | **Code**       |
++:==================================+:===============+================+================+
+| d_lifetime_severity_s2            | Severity of    | Ordinal        | -   0=No;      |
+|                                   | lifetime       |                | -   1=Mild;    |
+|                                   | depressive     |                | -              |
+|                                   | episode        |                |    2=Moderate; |
+|                                   | (c2011_w3)     |                | -   3=Severe   |
++-----------------------------------+----------------+----------------+----------------+
+| depression_lifetime_s2            | Lifetime       | Binary         | -   0=no;      |
+|                                   | depression     |                | -   1=yes      |
+|                                   | (c2011_w3)     |                |                |
++-----------------------------------+----------------+----------------+----------------+
+| depression_lifetime_proxy_s2      | Lifetime       | Binary         | -   0=no;      |
+|                                   | depression for |                | -   1=yes      |
+|                                   | proxy          |                |                |
+|                                   | (c2011_w3)     |                |                |
++-----------------------------------+----------------+----------------+----------------+
+| d_12m_item_s2                     | 12 month       | Binary         | -   0=no;      |
+|                                   | depression,    |                | -   1=yes      |
+|                                   | one item       |                |                |
+|                                   | (c2011_w3)     |                |                |
++-----------------------------------+----------------+----------------+----------------+
+| depression_12m_s2                 | 12 month       | Binary         | -   0=no;      |
+|                                   | depression     |                | -   1=yes      |
+|                                   | from lifetime  |                |                |
+|                                   | diagnosis +    |                |                |
+|                                   | q4227 items    |                |                |
+|                                   | (c2011_w3)     |                |                |
++-----------------------------------+----------------+----------------+----------------+
 
 # Variable description
 
@@ -323,13 +326,13 @@ replace d_lifetime_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_scree
 *#       severe one".
 
 *#"Final severity computation":
-gen     d_lifetime_severity = .
-replace d_lifetime_severity = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
-replace d_lifetime_severity = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-label values   d_lifetime_severity severity
-label variable d_lifetime_severity "Severity of lifetime depressive episode (c2011_w3)"
+gen     d_lifetime_severity_s2 = .
+replace d_lifetime_severity_s2 = 0 if d_skipped==1 | d_crit_a==0 | d_crit_b==0      | d_lifetime_severity_total==0
+replace d_lifetime_severity_s2 = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_s2 = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
+replace d_lifetime_severity_s2 = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
+label values   d_lifetime_severity_s2 severity
+label variable d_lifetime_severity_s2 "Severity of lifetime depressive episode (c2011_w3)"
 *#"NOTE: The criteria are applied incrementally, such that if a case
 *#       fulfills the criteria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
@@ -337,43 +340,43 @@ label variable d_lifetime_severity "Severity of lifetime depressive episode (c20
 
 
 ***#"Lifetime depression diagnostic variable":
-gen     depression_lifetime = .
-replace depression_lifetime = 0 if d_lifetime_severity==0
-replace depression_lifetime = 1 if d_lifetime_severity>=1 & d_lifetime_severity !=.
-label values   depression_lifetime yesno
-label variable depression_lifetime "Lifetime depression (c2011_w3)"
+gen     depression_lifetime_s2 = .
+replace depression_lifetime_s2 = 0 if d_lifetime_severity_s2==0
+replace depression_lifetime_s2 = 1 if d_lifetime_severity_s2>=1 & d_lifetime_severity_s2 !=.
+label values   depression_lifetime_s2 yesno
+label variable depression_lifetime_s2 "Lifetime depression (c2011_w3)"
 
 
 ***#"VARIABLE `depression_lifetime_proxy`: Depressive episode for proxy participants"
-recode p4040_depression_s2 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy)
-label values   depression_lifetime_proxy yesno
-label variable depression_lifetime_proxy "Lifetime depression for proxy (c2011_w3)"
+recode p4040_depression_s2 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s2)
+label values   depression_lifetime_proxy_s2 yesno
+label variable depression_lifetime_proxy_s2 "Lifetime depression for proxy (c2011_w3)"
 
 
 ***#"VARIABLE `d_12m_item`: 12-month depression criterion from q4227 items"
-gen     d_12m_item = .
-replace d_12m_item = 0 if q4227_s2!=1 & proxy==2
-replace d_12m_item = 1 if q4227_s2==1
-label values   d_12m_item yesno
-label variable d_12m_item "12 month depression, one item (c2011_w3)"
+gen     d_12m_item_s2 = .
+replace d_12m_item_s2 = 0 if q4227_s2!=1 & proxy==2
+replace d_12m_item_s2 = 1 if q4227_s2==1
+label values   d_12m_item_s2 yesno
+label variable d_12m_item_s2 "12 month depression, one item (c2011_w3)"
 
 
 ***#"VARIABLE `depression_12m`: 12-month depression (combining `depression_lifetime` + `d_12m_item`)"
-gen     depression_12m = .
-replace depression_12m = 0 if depression_lifetime==0 | d_12m_item==0
-replace depression_12m = 1 if depression_lifetime==1 & d_12m_item==1
-label values   depression_12m yesno
-label variable depression_12m "12 month depression from lifetime diagnosis + q4227 items (c2011_w3)"
+gen     depression_12m_s2 = .
+replace depression_12m_s2 = 0 if depression_lifetime_s2==0 | d_12m_item_s2==0
+replace depression_12m_s2 = 1 if depression_lifetime_s2==1 & d_12m_item_s2==1
+label values   depression_12m_s2 yesno
+label variable depression_12m_s2 "12 month depression from lifetime diagnosis + q4227 items (c2011_w3)"
 ```
 
 <br>
 
 ```{stata descriptives, collectcode=FALSE, results='markup'}
-codebook d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m
+codebook d_lifetime_severity_s2 depression_lifetime_s2 depression_lifetime_proxy_s2 d_12m_item_s2 depression_12m_s2
 ```
 
 ```{stata save-data}
-keep ID_ECS q0007a_result proxy d_lifetime_severity depression_lifetime depression_lifetime_proxy d_12m_item depression_12m 
+keep ID_ECS q0007a_result proxy d_lifetime_severity_s2 depression_lifetime_s2 depression_lifetime_proxy_s2 d_12m_item_s2 depression_12m_s2
 
 * Cohorte 2011, ola 3:
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_depression_ICD10.dta", replace version(13)
