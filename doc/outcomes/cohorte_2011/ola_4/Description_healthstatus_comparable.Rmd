@@ -43,9 +43,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| Main variable name | Label                                      | Format     | Code  |
-|:-------------------|:-------------------------------------------|:-----------|:------|
-| health_s3          | Health, comparable across waves (c2011_w4) | continuous | 0-100 |
+| Main variable name | Label                                             | Format       | Code  |
+|:-------------------|:--------------------------------------------------|:-------------|:------|
+| health_s3          | Health status, comparable across waves (c2011_w4) | Quantitative | 0-100 |
 
 # Variable description
 
@@ -136,7 +136,7 @@ replace theta = . if missing_count>10
 
 *# "Rescale and label":
 generate health_s3 = (theta + 2.5594499) / (1.4086262 + 2.5594499) * 100
-label var health_s3 "Health, comparable across waves (c2011_w4)"
+label var health_s3 "Health status, comparable across waves (c2011_w4)"
 ```
 
 <br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
