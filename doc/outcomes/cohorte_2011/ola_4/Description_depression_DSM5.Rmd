@@ -181,15 +181,15 @@ label define yesno  0 "No" 1 "Yes"
 ***#"VARIABLE `depression_3y_s3`: Major depressive episode"
 
 *#A criterion:"At least five of the following symptoms have been present during the same 2-week"
-  
+
 *#A1:"Depressed mood most of the day, nearly every day, as indicated by either subjective report or observation made by others" 
 gen     d_A1 = .
-replace d_A1 = 0 if q4220a_s3!=1 & q4220a_s3!=. & q4220b_s3!=1 & q4220c_s3!=1 & q4220d_s3!=1
+replace d_A1 = 0 if (q4220a_s3!=1 & q4220a_s3!=.) & q4220b_s3!=1 & q4220c_s3!=1 & q4220d_s3!=1
 replace d_A1 = 1 if q4220a_s3==1 | q4220b_s3==1 | q4220c_s3==1 | q4220d_s3==1
 
 *#A2:"Markedly diminished interest or pleasure in all, or almost all, activities most of the day nearly every day" 
 gen     d_A2 = .
-replace d_A2 = 0 if q4220e_s3!=1 & q4220e_s3!=. & q4220f_s3!=1 & q4220f_s3!=. 
+replace d_A2 = 0 if (q4220e_s3!=1 & q4220e_s3!=.) & (q4220f_s3!=1 & q4220f_s3!=.)
 replace d_A2 = 1 if q4220e_s3==1 | q4220f_s3==1
   
 *#A3:"Significant weight loss when not dieting, or weight gain or decrease or increase in appetite nearly every day"
@@ -199,7 +199,7 @@ replace d_A3 = 1 if  q4222a_s3==1 | q4222b_s3==1
 
 *#A4:"Insomnia or hypersomnia nearly every day" 
 gen     d_A4 = .
-replace d_A4 = 0 if q4222c_s3!=1 & q4222c_s3!=.
+replace d_A4 = 0 if (q4222c_s3!=1 & q4222c_s3!=.) & q4222d_s3!=.
 replace d_A4 = 1 if q4222c_s3==1 | q4222d_s3==1           
 
 *#A5:"Psychomotor agitation or retardation nearly every day" 
@@ -257,7 +257,6 @@ replace d_crit_B = 1 if q4214_s3==1 | q4215_s3==1 | q4216_s3==1 | discomfort==1
   
   
 *#C criterion:"The episode is not attributable to the physiological effects of a substance or to another medical condition"
-
 gen     d_crit_C = .
 replace d_crit_C = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
 replace d_crit_C = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed12_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
@@ -304,7 +303,7 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 ***#"Major depressive episode (DSM-5)"
 
 gen     depression_3y_s3 = .
-replace depression_3y_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 | d_crit_D==0 | d_crit_E==0
+replace depression_3y_s3 = 0 if (d_skipped==1 | d_crit_A!=1 | d_crit_B!=1 | d_crit_C!=1 | d_crit_D!=1 | d_crit_E!=1) & proxy==2
 replace depression_3y_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1  & d_crit_C==1 & d_crit_D==1 & d_crit_E==1
 label values   depression_3y_s3 yesno
 label variable depression_3y_s3 "Three years depression (c2011_w4)"
@@ -342,8 +341,8 @@ label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
 *#"Three years depression "comparable" (does not take into account exclusion criteria B and E)"
 gen     d_3y_comparable_s3 = .
-replace d_3y_comparable_s3 = 0 if d_crit_A==0 | d_crit_C==0 | d_crit_D==0 
-replace d_3y_comparable_s3 = 1 if d_crit_A==1 & d_crit_C==1 & d_crit_D==1
+replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_C==0 | d_crit_D==0 
+replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A==1 & d_crit_C==1 & d_crit_D==1
 label values   d_3y_comparable_s3 yesno
 label variable d_3y_comparable_s3 "Three years depressive episode comparable (c2011_w4)"
 
