@@ -304,8 +304,8 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 ***#"Major depressive episode (DSM-5)"
 
 gen     depression_3y_s3 = .
-replace depression_3y_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 | d_crit_D==0 | d_crit_E=0
-replace depression_3y_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1  & d_crit_C & d_crit_D==1 & d_crit_E=1
+replace depression_3y_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 | d_crit_D==0 | d_crit_E==0
+replace depression_3y_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1  & d_crit_C==1 & d_crit_D==1 & d_crit_E==1
 label values   depression_3y_s3 yesno
 label variable depression_3y_s3 "Three years depression (c2011_w4)"
 
