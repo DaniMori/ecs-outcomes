@@ -72,7 +72,7 @@ started suddenly and got worse during the first 10 minutes, were considered to
 be suffering from panic disorder.
 
 To generate the inter-survey variable (panic disorder occurred since the last
-interview, ´panic_3y_s3´), the following criteria related to the DSM were
+interview, `panic_3y_s3`), the following criteria related to the DSM were
 considered and all of them must be present:
 
 1.  Crisis of fear or anxiety in which appears a sudden feeling such as fear,
