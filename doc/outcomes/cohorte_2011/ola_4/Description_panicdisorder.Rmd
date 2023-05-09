@@ -35,18 +35,18 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------+----------------------------+--------------+--------------+
-| Main variable | Label                      | Format       | Code         |
-| name          |                            |              |              |
-+:==============+:===========================+:=============+:=============+
-| panic_12m_s3  | Panic disorder during last | Categorical  | 0 = no       |
-|               | 12 months (c2011_w4)       |              |              |
-|               |                            |              | 1 = yes      |
-+---------------+----------------------------+--------------+--------------+
-| panic_3y_s3   | Three years panic disorder | Categorical  | 0 = no       |
-|               | (c2011_w4)                 |              |              |
-|               |                            |              | 1 = yes      |
-+---------------+----------------------------+--------------+--------------+
++---------------+--------------------------+---------------+---------------+
+| Main variable | Label                    | Format        | Code          |
+| name          |                          |               |               |
++:==============+:=========================+:==============+:==============+
+| panic_12m_s3  | Panic disorder during    | Categorical   | 0 = no        |
+|               | last 12 months           |               |               |
+|               | (c2011_w4)               |               | 1 = yes       |
++---------------+--------------------------+---------------+---------------+
+| panic_3y_s3   | Inter-survey panic       | Categorical   | 0 = no        |
+|               | disorder (c2011_w4)      |               |               |
+|               |                          |               | 1 = yes       |
++---------------+--------------------------+---------------+---------------+
 
 # Variable description
 
@@ -71,7 +71,7 @@ dry mouth, etc., and with two or more crises during their lifetime that had
 started suddenly and got worse during the first 10 minutes, were considered to
 be suffering from panic disorder.
 
-To generate the three years variable (panic disorder occurred since the last
+To generate the inter-survey variable (panic disorder occurred since the last
 interview, panic_3y_s3), the following criteria related to the DSM were
 considered and all of them must be present:
 
@@ -183,12 +183,12 @@ gen     d_crit4 = .
 replace d_crit4 = 0 if (q4520_times_s3<2 & q4520_times_s3!=.)
 replace d_crit4 = 1 if  q4520_times_s3>=2 & q4520_times_s3<996
 
-***#"Three years panic disorder diagnostic variable"
+***#"Inter-survey panic disorder diagnostic variable"
 gen     panic_3y_s3 = .
 replace panic_3y_s3 = 0 if  d_crit1==0 | d_crit2==0 | d_crit3==0 | d_crit4==0
 replace panic_3y_s3 = 1 if d_crit1==1 & d_crit2==1 & d_crit3==1 & d_crit4==1
 label values   panic_3y_s3 yesno
-label variable panic_3y_s3 "Three years panic disorder (c2011_w4)"
+label variable panic_3y_s3 "Inter-survey panic disorder (c2011_w4)"
 
 ***#"12 months panic disorder diagnostic variable"
 recode q4524_crisis12_s3 (888=.) (999=.) (2=0)
