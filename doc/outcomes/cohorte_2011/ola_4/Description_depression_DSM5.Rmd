@@ -34,34 +34,38 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+-----------------------------+-----------------------+-------------+-------------+
-| Main variable name          | Label                 | Format      | Code        |
-+:============================+:======================+:============+:============+
-| depression_3y_s3            | Three years           | Binary      | 0 No        |
-|                             | depression (c2011_w4) |             |             |
-|                             |                       |             | 1 Yes       |
-+-----------------------------+-----------------------+-------------+-------------+
-| depression_12m_s3           | 12 months depression  | Binary      | 0 No        |
-|                             | (c2011_w4)            |             |             |
-|                             |                       |             | 1 Yes       |
-+-----------------------------+-----------------------+-------------+-------------+
-| depression_12treatment_s3   | Treatment for         | Binary      | 0 No        |
-|                             | depression in         |             |             |
-|                             | previous 12 months    |             | 1 Yes       |
-|                             | (c2011_w4)            |             |             |
-+-----------------------------+-----------------------+-------------+-------------+
-| depression_self_s3          | Depression            | Binary      | 0 No        |
-|                             | self-reported         |             |             |
-|                             | (c2011_w4)            |             | 1 Yes       |
-+-----------------------------+-----------------------+-------------+-------------+
-| d_3y_comparable_s3          | Three years           | Binary      | 0 no        |
-|                             | depressive episode    |             |             |
-|                             | comparable (c2011_w4) |             | 1 yes       |
-+-----------------------------+-----------------------+-------------+-------------+
-| d_12m_comparable_s3         | 12 month depression   | Binary      | 0 no        |
-|                             | comparable (c2011_w4) |             |             |
-|                             |                       |             | 1 yes       |
-+-----------------------------+-----------------------+-------------+-------------+
++------------------------+------------------+---------------+---------------+
+| Main variable name     | Label            | Format        | Code          |
++:=======================+:=================+:==============+:==============+
+| depression_3y_s3       | Inter-survey     | Binary        | 0 No          |
+|                        | depression       |               |               |
+|                        | (c2011_w4)       |               | 1 Yes         |
++------------------------+------------------+---------------+---------------+
+| depression_12m_s3      | 12 months        | Binary        | 0 No          |
+|                        | depression       |               |               |
+|                        | (c2011_w4)       |               | 1 Yes         |
++------------------------+------------------+---------------+---------------+
+| dep                    | Treatment for    | Binary        | 0 No          |
+| ression_12treatment_s3 | depression in    |               |               |
+|                        | previous 12      |               | 1 Yes         |
+|                        | months           |               |               |
+|                        | (c2011_w4)       |               |               |
++------------------------+------------------+---------------+---------------+
+| depression_self_s3     | Depression       | Binary        | 0 No          |
+|                        | self-reported    |               |               |
+|                        | (c2011_w4)       |               | 1 Yes         |
++------------------------+------------------+---------------+---------------+
+| d_3y_comparable_s3     | Inter-survey     | Binary        | 0 no          |
+|                        | depressive       |               |               |
+|                        | episode          |               | 1 yes         |
+|                        | comparable       |               |               |
+|                        | (c2011_w4)       |               |               |
++------------------------+------------------+---------------+---------------+
+| d_12m_comparable_s3    | 12 month         | Binary        | 0 no          |
+|                        | depression       |               |               |
+|                        | comparable       |               | 1 yes         |
+|                        | (c2011_w4)       |               |               |
++------------------------+------------------+---------------+---------------+
 
 # Variable description
 
@@ -90,17 +94,17 @@ Composite International Diagnostic Interview.
 # Explanation of how the variables were created
 
 An algorithm based on the DSM-V was used for the endorsement of major depressive
-episode at some point in their lives (previous three years) and in the previous
+episode at some point in their lives (since the last survey) and in the previous
 12 months (point prevalence). We also included a treatment variable for 12-month
 depression. These algorithms were created only for the non-proxy respondents.
-Although a variable (depression_self_s3) was created to assess an eventual
+Although a variable (`depression_self_s3`) was created to assess an eventual
 presence of depression episode self-reported.
 
 As for the proxy participants, original variables include a diagnosis depression
-item (p4040_depression_s3) and reported treatment taking (p4040a_age_s3). A
+item (`p4040_depression_s3`) and reported treatment taking (`p4040a_age_s3`). A
 diagnosis of depression was endorsed if the participant answered "yes" to
 p4040_depression_s3, but not 997 in p4040a_age_s3 (they affirmed they had never
-had depression). We also included a treatment code (depress_12treatment_s3) in
+had depression). We also included a treatment code (`depress_12treatment_s3`) in
 those individuals who, apart from having reported depression, have received
 treatment for it in the previous 12 months.
 
@@ -121,14 +125,14 @@ explained by schizoaffective disorder, schizophrenia, schizophreniform disorder,
 delusional disorder, or other specified and unspecified schizophrenia spectrum
 and other psychotic disorders; E) There has never been a manic episode or a
 hypomanic episode. These criteria where used to create the variable related to
-three years depression (depression_3y_s3). We also created a variable to assess
-the presence of a depressive episode during the last 12 months using only one
-item (q4227a_s3) which directly asks for the presence of a depressive episode
-during this 12-month period.
+inter-survey depression (`depression_3y_s3`). We also created a variable to
+assess the presence of a depressive episode during the last 12 months using only
+one item (`q4227a_s3`) which directly asks for the presence of a depressive
+episode during this 12-month period.
 
 As the dataset will be used for longitudinal studies, a variable of the
-prevalence of depression during the last three years comparable to other waves
-has been created using the criteria A, C and D above.
+prevalence of depression during the last survey comparable to other waves has
+been created using the criteria A, C and D above.
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
@@ -306,7 +310,7 @@ gen     depression_3y_s3 = .
 replace depression_3y_s3 = 0 if (d_skipped==1 | d_crit_A!=1 | d_crit_B!=1 | d_crit_C!=1 | d_crit_D!=1 | d_crit_E!=1) & proxy==2
 replace depression_3y_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1  & d_crit_C==1 & d_crit_D==1 & d_crit_E==1
 label values   depression_3y_s3 yesno
-label variable depression_3y_s3 "Three years depression (c2011_w4)"
+label variable depression_3y_s3 "Inter-survey depression (c2011_w4)"
 
 
 ***#VARIABLE "`depression_12m_s3`: 12-month depression"
@@ -339,14 +343,14 @@ replace depression_self_s3 = 1 if p4040_depression_s3==1 & p4040a_age_s3!=997
 label values   depression_self_s3 yesno
 label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
-*#"Three years depression "comparable" (does not take into account exclusion criteria B and E)"
+*#"Inter-survey depression "comparable" (does not take into account exclusion criteria B and E)"
 gen     d_3y_comparable_s3 = .
 replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_C==0 | d_crit_D==0 
 replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A==1 & d_crit_C==1 & d_crit_D==1
 label values   d_3y_comparable_s3 yesno
-label variable d_3y_comparable_s3 "Three years depressive episode comparable (c2011_w4)"
+label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
 
-*#"12-month 'comparable', based on the intermediate 'Three years comparable' and the individual item":
+*#"12-month 'comparable', based on the intermediate 'Inter-survey comparable' and the individual item":
 gen     d_12m_comparable_s3 = .
 replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | depression_12m_s3==0
 replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 & depression_12m_s3==1
