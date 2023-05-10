@@ -97,7 +97,7 @@ Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be
 used by trained lay interviewers for the assessment of mental disorders
 according to the definitions and criteria of ICD-11 (criteria can been seen at
 [ICD-11 for Mortality and Morbidity Statistics
-(who.int](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f578635574)[)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232)
+(who.int](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f578635574)[)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232).
 It is intended for use in epidemiological and cross-cultural studies, as well as
 for clinical and research purposes.
 
