@@ -40,11 +40,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable information
 
 | Main variable name | Label                                                | Format      | Code                                    |
-|:------------------|:------------------------|:------------------|:------------------|
+|:------------------|:----------------------|:------------------|:------------------|
 | hhincome_s3        | Annual household income level (bracket) (c2011_w4)   | Continuous  | 0 - 1.000.000                           |
-| hhquintile_s3      | Quintile of annual household income level (c2011_w4) | Categorical | 1 = first quintile - 5 = fifth quintile |
+| hhquintile_s3      | Quintile of annual household income level (c2011_w4) | Categorical | 1 = First quintile - 5 = Fifth quintile |
 | indincome_s3       | Annual working income level (bracket) (c2011_w4)     | Categorical | 0 - 1.000.000                           |
-| indquintile_s3     | Quintile of annual working income level (c2011_w4)   | Categorical | 1 = first quintile - 5 = fifth quintile |
+| indquintile_s3     | Quintile of annual working income level (c2011_w4)   | Categorical | 1 = First quintile - 5 = Fifth quintile |
 
 # Variable description
 
@@ -70,6 +70,15 @@ variables have also been created using the same items to obtain categorical
 variables related to participant's income. In order to assess the level of
 income the middle of the bracket has been taking into acccount (e.g. income
 between 1.000 and 1.999 == 1.500).
+
+To obtain an amount ranging from 0 to 1.000.000 the category items
+(q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3
+q0410k_other_s3) ranging from 0 to 35 have been recoded using the middle of each
+bracket; (1=0; 2=500; 3=1500; 4=2500; 5=3500; 6=4500; 7=5500; 8=6500; 9=7500;
+10=8500; 11=9500; 12=10500; 13=11500; 14=12500; 15=13500; 16=14500; 17=15500;
+18=16500; 19=17500; 20=18500; 21=19500; 22=22500; 23=27500; 24=32500; 25=37500;
+26=42500; 27=47500; 28=62500; 29=87500; 30=125000; 31=175500; 32=250000;
+33=400000; 34=750000; 35=1000000)
 
 # Syntax used to create the variable (Stata 15)
 
