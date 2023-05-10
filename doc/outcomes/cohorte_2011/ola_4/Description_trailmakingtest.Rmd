@@ -38,14 +38,14 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-| Main variable name | Label                                             | Format       | Code |
-|:-------------------|:--------------------------------------------------|:-------------|:-----|
-| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4)  | Quantitative | 0+   |
-| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+   |
-| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4)  | Quantitative | 0+   |
-| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+   |
-| tmt_ratio_s3       | Trail making test ratio (c2011_w4)                | Quantitative | 0+   |
-| tmt_diff_s3        | Trail making test difference (seconds) (c2011_w4) | Quantitative | 0+   |
+| Main variable name | Label                                             | Format       | Code  |
+|:-------------------|:--------------------------------------------------|:-------------|:------|
+| tmt_time_a\_s3     | TMT completion time (seconds), part A (c2011_w4)  | Quantitative | 0-100 |
+| tmt_errors_a\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+    |
+| tmt_time_b\_s3     | TMT completion time (seconds), part B (c2011_w4)  | Quantitative | 0-300 |
+| tmt_errors_b\_s3   | TMT errors, part A (c2011_w4)                     | Quantitative | 0+    |
+| tmt_ratio_s3       | Trail making test ratio (c2011_w4)                | Quantitative | 0+    |
+| tmt_diff_s3        | Trail making test difference (seconds) (c2011_w4) | Quantitative | 0-300 |
 
 # Variable description
 
