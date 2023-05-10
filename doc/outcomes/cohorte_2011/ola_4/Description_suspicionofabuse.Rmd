@@ -196,13 +196,13 @@ codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3
 
 ```{stata save-data-test, eval=TEST}
 
-saveold "Outcome_EASI.dta", replace version(13)
+saveold "Outcome_suspicionofabuse.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
 
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_EASI.dta", replace version(13)
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_suspicionofabuse.dta", replace version(13)
 ```
 
 <br>
