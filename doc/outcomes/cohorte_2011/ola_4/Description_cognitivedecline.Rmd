@@ -99,7 +99,7 @@ codebook IQCODE_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
-saveold "Outcome_IQCODE.dta", replace version(13)
+saveold "Outcome_cognitivedecline.dta", replace version(13)
 ```
 
 ```{stata save-data, eval=!TEST}
