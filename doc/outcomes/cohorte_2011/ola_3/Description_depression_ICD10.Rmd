@@ -27,38 +27,26 @@ knitr::opts_chunk$set( # Para todos los 'chunks' de código:
 
 # Variable information
 
-+---------------------------+---------------+---------------+---------------+
-| **Main variable name**    | **Label**     | **Format**    | **Code**      |
-+:==========================+:==============+===============+===============+
-| d_3y_severity_s2          | Severity of   | Ordinal       | -   0=No;     |
-|                           | depressive    |               | -   1=Mild;   |
-|                           | episode       |               | -             |
-|                           | during last   |               |   2=Moderate; |
-|                           | three years   |               | -   3=Severe  |
-|                           | (c2011_w3)    |               |               |
-+---------------------------+---------------+---------------+---------------+
-| depression_3y_s2          | Three years   | Binary        | -   0=no;     |
-|                           | depression    |               | -   1=yes     |
-|                           | (c2011_w3)    |               |               |
-+---------------------------+---------------+---------------+---------------+
-| depression_3y_proxy_s2    | Three years   | Binary        | -   0=no;     |
-|                           | depression    |               | -   1=yes     |
-|                           | for proxy     |               |               |
-|                           | (c2011_w3)    |               |               |
-+---------------------------+---------------+---------------+---------------+
-| d_12m_item_s2             | 12 month      | Binary        | -   0=no;     |
-|                           | depression,   |               | -   1=yes     |
-|                           | one item      |               |               |
-|                           | (c2011_w3)    |               |               |
-+---------------------------+---------------+---------------+---------------+
-| depression_12m_s2         | 12 month      | Binary        | -   0=no;     |
-|                           | depression    |               | -   1=yes     |
-|                           | from three    |               |               |
-|                           | years         |               |               |
-|                           | diagnosis +   |               |               |
-|                           | q4227 items   |               |               |
-|                           | (c2011_w3)    |               |               |
-+---------------------------+---------------+---------------+---------------+
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
+| **Main variable name**                                           | **Label**                                                     | **Format**                | **Code**                              |
++:=================================================================+:==============================================================+===========================+=======================================+
+| d_3y_severity_s2                                                 | Inter-surve severity of depressive episode (c2011_w3)         | Ordinal                   | -   0=No;                             |
+|                                                                  |                                                               |                           | -   1=Mild;                           |
+|                                                                  |                                                               |                           | -   2=Moderate;                       |
+|                                                                  |                                                               |                           | -   3=Severe                          |
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
+| depression_3y_s2                                                 | Inter-survey depression (c2011_w3)                            | Binary                    | -   0=No;                             |
+|                                                                  |                                                               |                           | -   1=Yes                             |
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
+| depression_3y_proxy_s2                                           | Inter-survey depression for proxy (c2011_w3)                  | Binary                    | -   0=No;                             |
+|                                                                  |                                                               |                           | -   1=Yes                             |
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
+| d_12m_item_s2                                                    | 12 month depression, one item (c2011_w3)                      | Binary                    | -   0=No;                             |
+|                                                                  |                                                               |                           | -   1=Yes                             |
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
+| depression_12m_s2                                                | 12 month depression from inter-survey diagnosis + q4227 items | Binary                    | -   0=No;                             |
+|                                                                  | (c2011_w3)                                                    |                           | -   1=Yes                             |
++------------------------------------------------------------------+---------------------------------------------------------------+---------------------------+---------------------------------------+
 
 # Variable description
 
@@ -334,25 +322,25 @@ replace d_3y_severity_s2 = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & 
 replace d_3y_severity_s2 = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_3y_severity_total>=2 & d_3y_severity_total!=.
 replace d_3y_severity_s2 = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_3y_severity_total==3
 label values   d_3y_severity_s2 severity
-label variable d_3y_severity_s2 "Severity of depressive episode during the last three years (c2011_w3)"
+label variable d_3y_severity_s2 "Inter-survey severity of depressive episode (c2011_w3)"
 *#"NOTE: The criteria are applied incrementally, such that if a case
 *#       fulfills the criteria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
 *#       severe one".
 
 
-***#"Three years depression diagnostic variable":
+***#"Inter-survey depression diagnostic variable":
 gen     depression_3y_s2 = .
 replace depression_3y_s2 = 0 if d_3y_severity_s2==0
 replace depression_3y_s2 = 1 if d_3y_severity_s2>=1 & d_3y_severity_s2 !=.
 label values   depression_3y_s2 yesno
-label variable depression_3y_s2 "Three years depression (c2011_w3)"
+label variable depression_3y_s2 "Inter-survey depression (c2011_w3)"
 
 
 ***#"VARIABLE `depression_3y_proxy`: Depressive episode for proxy participants"
 recode p4040_depression_s2 (1=1) (2=0) (888=0) (999=0), gen (depression_3y_proxy_s2)
 label values   depression_3y_proxy_s2 yesno
-label variable depression_3y_proxy_s2 "Three years depression for proxy (c2011_w3)"
+label variable depression_3y_proxy_s2 "Inter-survey depression for proxy (c2011_w3)"
 
 
 ***#"VARIABLE `d_12m_item`: 12-month depression criterion from q4227 items"
@@ -368,7 +356,7 @@ gen     depression_12m_s2 = .
 replace depression_12m_s2 = 0 if depression_3y_s2==0 | d_12m_item_s2==0
 replace depression_12m_s2 = 1 if depression_3y_s2==1 & d_12m_item_s2==1
 label values   depression_12m_s2 yesno
-label variable depression_12m_s2 "12 month depression from three years diagnosis + q4227 items (c2011_w3)"
+label variable depression_12m_s2 "12 month depression from inter-survey diagnosis + q4227 items (c2011_w3)"
 ```
 
 <br>
