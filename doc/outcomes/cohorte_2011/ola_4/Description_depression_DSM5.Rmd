@@ -34,38 +34,38 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------------------+----------------+----------------+----------------+
-| Main variable name         | Label          | Format         | Code           |
-+:===========================+:===============+:===============+:===============+
-| depression_3y_s3           | Inter-survey   | Binary         | 0 No           |
-|                            | depression     |                |                |
-|                            | (c2011_w4)     |                | 1 Yes          |
-+----------------------------+----------------+----------------+----------------+
-| depression_12m_s3          | 12 months      | Binary         | 0 No           |
-|                            | depression     |                |                |
-|                            | (c2011_w4)     |                | 1 Yes          |
-+----------------------------+----------------+----------------+----------------+
-| dep ression_12treatment_s3 | Treatment for  | Binary         | 0 No           |
-|                            | depression in  |                |                |
-|                            | previous 12    |                | 1 Yes          |
-|                            | months         |                |                |
-|                            | (c2011_w4)     |                |                |
-+----------------------------+----------------+----------------+----------------+
-| depression_self_s3         | Depression     | Binary         | 0 No           |
-|                            | self-reported  |                |                |
-|                            | (c2011_w4)     |                | 1 Yes          |
-+----------------------------+----------------+----------------+----------------+
-| d_3y_comparable_s3         | Inter-survey   | Binary         | 0 no           |
-|                            | depressive     |                |                |
-|                            | episode        |                | 1 yes          |
-|                            | comparable     |                |                |
-|                            | (c2011_w4)     |                |                |
-+----------------------------+----------------+----------------+----------------+
-| d_12m_comparable_s3        | 12 month       | Binary         | 0 no           |
-|                            | depression     |                |                |
-|                            | comparable     |                | 1 yes          |
-|                            | (c2011_w4)     |                |                |
-+----------------------------+----------------+----------------+----------------+
++------------------------+----------------+----------------+----------------+
+| Main variable name     | Label          | Format         | Code           |
++:=======================+:===============+:===============+:===============+
+| depression_3y_s3       | Inter-survey   | Binary         | 0 No           |
+|                        | depression     |                |                |
+|                        | (c2011_w4)     |                | 1 Yes          |
++------------------------+----------------+----------------+----------------+
+| depression_12m_s3      | 12 months      | Binary         | 0 No           |
+|                        | depression     |                |                |
+|                        | (c2011_w4)     |                | 1 Yes          |
++------------------------+----------------+----------------+----------------+
+| dep                    | Treatment for  | Binary         | 0 No           |
+| ression_12treatment_s3 | depression in  |                |                |
+|                        | previous 12    |                | 1 Yes          |
+|                        | months         |                |                |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| depression_self_s3     | Depression     | Binary         | 0 No           |
+|                        | self-reported  |                |                |
+|                        | (c2011_w4)     |                | 1 Yes          |
++------------------------+----------------+----------------+----------------+
+| d_3y_comparable_s3     | Inter-survey   | Binary         | 0 no           |
+|                        | depressive     |                |                |
+|                        | episode        |                | 1 yes          |
+|                        | comparable     |                |                |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
+| d_12m_comparable_s3    | 12 month       | Binary         | 0 no           |
+|                        | depression     |                |                |
+|                        | comparable     |                | 1 yes          |
+|                        | (c2011_w4)     |                |                |
++------------------------+----------------+----------------+----------------+
 
 # Variable description
 
