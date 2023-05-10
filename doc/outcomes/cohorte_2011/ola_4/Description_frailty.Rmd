@@ -35,7 +35,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| frailty_index_s3   | Frailty (c2011_w4)                       | Dichotomous| 0 Non frail;         |
+| frailty_index_s3   | Frailty (c2011_w4)                       | Dichotomous| 0 Non-frail;         |
 |                    |                                          |            | 1 Frail              |
 +--------------------+------------------------------------------+------------+----------------------+
 | frailty_score_s3   | Frailty score (c2011_w4)                 |Quantitative| 0-1                  |
@@ -47,7 +47,7 @@ _Frailty_ is an index that considers the various biopsychosocial factors that ca
 influence the presence of frailty in the elderly. This index originally includes
 a total of 31 ratings, covering the three dimensions assessed: “Chronic Health 
 Conditions,” “Cognitive functions” and “Disability and daily-life functioning.” 
-Each of these ratings receive a specific score (@tyrovolas_frailty_2018). 
+Each of these ratings receives a specific score (@tyrovolas_frailty_2018). 
 Note though that presence of injury was not assessed in this wave, so 30 
 out of 31 scales were considered here.
 
@@ -58,20 +58,20 @@ out of 31 scales were considered here.
   _Memory_ (Delayed Recall task), _Learning and Short-term Memory_ (Immediate Recall
   task), _Working memory_ (Forwards and Backwards Digit tasks), and _Verbal fluency_
   (Animal Naming task).
-  - Verbal Fluency and the Immediate Recall task was assessed using the Consortium
+  - Verbal Fluency and the Immediate Recall task were assessed using the Consortium
 	to Establish a Registry for Alzheimer Disease Word List Memory (@moms_consortium_1989).
 	The Delayed Recall task and the Forwards and Backwards Digit tasks were based 
 	on the WAIS III (@wechsler_wais-iii_1997).
 - __Disability and daily-life functioning__: Assesses the participant’s 
   functionality based on the WHODAS version 2.0 scale (_World Health Organisation Disability
-  Assessment Schedule_) , and adds questions that cover the self-perception of the 
+  Assessment Schedule_), and adds questions that cover the self-perception of the 
   health status. Items such as Mobility, Interpersonal activities, Activities of domestic
   life, Sleep, Rest, Hearing, and Pain are considered (@wilson_improving_2006).
 	Participants were asked to report the level of difficulty they had in 
 	performing some activities over the past 30 days using a five-point scale 
 	(none = 1, mild = 2, moderate = 3, severe = 4, extreme / can’t do = 5). 
 	However, in the case of the scales for Attention, Mobility, and Interpersonal 
-	activities, there are different number of items, so the additive scores have 
+	activities, there are different numbers of items, so the additive scores have 
 	ranges 13-65, 5-25 and 6-30, respectively.
 	In the case of mobility, items 2026 and 2041 were omitted (@tyrovolas_frailty_2018).
 	Quintiles of the aforementioned scores were used to classify participants: 
@@ -93,11 +93,11 @@ The scores are given according to the following components assessed:
   Integer values 0 or 1 are given depending on whether the participant has (1) 
   or does not have (0) the condition assessed.
   
-•	**3-point scale rating**: Given to the four components of cognitive function 
+•	**3-point scale rating** on the four components of cognitive function 
   and the physical activity outcome. Values of 0, 0.5 and, 1 are assigned, where
   0 means “no alterations,” 0.5 implies intermediate function, and 1 a low 
   function for the “cognitive function” components, and for physical activity 0
-  means “high,” 0.5 “moderate, and 1 ”low”.
+  means “high,” 0.5 “moderate, and 1 “low”.
   
 •	**4-point scale rating**: Values of 0, 0.33, 0.66 and 1 are given to the
   vision deficit assessment. A higher value represents a greater visual 
