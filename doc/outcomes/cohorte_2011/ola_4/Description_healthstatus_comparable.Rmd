@@ -107,11 +107,11 @@ merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\
 *# "Create new binary variables from the measured tests":
 
 **# "Recode first into quartiles":
-xtile ws_binary = q2513_4m_s3, nquantiles(4)
-xtile ivr_binary = immediate_c_s3, nquantiles(4)
-xtile dvr_binary = delayed_c_s3, nquantiles(4)
-xtile dsb_binary = ds_backward_s3, nquantiles(4)
-xtile dsf_binary = ds_forward_s3, nquantiles(4)
+xtile ws_binary  = q2513_4m_s3,       nquantiles(4)
+xtile ivr_binary = immediate_c_s3,    nquantiles(4)
+xtile dvr_binary = delayed_c_s3,      nquantiles(4)
+xtile dsb_binary = ds_backward_s3,    nquantiles(4)
+xtile dsf_binary = ds_forward_s3,     nquantiles(4)
 xtile vf_binary  = verbal_fluency_s3, nquantiles(4)
 
 **# "Recode then as 0 (1st quartile) or 1 (the rest)":
@@ -141,7 +141,7 @@ label var health_s3 "Health status, comparable across waves (c2011_w4)"
 
 <br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
-```{stata descriptives, cleanlog=FALSE, collectcode=TRUE, results='markup', include=!DOUBLE_CODING}
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result proxy health_s3
 
 codebook health_s3
