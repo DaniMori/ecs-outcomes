@@ -1,0 +1,162 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4-- 'income'"
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                                | Format      | Code                                    |
+|:------------------|:----------------------|:------------------|:------------------|
+| hhincome_s3        | Annual household income level (bracket) (c2011_w4)   | Continuous  | 0 - 1.000.000                           |
+| hhquintile_s3      | Quintile of annual household income level (c2011_w4) | Categorical | 1 = First quintile - 5 = Fifth quintile |
+| indincome_s3       | Annual working income level (bracket) (c2011_w4)     | Categorical | 0 - 1.000.000                           |
+| indquintile_s3     | Quintile of annual working income level (c2011_w4)   | Categorical | 1 = First quintile - 5 = Fifth quintile |
+
+# Variable description
+
+The annual household income level is the participant's estimation of the overall
+household level of income during the last 12 months taking into account all
+income sources. The annual working income level is the participant's estimation
+of his/her working earnings during the last 12 months. Both variables are
+reported by means of a category representing a bracket of income in euros. The
+"continuous" variables replace the value of the category with the midpoint of
+the corresponding bracket. The quintile variables reorder that information into
+five groups.
+
+# Explanation of how the variables were created
+
+The annual household income level (hhincome_s3 and indincome_s3) was calculated
+using items q0410g and q1516_total giving respectively score through a bracket
+and the bracket's midpoint. These two items have been completed by three items
+that give information about gross income of the family (q0410i-k) after
+excluding "Less than 0€", "Don't know" and "Refuse" categories. The same process
+has been used to created the Annual working income level variables. Quintile of
+annual household income level and Quintile of annual working income level
+variables have also been created using the same items to obtain categorical
+variables related to participant's income. In order to assess the level of
+income the middle of the bracket has been taking into acccount (e.g. income
+between 1.000 and 1.999 == 1.500).
+
+To obtain an amount ranging from 0 to 1.000.000 the category items
+(q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3
+q0410k_other_s3) ranging from 0 to 35 have been recoded using the middle of each
+bracket; (1=0; 2=500; 3=1500; 4=2500; 5=3500; 6=4500; 7=5500; 8=6500; 9=7500;
+10=8500; 11=9500; 12=10500; 13=11500; 14=12500; 15=13500; 16=14500; 17=15500;
+18=16500; 19=17500; 20=18500; 21=19500; 22=22500; 23=27500; 24=32500; 25=37500;
+26=42500; 27=47500; 28=62500; 29=87500; 30=125000; 31=175500; 32=250000;
+33=400000; 34=750000; 35=1000000)
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Value labels (defined for all the outcome variables in the dataset)":
+label define quintile  1 "First quintile" 2 "Second quintile" 3 "Third quintile" 4 "Fourth quintile" 5 "Fifth quintile"
+
+*# Mid Brackets of income level
+recode q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3 q0410k_other_s3 (1=0) (2=500) (3=1500) (4=2500) (5=3500) (6=4500) (7=5500) (8=6500) (9=7500) (10=8500) (11=9500) (12=10500) (13=11500) (14=12500) (15=13500) (16=14500) (17=15500) (18=16500) (19=17500) (20=18500) (21=19500) (22=22500) (23=27500) (24=32500) (25=37500) (26=42500) (27=47500) (28=62500) (29=87500) (30=125000) (31=175500) (32=250000) (33=400000) (34=750000) (35=1000000) (else=.)
+
+*# Annual household income level (bracket)
+gen hhincome_s3=q0410g_total_s3
+replace hhincome_s3 = q0410i_ss_s3 if q0410i_ss_s3 > hhincome_s3 & q0410i_ss_s3!=.
+replace hhincome_s3 = q0410j_government_s3 if q0410j_government_s3 > hhincome_s3 & q0410j_government_s3!=.
+replace hhincome_s3 = q0410k_other_s3 if q0410k_other_s3 > hhincome_s3 & q0410k_other_s3!=.
+label variable hhincome_s3 "Annual household income level (bracket) (c2011_w4)"
+
+*# Annual working income level (bracket) (c2011_w4) 
+gen indincome_s3 = q1516_total_s3
+label variable indincome_s3 "Annual working income level (bracket) (c2011_w4)"
+
+
+*# Quintile of annual and working income level
+xtile hhquintile_s3 = hhincome_s3, nq(5)
+xtile indquintile_s3 = indincome_s3, nq(5)
+
+label variable hhquintile_s3 "Quintile of annual household income level (c2011_w4)"
+label variable indquintile_s3 "Quintile of annual working income level (c2011_w4)"
+label values   hhquintile_s3 quintile 
+label values   indquintile_s3 quintile 
+
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy hhincome_s3 indincome_s3 hhquintile_s3 indquintile_s3
+
+codebook hhincome_s3 indincome_s3 hhquintile_s3 indquintile_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_income.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_income.dta", replace version(13)
+
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
