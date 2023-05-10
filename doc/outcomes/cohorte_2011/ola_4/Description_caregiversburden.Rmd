@@ -1,0 +1,144 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'CAREGIVER'S BURDEN'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@bedard_zarit_2001, @zarit_relatives_1980' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+## TODO: sustituir '<path\to\>' por la ubicación de Stata
+##       (ejecutar `sysdir` en Stata) y descomentar línea 62,
+##       o eliminar linea 62:
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
++----------------------+------------------------------------------+------------+----------------------+
+| Main variable name   | Label                                    | Format     | Code                 |
++:=====================+:=========================================+:===========+:=====================+
+| caregivers_burden_s3 | Caregiver's burden, continuous (c2011_w4)| Continuous |  0 - 43              |
++----------------------+------------------------------------------+------------+----------------------+
+
+# Variable description
+
+The 22-item version of the Zarit Burden Interview (ZBI) is the most widely used 
+caregiver self-report measure used by many aging agencies (@zarit_relatives_1980).
+It has been used in a variety of research designs, to discriminate among study 
+participants and to measure change over time resulting from progression of the 
+care recipient's condition, or from interventions aimed at reducing burden. 
+A significant advantage of the popularity of the ZBI is that results obtained in
+studies can be easily compared and synthesized. We used a reduced version of 12 
+items (@bedard_zarit_2001).
+
+Each item on the interview is a statement which the caregiver is 
+asked to endorse using a 5-point scale. Response options range from 0 (Never) 
+to 4 (Nearly Always).
+
+# Explanation of how the variables were created
+The variable is created as the product of the sum of the reduced version' items:
+`q6712_s3` (insufficient time), `q6713_s3` (stress), `q6714_s3` (irritated),
+`q6715_s3` (negative impact on social networks), `q6716_s3` (exhausted), 
+`q6717_s3` (health), `q6718_s3` (limited private life), `q6719_s3` (worse social
+networks), `q6720_s3` (life out of control), `q6721_s3` (insecure), `q6722_s3` 
+(could do more) and `q6723_s3` (could do better).
+
+It is a scale from 0 to 48 (empirically 43). Higher indexes indicate higher burden. 
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+recode q6712_s3 q6713_s3 q6714_s3 q6715_s3 q6716_s3 q6717_s3 q6718_s3 q6719_s3 q6720_s3 q6721_s3 q6722_s3 q6723_s3 (1=0) (2=1) (3=2) (4=3) (5=4) (else=.)
+
+
+gen caregivers_burden_s3= q6712_s3 + q6713_s3 + q6714_s3 + q6715_s3 + q6716_s3 + q6717_s3 + q6718_s3 + q6719_s3 + q6720_s3 + q6721_s3 + q6722_s3 + q6723_s3
+
+
+label variable caregivers_burden_s3 "Caregiver's burden, continuous (c2011_w4)"
+```
+
+<br> 
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 caregivers_burden_s3
+
+codebook caregivers_burden_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_caregiversburden.dta", replace version(13)
+```
+
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_caregiversburden.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada
+-   e-mail: [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+
+
+<br>
+
+
+Original version:
+
+-   Name: Joan Domènech
+-   e-mail:
+    [j.domenech@pssjd.org](mailto:j.domenech@pssjd.org){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
