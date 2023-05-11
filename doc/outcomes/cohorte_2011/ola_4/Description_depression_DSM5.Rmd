@@ -55,15 +55,15 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                                  | self-reported   |          |           |
 |                                  | (c2011_w4)      |          | 1 Yes     |
 +----------------------------------+-----------------+----------+-----------+
-| d_3y_comparable_s3               | Inter-survey    | Binary   | 0 no      |
+| d_3y_comparable_s3               | Inter-survey    | Binary   | 0 No      |
 |                                  | depressive      |          |           |
-|                                  | episode         |          | 1 yes     |
+|                                  | episode         |          | 1 Yes     |
 |                                  | comparable      |          |           |
 |                                  | (c2011_w4)      |          |           |
 +----------------------------------+-----------------+----------+-----------+
-| d_12m_comparable_s3              | 12 month        | Binary   | 0 no      |
+| d_12m_comparable_s3              | 12 month        | Binary   | 0 No      |
 |                                  | depression      |          |           |
-|                                  | comparable      |          | 1 yes     |
+|                                  | comparable      |          | 1 Yes     |
 |                                  | (c2011_w4)      |          |           |
 +----------------------------------+-----------------+----------+-----------+
 
@@ -332,7 +332,7 @@ replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 & (q4232_s3!=. & 
 replace depression_12treatment_s3 = 1 if depression_12m_s3==1 & (q4231_s3==1 | q4232_s3==1)
 label values   depression_12treatment_s3 yesno
 label variable depression_12treatment_s3 "Treatment for depression in the previous 12 months (c2011_w4)"
-*#"NOTE: We take into acount psychological treatment and pharmacological treatment.
+*#"NOTE: We take into acount psychological treatment and pharmacological treatment."
 
 ***#VARIABLE "`depression_self_s3`: `depression self-reported`"
 
