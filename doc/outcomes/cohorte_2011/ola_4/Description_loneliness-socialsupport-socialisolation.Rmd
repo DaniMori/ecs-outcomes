@@ -1,0 +1,219 @@
+---
+title: "Edad con Salud -- cohort 2011 -- Wave 4 -- 'loneliness, social support, social isolation'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                       | Format     | Code  |
+|:-------------------|:----------------------------|:-----------|:------|
+| social_support_s3  | Social support (c2011_w4)   | Continuous | 0-100 |
+| loneliness_s3      | Loneliness (c2011_w4)       | Continuous | 0-100 |
+| isolation_s3       | Social isolation (c2011_w4) | Continuous | 0-5   |
+
+# Variable description
+
+The social support (**social_support_s3**) was measured using the OSLO-3 Social
+Support Scale (OSSS-3). This scale is composed of three items measuring the
+level of social support perceived by the participant. These three items provide
+information on (1) the number of close confidants, assessed on a 4-point scale
+ranging from "none" to "more than five", (2) how much interest and concern do
+people show in what the participant does, assessed on a 5-point scale ranging
+from "none" to "a lot", and (3) the relationship with neighbors, assessed on a
+5-point scale ranging from "very difficult" to "very easy". The total score
+ranges from 3 to 14, with a higher score indicating a stronger level of social
+support [@dalgard2006; @dalgard1996].
+
+Loneliness refers to a distressing perceived discrepancy between one´s social
+desires and one´s actual interactions with others [@heinrich2006]. The variable
+**loneliness_s3** was assessed by means of the Three-item UCLA Loneliness Scale
+assessing the perceived level of (1) companionship, (2) exclusion, and (3)
+isolation. All items are assessed on a scale ranging from 1, "hardly ever" to 3,
+"often", the higher the total score is, the higher is the feeling of loneliness
+perceived by the participant [@hughes2004].
+
+Social isolation is relate to structural aspects of the social network. This
+variable (**isolation_s3**) was computed using aspects like the level of
+frequency of interactions or the size of the social network)
+[@dejonggierveld2016].
+
+# Explanation of how the variables were created
+
+**Social_support** variable was created using the scores obtained in three items
+assessing the relationship with neighbors (items q6310), the number of close
+confidants (q6320), and the interest and concern of people in what the
+participant do (q6330). To simplify the understanding of the total scale items
+q6330 was reverted in the syntax to obtain a scale where the higher the score,
+the higher the level of social support. The global score was created by adding
+up the three items and transforming the result into a percentile scale. To the
+question "Do you have neighbors?", eleven participants said not to. According to
+CIDI questionnaire [@kessler2004] those cases have to be considered as "not
+applicable" when asking about social support perceived from neighbors. To avoid
+losing information, the lowest score ("very difficult") was given to these
+participants for help received from neighbors item. The following formula was
+used in order to rescale the obtained scores from 0 to 100: global score =
+((Factor score - min(factor scores))/(max(factor scores) - min(factor
+scores)))\*100
+
+**Loneliness** variable was created using items assessing companionship (q6351),
+exclusion (q6352), and isolation (q6353). The scores corresponding to each of
+the responses given to these three items were added up and transformed into a
+percentile scale, with higher scores indicating a higher subjective perception
+of loneliness. The same formula as the one used for social support variable has
+been used in order to rescale the obtained scores from 0 to 100.
+
+A **social isolation** index, based on the one proposed by [@shankar2011] was
+computed with respondents having a point if they (1) were not married/not
+cohabiting with a partner (q6010a_spouse); (2) had less than monthly contact
+with children (q6010c_children); (3) had less than monthly contact with other
+immediate family (q6010b_parents, q6010d_grandch, q6010e_other); (4) had less
+than monthly contact with friends (q6010g_friends); and (5) did not participate
+in any organizations, religious groups, or committees (q6618_relig,
+q6619_leave,q6613_club, and q6621_assoc). Items q6613_club, and q6621_assoc
+corresponded to "committees" ("participation in clubs or organizations" and
+"attend associations or senior community centres, or adult day care centres, or
+senior universities"). The total score was obtained by summing the answers given
+by the participants to the different items listed below. The total score ranged
+from 0 to 5, with higher scores representing greater social isolation.
+
+The social support and loneliness scores have been generated without allowing
+missing values, taking into account that both scales (Oslo Social Support (OSLO)
+and Three-item UCLA) comprise only three items. Therefore, global scores for
+social support and loneliness have been calculated only for subjects who
+answered the three items from each scale (OSLO/UCLA).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+***Social support 
+recode q6310_help_neig_s3 q6320_close_s3 (888=.) (999=.)
+recode q6330_concern_s3 (888=0) 
+replace q6310_help_neig_s3 = 5 if q6010h_neighbours_s3==2 
+generate social_support_s3 =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
+replace social_support_s3 =((social_support-3)/11)*100
+label variable social_support_s3 "Social support (c2011_w4)"
+
+***Loneliness 
+recode q6351_companion_s3 q6352_leftout_s3 q6353_isolated_s3 (888=.) (999=.)
+generate loneliness_s3=(q6351_companion_s3 + q6352_leftout_s3+ q6353_isolated_s3)
+replace loneliness_s3=((loneliness-3)/6)*100
+label variable loneliness_s3 "Loneliness (c2011_w4)"
+
+***Social isolation 
+recode q6010a_spouse (1=0) (2=1), gen(spouse)
+
+gen children=.
+replace children=0 if q6010c_children_s3==1 
+replace children=1 if q6010c_children_s3==2 | (q6213_children_s3==1 | q6213_children_s3==2)
+
+gen parents=.
+replace parents=0 if q6010b_parents_s3==1
+replace parents=1 if q6010b_parents_s3==2 | (q6212_parents_s3==1 | q6212_parents_s3==2)
+
+gen grandch=.
+replace grandch=0 if q6010d_grandch_s3 ==1
+replace grandch=1 if q6010d_grandch_s3 ==2 | (q6214_grandch_s3 ==1 | q6214_grandch_s3 ==2)
+
+gen otherfam=.
+replace otherfam=0 if q6010e_other_s3 ==1
+replace otherfam=1 if q6010e_other_s3 ==2 | (q6215_other_s3 ==1 | q6215_other_s3 ==2)
+
+gen family=.
+replace family=0 if parents==0 | grandch==0 | otherfam==0
+replace family=1 if parents==1 & grandch==1 & otherfam==1
+
+gen friends=.
+replace friends=0 if q6010g_friends_s3==1
+replace friends=1 if q6010g_friends_s3==2 | (q6217_friends_s3==1 | q6217_friends_s3==2)
+
+gen activities=.
+replace activities=0 if (q6618_relig_s3>2 & q6618_relig_s3<.) | (q6619_leave_s3>2 & q6619_leave_s3<.) | (q6613_club_s3 >2 & q6613_club_s3 <.) | (q6621_assoc_s3 >2 & q6621_assoc_s3 <.)
+replace activities=1 if (q6618_relig_s3==1 | q6618_relig_s3==2) & (q6619_leave_s3==1 | q6619_leave_s3==2) & (q6613_club_s3==1 | q6613_club_s3==2) & (q6621_assoc_s3==1 | q6621_assoc_s3==2)
+
+egen obs2=rownonmiss(spouse children family friends activities)
+egen isolation_s3=rowtotal(spouse children family friends activities) if obs2>=2
+label variable isolation_s3 "Social isolation (c2011_w4)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy isolation_s3 social_support_s3 loneliness_s3
+
+codebook isolation_s3 social_support_s3 loneliness_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_loneliness-socialsupport-socialisolation.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_loneliness-socialsupport-socialisolation.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914975492
+
+Original version:
+
+-   Name: Elvira Lara
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
+
+<br>
+
+-   Name: Félix Caballero
+-   e-mail: [felix.caballero\@uam.es](mailto:felix.caballero@uam.es){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
