@@ -36,17 +36,18 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+--------------------+--------------------------+-------------+-------+
-| Main variable name | Label                    | Format      | Code  |
-+:===================+:=========================+:============+:======+
-| gad_12m_s3         | Generalized anxiety      | Catehorical | 0 no  |
-|                    | disorder during last 12  |             |       |
-|                    | months (c2011_w4)        |             | 1 yes |
-+--------------------+--------------------------+-------------+-------+
-| gad_s3             | Lifetime generalized     | Categorical | 0 no  |
-|                    | anxiety disorder         |             |       |
-|                    | (c2011_w4)               |             | 1 yes |
-+--------------------+--------------------------+-------------+-------+
++------------------+-------------------------+--------------+--------------+
+| Main variable    | Label                   | Format       | Code         |
+| name             |                         |              |              |
++:=================+:========================+:=============+:=============+
+| gad_12m_s3       | Generalized anxiety     | Categorical  | 0 no         |
+|                  | disorder during last 12 |              |              |
+|                  | months (c2011_w4)       |              | 1 yes        |
++------------------+-------------------------+--------------+--------------+
+| gad_3y_s3        | Inter-survey            | Categorical  | 0 no         |
+|                  | generalized anxiety     |              |              |
+|                  | disorder (c2011_w4)     |              | 1 yes        |
++------------------+-------------------------+--------------+--------------+
 
 # Variable description
 
@@ -159,12 +160,12 @@ replace gad_crit_5 = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b
 *#       so only `q4224b` out of these two needs to be checked for considering
 *#       the criterion negative."
 
-***#"Lifetime generalized anxiety disorder diagnostic variable":
-gen     gad_s3  = .
-replace gad_s3  = 0 if gad_crit_2==0 | gad_crit_3==0 | gad_crit_5==0 
-replace gad_s3  = 1 if gad_crit_2==1 & gad_crit_3==1 & gad_crit_5==1 
-label values   gad_s3  yesno
-label variable gad_s3  "Lifetime generalized anxiety disorder (c2011_w4)"
+***#"Inter-survey generalized anxiety disorder diagnostic variable":
+gen     gad_3y_s3  = .
+replace gad_3y_s3  = 0 if gad_crit_2==0 | gad_crit_3==0 | gad_crit_5==0 
+replace gad_3y_s3  = 1 if gad_crit_2==1 & gad_crit_3==1 & gad_crit_5==1 
+label values   gad_3y_s3  yesno
+label variable gad_3y_s3  "Inter-survey generalized anxiety disorder (c2011_w4)"
 
 ***#"12 months generalized anxiety disorder diagnostic variable":
   
@@ -179,9 +180,9 @@ label variable gad_12m_s3  "Generalized anxiety disorder during last 12 months (
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy gad_s3 gad_12m_s3
+keep ID_ECS q0007a_result proxy gad_3y_s3 gad_12m_s3
 
-codebook gad_s3 gad_12m_s3 
+codebook gad_3y_s3 gad_12m_s3 
 ```
 
 ```{stata save-data-test, eval=TEST}
