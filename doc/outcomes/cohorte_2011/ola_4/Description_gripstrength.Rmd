@@ -98,7 +98,7 @@ replace grip_s3=0 if grip_s3==.
 
 replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. | q2522_second_s3 < 0 | bmi_s3>=50 | bmi_s3==.) | (q2521_first_s3>100 & q2522_second_s3>100)
 
-label define grip_s3 0 "Normal" 1 "Weak"
+label define grip 0 "Normal" 1 "Weak"
 label values grip_s3 grip
 label variable grip_s3 "Grip strength at wave 4 (c2011_w4)"
 
