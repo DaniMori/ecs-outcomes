@@ -1,0 +1,136 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'cognitive decline (IQCODE)'"
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set(
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                              | Format     | Code |
+|:-------------------|:-----------------------------------|:-----------|:-----|
+| IQCODE_s3          | Cognitive decline level (c2011_w4) | Continuous | 0-5  |
+
+# Variable description
+
+Cognitive decline refers to the impairment of cognitive functions such as memory
+or information processing, to a greater extent than natural age-related decline.
+It may appear suddenly or gradually and can be permanent or temporary
+[@aarsland2017]. The IQCODE is a questionnaire which asks an informant about
+changes in an elderly person's everyday cognitive functions. The questionnaire
+aims to assess cognitive decline independent of premorbid ability
+[@forcanogarcía2002]. Using the IQCODE allow us to assess possible changes in
+the functioning of cognitive functions over time.
+
+# Explanation of how the variables were created
+
+We used the Short Form of the Informant Questionnaire on Cognitive Decline
+(SF-IQCD) including 16 questions about remember things about family
+(p1021_family_s3), recent events (p1022_recent_s3), past conversations
+(p1023_recall_s3), personal infromations (p1024_address_s3), localisation
+(p1025_day_s3), location of things (p1026_kept_s3), find things (p1027_find_s3),
+use of household machines (p1028_machin_s3), use of new gadget
+(p1029_gadget_s3), learn new things (p1030_newthin_s3), read a book
+(p1031_book_s3), take decision (p1032_decisio_s3), manege money
+(p1033_money_s3), finance (p1034_financial_s3), daily arithmetic problems
+(p1035_other_s3 and p1036_reason_s3). All the items previously cited were
+assessed on a scale ranging from 1 (much better functioning of cognitive
+functions) to 5 (much worst functioning of cognitive functions over time).
+
+To assess the cognitive decline through the IQCODE, we computed the mean of the
+16 items by adding up the score for each question and divide by the number of
+questions (16). The result is a score that ranges from 1 to 5. Higher scores
+indicate greater impairment, 3 = any changes, and 1 and 2 = improvement of
+cognitive functions.
+
+Note: An average score above 3,44 may indicate that participant is suffering
+from demencia (see [@forcanogarcía2002]).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+recode  p1021_family_s3 p1022_recent_s3 p1023_recall_s3 p1024_address_s3 p1025_day_s3 p1026_kept_s3 p1027_find_s3 p1028_machin_s3 p1029_gadget_s3 p1030_newthin_s3 p1031_book_s3 p1032_decisio_s3 p1033_money_s3 p1034_financial_s3 p1035_other_s3 p1036_reason_s3 (888=.) (999=.)
+
+gen IQCODE_s3 = (p1021_family_s3 + p1022_recent_s3 + p1023_recall_s3 + p1024_address_s3 + p1025_day_s3 + p1026_kept_s3 + p1027_find_s3 + p1028_machin_s3 + p1029_gadget_s3 + p1030_newthin_s3 + p1031_book_s3 + p1032_decisio_s3 + p1033_money_s3 + p1034_financial_s3 + p1035_other_s3 + p1036_reason_s3)/16
+
+label variable IQCODE_s3 "Cognitive decline level (c2011_w4)"
+
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy IQCODE_s3
+
+codebook IQCODE_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_IQCODE.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_IQCODE.dta", replace version(13)
+
+```
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+\< Original version:
+
+-   Name: Joan Domènech
+-   e-mail: [\j.domenech\@pssjd.org\>](mailto:j.domenech@pssjd.org){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
