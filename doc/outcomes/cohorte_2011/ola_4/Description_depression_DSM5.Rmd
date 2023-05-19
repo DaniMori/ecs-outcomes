@@ -152,8 +152,11 @@ D)  The episode is not attributable to the physiological effects of a substance
     `q4225_causemed25_s3`, `q4225_causemed30_s3`, `q4225_causemed31_s3`).
 
 As the dataset will be used for longitudinal studies, a variable of the
-prevalence of depression during the last survey comparable to other waves has
-been created using the criteria A, C, D and E above.
+prevalence of depression during the last survey, comparable among waves 2 to 4,
+has also been created (`d_3y_comparable_s3`). It differs from the previously
+explained one in the following: (1) It does not take into account symptom 5
+(psychomotor agitation or retardation) when computing the symptom count in
+criterion A, and (2) it omits the exclusion criterion B.
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
