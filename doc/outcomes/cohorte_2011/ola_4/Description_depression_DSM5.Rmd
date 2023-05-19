@@ -274,8 +274,8 @@ replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s
 *#Ecriterion:"There is no hyper or hypomanic crisis"
 
 gen d_crit_E =. 
-replace d_crit_E = 1 if (q4233_s3!=1 & q4233_s3!=.) & q4225_causemed2_s3!=1
 replace d_crit_E = 0 if (q4233_s3==1 | q4225_causemed2_s3==1) & proxy==2
+replace d_crit_E = 1 if (q4233_s3!=1 & q4233_s3!=.) & q4225_causemed2_s3!=1
 
  
 ***#"Has the person skipped the depression module?"
@@ -344,9 +344,22 @@ label values   depression_self_s3 yesno
 label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
 *#"Inter-survey depression "comparable" (does not take into account exclusion criteria B and E)"
+
+*#"To fulfil A criterion at least 5 screening symptoms should be present. In
+*# the comparable version, symptom 5 (psychomotor agitation or retardation) is
+*# not taken into account.
+egen d_symtotal_comp = rowtotal (d_A1-d_A4 d_A6-d_A9), missing
+
+*#"Total of A criterion"  
+gen     d_crit_A_comp = .
+replace d_crit_A_comp = 0 if (d_symtotal_comp<5 & d_symtotal_comp!=.) | d_symprior==0 
+replace d_crit_A_comp = 1 if (d_symtotal_comp>4 & d_symtotal_comp!=.) & d_symprior==1 
+
+
+
 gen     d_3y_comparable_s3 = .
-replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A==0 | d_crit_C==0 | d_crit_D==0 
-replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A==1 & d_crit_C==1 & d_crit_D==1
+replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A_comp==0 | d_crit_B==0 | d_crit_C==0 | d_crit_D==0 
+replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A_comp==1 & d_crit_B==1 & d_crit_C==1 & d_crit_D==1
 label values   d_3y_comparable_s3 yesno
 label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
 
