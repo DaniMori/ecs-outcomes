@@ -112,42 +112,44 @@ the previous 12 months (`q4231_s3` and `q4232_s3`).
 
 The following criteria must be fulfilled in order to diagnose depression:
 
-A) At least five of the following symptoms have been present during the same
-2-week period and represent a change from previous functioning; (1) depressed
-mood (`q4220a_s3, q4220b_s3, q4220c_s3, q4220d_s3`), (2) loss of interest or
-pleasure (`q4220e_s3, q4220f_s3`), (3) significant weight changes
-(`q4222a_s3, q4222b_s3`), (4) insomnia or hypersomnia (`q4222c_s3, q4222d_s3`),
-(5) psychomotor agitation or retardation
-(`q4222f_s3, q4222fa_s3, q4222g_s3, q4222ga_s3`), (6) fatigue or loss of energy
-(`q4222e_s3`), (7) feelings of worthlessness
-(`q4222k_s3, q4222l_s3, q4222m_s3, q4222n_s3`), (8) diminished ability to think
-or concentrate (`q4222h_s3, q4222i_s3, q4222j_s3`), (9) recurrent thoughts of
-death (`q4222r_s3, q4222s_s3, q4222t_s3, q4222u_s3, q4222v_s3`). At least one of
-the symptoms is either (1) depressed mood or (2) loss of interest or pleasure.
-(Note: Do not include symptoms that are clearly attributable to another medical
-condition);
+A)  At least five of the following symptoms have been present during the same
+    2-week period and represent a change from previous functioning; (1)
+    depressed mood (`q4220a_s3`, `q4220b_s3`, `q4220c_s3`, `q4220d_s3`), (2)
+    loss of interest or pleasure (`q4220e_s3`, `q4220f_s3`), (3) significant
+    weight changes (`q4222a_s3`, `q4222b_s3`), (4) insomnia or hypersomnia
+    (`q4222c_s3`, `q4222d_s3`), (5) psychomotor agitation or retardation
+    (`q4222f_s3`, `q4222fa_s3`, `q4222g_s3`, `q4222ga_s3`), (6) fatigue or loss
+    of energy (`q4222e_s3`), (7) feelings of worthlessness (`q4222k_s3`,
+    `q4222l_s3`, `q4222m_s3`, `q4222n_s3`), (8) diminished ability to think or
+    concentrate (`q4222h_s3`, `q4222i_s3`, `q4222j_s3`), (9) recurrent thoughts
+    of death (`q4222r_s3`, `q4222s_s3`, `q4222t_s3`, `q4222u_s3`, `q4222v_s3`).
+    At least one of the symptoms is either (1) depressed mood or (2) loss of
+    interest or pleasure. (Note: Do not include symptoms that are clearly
+    attributable to another medical condition);
 
-B) There has never been a manic episode or a hypomanic episode
-(`q4233_s3, q4225_causemed2_s3`). These criteria where used to create the
-variable related to inter-survey depression (`depression_3y_s3`). We also
-created a variable to assess the presence of a depressive episode during the
-last 12 months using only one item (`q4227a_s3`) which directly asks for the
-presence of a depressive episode during this 12-month period.
+B)  There has never been a manic episode or a hypomanic episode (`q4233_s3`,
+    `q4225_causemed2_s3`). These criteria where used to create the variable
+    related to inter-survey depression (`depression_3y_s3`). We also created a
+    variable to assess the presence of a depressive episode during the last 12
+    months using only one item (`q4227a_s3`) which directly asks for the
+    presence of a depressive episode during this 12-month period.
 
-C) The symptoms cause clinically significant distress or impairment in social,
-occupational, or other important areas of functioning. A level of impairment is
-considered significant if the person has experienced at least modarate emotional
-discomfort (`q4214_s3_s3, q4215_s3_s3, q4216_s3_s3`) Or who has had an impact of
-at least 4 on a scale of 0 to 10 on the normal performance of daily activities
-such as cleaning (`q4700a_s3)`, work `(q4700b_s3)`, social
-relationship`(q4700c_s3, q4700d_s3);`
+C)  The symptoms cause clinically significant distress or impairment in social,
+    occupational, or other important areas of functioning. A level of impairment
+    is considered significant if the person has experienced at least modarate
+    emotional discomfort (`q4214_s3_s3, q4215_s3_s3, q4216_s3_s3`) Or who has
+    had an impact of at least 4 on a scale of 0 to 10 on the normal performance
+    of daily activities such as cleaning (`q4700a_s3)`, work (`q4700b_s3`),
+    social relationship (`q4700c_s3, q4700d_s3`);
 
-D) The episode is not attributable to the physiological effects of a substance
-or to another medical condition. To full this criteria participant must not have
-said that he or she thought his or her episodes were due solely to physical
-causes (`q4224b_s3`), nor must he or she have been diagnosed (`q4224_s3`) with
-any other mental illness or substance use or any other medication
-(`q4225_causemed3_s3, q4225_causemed4_s3, q4225_causemed12_s3, q4225_causemed23_s3, q4225_causemed24_s3, q4225_causemed25_s3, q4225_causemed30_s3, q4225_causemed31_s3`).
+D)  The episode is not attributable to the physiological effects of a substance
+    or to another medical condition. To full this criteria participant must not
+    have said that he or she thought his or her episodes were due solely to
+    physical causes (`q4224b_s3`), nor must he or she have been diagnosed
+    (`q4224_s3`) with any other mental illness or substance use or any other
+    medication (`q4225_causemed3_s3`, `q4225_causemed4_s3`,
+    `q4225_causemed12_s3`, `q4225_causemed23_s3`, `q4225_causemed24_s3`,
+    `q4225_causemed25_s3`, `q4225_causemed30_s3`, `q4225_causemed31_s3`).
 
 As the dataset will be used for longitudinal studies, a variable of the
 prevalence of depression during the last survey comparable to other waves has
