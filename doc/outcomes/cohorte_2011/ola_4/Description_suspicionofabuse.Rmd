@@ -77,20 +77,20 @@ response to any of the questions would indicate suspicion of maltreatment.
 # Explanation of how the variables were create
 
 To created the ´abusesuspicion_s3´ variable, we decide to keep only the 5 items
-addressed *t*o the participants and excluded the question asked to the
+addressed to the participants and excluded the question asked to the
 professional(s). These 5 items ask information about different types of
-maltreatment: neglect (q6701_s3, q6702_s3), psychological (q6703_s3), economic
-(q6704_s3) and physical-sexual (q6705_s) and their frequency if a suspicion of
-abuse is detected (q6702a_s3, q6703a_s3, q6704a_s3, q6705a_s3). The total scale
-of suspicion of abuse was obtain by summing the answer given to each 5 items. A
-transformation of the scores was ten made, for those participants who answer yes
-to on of the five item a suspicion of abuse is consider. The scale ranges from
-0: no suspicion of abuse to 1: suspicion of abuse. For those participants who
-answer yes to on of the five item (when there is a suspicion of abuse), a
-question about the reported frequency was asked and ranged from 1: one time to
-4: often. The questions refer to situations that occurred in the 12 months prior
-to the completion of the questionnaire and only persons aged 65 and over are
-asked.
+maltreatment: neglect (`q6701_s3, q6702_s3`), psychological (`q6703_s3`),
+economic (`q6704_s3`) and physical-sexual (`q6705_s`) and their frequency if a
+suspicion of abuse is detected (`q6702a_s3, q6703a_s3, q6704a_s3, q6705a_s3`).
+The total scale of suspicion of abuse was obtain by summing the answer given to
+each 5 items. A transformation of the scores was then made, for those
+participants who answer yes to on of the five item a suspicion of abuse is
+consider. The scale ranges from 0: no suspicion of abuse to 1: suspicion of
+abuse. For those participants who answer yes to at least one of the five item
+(when there is a suspicion of abuse), a question about the reported frequency
+was asked and ranged from 1: one time to 4: often. The questions refer to
+situations that occurred in the 12 months prior to the completion of the
+questionnaire and only persons aged 65 and over are asked.
 
 # Syntax used to create the variable (Stata 15)
 
