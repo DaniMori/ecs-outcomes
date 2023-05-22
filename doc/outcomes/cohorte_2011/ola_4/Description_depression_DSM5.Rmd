@@ -34,38 +34,40 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------------------------+-----------------+----------+-----------+
-| Main variable name               | Label           | Format   | Code      |
-+:=================================+:================+:=========+:==========+
-| depression_3y_s3                 | Inter-survey    | Binary   | 0 No      |
-|                                  | depression      |          |           |
-|                                  | (c2011_w4)      |          | 1 Yes     |
-+----------------------------------+-----------------+----------+-----------+
-| depression_12m_s3                | 12 months       | Binary   | 0 No      |
-|                                  | depression      |          |           |
-|                                  | (c2011_w4)      |          | 1 Yes     |
-+----------------------------------+-----------------+----------+-----------+
-| depression_12treatment_s3        | Treatment for   | Binary   | 0 No      |
-|                                  | depression in   |          |           |
-|                                  | previous 12     |          | 1 Yes     |
-|                                  | months          |          |           |
-|                                  | (c2011_w4)      |          |           |
-+----------------------------------+-----------------+----------+-----------+
-| depression_self_s3               | Depression      | Binary   | 0 No      |
-|                                  | self-reported   |          |           |
-|                                  | (c2011_w4)      |          | 1 Yes     |
-+----------------------------------+-----------------+----------+-----------+
-| d_3y_comparable_s3               | Inter-survey    | Binary   | 0 No      |
-|                                  | depressive      |          |           |
-|                                  | episode         |          | 1 Yes     |
-|                                  | comparable      |          |           |
-|                                  | (c2011_w4)      |          |           |
-+----------------------------------+-----------------+----------+-----------+
-| d_12m_comparable_s3              | 12 month        | Binary   | 0 No      |
-|                                  | depression      |          |           |
-|                                  | comparable      |          | 1 Yes     |
-|                                  | (c2011_w4)      |          |           |
-+----------------------------------+-----------------+----------+-----------+
++------------------------------+--------------+--------------+--------------+
+| Main variable name           | Label        | Format       | Code         |
++:=============================+:=============+:=============+:=============+
+| depression_3y_s3             | Inter-survey | Dichotomous  | 0 No         |
+|                              | depression   |              |              |
+|                              | (c2011_w4)   |              | 1 Yes        |
++------------------------------+--------------+--------------+--------------+
+| depression_12m_s3            | 12 months    | Dichotomous  | 0 No         |
+|                              | depression   |              |              |
+|                              | (c2011_w4)   |              | 1 Yes        |
++------------------------------+--------------+--------------+--------------+
+| depression_12treatment_s3    | Treatment    | Dichotomous  | 0 No         |
+|                              | for          |              |              |
+|                              | depression   |              | 1 Yes        |
+|                              | in previous  |              |              |
+|                              | 12 months    |              |              |
+|                              | (c2011_w4)   |              |              |
++------------------------------+--------------+--------------+--------------+
+| depression_self_s3           | Depression   | Dichotomous  | 0 No         |
+|                              | s            |              |              |
+|                              | elf-reported |              | 1 Yes        |
+|                              | (c2011_w4)   |              |              |
++------------------------------+--------------+--------------+--------------+
+| d_3y_comparable_s3           | Inter-survey | Dichotomous  | 0 No         |
+|                              | depressive   |              |              |
+|                              | episode      |              | 1 Yes        |
+|                              | comparable   |              |              |
+|                              | (c2011_w4)   |              |              |
++------------------------------+--------------+--------------+--------------+
+| d_12m_comparable_s3          | 12 month     | Dichotomous  | 0 No         |
+|                              | depression   |              |              |
+|                              | comparable   |              | 1 Yes        |
+|                              | (c2011_w4)   |              |              |
++------------------------------+--------------+--------------+--------------+
 
 # Variable description
 
@@ -76,12 +78,9 @@ According to The *Diagnostic and Statistical Manual of Mental Disorders*,
 depression can be long-lasting or recurrent, substantially impairing an
 individual's ability to function at work or school or cope with daily life
 [@americanpsychiatricassociation2013]. At its most severe, depression can lead
-to suicide. When mild, people can be treated without medicines but when
-depression is moderate or severe they may need medication and professional
-talking treatments. Depression is a disorder that can be reliably diagnosed and
-treated by non-specialists as part of primary health care. Specialist care is
-needed for a small proportion of individuals with complicated depression or
-those who do not respond to first-line treatments.
+to suicide. When mild, psychological treatment is preferred as the first
+intervention tool. In some more moderate or severe cases, it may be helpful to
+combine it with pharmacological therapy.
 
 We used an adapted version of the Composite International Diagnostic Interview
 (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by
@@ -127,25 +126,22 @@ A.  At least five of the following symptoms have been present during the same
     interest or pleasure. (Note: Do not include symptoms that are clearly
     attributable to another medical condition);
 
-```{=html}
-<!-- -->
-```
-B)  There has never been a manic episode or a hypomanic episode (`q4233_s3`,
+B.  There has never been a manic episode or a hypomanic episode (`q4233_s3`,
     `q4225_causemed2_s3`). These criteria were used to create the variable
     related to inter-survey depression (`depression_3y_s3`). We also created a
     variable to assess the presence of a depressive episode during the last 12
     months using only one item (`q4227a_s3`) which directly asks for the
     presence of a depressive episode during this 12-month period.
 
-C)  The symptoms cause clinically significant distress or impairment in social,
+C.  The symptoms cause clinically significant distress or impairment in social,
     occupational, or other important areas of functioning. A level of impairment
-    is considered significant if the person has experienced at least modarate
+    is considered significant if the person has experienced at least moderate
     emotional discomfort (`q4214_s3_s3, q4215_s3_s3, q4216_s3_s3`) Or who has
     had an impact of at least 4 on a scale of 0 to 10 on the normal performance
     of daily activities such as cleaning (`q4700a_s3)`, work (`q4700b_s3`),
     social relationship (`q4700c_s3, q4700d_s3`);
 
-D)  The episode is not attributable to the physiological effects of a substance
+D.  The episode is not attributable to the physiological effects of a substance
     or to another medical condition. To full this criteria participant must not
     have said that he or she thought his or her episodes were due solely to
     physical causes (`q4224b_s3`), nor must he or she have been diagnosed
@@ -385,7 +381,7 @@ gen     d_12m_comparable_s3 = .
 replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | depression_12m_s3==0
 replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 & depression_12m_s3==1
 label values   d_12m_comparable_s3 yesno
-label variable d_12m_comparable_s3 "12 month depression comparable with COVID substudy (c2011_w4)"
+label variable d_12m_comparable_s3 "12 month depression comparable (c2011_w4)"
 
 ```
 
