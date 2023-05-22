@@ -41,7 +41,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable  | Label                   | Format         | Code           |
 | name           |                         |                |                |
 +:===============+:========================+:===============+:===============+
-| grip_max_s3    | Maximum grip strength   | Quantiative    | 0,5 - 99,0     |
+| grip_max_s3    | Maximum grip strength   | Quantitative   | 0,5 - 99,0     |
 |                | [kg] (c2011_w4)         |                |                |
 +----------------+-------------------------+----------------+----------------+
 | grip_s3        | Grip strength           | Categorical    | 0 = Normal     |
