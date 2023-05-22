@@ -102,18 +102,18 @@ recode q6702_s3 (1=1) (2=0) (else=.)
 recode q6703_s3 (1=1) (2=0) (else=.)
 recode q6704_s3 (1=1) (2=0) (else=.)
 recode q6705_s3 (1=1) (2=0) (else=.)
-egen abuse_tot = sum (q6701_s3 q6702_s3 q6703_s3 q6704_s3 q6705_s3)
+gen abuse_tot = (q6701_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
 gen abusesuspicion_s3 =.
-replace abusesuspicion_s3=0 if abuse_tot==0
-replace abusesuspicion_s3=1 if abuse_tot>1
+replace abusesuspicion_s3=0 if abuse_tot<1 
+replace abusesuspicion_s3=1 if abuse_tot>0 & abuse_tot!=.
 label define abusesuspicion_l 0 "No suspicion of abuse" 1 "Suspicion of abuse"
 label values abusesuspicion_s3 abusesuspicion_l
 label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 
 * Frecuency 
 gen frecuency_s3=.
-replace frecuency_s3=abuse_tot if abusesuspicion_s3=1
-label define abuse 0 "No abuse" 1 "Occasionnal" 2 "Sometimes" 3 "Quite often" 4 "Often"
+replace frecuency_s3=abuse_tot
+label define abuse 0 "No abuse" 1 "One time" 2 "Occasionnal" 3 "Sometimes" 4 "Quite often"
 label values frecuency_s3 abuse
 label variable frecuency_s3 "Frecuency of suspicion of abuse (c2011_w4)"
 ```
