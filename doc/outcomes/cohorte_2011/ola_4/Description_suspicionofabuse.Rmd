@@ -37,21 +37,23 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------------+--------------------+-----------------+-----------------+
-| Main variable name  | Label              | Format          | Code            |
-+:====================+:===================+:================+:================+
-| abusesuspicion_s3   | Suspicion of abuse | Dichotomic      | 0 = No          |
-|                     | (c2011_w4)         |                 |                 |
-|                     |                    |                 | 1 = Yes         |
-+---------------------+--------------------+-----------------+-----------------+
-| frecuency_s3        | Frecuency of the   | Ordinal         | 1 = Occasional  |
-|                     | suspicion of abuse |                 |                 |
-|                     | (c2011_w4)         |                 | 2 = Sometimes   |
-|                     |                    |                 |                 |
-|                     |                    |                 | 3 = Quite often |
-|                     |                    |                 |                 |
-|                     |                    |                 | 4 = Often       |
-+---------------------+--------------------+-----------------+-----------------+
++---------------------+------------------+-----------------+-----------------+
+| Main variable name  | Label            | Format          | Code            |
++:====================+:=================+:================+:================+
+| abusesuspicion_s3   | Suspicion of     | Dichotomic      | 0 = No          |
+|                     | abuse (c2011_w4) |                 |                 |
+|                     |                  |                 | 1 = Yes         |
++---------------------+------------------+-----------------+-----------------+
+| frequency_s3        | Frequency of the | Ordinal         | 0 = No abuse    |
+|                     | suspicion of     |                 |                 |
+|                     | abuse (c2011_w4) |                 | 1 = One time    |
+|                     |                  |                 |                 |
+|                     |                  |                 | 2 = Occasional  |
+|                     |                  |                 |                 |
+|                     |                  |                 | 3 = Sometimes   |
+|                     |                  |                 |                 |
+|                     |                  |                 | 4 = Often       |
++---------------------+------------------+-----------------+-----------------+
 
 # Variable description
 
@@ -66,27 +68,29 @@ question focuses on the assessment of the level of dependency of the elderly
 person for some basic or instrumental activity of daily living. The remaining
 questions refer to different types of abuse: physical and sexual, psychological,
 financial, and neglect. The items are dichotomic (0=No; 1=Yes). If a participant
-answer "yes" to one of the six questions, a suspicion of abuse is pronounced and
-a next question is ask to know the frecuency of the suspect abuse. This second
-question is assessed on a Likert-type scale with response options between 0 and
-4 (0 = no, 1 = occasional, 2 = sometimes, 3 = quite often, and 4 = often). A
-positive response to any of the questions would indicate suspicion of
-maltreatment.
+answer "yes" to one of the six questions, a suspicion of abuse is considered and
+the next question is asked to know the frequency of the suspect abuse. This
+second question is assessed on a Likert-type scale with response options between
+1 and 4 (1 = One time, 2 = Occasional, 3 = Sometimes, and 4 = Often). A positive
+response to any of the questions would indicate suspicion of maltreatment.
 
-# Explanation of how the variables were created
+# Explanation of how the variables were create
 
-To created the ´abusesuspicion_s3´ variable, we dicide to keep only the 5 items
-adressed to participant and excluded the question asked to the profesional.
-These 5 items ask information about different types of maltreatment: neglect
-(q6701_s3, q6702_s3), psychological (q6703_s3), economic (q6704_s3) and
-physical-sexual (q6705_s) and their frecuency if a suspicion of abuse is
-detected (q6702a_s3, q6703a_s3, q6704a_s3, q6705a_s3). The total scale of
-suspicion of abuse was obtain by summing the answer given to each 5 items. The
-scale range from 0: no suspicion of abuse to 1:no suspicion of abuse. For those
-participants who answer yes to on of the five item, a question about the
-reported frecuency was asked and ranges from 1 one time to 4 often. The
-questions refer to situations that occurred in the 12 months prior to the
-completion of the questionnaire and only persons aged 65 and over are asked.
+To created the ´abusesuspicion_s3´ variable, we decide to keep only the 5 items
+addressed *t*o the participants and excluded the question asked to the
+professional(s). These 5 items ask information about different types of
+maltreatment: neglect (q6701_s3, q6702_s3), psychological (q6703_s3), economic
+(q6704_s3) and physical-sexual (q6705_s) and their frequency if a suspicion of
+abuse is detected (q6702a_s3, q6703a_s3, q6704a_s3, q6705a_s3). The total scale
+of suspicion of abuse was obtain by summing the answer given to each 5 items. A
+transformation of the scores was ten made, for those participants who answer yes
+to on of the five item a suspicion of abuse is consider. The scale ranges from
+0: no suspicion of abuse to 1: suspicion of abuse. For those participants who
+answer yes to on of the five item (when there is a suspicion of abuse), a
+question about the reported frequency was asked and ranged from 1: one time to
+4: often. The questions refer to situations that occurred in the 12 months prior
+to the completion of the questionnaire and only persons aged 65 and over are
+asked.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -110,20 +114,20 @@ label define abusesuspicion_l 0 "No suspicion of abuse" 1 "Suspicion of abuse"
 label values abusesuspicion_s3 abusesuspicion_l
 label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 
-* Frecuency 
-gen frecuency_s3=.
-replace frecuency_s3=abuse_tot
-label define abuse 0 "No abuse" 1 "One time" 2 "Occasionnal" 3 "Sometimes" 4 "Quite often"
-label values frecuency_s3 abuse
-label variable frecuency_s3 "Frecuency of suspicion of abuse (c2011_w4)"
+* frequency 
+gen frequency_s3=.
+replace frequency_s3=abuse_tot
+label define abuse 0 "No abuse" 1 "One time" 2 "Occasionnal" 3 "Sometimes" 4 "Often"
+label values frequency_s3 abuse
+label variable frequency_s3 "Frequency of suspicion of abuse (c2011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy abusesuspicion_s3 frecuency_s3
+keep ID_ECS q0007a_result proxy abusesuspicion_s3 frequency_s3
 
-codebook abusesuspicion_s3 frecuency_s3
+codebook abusesuspicion_s3 frequency_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
