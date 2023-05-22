@@ -36,8 +36,13 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 | Main variable name | Label                                    | Format     | Code     |
 |:-----------------|:--------------------------|:-----------------|:-----------------|
-| cognition_std_s3   | Cognition score, standardized (c2011_w4) | continuous | standard |
-| cognition_s3       | Cognition score, harmonized (c2011_w4)   | continuous | 0-100    |
+| cognition_std_s3   | Cognition score, standardized (c2011_w4) | Quantitative | standard |
+| cognition_s3       | Cognition score, harmonized (c2011_w4)   | Quantitative | 0-100    |
+| immediate_c_s3     | Number of words recalled correctly in immediate Verbal recall (c2011w4) | Quantitative | +0 |
+| delayed_c_s3       | Number of words recalled correctly in delayed Verbal recall (c2011w4) | Quantitative | +0 |
+| ds_forward_s3      | Digit span - Digits forward (c2011w4)    | Quantitative | +0 |
+| ds_backward_s3     | Digit span - Digits backward (c2011w4)   | Quantitative | +0 |
+| verbal_fluency_s3  | Verbal fluency: Number of animals named correctly (c2011w4) | Quantitative | +0 |
 
 <br>
 
@@ -75,27 +80,27 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 recode q2525_recal1_s3 q2528_recal2_s3 q2531_recal3_s3 q2534_score_s3 q2535_score_s3 q2536_score_s3 q2544_recall_s3 (999=.)
 
-egen immediate_c = rowmean(q2525_recal1_s3 q2528_recal2_s3 q2531_recal3_s3)
+egen immediate_c_s3 = rowmean(q2525_recal1_s3 q2528_recal2_s3 q2531_recal3_s3)
 
-generate delayed_c = q2544_recall_s3
-generate ds_forward = q2534_score_s3
-generate ds_backward = q2535_score_s3
-generate animals = q2536_score_s3
+generate delayed_c_s3 = q2544_recall_s3
+generate ds_forward_s3 = q2534_score_s3
+generate ds_backward_s3 = q2535_score_s3
+generate verbal_fluency_s3 = q2536_score_s3
 
-label variable immediate_c "Number of words recalled correctly in immediate Verbal recall"
-label variable delayed_c "Number of words recalled correctly in delayed Verbal recall"
+label variable immediate_c_s3 "Number of words recalled correctly in immediate Verbal recall (c2011w4)"
+label variable delayed_c_s3 "Number of words recalled correctly in delayed Verbal recall (c2011w4)"
 
-label variable ds_forward "Digit span - Digits forward"
-label variable ds_backward "Digit span - Digits backward"
-label variable animals "Number of animals named correctly"
+label variable ds_forward_s3 "Digit span - Digits forward (c2011w4)"
+label variable ds_backward_s3 "Digit span - Digits backward (c2011w4)"
+label variable verbal_fluency_s3 "Verbal fluency: Number of animals named correctly (c2011w4)"
 
-egen z_immediate_c = std(immediate_c)
-egen z_delayed_c = std(delayed_c)
-egen z_ds_forward = std(ds_forward)
-egen z_ds_backward = std(ds_backward)
-egen z_animals = std(animals)
-egen missing_cognitive = rowmiss(z_immediate_c - z_animals)
-egen z_cognitive_test = rowmean(z_immediate_c - z_animals) if missing_cognitive<=1
+egen z_immediate_c = std(immediate_c_s3)
+egen z_delayed_c = std(delayed_c_s3)
+egen z_ds_forward = std(ds_forward_s3)
+egen z_ds_backward = std(ds_backward_s3)
+egen z_verbal_fluency = std(verbal_fluency_s3)
+egen missing_cognitive = rowmiss(z_immediate_c - z_verbal_fluency)
+egen z_cognitive_test = rowmean(z_immediate_c - z_verbal_fluency) if missing_cognitive<=1
 
 egen cognition_std_s3 = std(z_cognitive_test)
 label variable cognition_std_s3 "Cognition score, standardized (c2011_w4)"
@@ -106,11 +111,11 @@ label variable cognition_s3 "Cognition score, harmonized (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-sum cognition_s3 cognition_std_s3
+sum cognition_s3 cognition_std_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 verbal_fluency_s3
 
-keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3
+keep ID_ECS q0007a_result proxy cognition_std_s3 cognition_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 verbal_fluency_s3
 
-codebook cognition_std_s3 cognition_s3
+codebook cognition_std_s3 cognition_s3 immediate_c_s3 delayed_c_s3 ds_forward_s3 ds_backward_s3 verbal_fluency_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
