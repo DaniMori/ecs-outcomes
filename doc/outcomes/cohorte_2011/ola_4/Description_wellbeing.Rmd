@@ -182,7 +182,6 @@ label variable flourishing_scale_s3 "Eudaimonic wellbeing. Flourishing Scale Sco
 * Duration of the three activities randomly chosen in the DRM at wave 4
 
 gen duration_DRM4=q7026_s3 + q7066_s3 + q7111_s3
-label variable duration_DRM4 "Total duration of the three activities randomly chosen (c2011w4)"
 
 * Negative affect per activity
 egen neg_activity1=rowmean(q7029_worr_s3-q7033_tense_s3)
