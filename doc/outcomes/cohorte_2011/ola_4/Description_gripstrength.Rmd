@@ -68,6 +68,10 @@ q2521_first_s3, q2522_second_s3 and q2522a_third_s3. The best grip strength
 value was taken and the following algorithm in Stata was used to create the two
 categories (0 = Normal, 1 = Weak), depending on sex and body
 mass index (expressed as ratio).
+Note: To create this variable it is necessary to combine the whole raw dataset 
+with the "anthotropometric measures" dataset to be able to use the previously 
+created variable relating to BMI (bmi_s3). For participants who decide not to 
+answer (999) the answer was consider as missing (.).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -78,23 +82,20 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-/* First, we would need to create the BMI variable */
-
-generate weight=q2507_weight_s3 if (q2507_weight_s3 >= 27.3) & (q2507_weight_s3<= 200)
-generate height=q2506_height_s3/100 if (q2506_height_s3 >= 120) & (q2506_height_s3 <= 200)
-generate bmi_raw=weight/(height*height)
-
+/* First, we would need to take the BMI variable from the anthropometrics measures outcomes dataset */
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+recode q2521_first_s3 q2522_second_s3 q2522a_third_s3 (999 =.)
 generate grip_max=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
 replace grip_max=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
 replace grip_max= q2522a_third_s3 if q2521_first_s3>100
 
-generate grip_s3=1 if (q1009_sex==1 & bmi_raw>0 & bmi_raw<=24 & grip_max<=29)|( q1009_sex==1 & bmi_raw>24 & bmi_raw<=26 & grip_max<=30)| (q1009_sex==1 & bmi_raw>26 & bmi_raw<=28 & grip_max<=30) | (q1009_sex==1 & bmi_raw>28 & bmi_raw<=40 & grip_max<=32)
+generate grip_s3=1 if (q1009_sex==1 & bmi_s3>0 & bmi_s3<=24 & grip_max<=29)|( q1009_sex==1 & bmi_s3>24 & bmi_s3<=26 & grip_max<=30)| (q1009_sex==1 & bmi_s3>26 & bmi_s3<=28 & grip_max<=30) | (q1009_sex==1 & bmi_s3>28 & bmi_s3<=40 & grip_max<=32)
 
-replace grip_s3=1 if (q1009_sex==2 & bmi_raw>0 & bmi_raw<=23 & grip_max<=17)|( q1009_sex==2 & bmi_raw>23 & bmi_raw<=26 & grip_max<=17.3)| (q1009_sex==2 & bmi_raw>26 & bmi_raw<=29 & grip_max<=18) | (q1009_sex==2 & bmi_raw>29 & bmi_raw<=40 & grip_max<=21)
+replace grip_s3=1 if (q1009_sex==2 & bmi_s3>0 & bmi_s3<=23 & grip_max<=17)|( q1009_sex==2 & bmi_s3>23 & bmi_s3<=26 & grip_max<=17.3)| (q1009_sex==2 & bmi_s3>26 & bmi_s3<=29 & grip_max<=18) | (q1009_sex==2 & bmi_s3>29 & bmi_s3<=40 & grip_max<=21)
 
 replace grip_s3=0 if grip_s3==.
 
-replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. | q2522_second_s3 < 0 | bmi_raw>=50 | bmi_raw==.) | (q2521_first_s3>100 & q2522_second_s3>100)
+replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. | q2522_second_s3 < 0 | bmi_s3>=50 | bmi_s3==.) | (q2521_first_s3>100 & q2522_second_s3>100)
 
 label define grip_s3 0 "Normal" 1 "Weak"
 label values grip_s3 grip
