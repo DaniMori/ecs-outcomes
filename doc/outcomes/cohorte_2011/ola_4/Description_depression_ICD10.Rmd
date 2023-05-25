@@ -35,49 +35,47 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-
-+-------------------------------+------------------+------------------+------------------+
-| **Main variable name**        | **Label**        | **Format**       | **Code**         |
-+:==============================+:=================+==================+==================+
-| d_3y_severity_s3              | Severity of      | Ordinal          | -   0=No;        |
-|                               | inter-survey     |                  | -   1=Mild;      |
-|                               | depressive       |                  | -   2=Moderate;  |
-|                               | episode          |                  | -   3=Severe     |
-|                               | (c2011_w4)       |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| depression_3y_s3              | Inter-survey     | Binary           | -   0=no;        |
-|                               | depression       |                  | -   1=yes        |
-|                               | (c2011_w4)       |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| depression_3y_proxy_s3        | Inter-survey     | Binary           | -   0=no;        |
-|                               | depression for   |                  | -   1=yes        |
-|                               | proxy (c2011_w4) |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| d_12m_item_s3                 | 12 month         | Binary           | -   0=no;        |
-|                               | depression, one  |                  | -   1=yes        |
-|                               | item (c2011_w4)  |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| depression_12m_s3             | 12 month         | Binary           | -   0=no;        |
-|                               | depression from  |                  | -   1=yes        |
-|                               | inter-survey     |                  |                  |
-|                               | diagnosis &      |                  |                  |
-|                               | q4227/q4227a     |                  |                  |
-|                               | items (c2011_w4) |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| d_3y_comparable_s3            | Severity of      | Binary           | -   0=no;        |
-|                               | inter-survey     |                  | -   1=yes        |
-|                               | depressive       |                  |                  |
-|                               | episode          |                  |                  |
-|                               | comparable       |                  |                  |
-|                               | (c2011_w4)       |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-| d_12m_comparable_s3           | 12 month         | Binary           | -   0=no;        |
-|                               | depression       |                  | -   1=yes        |
-|                               | comparable with  |                  |                  |
-|                               | COVID substudy   |                  |                  |
-|                               | (c2011_w4)       |                  |                  |
-+-------------------------------+------------------+------------------+------------------+
-
++------------------------+-------------------+----------------+----------------+
+| **Main variable name** | **Label**         | **Format**     | **Code**       |
++:=======================+:==================+================+================+
+| d_3y_severity_s3       | Severity of       | Ordinal        | -   0=No;      |
+|                        | inter-survey      |                | -   1=Mild;    |
+|                        | depressive        |                | -              |
+|                        | episode           |                |    2=Moderate; |
+|                        | (c2011_w4)        |                | -   3=Severe   |
++------------------------+-------------------+----------------+----------------+
+| depression_3y_s3       | Inter-survey      | Binary         | -   0=No;      |
+|                        | depression        |                | -   1=Yes      |
+|                        | (c2011_w4)        |                |                |
++------------------------+-------------------+----------------+----------------+
+| depression_3y_proxy_s3 | Inter-survey      | Binary         | -   0=No;      |
+|                        | depression for    |                | -   1=Yes      |
+|                        | proxy (c2011_w4)  |                |                |
++------------------------+-------------------+----------------+----------------+
+| d_12m_item_s3          | 12 month          | Binary         | -   0=No;      |
+|                        | depression, one   |                | -   1=Yes      |
+|                        | item (c2011_w4)   |                |                |
++------------------------+-------------------+----------------+----------------+
+| depression_12m_s3      | 12 month          | Binary         | -   0=No;      |
+|                        | depression from   |                | -   1=Yes      |
+|                        | inter-survey      |                |                |
+|                        | diagnosis &       |                |                |
+|                        | q4227/q4227a      |                |                |
+|                        | items (c2011_w4)  |                |                |
++------------------------+-------------------+----------------+----------------+
+| d_3y_comparable_s3     | Severity of       | Binary         | -   0=No;      |
+|                        | inter-survey      |                | -   1=Yes      |
+|                        | depressive        |                |                |
+|                        | episode           |                |                |
+|                        | comparable        |                |                |
+|                        | (c2011_w4)        |                |                |
++------------------------+-------------------+----------------+----------------+
+| d_12m_comparable_s3    | 12 month          | Binary         | -   0=No;      |
+|                        | depression        |                | -   1=Yes      |
+|                        | comparable with   |                |                |
+|                        | COVID substudy    |                |                |
+|                        | (c2011_w4)        |                |                |
++------------------------+-------------------+----------------+----------------+
 
 # Variable description
 
@@ -143,7 +141,16 @@ vi) An additional symptom or symptoms from the following ones should be present,
 
 We also included a severity variable according to the ICD-10 criteria for the
 inter-survey prevalence (variable `d_3y_severity`) based upon the number of
-symptoms the participant met.
+symptoms the participant met. We also created a variable to assess the presence
+of a depressive episode during the last 12 months using only one item
+(`d_12m_item_s3`) which directly asks for the presence of a depressive episode
+during this 12-month period (`q4227(a)_s3`) and an other considering
+inter-survey diagnosis (`depression_12m_s3`).
+
+For the proxy participants, original variables include a diagnosis depression
+item (`p4040_depression_s3`). A diagnosis of depression
+(`depression_3y_proxy_s3`) was endorsed if the participant answered "yes" to
+`p4040_depression_s3`.
 
 There is also a section of the interview for directly diagnosing 12-month
 depression based on the symptomatology. However, errors in the filters (i.e.
