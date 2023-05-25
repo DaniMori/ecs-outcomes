@@ -35,48 +35,47 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+------------------+------------------+------------------+------------------+
-| **Main variable  | **Label**        | **Format**       | **Code**         |
-| name**           |                  |                  |                  |
-+:=================+:=================+==================+==================+
-| d_life           | Severity of      | Ordinal          | -   0=No;        |
-| time_severity_s3 | lifetime         |                  | -   1=Mild;      |
-|                  | depressive       |                  | -   2=Moderate;  |
-|                  | episode          |                  | -   3=Severe     |
-|                  | (c2011_w4)       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| depres           | Lifetime         | Binary           | -   0=no;        |
-| sion_lifetime_s3 | depression       |                  | -   1=yes        |
-|                  | (c2011_w4)       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| depression\_     | Lifetime         | Binary           | -   0=no;        |
-| l                | depression for   |                  | -   1=yes        |
-| ifetime_proxy_s3 | proxy (c2011_w4) |                  |                  |
-+------------------+------------------+------------------+------------------+
-| d_12m_item_s3    | 12 month         | Binary           | -   0=no;        |
-|                  | depression, one  |                  | -   1=yes        |
-|                  | item (c2011_w4)  |                  |                  |
-+------------------+------------------+------------------+------------------+
-| d                | 12 month         | Binary           | -   0=no;        |
-| epression_12m_s3 | depression from  |                  | -   1=yes        |
-|                  | lifetime         |                  |                  |
-|                  | diagnosis &      |                  |                  |
-|                  | q4227/q4227a     |                  |                  |
-|                  | items (c2011_w4) |                  |                  |
-+------------------+------------------+------------------+------------------+
-| d_lifeti         | Severity of      | Binary           | -   0=no;        |
-| me_comparable_s3 | lifetime         |                  | -   1=yes        |
-|                  | depressive       |                  |                  |
-|                  | episode          |                  |                  |
-|                  | comparable       |                  |                  |
-|                  | (c2011_w4)       |                  |                  |
-+------------------+------------------+------------------+------------------+
-| d_1              | 12 month         | Binary           | -   0=no;        |
-| 2m_comparable_s3 | depression       |                  | -   1=yes        |
-|                  | comparable with  |                  |                  |
-|                  | COVID substudy   |                  |                  |
-|                  | (c2011_w4)       |                  |                  |
-+------------------+------------------+------------------+------------------+
++-------------------------------+------------------+------------------+------------------+
+| **Main variable name**        | **Label**        | **Format**       | **Code**         |
++:==============================+:=================+==================+==================+
+| d_3y_severity_s3              | Severity of      | Ordinal          | -   0=No;        |
+|                               | inter-survey     |                  | -   1=Mild;      |
+|                               | depressive       |                  | -   2=Moderate;  |
+|                               | episode          |                  | -   3=Severe     |
+|                               | (c2011_w4)       |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| depression_3y_s3              | Inter-survey     | Binary           | -   0=no;        |
+|                               | depression       |                  | -   1=yes        |
+|                               | (c2011_w4)       |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| depression\_ 3y_proxy_s3      | Inter-survey     | Binary           | -   0=no;        |
+|                               | depression for   |                  | -   1=yes        |
+|                               | proxy (c2011_w4) |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| d_12m_item_s3                 | 12 month         | Binary           | -   0=no;        |
+|                               | depression, one  |                  | -   1=yes        |
+|                               | item (c2011_w4)  |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| depression_12m_s3             | 12 month         | Binary           | -   0=no;        |
+|                               | depression from  |                  | -   1=yes        |
+|                               | inter-survey     |                  |                  |
+|                               | diagnosis &      |                  |                  |
+|                               | q4227/q4227a     |                  |                  |
+|                               | items (c2011_w4) |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| d_3y_comparable_s3            | Severity of      | Binary           | -   0=no;        |
+|                               | inter-survey     |                  | -   1=yes        |
+|                               | depressive       |                  |                  |
+|                               | episode          |                  |                  |
+|                               | comparable       |                  |                  |
+|                               | (c2011_w4)       |                  |                  |
++-------------------------------+------------------+------------------+------------------+
+| d_1 2m_comparable_s3          | 12 month         | Binary           | -   0=no;        |
+|                               | depression       |                  | -   1=yes        |
+|                               | comparable with  |                  |                  |
+|                               | COVID substudy   |                  |                  |
+|                               | (c2011_w4)       |                  |                  |
++-------------------------------+------------------+------------------+------------------+
 
 # Variable description
 
@@ -107,9 +106,9 @@ clinical and research purposes.
 
 Information from the CIDI depression module was used for the creation of the
 depression variables. Algorithms based on the ICD-10 were used for the
-endorsement of depressive episode at some point in their lives (lifetime
-prevalence; variable `depression_lifetime_s3`) and in the previous 12 months
-(point prevalence; variable `depression_12m_s3`). More precisely, the following
+endorsement of depressive episode at some point in their lives (inter-survey
+prevalence; variable `depression_3y_s3`) and in the previous 12 months (point
+prevalence; variable `depression_12m_s3`). More precisely, the following
 criteria must be fulfilled:
 
 i)  The depressive episode should last for at least 2 weeks (`q4211_s3`,
@@ -128,19 +127,20 @@ iv) The general criteria for depressive episode must be met (criteria i, ii,
     iii);
 
 v)  At least two of the following three symptoms must be present: depressed mood
-    (`q4220a_s3:q4220d_s3`), loss of interest (`q4220e_s3, q4220f_s3`) and decreased
-    energy (`q4222e_s3`);
+    (`q4220a_s3:q4220d_s3`), loss of interest (`q4220e_s3, q4220f_s3`) and
+    decreased energy (`q4222e_s3`);
 
 vi) An additional symptom or symptoms from the following ones should be present,
-    to give a total of at least four: loss of confidence (`q4222k_s3:q4222l_s3`),
-    excessive guilt (`q4222n_s3`), recurrent thoughts of death
-    (`q4222r_s3:q4222v_s3`), diminished ability to concentrate
-    (`q4222h_s3:q4222j_s3`), agitation or retardation (`q4222f_s3`, `q4222fa_s3`,
-    `q4222g_s3`, `q4222ga_s3`), sleep disturbance (`q4222c_s3, q4222d_s3`), change in
-    appetite (`q4222a_s3, q4222b_s3`) (please see criteria C1-C7).
+    to give a total of at least four: loss of confidence
+    (`q4222k_s3:q4222l_s3`), excessive guilt (`q4222n_s3`), recurrent thoughts
+    of death (`q4222r_s3:q4222v_s3`), diminished ability to concentrate
+    (`q4222h_s3:q4222j_s3`), agitation or retardation (`q4222f_s3`,
+    `q4222fa_s3`, `q4222g_s3`, `q4222ga_s3`), sleep disturbance
+    (`q4222c_s3, q4222d_s3`), change in appetite (`q4222a_s3, q4222b_s3`)
+    (please see criteria C1-C7).
 
 We also included a severity variable according to the ICD-10 criteria for the
-lifetime prevalence (variable `d_lifetime_severity`) based upon the number of
+inter-survey prevalence (variable `d_3y_severity`) based upon the number of
 symptoms the participant met.
 
 There is also a section of the interview for directly diagnosing 12-month
@@ -149,7 +149,7 @@ skip logic) of the interview lead to most of the participants not responding to
 this part of the interview when they should. Therefore, these variables have
 been dropped. Finally, as as abbreviated version of the CIDI interview was used
 for the post-lockdown telephonic interview in the COVID substudy, comparable
-versions of both lifetime (`d_lifetime_comparable_s3`) and recent
+versions of both inter-survey (`d_3y_comparable_s3`) and recent
 (`d_12m_comparable_s3`) have been created, applying the same criteria and
 algorithm.
 
@@ -204,7 +204,7 @@ label define severity 0 "No" 1 "Mild" 2 "Moderate" 3 "Severe"
 label define yesno    0 "No" 1 "Yes"
 
 
-***#"VARIABLE `depression_lifetime_s3`: Depressive episode (F32)"
+***#"VARIABLE `depression_3y_s3`: Depressive episode (F32)"
 
 *#G1 criterion: "The depressive episode should last for at least 2 weeks"
 gen     d_crit_g1 = .
@@ -324,7 +324,7 @@ replace d_c7 = 1 if  q4222a_s3==1              &  q4222b_s3==1
 egen d_symtotal = rowtotal (d_c1-d_c7), missing
 
 
-***#"Has the person skipped the lifetime depression module?"
+***#"Has the person skipped the depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
 recode q4220a-q4222v (1=1) (2=0) (888 999=.)
@@ -354,44 +354,44 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 *#"To meet the criteria for "Mild depressive episode (F32.0)", at least two of the screening symptoms (B1-B3) must be present, and an additional symptom or symptoms from the rest of them (B1-C7) should be present to give a total of at least four. In the case of "Moderate depressive episode (F32.1)", there must be at least two screening symptoms and a total of at least six symptoms. In the case of "Severe depressive episode (F32.3)", the three screening symptoms (B1-B3) must be present, and additional symptoms (C1-C7) should be present to give a total of at least eight".
 
 *#"Severity according to total symptom tally (prior to applying the "screening symtpoms" criterion)":
-gen     d_lifetime_severity_total = .
-replace d_lifetime_severity_total = 0 if (d_screentotal+d_symtotal)< 4 & proxy==2
-replace d_lifetime_severity_total = 1 if (d_screentotal+d_symtotal)>=4 & d_screentotal!=. & d_symtotal !=.
-replace d_lifetime_severity_total = 2 if (d_screentotal+d_symtotal)>=6 & d_screentotal!=. & d_symtotal !=.
-replace d_lifetime_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_screentotal!=. & d_symtotal !=.
+gen     d_3y_severity_total = .
+replace d_3y_severity_total = 0 if (d_screentotal+d_symtotal)< 4 & proxy==2
+replace d_3y_severity_total = 1 if (d_screentotal+d_symtotal)>=4 & d_screentotal!=. & d_symtotal !=.
+replace d_3y_severity_total = 2 if (d_screentotal+d_symtotal)>=6 & d_screentotal!=. & d_symtotal !=.
+replace d_3y_severity_total = 3 if (d_screentotal+d_symtotal)>=8 & d_screentotal!=. & d_symtotal !=.
 *#"NOTE: The criteria are applied incrementally, such that if a case
 *#       fulfills the crieria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
 *#       severe one".
 
 *#"Final severity computation":
-gen     d_lifetime_severity_s3 = .
-replace d_lifetime_severity_s3 = 0 if (d_skipped==1 | d_crit_a==0 | d_crit_b==0 | d_lifetime_severity_total==0) & proxy==2
-replace d_lifetime_severity_s3 = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-replace d_lifetime_severity_s3 = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_lifetime_severity_total>=2 & d_lifetime_severity_total!=.
-replace d_lifetime_severity_s3 = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_lifetime_severity_total==3
-label values   d_lifetime_severity_s3 severity
-label variable d_lifetime_severity_s3 "Severity of lifetime depressive episode (c2011_w4)"
+gen     d_3y_severity_s3 = .
+replace d_3y_severity_s3 = 0 if (d_skipped==1 | d_crit_a==0 | d_crit_b==0 | d_3y_severity_total==0) & proxy==2
+replace d_3y_severity_s3 = 1 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_3y_severity_total>=1 & d_3y_severity_total!=.
+replace d_3y_severity_s3 = 2 if d_skipped==0 & d_crit_a==1 & d_crit_b==1      & d_3y_severity_total>=2 & d_3y_severity_total!=.
+replace d_3y_severity_s3 = 3 if d_skipped==0 & d_crit_a==1 & d_screentotal==3 & d_3y_severity_total==3
+label values   d_3y_severity_s3 severity
+label variable d_3y_severity_s3 "Severity of inter-survey depressive episode (c2011_w4)"
 *#"NOTE: The criteria are applied incrementally, such that if a case
 *#       fulfills the criteria for a higher severity level, it is first
 *#       encoded as the milder level and then recoded into the more
 *#       severe one".
 
 
-***#"Lifetime depression diagnostic variable":
-gen     depression_lifetime_s3 = .
-replace depression_lifetime_s3 = 0 if d_lifetime_severity_s3==0 & proxy==2
-replace depression_lifetime_s3 = 1 if d_lifetime_severity_s3>=1 & d_lifetime_severity_s3 !=.
-label values   depression_lifetime_s3 yesno
-label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
+***#"Inter-survey depression diagnostic variable":
+gen     depression_3y_s3 = .
+replace depression_3y_s3 = 0 if d_3y_severity_s3==0 & proxy==2
+replace depression_3y_s3 = 1 if d_3y_severity_s3>=1 & d_3y_severity_s3 !=.
+label values   depression_3y_s3 yesno
+label variable depression_3y_s3 "Inter-survey depression (c2011_w4)"
 *#Due to a 888 case to "p4040_depression" we know one interview is proxy but 
 *#we don't know if it is a case of depression. We have to add "proxy = 2" to be 
 *#the "don't know" case (888) in proxy is not considered as a 'no' but as missing. 
 
-***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
-recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s3)
-label values   depression_lifetime_proxy_s3 yesno
-label variable depression_lifetime_proxy_s3 "Lifetime depression for proxy (c2011_w4)"
+***#"VARIABLE `depression_3y_proxy_s3`: Depressive episode for proxy participants"
+recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_3y_proxy_s3)
+label values   depression_3y_proxy_s3 yesno
+label variable depression_3y_proxy_s3 "Inter-survey depression for proxy (c2011_w4)"
 
 
 ***#"VARIABLE `d_12m_item_s3`: 12-month depression criterion from q4227/q4227a items"
@@ -402,35 +402,35 @@ label values   d_12m_item_s3 yesno
 label variable d_12m_item_s3 "12 month depression, one item (c2011_w4)"
 
 
-***#"VARIABLE `depression_12m_s3`: 12-month depression (combining `depression_lifetime_s3` + `d_12m_item_s3`)"
+***#"VARIABLE `depression_12m_s3`: 12-month depression (combining `depression_3y_s3` + `d_12m_item_s3`)"
 gen     depression_12m_s3 = .
-replace depression_12m_s3 = 0 if depression_lifetime_s3==0 | d_12m_item_s3==0
-replace depression_12m_s3 = 1 if depression_lifetime_s3==1 & d_12m_item_s3==1
+replace depression_12m_s3 = 0 if depression_3y_s3==0 | d_12m_item_s3==0
+replace depression_12m_s3 = 1 if depression_3y_s3==1 & d_12m_item_s3==1
 label values   depression_12m_s3 yesno
-label variable depression_12m_s3 "12 month depression from lifetime diagnosis + q4227/q4227a items (c2011_w4)"
+label variable depression_12m_s3 "12 month depression from inter-survey diagnosis + q4227/q4227a items (c2011_w4)"
 
 
-***#"VARIABLE `d_12m_comparable_s3`: 12-month depression (comparable with COVID substudy) from lifetime diagnosis"
+***#"VARIABLE `d_12m_comparable_s3`: 12-month depression (comparable with COVID substudy) from inter-survey diagnosis"
 
-*#"Lifetime "comparable" (does not take into account exclusion criteria G2 and G3)"
-gen     d_lifetime_comparable_s3 = .
-replace d_lifetime_comparable_s3 = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_lifetime_severity_total==0
-replace d_lifetime_comparable_s3 = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_lifetime_severity_total>=1 & d_lifetime_severity_total!=.
-label values   d_lifetime_comparable_s3 severity
-label variable d_lifetime_comparable_s3 "Severity of lifetime depressive episode comparable (c2011_w4)"
+*#"Inter-survey "comparable" (does not take into account exclusion criteria G2 and G3)"
+gen     d_3y_comparable_s3 = .
+replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_g1==0 | d_crit_b==0 | d_3y_severity_total==0
+replace d_3y_comparable_s3 = 1 if d_skipped==0 & d_crit_g1==1 & d_crit_b==1 & d_3y_severity_total>=1 & d_3y_severity_total!=.
+label values   d_3y_comparable_s3 severity
+label variable d_3y_comparable_s3 "Severity of inter-survey depressive episode comparable (c2011_w4)"
 
-*#"12-month 'comparable', based on the intermediate 'lifetime comparable' and the individual item":
+*#"12-month 'comparable', based on the intermediate 'inter-survey comparable' and the individual item":
 gen     d_12m_comparable_s3 = .
-replace d_12m_comparable_s3 = 0 if d_lifetime_comparable_s3==0 | d_12m_item_s3==0
-replace d_12m_comparable_s3 = 1 if d_lifetime_comparable_s3==1 & d_12m_item_s3==1
+replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | d_12m_item_s3==0
+replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 & d_12m_item_s3==1
 label values   d_12m_comparable_s3 yesno
 label variable d_12m_comparable_s3 "12 month depression comparable with COVID substudy (c2011_w4)"
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy d_lifetime_severity_s3 depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
+keep ID_ECS q0007a_result proxy d_3y_severity_s3 depression_3y_s3 depression_3y_proxy_s3 d_12m_item_s3 depression_12m_s3 d_3y_comparable_s3 d_12m_comparable_s3
 
-codebook d_lifetime_severity_s3 depression_lifetime_s3 depression_lifetime_proxy_s3 d_12m_item_s3 depression_12m_s3 d_lifetime_comparable_s3 d_12m_comparable_s3
+codebook d_3y_severity_s3 depression_3y_s3 depression_3y_proxy_s3 d_12m_item_s3 depression_12m_s3 d_3y_comparable_s3 d_12m_comparable_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
