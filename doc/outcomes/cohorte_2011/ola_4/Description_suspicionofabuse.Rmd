@@ -156,7 +156,7 @@ of the scores was then made, for those participants who answer yes to on of the
 five item a suspicion of abuse is consider. The scale ranges from 0: no
 suspicion of abuse to 1: suspicion of abuse. The questions refer to situations
 that occurred in the 12 months prior to the completion of the questionnaire and
-only persons aged 65 and over are asked.
+only persons aged 65 and over were asked.
 
 # Syntax used to create the variable (Stata 15)
 
