@@ -49,7 +49,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                               | depression       |                  | -   1=yes        |
 |                               | (c2011_w4)       |                  |                  |
 +-------------------------------+------------------+------------------+------------------+
-| depression\_ 3y_proxy_s3      | Inter-survey     | Binary           | -   0=no;        |
+| depression_3y_proxy_s3        | Inter-survey     | Binary           | -   0=no;        |
 |                               | depression for   |                  | -   1=yes        |
 |                               | proxy (c2011_w4) |                  |                  |
 +-------------------------------+------------------+------------------+------------------+
@@ -71,7 +71,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                               | comparable       |                  |                  |
 |                               | (c2011_w4)       |                  |                  |
 +-------------------------------+------------------+------------------+------------------+
-| d_1 2m_comparable_s3          | 12 month         | Binary           | -   0=no;        |
+| d_12m_comparable_s3           | 12 month         | Binary           | -   0=no;        |
 |                               | depression       |                  | -   1=yes        |
 |                               | comparable with  |                  |                  |
 |                               | COVID substudy   |                  |                  |
