@@ -35,6 +35,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
+
 +-------------------------------+------------------+------------------+------------------+
 | **Main variable name**        | **Label**        | **Format**       | **Code**         |
 +:==============================+:=================+==================+==================+
@@ -76,6 +77,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                               | COVID substudy   |                  |                  |
 |                               | (c2011_w4)       |                  |                  |
 +-------------------------------+------------------+------------------+------------------+
+
 
 # Variable description
 
@@ -147,7 +149,7 @@ There is also a section of the interview for directly diagnosing 12-month
 depression based on the symptomatology. However, errors in the filters (i.e.
 skip logic) of the interview lead to most of the participants not responding to
 this part of the interview when they should. Therefore, these variables have
-been dropped. Finally, as as abbreviated version of the CIDI interview was used
+been dropped. Finally, as an abbreviated version of the CIDI interview was used
 for the post-lockdown telephonic interview in the COVID substudy, comparable
 versions of both inter-survey (`d_3y_comparable_s3`) and recent
 (`d_12m_comparable_s3`) have been created, applying the same criteria and
@@ -450,7 +452,7 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
 -   Institution: World Health Organization Collaborating Centre Department of
     Psychiatry, Faculty of Medicine, Universidad Autónoma de Madrid
--   Phone number: (+34) 914974601
+-   Phone number: (+34) 914975492
 
 Original version:
 
@@ -460,15 +462,13 @@ Original version:
 <br>
 
 -   Name: Elvira Lara
--   e-mail: [elvira.lara\@uam.es](mailto:elvira.lara@uam.es){.email}
--   Phone number: (+34) 914974601
+-   e-mail: [elvilara\@ucm.es](mailto:elvilara@ucm.es){.email}
 
 <br>
 
 -   Name: Daniel Morillo
 -   e-mail:
     [daniel.morillo\@inv.uam.es](mailto:daniel.morillo@inv.uam.es){.email}
--   Phone number: (+34) 914975816
 
 # References
 
