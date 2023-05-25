@@ -115,36 +115,181 @@ response to any of the questions would indicate suspicion of maltreatment.
 
 # Explanation of how the variables were create
 
-To created the ´abusesuspicion_s3´ variable, we decide to keep only the 5 items
+At wave 4 we realize that the material cited by EASI does not indicate the
+instructions that have been followed in previous waves to create these outcomes.
+However, for the sake of consistency and comparability between waves, we decided
+to follow the same scheme:
+
+-   Create a variable indicating the **degree of dependency** (`dependency_s3`),
+    based on the block of questions `q6701_s3` (help from someone), `q6701b_s3`
+    (problems with them) and `q6701d_s3` (need help). In this way, we found four
+    categories:
+
+    -   *No dependence*: has neither received help nor needed it.
+    -   *Dependency served*: had help but did not know if he/she needed it, did
+        not have help but needed it
+    -   *Problematic dependence*: had help, had problems with the person who
+        helped them and they needed that help;
+    -   *Neglected dependence*: did not have help, had problems with who was
+        supposed to help them and they needed that help.
+
+-   Create four variables for **each specific type of abuse**. For these
+    variables, the first of each pair indicated below is selected, which is a
+    dichotomous item on the presence or absence of that type of abuse, and is
+    complemented with the second item of the pair, which indicates the
+    frequency.
+
+    -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
+    -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
+    -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
+    -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
+
+To created the `abusesuspicion_s3` variable, we decide to keep only the 5 items
 addressed to the participants and excluded the question asked to the
-professional(s). These 5 items ask information about different types of
-maltreatment: neglect (`q6701_s3, q6702_s3`), psychological (`q6703_s3`),
-economic (`q6704_s3`) and physical-sexual (`q6705_s`). The total scale of
-suspicion of abuse was obtain by summing the answer given to each 5 items. A
-transformation of the scores was then made, for those participants who answer
-yes to on of the five item a suspicion of abuse is consider. The scale ranges
-from 0: no suspicion of abuse to 1: suspicion of abuse. The questions refer to
-situations that occurred in the 12 months prior to the completion of the
-questionnaire and only persons aged 65 and over are asked.
+professional(s). These 4 items ask information about different types of
+maltreatment: neglect (`q6702_s3`), psychological (`q6703_s3`), economic
+(`q6704_s3`) and physical-sexual (`q6705_s`). The item `q6701_s3` indicates if 
+the person has needed help, so in the case of responding 'yes' it could be
+some suspicion of abuse. The total scale of suspicion of
+abuse was obtain by summing the answer given to each 4 items. A transformation
+of the scores was then made, for those participants who answer yes to on of the
+five item a suspicion of abuse is consider. The scale ranges from 0: no
+suspicion of abuse to 1: suspicion of abuse. The questions refer to situations
+that occurred in the 12 months prior to the completion of the questionnaire and
+only persons aged 65 and over are asked.
 
 # Syntax used to create the variable (Stata 15)
 
 ```{stata load-data}
 * Cohorte 2011, ola 4:
-use "/Users/leafrancia/Library/CloudStorage/OneDrive-Bibliothèquespartagées-UAM/Marta Miret Garcia - Bases de datos maestras Edad con Salud/Ola_4/Cohorte 2011/rawdata_c2011w4.dta"
+use "~/UAM/Marta Miret Garcia - Bases de datos maestras Edad con Salud/Ola_4/Cohorte 2011/rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-*Suspicion of abuse
-recode q6701_s3 (1=1) (2=0) (else=.)
-recode q6702_s3 (1=1) (2=0) (else=.)
-recode q6703_s3 (1=1) (2=0) (else=.)
-recode q6704_s3 (1=1) (2=0) (else=.)
-recode q6705_s3 (1=1) (2=0) (else=.)
+*DEPENDENCY
+*Dependency (comparable)
+recode q6701_s3 q6701d_s3 q6701b_s3 (2=0) (999=.) 
+gen dependency_s3=. 
+
+**0 = No dependence; has not had any help and has not needed it:
+replace dependency_s3=0 if q6701_s3==0 & q6701d_s3==0 
+
+**1 = Dependency served; had any help but NA in had needed it OR NA in had any help and had needed it
+replace dependency_s3=1 if (q6701_s3==1 & q6701d_s3==0) | (q6701_s3==0 & q6701d_s3==1) 
+
+**2 = Problematic dependence; had any help, had problems with people who helped them, and needed help
+replace dependency_s3=2 if (q6701_s3==1 & q6701b_s3==1 & q6701d_s3==0) |  (q6701_s3==1 & q6701b_s3==0 & q6701d_s3==1)
+
+**3 = Neglected dependence; had no help, had problems with people who helped them, and needed help
+replace dependency_s3=3 if q6701_s3==1 & q6701b_s3==1 & q6701d_s3==1 
+
+label define dep 0 "No dependence" 1 "Dependency served" 2 "Problematic dependence" 3 "Neglected dependence"  
+label values dependency_s3 dep 
+label variable dependency_s3 "Dependency status comparable (c2011_w4)" 
+
+
+*NEGLIGENCE
+*abuse_negli_s3 "Negligence (c2011_w4)"	 - q6702_s3, q6702a_s3 (comparable)
+
+recode q6702_s3 (2=0) (999=.) 
+recode q6702a_s3 (999=.) 
+
+gen abuse_negli_s3=. 
+**0 = No abuse; (dichotomic item)
+replace abuse_negli_s3=0 if q6702_s3==0
+
+**1 = Occasional abuse; 1 in likert scale item
+replace abuse_negli_s3=1 if q6702a_s3==1 
+**2 = Sometimes; 2 in likert scale item
+replace abuse_negli_s3=2 if q6702a_s3==2 
+**3 = Quite often; 3 in likert scale item
+replace abuse_negli_s3=3 if q6702a_s3==3 
+**4 = Often; 4 in likert scale item
+replace abuse_negli_s3=4 if q6702a_s3==4 
+
+ 
+label define ab 0 "No abuse" 1 "Occasional" 2 "Sometimes" 3 "Quite often" 4 "Often" 
+label values abuse_negli_s3 ab 
+label variable abuse_negli_s3 "Negligence comparable (c2011_w4)" 
+
+*PSYCHOLOGICAL ABUSE
+*abuse_psycho_s3 Psychological abuse (c2011_w4) - q6703_s3, q6703a_s3 
+
+recode q6703_s3 (2=0) (999=.) 
+recode q6703a_s3 (999=.) 
+
+gen abuse_psycho_s3=. 
+
+**0 = No abuse; (dichotomic item)
+replace abuse_psycho_s3=0 if q6703_s3==0 
+
+**1 = Occasional abuse; 1 in likert scale item
+replace abuse_psycho_s3=1 if q6703a_s3==1 
+**2 = Sometimes; 2 in likert scale item
+replace abuse_psycho_s3=2 if q6703a_s3==2 
+**3 = Quite often; 3 in likert scale item
+replace abuse_psycho_s3=3 if q6703a_s3==3 
+**4 = Often; 4 in likert scale item
+replace abuse_psycho_s3=4 if q6703a_s3==4 
+
+label values abuse_psycho_s3 ab 
+label variable abuse_psycho_s3 "Psychological abuse comparable (c2011_w4)" 
+
+ 
+
+*ECONOMICAL ABUSE
+*abuse_eco_s3 Economical abuse (c2011_w4)- q6704_s3, q6704a_s3 
+recode q6704_s3 (2=0) (999=.) 
+recode q6704a_s3 (999=.) 
+
+gen abuse_eco_s3=. 
+**0 = No abuse; (dichotomic item)
+replace abuse_eco_s3=0 if q6704_s3==0
+
+**1 = Occasional abuse; 1 in likert scale item
+replace abuse_eco_s3=1 if q6704a_s3==1 
+**2 = Sometimes; 2 in likert scale item
+replace abuse_eco_s3=2 if q6704a_s3==2 
+**3 = Quite often; 3 in likert scale item
+replace abuse_eco_s3=3 if q6704a_s3==3 
+**4 = Often; 4 in likert scale item
+replace abuse_eco_s3=4 if q6704a_s3==4 
+
+label values abuse_eco_s3 ab 
+label variable abuse_eco_s3 "Economical abuse comparable (c2011_w4)" 
+
+ 
+
+**abuse_phys_s3	Physical and sexual abuse (c2011_w4) - q6705_s3, q6705a_s3 
+
+recode q6705_s3 (2=0) (999=.) 
+recode q6705a_s3 (999=.) 
+
+gen abuse_phys_s3=. 
+**0 = No abuse; (dichotomic item)
+replace abuse_phys_s3=0 if q6705_s3==0 
+**1 = Occasional abuse; 1 in likert scale item
+replace abuse_phys_s3=1 if q6705a_s3==1 
+**2 = Sometimes; 2 in likert scale item
+replace abuse_phys_s3=2 if q6705a_s3==2 
+**3 = Quite often; 3 in likert scale item
+replace abuse_phys_s3=3 if q6705a_s3==3 
+**4 = Often; 4 in likert scale item
+replace abuse_phys_s3=4 if q6705a_s3==4 
+
+ 
+label values abuse_phys_s3 ab 
+label variable abuse_phys_s3 "Physical and sexual abuse comparable (c2011_w4)" 
+
+
+
+*SUSPICION OF ABUSE (new, correct version)
 gen abuse_tot = (q6701_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
+
 gen abusesuspicion_s3 =.
 replace abusesuspicion_s3=0 if abuse_tot<1 
 replace abusesuspicion_s3=1 if abuse_tot>0 & abuse_tot!=.
+
 label define abusesuspicion_l 0 "No suspicion of abuse" 1 "Suspicion of abuse"
 label values abusesuspicion_s3 abusesuspicion_l
 label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
@@ -153,9 +298,8 @@ label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy abusesuspicion_s3
-
-codebook abusesuspicion_s3
+keep ID_ECS q0007a_result proxy dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
+codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
