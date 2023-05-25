@@ -113,7 +113,7 @@ questions refer to different types of abuse: physical and sexual, psychological,
 financial, and neglect. The items are dichotomous (0=No; 1=Yes). A positive
 response to any of the questions would indicate suspicion of maltreatment.
 
-# Explanation of how the variables were create
+# Explanation of how the variables were created
 
 At wave 4 we realize that the material cited by EASI does not indicate the
 instructions that have been followed in previous waves to create these outcomes.
@@ -144,19 +144,19 @@ to follow the same scheme:
     -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
     -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
 
-To created the `abusesuspicion_s3` variable, we decide to keep only the 5 items
-addressed to the participants and excluded the question asked to the
-professional(s). These 4 items ask information about different types of
-maltreatment: neglect (`q6702_s3`), psychological (`q6703_s3`), economic
-(`q6704_s3`) and physical-sexual (`q6705_s`). The item `q6701_s3` indicates if 
-the person has needed help, so in the case of responding 'yes' it could be
-some suspicion of abuse. The total scale of suspicion of
-abuse was obtain by summing the answer given to each 4 items. A transformation
-of the scores was then made, for those participants who answer yes to on of the
-five item a suspicion of abuse is consider. The scale ranges from 0: no
-suspicion of abuse to 1: suspicion of abuse. The questions refer to situations
-that occurred in the 12 months prior to the completion of the questionnaire and
-only persons aged 65 and over were asked.
+To create the abusesuspicion_s3 variable, we keep only the 5 items addressed to
+the participants and exclude the question asked to the professional(s). These 4
+items ask for information about different types of maltreatment: neglect
+(`q6702_s3`), psychological (`q6703_s3`), economic (`q6704_s3`) and
+physical-sexual (`q6705_s`). The item `q6701_s3` indicates if the person has
+needed help, so in the case of responding 'yes' it could be some suspicion of
+abuse. The total scale of suspicion of abuse was obtained by summing the answer
+given to each 4 items. A transformation of the scores was then made, for those
+participants who answer yes to one of the five items a suspicion of abuse is
+considered. The scale ranges from 0: no suspicion of abuse to 1: suspicion of
+abuse. The questions refer to situations that occurred in the 12 months before
+the completion of the questionnaire and only persons aged 65 and over were
+asked.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -318,12 +318,15 @@ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud 
 # Contact person:
 
 -   Name: Lea Francia
+
 -   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+
 -   Phone number: (+34) 914974601
 
 -   Name: Cristina Rodríguez Prada
--   e-mail: [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
+-   e-mail:
+    [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 Original version:
 
