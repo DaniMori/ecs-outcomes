@@ -241,8 +241,11 @@ replace d_A6 = 1 if q4222e_s3==1
 
 *#A7:"Feelings of worthlessness or excessive or inappropriate guilt nearly every day (not merely self-reproach or guilt about being sick)"
 gen     d_A7 = .
-replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222l_s3!=1 & q4222l_s3!=.) & (q4222m_s3!=1 & q4222m_s3!=.) & (q4222n_s3!=1 & q4222n_s3!=.)
-replace d_A7 = 1 if  q4222k_s3==1                 |  q4222l_s3==1                 |  q4222m_s3==1                 |  q4222n_s3==1
+replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222l_s3!=1 & q4222l_s3!=.) & q4222m_s3!=1 & (q4222n_s3!=1 & q4222n_s3!=.)
+replace d_A7 = 1 if  q4222k_s3==1                 |  q4222l_s3==1                 | q4222m_s3==1 |  q4222n_s3==1
+*#"NOTE: When `q4222l==2`, then `q4222m==.` because it is skipped; to take that
+*#       possible combination into account, the comparison `q4222m_s3!=.` must
+*#       not be included in the computation of the negative cases.
 
 *#A8:"Diminished ability to think or concentrate, or indecisiveness, nearly every day"
 gen     d_A8 = .
@@ -256,6 +259,7 @@ replace d_A9 = 1 if q4222r_s3==1 | q4222s_s3==1 | q4222t_s3==1 | q4222u_s3==1 | 
 
 *#"To fulfil A criterion at least 5 screening symptoms should be present"
 egen d_symtotal = rowtotal (d_A1-d_A9), missing
+
 *#"At least one of following symptom must be present, (A1) depressed mood, (A2) loss of interest or pleasure"
 gen     d_symprior = .
 replace d_symprior = 0 if d_A1==0 & d_A2==0
