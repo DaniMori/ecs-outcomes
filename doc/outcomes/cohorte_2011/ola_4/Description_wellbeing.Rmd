@@ -141,7 +141,7 @@ Three measures were obtained from the Day Reconstruction Method (DRM): *positive
 *affect*, *negative affect* and *net affect*.
 
 -   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
-    emotions (calm/relaxedand enjoying).
+    emotions (calm/relaxed and enjoying).
 
 -   **Negative affect** (`negativeaffect_s3`): the average of the five negative 
     ones (worried, rushed, irritated/angry, depressed, and tense/stressed).
