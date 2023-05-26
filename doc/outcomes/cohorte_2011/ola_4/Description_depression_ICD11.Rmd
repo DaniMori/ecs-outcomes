@@ -36,17 +36,41 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+-----------------------------------+------------------+------------------+------------------+
-| Main variable name                | Label            | Format           | Code             |
-+:==================================+:=================+:=================+:=================+
-| depression_lifetime_s3            | Lifetime         | Binary           | 0 no             |
-|                                   | (c2011_w4)       |                  |                  |
-|                                   |                  |                  | 1 yes            |
-+-----------------------------------+------------------+------------------+------------------+
-| depression_lifetime_proxy_s3      | Lifetime         | Binary           | 0 no             |
-|                                   | depression for   |                  |                  |
-|                                   | proxy (c2011_w4) |                  | 1 yes            |
-+-----------------------------------+------------------+------------------+------------------+
++--------------------------------+-----------------+-----------------+-----------------+
+| Main variable name             | Label           | Format          | Code            |
++:===============================+:================+:================+:================+
+| depression_3y_s3               | Inter-survey    | Binary          | 0 No            |
+|                                | depression      |                 |                 |
+|                                | (c2011_w4)      |                 | 1 Yes           |
++--------------------------------+-----------------+-----------------+-----------------+
+| depression_3y_proxy_s3         | Inter-survey    | Binary          | 0 No            |
+|                                | depression for  |                 |                 |
+|                                | proxy           |                 | 1 Yes           |
+|                                | (c2011_w4)      |                 |                 |
++--------------------------------+-----------------+-----------------+-----------------+
+| d_12m_item_s3                  | 12 month        | Binary          | 0 No            |
+|                                | depression from |                 |                 |
+|                                | inter-survey    |                 | 1 Yes           |
+|                                | diagnosis +     |                 |                 |
+|                                | q4227/q4227a    |                 |                 |
+|                                | items           |                 |                 |
+|                                | (c2011_w4)      |                 |                 |
++--------------------------------+-----------------+-----------------+-----------------+
+| depression_12m_s3              | 12 month        | Binary          | 0 No            |
+|                                | depression, one |                 |                 |
+|                                | item (c2011_w4) |                 | 1 Yes           |
++--------------------------------+-----------------+-----------------+-----------------+
+| d_3y_comparable_s3             | Inter-survey    | Binary          | 0 No            |
+|                                | depressive      |                 |                 |
+|                                | episode         |                 | 1 Yes           |
+|                                | comparable      |                 |                 |
+|                                | (c2011_w4)      |                 |                 |
++--------------------------------+-----------------+-----------------+-----------------+
+| d_12m_comparable_s3            | 12 month        | Binary          | 0 No            |
+|                                | depression      |                 |                 |
+|                                | comparable      |                 | 1 Yes           |
+|                                | (c2011_w4)      |                 |                 |
++--------------------------------+-----------------+-----------------+-----------------+
 
 # Variable description
 
@@ -67,13 +91,13 @@ severity depending on the amount of criteria present in each case, from mild to
 severe. The ICD-11 [@worldhealthorganization2019] refers to the same symptoms
 but strengthens the criteria, making the diagnosis of depression more demanding
 than its predecessor. In order to address these criteria and be able to assess
-the lifetime presence or absence of a depressive episode, as well as its
+the 3 years presence or absence of a depressive episode, as well as its
 severity, we used an adapted version of the Composite International Diagnostic
 Interview (CIDI 3.0), a comprehensive, fully-structured interview designed to be
 used by trained lay interviewers for the assessment of mental disorders
 according to the definitions and criteria of ICD-11 (criteria can been seen at
 [ICD-11 for Mortality and Morbidity Statistics
-(who.int](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f578635574)[)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232)
+(who.int](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f578635574)[)](https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1563440232).
 It is intended for use in epidemiological and cross-cultural studies, as well as
 for clinical and research purposes.
 
@@ -81,37 +105,47 @@ for clinical and research purposes.
 
 Information from the CIDI depression module was used for the creation of the
 depression variables. Algorithms based on the ICD-11 were used for the
-endorsement of depressive episode at some point in their lives (lifetime
-prevalence; variable `depression_lifetime`). More precisely, the following
+endorsement of depressive episode at some point since the last survey (from
+previous interview; variable `depression_3y_s3`). More precisely, the following
 criteria must be fulfilled:
 
-i)  Symptoms should last at least two weeks (q4211_s3, q4213_s3);
+i)  Symptoms should last at least two weeks (`q4211_s3`, `q4213_s3`);
 
 ii) The clinical presentation does not fulfill the diagnostic requirements for a
-    Mixed Episode ((q4233_s3, q4225_causemed2_s3);
+    Mixed Episode (`q4233_s3`, `q4225_causemed2_s3`);
 
 iii) The episode is not attributable to psychoactive substance use or to any
-     organic mental disorder (q4224b_s3, q4224_s3, q4225_causemed12_s3,
-     q4225_causemed23_s3, q4225_causemed24_s3, q4225_causemed25_s3,
-     q4225_causemed30_s3, q4225_causemed31_s3);
+     organic mental disorder (`q4224b_s3`, `q4224_s3`, `q4225_causemed12_s3`,
+     `q4225_causemed23_s3`, `q4225_causemed24_s3`, `q4225_causemed25_s3`,
+     `q4225_causemed30_s3`, `q4225_causemed31_s3`);
 
 iv) The concurrent presence of at least five of the following symptoms:
 
-    -   **Affective cluster:** (1) Depressed mood (q4220a_s3:q4220c_s3), (2)
-        Markedly diminished interest or pleasure (q4220e_s3, q4220f_s3);
+    -   **Affective cluster:** (1) Depressed mood (`q4220a_s3`:`q4220c_s3`), (2)
+        Markedly diminished interest or pleasure (`q4220e_s3`, `q4220f_s3`);
     -   **Cognitive-behavioural cluster:** (3) Reduced ability to concentrate
-        and sustain attention (q4222h_s3:q4222j_s3), (4) Beliefs of low
-        self-worth or excessive and inappropriate guilt (q4222k_s3:q4222l_s3),
-        (5) Hopelessness about the future (q4220d_s3), (6) Recurrent thoughts of
-            death (q4222r_s3:q4222v_s3);
+        and sustain attention (`q4222h_s3`:`q4222j_s3`), (4) Beliefs of low
+        self-worth or excessive and inappropriate guilt
+        (`q4222k_s3`:`q4222l_s3`),
+        (5) Hopelessness about the future (`q4220d_s3`), (6) Recurrent thoughts
+            of death (`q4222r_s3`:`q4222v_s3`);
     -   **Neurovegetative cluster:** (7) Significantly disrupted sleep
-        (q4222c_s3, q4222d_s3), (8) Significant change in appetite or weight
-        (q4222a_s3, q4222b_s3), (9) Psychomotor agitation or retardation
-        (q4222f_s3, q4222fa_s3, q4222g_s3, q4222ga_s3), (10) Reduce energy, or
-        fatigue (q4222e_s3);
+        (`q4222c_s3`, `q4222d_s3`), (8) Significant change in appetite or weight
+        (`q4222a_s3`, `q4222b_s3`), (9) Psychomotor agitation or retardation
+        (`q4222f_s3`, `q4222fa_s3`, `q4222g_s3`, `q4222ga_s3`), (10) Reduce
+        energy, or fatigue (`q4222e_s3`);
 
 v)  At least one symptom from the affective cluster (depressed mood, loss of
     interest).
+
+    Variables related to the diagnosis of depression during the last 12 months
+    have also been computed using the diagnosis corresponding to the criteria
+    above and items referring to the reported diagnosis of depression during the
+    last 12 months (`q4227/q4227a`).
+
+    As the dataset will be used for longitudinal studies, a variable of the
+    prevalence of depression since the last interview comparable to other waves
+    has been created using the criteria i; iv and above.
 
 For reasons of precision and availability of information, certain criteria could
 not be taken into account: "the symptoms result in significant distress or
@@ -169,7 +203,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 label define yesno    0 "No" 1 "Yes"
 
 
-***#"VARIABLE `depression_lifetime`: Depressive episode (6A70)"
+***#"VARIABLE `depression_3y`: Depressive episode (6A70)"
 
 *#Criterion 1: "The depressive episode should last for at least 2 weeks"
 gen     d_crit1 = .
@@ -179,8 +213,9 @@ replace d_crit1 = 1 if  q4211_s3==1             |  q4213_s3==1
 *#Criterion 2: "The clinical presentation does not fulfil the diagnostic
 *#             requirements for a Mixed Episode"
 gen d_crit2 =. 
-replace d_crit2 = 1 if (q4233!=1 & q4233!=.) & (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
-replace d_crit2 = 0 if q4233_s3==1 & q4225_causemed2_s3==1
+replace d_crit2 = 1 if (q4233_s3!=1 & q4233_s3!=.) & q4225_causemed2_s3!=1
+replace d_crit2 = 0 if (q4233_s3==1 | q4225_causemed2_s3==1) & proxy==2
+
 
 
 *#Criterion 3: "The episode is not attributable to psychoactive substance use or
@@ -295,7 +330,7 @@ egen d_symptot = rowtotal (d_s1 d_s2 d_s3 d_s4 d_s5 d_s6 d_s7 d_s8 d_s9 d_s10), 
 *#"To fulfill Criterion 4, at least five symptoms should be present".
 gen     d_crit4 = .
 replace d_crit4 = 0 if d_symptot<5 
-replace d_crit4 = 1 if d_symptot>=5 & d_symptot!=.
+replace d_crit4 = 1 if (d_symptot>=5 & d_symptot!=.)
 
 
 *#Criterion 5: "At least one symptom from the affective cluster must be present"
@@ -310,7 +345,7 @@ replace d_crit5 = 0 if d_afftotal <1
 replace d_crit5 = 1 if d_afftotal>=1
 
 
-***#"Has the person skipped the lifetime depression module?"
+***#"Has the person skipped the depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
 recode q4220a_s3-q4222v_s3 (1=1) (2=0) (888 999=.)
@@ -335,28 +370,57 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 *#       to the current values".
 
 
-***#"Lifetime depression diagnostic variable":
-gen     depression_lifetime_s3 = .
-replace depression_lifetime_s3 = 0 if (d_skipped==1 | d_crit_123==0 | d_crit4==0 | d_crit5==0) & proxy==2
-replace depression_lifetime_s3 = 1 if d_skipped==0 & d_crit_123==1 & d_crit4==1 & d_crit5==1
-label values   depression_lifetime_s3 yesno
-label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
+***#"Inter-survey depression diagnostic variable":
+gen     depression_3y_s3 = .
+replace depression_3y_s3 = 0 if d_skipped==1 | d_crit_123==0 | d_crit4==0 | d_crit5==0 & proxy==2
+replace depression_3y_s3 = 1 if d_skipped==0 & d_crit_123==1 & d_crit4==1 & d_crit5==1
+label values   depression_3y_s3 yesno
+label variable depression_3y_s3 "Inter-survey depression (c2011_w4)"
 
 
-***#"VARIABLE `depression_lifetime_proxy_s3`: Depressive episode for proxy participants"
-recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_lifetime_proxy_s3)
-label values   depression_lifetime_proxy_s3 yesno
-label variable depression_lifetime_proxy_s3 "Lifetime depression for proxy (c2011_w4)"
+***#"VARIABLE `depression_3y_proxy_s3`: Depressive episode for proxy participants"
+recode p4040_depression_s3 (1=1) (2=0) (888=0) (999=0), gen (depression_3y_proxy_s3)
+label values   depression_3y_proxy_s3 yesno
+label variable depression_3y_proxy_s3 "Inter-survey depression for proxy (c2011_w4)"
 
+
+***#"VARIABLE `d_12m_item_s3`: 12-month depression criterion from q4227/q4227a items"
+gen     d_12m_item_s3 = .
+replace d_12m_item_s3 = 0 if q4227!=1 & q4227a!=1 & proxy==2
+replace d_12m_item_s3 = 1 if q4227==1 | q4227a==1
+label values   d_12m_item_s3 yesno
+label variable d_12m_item_s3 "12 month depression from inter-survey diagnosis + q4227/q4227a items (c2011_w4)"
+
+
+***#"VARIABLE `depression_12m_s3`: 12-month depression (combining `depression_3y_s3` + `d_12m_item_s3`)"
+gen     depression_12m_s3 = .
+replace depression_12m_s3 = 0 if depression_3y_s3==0 | d_12m_item_s3==0
+replace depression_12m_s3 = 1 if depression_3y_s3==1 & d_12m_item_s3==1
+label values   depression_12m_s3 yesno
+label variable depression_12m_s3 "12 month depression, one item (c2011_w4)"
+
+*#"Inter-survey depression "comparable" (does not take into account exclusion criteria G2 and G3)"
+gen     d_3y_comparable_s3 = .
+replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit1==0 |d_crit4==0 | d_crit5==0
+replace d_3y_comparable_s3 = 1 if d_skipped==0 & d_crit1==1 & (d_crit4==1 & d_crit5==1)
+label values   d_3y_comparable_s3 yesno
+label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
+
+*#"12-month 'comparable', based on the intermediate 'inter-survey comparable' and the individual item":
+gen     d_12m_comparable_s3 = .
+replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | d_12m_item_s3==0
+replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 & d_12m_item_s3==1
+label values   d_12m_comparable_s3 yesno
+label variable d_12m_comparable_s3 "12 month depression comparable (c2011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy depression_lifetime_s3 depression_lifetime_proxy_s3
+keep ID_ECS q0007a_result proxy depression_3y_s3 depression_3y_proxy_s3 d_12m_comparable_s3 d_3y_comparable_s3 d_12m_item_s3 depression_12m_s3
 
-codebook depression_lifetime_s3 depression_lifetime_proxy_s3
+codebook depression_3y_s3 depression_3y_proxy_s3 d_12m_comparable_s3 d_3y_comparable_s3 d_12m_item_s3 depression_12m_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
