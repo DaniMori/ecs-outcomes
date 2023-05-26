@@ -309,7 +309,7 @@ gen abusesuspicion_s3 =.
 replace abusesuspicion_s3=0 if abuse_tot<1 
 replace abusesuspicion_s3=1 if abuse_tot>0 & abuse_tot!=.
 
-label define abusesuspicion_l 0 "No suspicion of abuse" 1 "Suspicion of abuse"
+label define abusesuspicion_l 0 "No" 1 "Yes"
 label values abusesuspicion_s3 abusesuspicion_l
 label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 ```
