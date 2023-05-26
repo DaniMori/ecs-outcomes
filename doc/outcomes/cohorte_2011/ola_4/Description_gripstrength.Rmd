@@ -70,7 +70,8 @@ categories (0 = Normal, 1 = Weak), depending on sex and body
 mass index (expressed as ratio).
 Note: To create this variable it is necessary to combine the whole raw dataset 
 with the "anthotropometric measures" dataset to be able to use the previously 
-created variable relating to BMI (bmi_s3).
+created variable relating to BMI (bmi_s3). For participants who decide not to 
+answer (999) the answer was consider as missing (.).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -83,7 +84,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 /* First, we would need to take the BMI variable from the anthropometrics measures outcomes dataset */
 merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
-
+recode q2521_first_s3 q2522_second_s3 q2522a_third_s3 (999 =.)
 generate grip_max=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
 replace grip_max=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
 replace grip_max= q2522a_third_s3 if q2521_first_s3>100
