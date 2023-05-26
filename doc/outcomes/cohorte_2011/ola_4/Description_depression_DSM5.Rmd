@@ -241,8 +241,8 @@ replace d_A6 = 1 if q4222e_s3==1
 
 *#A7:"Feelings of worthlessness or excessive or inappropriate guilt nearly every day (not merely self-reproach or guilt about being sick)"
 gen     d_A7 = .
-replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222n_s3!=1 & q4222n_s3!=.) &  (q4222l_s3!=1 & q4222l_s3!=.) &  (q4222m_s3!=1 & q4222m_s3!=.) 
-replace d_A7 = 1 if q4222k_s3==1 | q4222n_s3==1 | q4222l_s3==1 | q4222m_s3==1
+replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222l_s3!=1 & q4222l_s3!=.) & (q4222m_s3!=1 & q4222m_s3!=.) & (q4222n_s3!=1 & q4222n_s3!=.)
+replace d_A7 = 1 if  q4222k_s3==1                 |  q4222l_s3==1                 |  q4222m_s3==1                 |  q4222n_s3==1
 
 *#A8:"Diminished ability to think or concentrate, or indecisiveness, nearly every day"
 gen     d_A8 = .
