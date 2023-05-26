@@ -104,9 +104,9 @@ label variable hhincome_s3 "Annual household income level (bracket) (c2011_w4)"
 
 *# Annual working income level (bracket) (c2011_w4) 
 gen indincome_s3 = q1516_total_s3
-replace indincome_s3 = q0410k_other_s3 if indincome_s3==1 | indincome_s3==2 
-replace indincome_s3 = q0410i_ss_s3 if indincome_s3==1 | indincome_s3==2 
-replace indincome_s3 = q0410j_government_s3 if indincome_s3==1 | indincome_s3==2 
+replace indincome_s3 = q0410k_other_s3 if indincome_s3==0
+replace indincome_s3 = q0410i_ss_s3 if indincome_s3==0
+replace indincome_s3 = q0410j_government_s3 if indincome_s3==0 
 label variable indincome_s3 "Annual working income level (bracket) (c2011_w4)"
 
 
