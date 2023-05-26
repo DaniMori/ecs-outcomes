@@ -54,9 +54,9 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                   |                |                    |     dependence      |
 +-------------------+----------------+--------------------+---------------------+
 | abuse_negli_s3    | Negligence     | Ordinal            | -   0 = No abuse    |
-|                   | comparable     |                    |                     |
-|                   | (c2011_w4)     |                    | -   1 = Occasional  |
-|                   |                |                    |                     |
+|                   | abuse          |                    |                     |
+|                   | comparable     |                    | -   1 = Occasional  |
+|                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
 |                   |                |                    |                     |
 |                   |                |                    | -   3 = Quite often |
@@ -84,7 +84,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                   |                |                    | -   4 = Often       |
 +-------------------+----------------+--------------------+---------------------+
 | abuse_phys_s3     | Physical and   | Ordinal            | -   0 = No abuse    |
-|                   | sexual         |                    |                     |
+|                   | sexual abuse   |                    |                     |
 |                   | comparable     |                    | -   1 = Occasional  |
 |                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
