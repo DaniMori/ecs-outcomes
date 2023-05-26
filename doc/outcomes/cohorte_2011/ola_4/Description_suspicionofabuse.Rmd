@@ -205,22 +205,27 @@ use "~/UAM/Marta Miret Garcia - Bases de datos maestras Edad con Salud/Ola_4/Coh
 recode q6701_s3 q6701d_s3 q6701b_s3 (2=0) (999=.) 
 gen dependency_s3=. 
 
-**0 = No dependence; has not had any help and has not needed it:
+**0 = No dependence; when the person has not had any help (q6701_s3) and has not needed it (q6701d_s3):
 replace dependency_s3=0 if q6701_s3==0 & q6701d_s3==0 
 
-**1 = Dependency served; had any help but NA in had needed it OR NA in had any help and had needed it
-replace dependency_s3=1 if (q6701_s3==1 & q6701d_s3==0) | (q6701_s3==0 & q6701d_s3==1) 
+**1 = Dependency served; has had help:
+replace dependency_s3=1 if q6701_s3==1  
 
-**2 = Problematic dependence; had any help, had problems with people who helped them, and needed help
-replace dependency_s3=2 if (q6701_s3==1 & q6701b_s3==1 & q6701d_s3==0) |  (q6701_s3==1 & q6701b_s3==0 & q6701d_s3==1)
+**2 = Problematic dependence; had help and had problems with people who helped them
+replace dependency_s3=2 if (q6701_s3==1 & q6701b_s3==1)
 
-**3 = Neglected dependence; had no help, had problems with people who helped them, and needed help
-replace dependency_s3=3 if q6701_s3==1 & q6701b_s3==1 & q6701d_s3==1 
+**3 = Neglected dependence; needed help but didn`t receive it
+replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1 
 
 label define dep 0 "No dependence" 1 "Dependency served" 2 "Problematic dependence" 3 "Neglected dependence"  
 label values dependency_s3 dep 
 label variable dependency_s3 "Dependency status comparable (c2011_w4)" 
 
+
+**ABUSE VARIABLES
+* All variables have the same label values. We define them firstly:
+label define ab 0 "No abuse" 1 "Occasional" 2 "Sometimes" 3 "Quite often" 4 "Often" 
+  
 
 *NEGLIGENCE
 *abuse_negli_s3 "Negligence (c2011_w4)"	 - q6702_s3, q6702a_s3 (comparable)
@@ -228,23 +233,18 @@ label variable dependency_s3 "Dependency status comparable (c2011_w4)"
 recode q6702_s3 (2=0) (999=.) 
 recode q6702a_s3 (999=.) 
 
-gen abuse_negli_s3=. 
-**0 = No abuse; (dichotomic item)
+**We want the final variable to contain the Likert scale of item q6702a_s3, 
+**so we generate it from item q6702a_s3. 
+
+gen abuse_negli_s3=q6702a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
 replace abuse_negli_s3=0 if q6702_s3==0
 
-**1 = Occasional abuse; 1 in likert scale item
-replace abuse_negli_s3=1 if q6702a_s3==1 
-**2 = Sometimes; 2 in likert scale item
-replace abuse_negli_s3=2 if q6702a_s3==2 
-**3 = Quite often; 3 in likert scale item
-replace abuse_negli_s3=3 if q6702a_s3==3 
-**4 = Often; 4 in likert scale item
-replace abuse_negli_s3=4 if q6702a_s3==4 
-
- 
-label define ab 0 "No abuse" 1 "Occasional" 2 "Sometimes" 3 "Quite often" 4 "Often" 
 label values abuse_negli_s3 ab 
 label variable abuse_negli_s3 "Negligence comparable (c2011_w4)" 
+
+
 
 *PSYCHOLOGICAL ABUSE
 *abuse_psycho_s3 Psychological abuse (c2011_w4) - q6703_s3, q6703a_s3 
@@ -252,19 +252,13 @@ label variable abuse_negli_s3 "Negligence comparable (c2011_w4)"
 recode q6703_s3 (2=0) (999=.) 
 recode q6703a_s3 (999=.) 
 
-gen abuse_psycho_s3=. 
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6703a_s3. 
 
-**0 = No abuse; (dichotomic item)
-replace abuse_psycho_s3=0 if q6703_s3==0 
+gen abuse_psycho_s3=q6703a_s3
 
-**1 = Occasional abuse; 1 in likert scale item
-replace abuse_psycho_s3=1 if q6703a_s3==1 
-**2 = Sometimes; 2 in likert scale item
-replace abuse_psycho_s3=2 if q6703a_s3==2 
-**3 = Quite often; 3 in likert scale item
-replace abuse_psycho_s3=3 if q6703a_s3==3 
-**4 = Often; 4 in likert scale item
-replace abuse_psycho_s3=4 if q6703a_s3==4 
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+replace abuse_psycho_s3=0 if q6703_s3==0
 
 label values abuse_psycho_s3 ab 
 label variable abuse_psycho_s3 "Psychological abuse comparable (c2011_w4)" 
@@ -276,18 +270,13 @@ label variable abuse_psycho_s3 "Psychological abuse comparable (c2011_w4)"
 recode q6704_s3 (2=0) (999=.) 
 recode q6704a_s3 (999=.) 
 
-gen abuse_eco_s3=. 
-**0 = No abuse; (dichotomic item)
-replace abuse_eco_s3=0 if q6704_s3==0
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6704a_s3. 
 
-**1 = Occasional abuse; 1 in likert scale item
-replace abuse_eco_s3=1 if q6704a_s3==1 
-**2 = Sometimes; 2 in likert scale item
-replace abuse_eco_s3=2 if q6704a_s3==2 
-**3 = Quite often; 3 in likert scale item
-replace abuse_eco_s3=3 if q6704a_s3==3 
-**4 = Often; 4 in likert scale item
-replace abuse_eco_s3=4 if q6704a_s3==4 
+gen abuse_eco_s3=q6704a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+replace abuse_eco_s3=0 if q6704_s3==0
 
 label values abuse_eco_s3 ab 
 label variable abuse_eco_s3 "Economical abuse comparable (c2011_w4)" 
@@ -299,19 +288,15 @@ label variable abuse_eco_s3 "Economical abuse comparable (c2011_w4)"
 recode q6705_s3 (2=0) (999=.) 
 recode q6705a_s3 (999=.) 
 
-gen abuse_phys_s3=. 
-**0 = No abuse; (dichotomic item)
-replace abuse_phys_s3=0 if q6705_s3==0 
-**1 = Occasional abuse; 1 in likert scale item
-replace abuse_phys_s3=1 if q6705a_s3==1 
-**2 = Sometimes; 2 in likert scale item
-replace abuse_phys_s3=2 if q6705a_s3==2 
-**3 = Quite often; 3 in likert scale item
-replace abuse_phys_s3=3 if q6705a_s3==3 
-**4 = Often; 4 in likert scale item
-replace abuse_phys_s3=4 if q6705a_s3==4 
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6703a_s3. 
 
- 
+gen abuse_phys_s3=q6705a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+
+replace abuse_psycho_s3=0 if q6705_s3==0
+
 label values abuse_phys_s3 ab 
 label variable abuse_phys_s3 "Physical and sexual abuse comparable (c2011_w4)" 
 
