@@ -41,7 +41,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable     | Label          | Format             | Code                |
 | name              |                |                    |                     |
 +:==================+:===============+:===================+:====================+
-| dependency_s3     | Dependency     | Ordinal            | -   0 = No          |
+| dependency_s3     | Dependency     | Nominal            | -   0 = No          |
 |                   | status         |                    |     dependence      |
 |                   | comparable     |                    |                     |
 |                   | (c2011_w4)     |                    | -   1 = Dependency  |
