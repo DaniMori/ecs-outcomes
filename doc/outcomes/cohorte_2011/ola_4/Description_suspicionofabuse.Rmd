@@ -138,7 +138,7 @@ more details.
 
 # Explanation of how the variables were created
 
-We have followed the conventions of Wave 3 (dependency, each especific type of
+We have followed the conventions of Wave 3 (dependency, each specific type of
 abuse) and we added an additional variable based on the literature:
 
 -   Create a variable indicating the **degree of dependency** (`dependency_s3`),
@@ -147,17 +147,14 @@ abuse) and we added an additional variable based on the literature:
     categories:
 
     -   *No dependence*: has neither received help nor needed it.
-    -   *Dependency served*: had help but did not know if he/she needed it, did
-        not have help but needed it
-    -   *Problematic dependence*: had help, had problems with the person who
-        helped them and they needed that help;
-    -   *Neglected dependence*: did not have help, had problems with who was
-        supposed to help them and they needed that help.
+    -   *Dependency served*: has had help
+    -   *Problematic dependence*: had help and had problems with people who helped them;
+    -   *Neglected dependence*: needed help but didn`t receive it.
 
 -   Create four variables, one for **each specific type of abuse**. For these
     variables, if the first item is endorsed, it indicates the presence of that
     type of abuse, and is complemented with the second item of the pair,
-    which indicates the frequency in a Likert scale (1 ocassional - 4 often).
+    which indicates the frequency in a Likert scale (1 occasional - 4 often).
 
     -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
     -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
