@@ -43,7 +43,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +:==================+:===============+:===================+:====================+
 | dependency_s3     | Dependency     | Nominal            | -   0 = No          |
 |                   | status         |                    |     dependence      |
-|                   | comparable     |                    |                     |
+|                   |                |                    |                     |
 |                   | (c2011_w4)     |                    | -   1 = Dependency  |
 |                   |                |                    |     served          |
 |                   |                |                    |                     |
@@ -55,7 +55,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +-------------------+----------------+--------------------+---------------------+
 | abuse_negli_s3    | Negligence     | Ordinal            | -   0 = No abuse    |
 |                   | abuse          |                    |                     |
-|                   | comparable     |                    | -   1 = Occasional  |
+|                   |                |                    | -   1 = Occasional  |
 |                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
 |                   |                |                    |                     |
@@ -65,7 +65,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +-------------------+----------------+--------------------+---------------------+
 | abuse_psycho_s3   | Psychological  | Ordinal            | -   0 = No abuse    |
 |                   | abuse          |                    |                     |
-|                   | comparable     |                    | -   1 = Occasional  |
+|                   |                |                    | -   1 = Occasional  |
 |                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
 |                   |                |                    |                     |
@@ -75,7 +75,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +-------------------+----------------+--------------------+---------------------+
 | abuse_eco_s3      | Economical     | Ordinal            | -   0 = No abuse    |
 |                   | abuse          |                    |                     |
-|                   | comparable     |                    | -   1 = Occasional  |
+|                   |                |                    | -   1 = Occasional  |
 |                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
 |                   |                |                    |                     |
@@ -85,7 +85,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +-------------------+----------------+--------------------+---------------------+
 | abuse_phys_s3     | Physical and   | Ordinal            | -   0 = No abuse    |
 |                   | sexual abuse   |                    |                     |
-|                   | comparable     |                    | -   1 = Occasional  |
+|                   |                |                    | -   1 = Occasional  |
 |                   | (c2011_w4)     |                    |                     |
 |                   |                |                    | -   2 = Sometimes   |
 |                   |                |                    |                     |
@@ -219,7 +219,7 @@ replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1
 
 label define dep 0 "No dependence" 1 "Dependency served" 2 "Problematic dependence" 3 "Neglected dependence"  
 label values dependency_s3 dep 
-label variable dependency_s3 "Dependency status comparable (c2011_w4)" 
+label variable dependency_s3 "Dependency status (c2011_w4)" 
 
 
 **ABUSE VARIABLES
@@ -242,7 +242,7 @@ gen abuse_negli_s3=q6702a_s3
 replace abuse_negli_s3=0 if q6702_s3==0
 
 label values abuse_negli_s3 ab 
-label variable abuse_negli_s3 "Negligence abuse comparable (c2011_w4)" 
+label variable abuse_negli_s3 "Negligence abuse (c2011_w4)" 
 
 
 
@@ -261,7 +261,7 @@ gen abuse_psycho_s3=q6703a_s3
 replace abuse_psycho_s3=0 if q6703_s3==0
 
 label values abuse_psycho_s3 ab 
-label variable abuse_psycho_s3 "Psychological abuse comparable (c2011_w4)" 
+label variable abuse_psycho_s3 "Psychological abuse (c2011_w4)" 
 
  
 
@@ -279,7 +279,7 @@ gen abuse_eco_s3=q6704a_s3
 replace abuse_eco_s3=0 if q6704_s3==0
 
 label values abuse_eco_s3 ab 
-label variable abuse_eco_s3 "Economical abuse comparable (c2011_w4)" 
+label variable abuse_eco_s3 "Economical abuse (c2011_w4)" 
 
  
 
@@ -298,7 +298,7 @@ gen abuse_phys_s3=q6705a_s3
 replace abuse_psycho_s3=0 if q6705_s3==0
 
 label values abuse_phys_s3 ab 
-label variable abuse_phys_s3 "Physical and sexual abuse comparable (c2011_w4)" 
+label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)" 
 
 
 
