@@ -101,28 +101,49 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 # Variable description
 
 The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008] is an
-adaptation of the Elder Abuse Suspicion Index (EASI), a brief instrument with
-direct questions aimed at detecting suspicion of abuse in older people (aged
-+64) without cognitive impairment. It is made up of five questions addressed to
-the elderly person and one to the professional, which are asked in the course of
-an encounter between the elderly person and the professional in the consultation
-room and are formulated by the professional using simple language. The first
-question focuses on the assessment of the level of dependency of the elderly
-person for some basic or instrumental activity of daily living. The remaining
-questions refer to different types of abuse: physical and sexual, psychological,
-financial, and neglect. The items are dichotomous (0=No; 1=Yes). A positive
-response to any of the questions would indicate suspicion of maltreatment.
+adaptation of the Elder Abuse Suspicion Index (EASI) [@yaffe_development_2008],
+a brief instrument with direct questions aimed at detecting suspicion of abuse 
+in older people (aged +64) without cognitive impairment. It is made up of five 
+questions addressed to the elderly person and one to the professional, which are
+asked in the course of an encounter between the elderly person and the professional
+in the consultation room and are formulated by the professional using simple 
+language. The first question focuses on the assessment of the level of dependency
+of the elderly person for some basic or instrumental activity of daily living. 
+The remaining questions refer to different types of abuse: physical and sexual, 
+psychological, financial, and neglect. The items are dichotomous (0=No; 1=Yes).
+A positive response to any of the questions would indicate suspicion of maltreatment.
+
+Each dichotomous item is accompanied by an item on the frequency of the abusive 
+behavior they received if the dichotomous item is replied positively. This 
+frequency is based on a Likert scale, ranging from 1 (ocassional) to 4 (often).
+See in more detail in the 'Explanation' section below. 
+
+The questions refer to situations that occurred in the 12 months before
+the completion of the questionnaire and only persons aged 65 and over were
+asked.
+
+Variables indicating the presence and frequency of each type of abuse are
+created, as well as a variable indicating the degree of dependency of the elderly
+and a general variable about suspicion of abuse. See 'explanation section' for
+more details.
+
+- `dependency_s3`: Dependency status
+- `abuse_negli_s3 `: Negligence abuse
+- `abuse_psycho_s3`: Psychological abuse
+- `abuse_eco_s3`: Economical abuse
+- `abuse_phys_s3`: Physical abuse
+- `abusesuspicion_s3`: Suspicion of abuse
+
+
 
 # Explanation of how the variables were created
 
-At wave 4 we realize that the material cited by EASI does not indicate the
-instructions that have been followed in previous waves to create these outcomes.
-However, for the sake of consistency and comparability between waves, we decided
-to follow the same scheme:
+We have followed the conventions of Wave 3 (dependency, each especific type of
+abuse) and we added an additional variable based on the literature:
 
 -   Create a variable indicating the **degree of dependency** (`dependency_s3`),
     based on the block of questions `q6701_s3` (help from someone), `q6701b_s3`
-    (problems with them) and `q6701d_s3` (need help). In this way, we found four
+    (problems with them) and `q6701d_s3` (need help). In this way, we find four
     categories:
 
     -   *No dependence*: has neither received help nor needed it.
@@ -133,30 +154,43 @@ to follow the same scheme:
     -   *Neglected dependence*: did not have help, had problems with who was
         supposed to help them and they needed that help.
 
--   Create four variables for **each specific type of abuse**. For these
-    variables, the first of each pair indicated below is selected, which is a
-    dichotomous item on the presence or absence of that type of abuse, and is
-    complemented with the second item of the pair, which indicates the
-    frequency.
+-   Create four variables, one for **each specific type of abuse**. For these
+    variables, if the first item is endorsed, it indicates the presence of that
+    type of abuse, and is complemented with the second item of the pair,
+    which indicates the frequency in a Likert scale (1 ocassional - 4 often).
 
     -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
     -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
     -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
     -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
+  
+  First, the values are recoded. Given that in the original scale of the 
+  questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted
+  into 0; and the 999 values are recoded into missings. This applies to all the
+  items involved in the creation of these variables.
+  
+  The logic of these variables is as follows: the aim is to record both the
+  presence and frequency of abuse. Therefore, they are constructed from two 
+  items: a dichotomous item indicating presence/absence and an item with 4 
+  response options indicating frequency. Therefore, if in the first item the
+  option replied is "yes", the subsidiary item (which has the suffix "a") 
+  is used to create the rest of response scale, being them finally: 
+  0 = No abuse,
+  1 = Occasional,
+  2 = Sometimes,
+  3 = Quite often,
+  4 = Often. 
+  See syntax below for more details.
 
-To create the abusesuspicion_s3 variable, we keep only the 5 items addressed to
-the participants and exclude the question asked to the professional(s). These 4
-items ask for information about different types of maltreatment: neglect
-(`q6702_s3`), psychological (`q6703_s3`), economic (`q6704_s3`) and
-physical-sexual (`q6705_s`). The item `q6701_s3` indicates if the person has
-needed help, so in the case of responding 'yes' it could be some suspicion of
-abuse. The total scale of suspicion of abuse was obtained by summing the answer
-given to each 4 items. A transformation of the scores was then made, for those
+
+To create the `abusesuspicion_s3` variable, we keep the 4 items that
+indicated the presence of abuse introduced earlier in combination with item 
+`q6701_s3`. This item indicates if the person has 
+needed help, so in the case of responding 'yes' there could be suspicion of
+abuse. The total scale of suspicion of abuse was obtained by summing the answers
+given to each 4 items. A dichotomization of the scores was then made, for those
 participants who answer yes to one of the five items a suspicion of abuse is
-considered. The scale ranges from 0: no suspicion of abuse to 1: suspicion of
-abuse. The questions refer to situations that occurred in the 12 months before
-the completion of the questionnaire and only persons aged 65 and over were
-asked.
+considered. In any other case, the result is 0 (1 = Yes, 0 = No).
 
 # Syntax used to create the variable (Stata 15)
 
