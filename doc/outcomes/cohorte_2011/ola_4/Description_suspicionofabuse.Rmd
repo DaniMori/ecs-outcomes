@@ -242,7 +242,7 @@ gen abuse_negli_s3=q6702a_s3
 replace abuse_negli_s3=0 if q6702_s3==0
 
 label values abuse_negli_s3 ab 
-label variable abuse_negli_s3 "Negligence comparable (c2011_w4)" 
+label variable abuse_negli_s3 "Negligence abuse comparable (c2011_w4)" 
 
 
 
