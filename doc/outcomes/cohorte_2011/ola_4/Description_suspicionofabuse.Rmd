@@ -229,7 +229,7 @@ label define ab 0 "No abuse" 1 "Occasional" 2 "Sometimes" 3 "Quite often" 4 "Oft
   
 
 *NEGLIGENCE
-*abuse_negli_s3 "Negligence (c2011_w4)"	 - q6702_s3, q6702a_s3 (comparable)
+*abuse_negli_s3 "Negligence (c2011_w4)"	 - q6702_s3, q6702a_s3
 
 recode q6702_s3 (2=0) (999=.) 
 recode q6702a_s3 (999=.) 
