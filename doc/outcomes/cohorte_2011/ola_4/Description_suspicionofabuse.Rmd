@@ -110,8 +110,11 @@ in the consultation room and are formulated by the professional using simple
 language. The first question focuses on the assessment of the level of dependency
 of the elderly person for some basic or instrumental activity of daily living. 
 The remaining questions refer to different types of abuse: physical and sexual, 
-psychological, financial, and neglect. The items are dichotomous (0=No; 1=Yes).
-A positive response to any of the questions would indicate suspicion of maltreatment.
+psychological, financial, and neglect. The items are dichotomous (0=No; 1=Yes), 
+and are followed by items on its frequency on a Likert scale. 
+A positive response to any of the questions would indicate suspicion of abuse.
+It is noteworthy that in our version we do not use the item referring to the
+professional. 
 
 Each dichotomous item is accompanied by an item on the frequency of the abusive 
 behavior they received if the dichotomous item is replied positively. This 
