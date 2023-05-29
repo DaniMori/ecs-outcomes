@@ -188,7 +188,8 @@ indicated the presence of abuse introduced earlier in combination with item
 `q6701_s3`. This item indicates if the person has 
 needed help, so in the case of responding 'yes' there could be suspicion of
 abuse. The total scale of suspicion of abuse was obtained by summing the answers
-given to each 4 items. A dichotomization of the scores was then made, for those
+given to each 4 items indicating presence or absence of abuse.
+A dichotomization of the scores was then made, for those
 participants who answer yes to one of the five items a suspicion of abuse is
 considered. In any other case, the result is 0 (1 = Yes, 0 = No).
 
