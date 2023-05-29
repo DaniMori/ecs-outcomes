@@ -150,7 +150,7 @@ abuse) and we added an additional variable based on the literature:
     categories:
 
     -   *No dependence*: has not received help because they didn't need it.
-    -   *Dependency served*: has had help
+    -   *Dependency served*: has received the help needed
     -   *Problematic dependence*: has received help, but had problems with people who helped them;
     -   *Neglected dependence*: needed help but didn't receive it.
 
