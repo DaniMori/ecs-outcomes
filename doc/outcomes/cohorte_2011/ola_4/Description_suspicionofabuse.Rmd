@@ -170,12 +170,11 @@ abuse) and we added an additional variable based on the literature:
   into 0; and the 999 values are recoded into missings. This applies to all the
   items involved in the creation of these variables.
   
-  The logic of these variables is as follows: the aim is to record both the
-  presence and frequency of abuse. Therefore, they are constructed from two 
-  items: a dichotomous item indicating presence/absence and an item with 4 
-  response options indicating frequency. Therefore, if in the first item the
-  option replied is "yes", the subsidiary item (which has the suffix "a") 
-  is used to create the rest of response scale, being them finally: 
+  The variable combines both frequency and presence absence into a frequency 
+  variable. Therefore, if in the first item the
+  option replied is "yes", the subsidiary item of frequency 
+  (which has the suffix "a") 
+  is used to create the response scale: 
   0 = No abuse,
   1 = Occasional,
   2 = Sometimes,
