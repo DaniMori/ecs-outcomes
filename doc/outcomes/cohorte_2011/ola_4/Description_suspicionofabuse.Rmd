@@ -127,8 +127,8 @@ asked.
 
 Variables indicating the presence and frequency of each type of abuse are
 created, as well as a variable indicating the degree of dependency of the elderly
-and a general variable about suspicion of abuse. See 'explanation section' for
-more details.
+and a general variable about suspicion of abuse. These variables are comparable
+with the previous waves. See 'explanation section' for more details.
 
 - `dependency_s3`: Dependency status
 - `abuse_negli_s3 `: Negligence abuse
@@ -149,15 +149,16 @@ abuse) and we added an additional variable based on the literature:
     (problems with them) and `q6701d_s3` (need help). In this way, we find four
     categories:
 
-    -   *No dependence*: has neither received help nor needed it.
+    -   *No dependence*: has not received help because they didn't need it.
     -   *Dependency served*: has had help
-    -   *Problematic dependence*: had help and had problems with people who helped them;
-    -   *Neglected dependence*: needed help but didn`t receive it.
+    -   *Problematic dependence*: has received help, but had problems with people who helped them;
+    -   *Neglected dependence*: needed help but didn't receive it.
 
--   Create four variables, one for **each specific type of abuse**. For these
-    variables, if the first item is endorsed, it indicates the presence of that
-    type of abuse, and is complemented with the second item of the pair,
-    which indicates the frequency in a Likert scale (1 occasional - 4 often).
+-   Create four variables, one for **each specific type of abuse**. For each 
+    specific type of abuse, a pair of items is used. The first item of the pair
+    indicates the presence or absence of abuse, and the second item, 
+    if abuse is present, its frequency on a Likert-type scale
+    (1 occasional - 4 often).
 
     -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
     -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
