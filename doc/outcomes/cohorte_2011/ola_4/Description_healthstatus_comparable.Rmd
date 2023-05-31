@@ -54,10 +54,10 @@ We have created a health score that can be compared (in terms of changes in
 health scores) across the three waves of the COURAGE in Europe - Edad con Salud
 project conducted in Spain. The metric of health was built from a set of
 self-reported health questions and measured tests, common in both waves. The
-procedure employed is based on a Bayesian multilevel Item Response Theory (IRT)
-approach. A global score ranging from 0 to 100 was obtained, with higher scores
-indicating better health, after considering a similar range of responses for
-each of the items considered to build the metric.
+procedure employed is based on a Rasch Item Response Theory (IRT) model. A
+global score ranging from 0 to 100 was obtained, with higher scores indicating
+better health, after considering a similar range of responses for each of the
+items considered to build the metric.
 
 # Explanation of how the variables were created
 
