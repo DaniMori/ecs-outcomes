@@ -104,48 +104,44 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                   | (c2011_w4)     |                    | -   1 = Yes         |
 +-------------------+----------------+--------------------+---------------------+
 
-
 # Variable description
 
 The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008] is an
 adaptation of the Elder Abuse Suspicion Index (EASI) [@yaffe_development_2008],
-a brief instrument with direct questions aimed at detecting suspicion of abuse 
-in older people (aged +64) without cognitive impairment. It is made up of five 
+a brief instrument with direct questions aimed at detecting suspicion of abuse
+in older people (aged +64) without cognitive impairment. It is made up of five
 questions addressed to the elderly person and one to the professional, which are
-asked in the course of an encounter between the elderly person and the professional
-in the consultation room and are formulated by the professional using simple 
-language. The first question focuses on the assessment of the level of dependency
-of the elderly person for some basic or instrumental activity of daily living. 
-The remaining questions refer to different types of abuse: physical and sexual, 
-psychological, financial, and neglect. The items are dichotomous (0=No; 1=Yes), 
-and are followed by items on its frequency on a Likert scale. 
-A positive response to any of the questions would indicate suspicion of abuse.
-It is noteworthy that in our version we do not use the item referring to the
-professional. 
+asked in the course of an encounter between the elderly person and the
+professional in the consultation room and are formulated by the professional
+using simple language. The first question focuses on the assessment of the level
+of dependency of the elderly person for some basic or instrumental activity of
+daily living. The remaining questions refer to different types of abuse:
+physical and sexual, psychological, financial, and neglect. The items are
+dichotomous (0=No; 1=Yes), and are followed by items on its frequency on a
+Likert scale. A positive response to any of the questions would indicate
+suspicion of abuse. It is noteworthy that in our version we do not use the item
+referring to the professional.
 
-Each dichotomous item is accompanied by an item on the frequency of the abusive 
-behavior they received if the dichotomous item is replied positively. This 
+Each dichotomous item is accompanied by an item on the frequency of the abusive
+behavior they received if the dichotomous item is replied positively. This
 frequency is based on a Likert scale, ranging from 1 (ocassional) to 4 (often).
-See in more detail in the 'Explanation' section below. 
+See in more detail in the 'Explanation' section below.
 
-The questions refer to situations that occurred in the 12 months before
-the completion of the questionnaire and only persons aged 65 and over were
-asked.
+The questions refer to situations that occurred in the 12 months before the
+completion of the questionnaire and only persons aged 65 and over were asked.
 
 Variables indicating the presence and frequency of each type of abuse are
-created, as well as a variable indicating the degree of dependency of the elderly
-and a general variable about suspicion of abuse. These variables are comparable
-with the previous waves. See 'explanation section' for more details.
+created, as well as a variable indicating the degree of dependency of the
+elderly and a general variable about suspicion of abuse. These variables are
+comparable with the previous waves. See 'explanation section' for more details.
 
-- `dependency_s3`: Dependency status
-- `abuse_negli_s3 `: Negligence abuse
-- `abuse_psycho_s3`: Psychological abuse
-- `abuse_eco_s3`: Economical abuse
-- `abuse_phys_s3`: Physical abuse
-- `abusesuspicion_s3`: Suspicion of abuse
-- `dependency_abuse_s3`: Suspicion of abuse taking into account dependency.
-
-
+-   `dependency_s3`: Dependency status
+-   `abuse_negli_s3`: Negligence abuse
+-   `abuse_psycho_s3`: Psychological abuse
+-   `abuse_eco_s3`: Economical abuse
+-   `abuse_phys_s3`: Physical abuse
+-   `abusesuspicion_s3`: Suspicion of abuse
+-   `dependency_abuse_s3`: Suspicion of abuse taking into account dependency.
 
 # Explanation of how the variables were created
 
@@ -173,9 +169,16 @@ abuse) and we added an additional variable based on the literature:
     -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
     -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
 
-| First, the values are recoded. Given that in the original scale of the questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted into 0; and the 999 values are recoded into missings. This applies to all the items involved in the creation of these variables.
+First, the values are recoded. Given that in the original scale of the
+questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted
+into 0; and the 999 values are recoded into missings. This applies to all the
+items involved in the creation of these variables.
 
-| The variable combines both frequency and presence absence into a frequency variable. Therefore, if in the first item the option replied is "yes", the subsidiary item of frequency (which has the suffix "a") is used to create the response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4 = Often. See syntax below for more details.
+The variable combines both frequency and presence / absence into a frequency
+variable. Therefore, if in the first item the option replied is "yes", the
+subsidiary item of frequency (which has the suffix "a") is used to create the
+response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
+= Often. See syntax below for more details.
 
 To include the **grade of dependency** **in suspicion of abuse**,
 `dependency_abuse_s3` is created. This is a dichotomous variable that includes:
