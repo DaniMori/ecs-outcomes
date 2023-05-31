@@ -159,58 +159,35 @@ abuse) and we added an additional variable based on the literature:
 
     -   *No dependence*: has not received help because they didn't need it.
     -   *Dependency served*: has received the help needed
-    -   *Problematic dependence*: has received help, but had problems with people who helped them;
+    -   *Problematic dependence*: has received help, but had problems with
+        people who helped them;
     -   *Neglected dependence*: needed help but didn't receive it.
 
--   Create four variables, one for **each specific type of abuse**. For each 
+-   Create four variables, one for **each specific type of abuse**. For each
     specific type of abuse, a pair of items is used. The first item of the pair
-    indicates the presence or absence of abuse, and the second item, 
-    if abuse is present, its frequency on a Likert-type scale
-    (1 occasional - 4 often).
+    indicates the presence or absence of abuse, and the second item, if abuse is
+    present, its frequency on a Likert-type scale (1 occasional - 4 often).
 
     -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
     -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
     -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
     -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
-  
-  First, the values are recoded. Given that in the original scale of the 
-  questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted
-  into 0; and the 999 values are recoded into missings. This applies to all the
-  items involved in the creation of these variables.
-  
-  The variable combines both frequency and presence absence into a frequency 
-  variable. Therefore, if in the first item the
-  option replied is "yes", the subsidiary item of frequency 
-  (which has the suffix "a") 
-  is used to create the response scale: 
-  0 = No abuse,
-  1 = Occasional,
-  2 = Sometimes,
-  3 = Quite often,
-  4 = Often. 
-  See syntax below for more details.
 
+| First, the values are recoded. Given that in the original scale of the questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted into 0; and the 999 values are recoded into missings. This applies to all the items involved in the creation of these variables.
 
-To create the `abusesuspicion_s3` variable, we keep the 4 items that
-indicated the presence of each specific type of abuse introduced earlier in 
-combination with item `q6701_s3`. This item indicates if the person has 
-needed help, so in the case of responding 'yes' there could be suspicion of
-abuse, following the criteria stablished by @yaffe_development_2008.
-The total scale of suspicion of abuse was obtained by summing the answers
-given to each 4 items indicating presence or absence of abuse.
-A dichotomization of the scores was then made, for those
-participants who answer yes to one of the five items a suspicion of abuse is
-considered. In any other case, the result is 0 (1 = Yes, 0 = No).
+| The variable combines both frequency and presence absence into a frequency variable. Therefore, if in the first item the option replied is "yes", the subsidiary item of frequency (which has the suffix "a") is used to create the response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4 = Often. See syntax below for more details.
 
-To include the grade of dependency, `dependency_abuse_s3` is created.
-This is a dichotomous variable that includes:
-- No abuse in dependency: 
-  - Without help and no help needed: q6701 == 2 & q6701d == 2
-  - Help needed without any problems: q6701 == 1 & Q6701b == 2
-- Abuse within dependency:
-  - Any positive score on the dichotomous items that indicate presence or absence
-  on specific types of abuse. A intermediate variable 'abuse_types' is created
-  to take them into account.
+To include the **grade of dependency** **in suspicion of abuse**,
+`dependency_abuse_s3` is created. This is a dichotomous variable that includes:
+
+-    **No abuse in dependency**:
+    -    Without help and no help needed
+    -   Help needed without any problems
+-    **Abuse within dependency**:
+    -    Any positive score on the dichotomous items that indicate presence or
+        absence on specific types of abuse. A intermediate variable
+        'abuse_types' is created to take them into account, which sums the
+        answer of these dichotomous items.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -315,23 +292,11 @@ gen abuse_phys_s3=q6705a_s3
 
 **Finally, we add the non-abuse cases with the dichotomous reference variable.
 
-replace abuse_psycho_s3=0 if q6705_s3==0
+replace abuse_phys_s3=0 if q6705_s3==0
 
 label values abuse_phys_s3 ab 
 label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)" 
 
-
-
-*SUSPICION OF ABUSE (correct version following literature)
-gen abuse_tot = (q6701_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
-
-gen abusesuspicion_s3 =.
-replace abusesuspicion_s3=0 if abuse_tot<1 
-replace abusesuspicion_s3=1 if abuse_tot>0 & abuse_tot!=.
-
-label define abusesuspicion_l 0 "No" 1 "Yes"
-label values abusesuspicion_s3 abusesuspicion_l
-label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 
 * DEPENDENCY - ABUSE
 
@@ -342,6 +307,7 @@ replace dependency_abuse_s3 = 0 if q6701_s3 == 0 & q6701d_s3 == 0
 replace dependency_abuse_s3 = 0 if q6701_s3 == 1 & q6701b_s3 == 0
 replace dependency_abuse_s3 = 1 if abuse_types >0 & abuse_types!=. 
 
+label define abusesuspicion_l 0 "No" 1 "Yes"
 label values dependency_abuse_s3 abusesuspicion_l
 label variable dependency_abuse_s3 "Suspicion of abuse taking into account dependency (c2011_w4)"
 
@@ -350,8 +316,8 @@ label variable dependency_abuse_s3 "Suspicion of abuse taking into account depen
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result_s3 proxy_s3 dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3 dependency_abuse_s3
-codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3 dependency_abuse_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 dependency_abuse_s3
+codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 dependency_abuse_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
