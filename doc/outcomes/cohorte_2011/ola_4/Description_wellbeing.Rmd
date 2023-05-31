@@ -169,9 +169,7 @@ day, if the value 1 is exceeded (duration_DRM4 >1), it can be understood that
 the duration estimate is unreliable. Therefore, to avoid losing these values, 
 an intermediate solution is chosen: to obtain a score for these participants 
 based on the average of the emotions, but not by weighting on the duration of 
-the activities. Therefore, the replace in these particular particular cases.
-
-
+the activities.
 
 -   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
     emotions (calm/relaxed and enjoying).
