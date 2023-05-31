@@ -97,12 +97,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                   | abuse          |                    |                     |
 |                   | (c2011_w4)     |                    | -   1 = Yes         |
 +-------------------+----------------+--------------------+---------------------+
-|dependency_abuse_s3| Suspicion of   | Dichotomic         | -   0 = No          |
-|                   | abuse taking   |                    |                     |
-|                   | into account   |                    |                     |
-|                   | dependency     |                    |                     |
-|                   | (c2011_w4)     |                    | -   1 = Yes         |
-+-------------------+----------------+--------------------+---------------------+
 
 # Variable description
 
@@ -141,7 +135,6 @@ comparable with the previous waves. See 'explanation section' for more details.
 -   `abuse_eco_s3`: Economical abuse
 -   `abuse_phys_s3`: Physical abuse
 -   `abusesuspicion_s3`: Suspicion of abuse
--   `dependency_abuse_s3`: Suspicion of abuse taking into account dependency.
 
 # Explanation of how the variables were created
 
@@ -181,14 +174,14 @@ response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
 = Often. See syntax below for more details.
 
 To include the **grade of dependency** **in suspicion of abuse**,
-`dependency_abuse_s3` is created. This is a dichotomous variable that includes:
+`abuse_dep_s3` is created. This is a dichotomous variable that includes:
 
--   **No abuse in dependency**: - Without help and no help needed - Help needed
-    without any problems
--   **Abuse within dependency**: - Any positive score on the dichotomous items
-    that indicate presence or absence on specific types of abuse. A intermediate
-    variable 'abuse_types' is created to take them into account, which sums the
-    answer of these dichotomous items.
+-   **No abuse in dependency**: "No dependency" or "Dependency served"
+-   **Abuse within dependency**: "Problematic dependency" or "Neglected dependency"
+
+Suspicion of abuse (`abusesuspicion_s3`) is considered to be present (= 1) if
+any of the types of abuse is greater than 0; otherwise, there is no suspicion of
+abuse (= 0).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -299,26 +292,22 @@ label values abuse_phys_s3 ab
 label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)" 
 
 
-* DEPENDENCY - ABUSE
+* ABUSE
 
-gen abuse_types = (q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
-
-gen dependency_abuse_s3 =.
-replace dependency_abuse_s3 = 0 if q6701_s3 == 0 & q6701d_s3 == 0
-replace dependency_abuse_s3 = 0 if q6701_s3 == 1 & q6701b_s3 == 0
-replace dependency_abuse_s3 = 1 if abuse_types >0 & abuse_types!=. 
+gen     abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 != .
+gen abuse_count = (abuse_dep_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
+gen abusesuspicion_s3 = abuse_count > 0 if abuse_count != .
 
 label define abusesuspicion_l 0 "No" 1 "Yes"
-label values dependency_abuse_s3 abusesuspicion_l
-label variable dependency_abuse_s3 "Suspicion of abuse taking into account dependency (c2011_w4)"
-
+label values abusesuspicion_s3 abusesuspicion_l
+label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result_s3 proxy_s3 dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 dependency_abuse_s3
-codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 dependency_abuse_s3
+keep ID_ECS q0007a_result_s3 proxy_s3 dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
+codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
