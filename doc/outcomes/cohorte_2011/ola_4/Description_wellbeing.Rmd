@@ -140,6 +140,39 @@ In the case of __"experiential wellbeing"__:
 Three measures were obtained from the Day Reconstruction Method (DRM): *positive*
 *affect*, *negative affect* and *net affect*.
 
+The Day Reconstruction Method records the activities that a person has performed
+in the morning (until 12 noon), in the afternoon (12 noon - 6 p.m.) and in the 
+evening (6 p.m. - bedtime). In our database, activities are recorded as 
+dichotomous variables and three of them are randomly chosen, 
+one for each time of day. 
+
+Subsequently, the duration of these activities is asked with the variables
+`q7026_s3`, `q7066_s3`and `q7111_s3.` The format is currently in seconds and
+is used as a way of weighting the duration of the emotion.
+
+Items `q7029_worr_s3:q7033_tense_s3`,`q7069_worr_s3:q7073_tense_s3`, 
+`q7114_worr_s3:q7118_tense_s3` ask about different negative emotions associated
+with these tasks: worry, rush, irritation, depresion, and tension. 
+
+Items `q7034_calm_s3 q7035_enjoy_s3`, `q7074_calm_s3 q7075_enjoy_s3` and
+`q7119_calm_s3 q7120_enjoy_s3` ask about the positive emotions of calm/relaxation
+and enjoying. 
+
+The first step consists of constructing the mean of positive emotions per 
+activity and the mean of negative emotions per activity while maintaining 
+the missings. 
+
+Then, the mean of negative and positive affect is created by multiplying by 
+each time variable for affect in the three activities separately and weighting 
+them by the final duration. Since duration is given as a fraction of the time of
+day, if the value 1 is exceeded (duration_DRM4 >1), it can be understood that 
+the duration estimate is unreliable. Therefore, to avoid losing these values, 
+an intermediate solution is chosen: to obtain a score for these participants 
+based on the average of the emotions, but not by weighting on the duration of 
+the activities. Therefore, the replace in these particular particular cases.
+
+
+
 -   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
     emotions (calm/relaxed and enjoying).
 
