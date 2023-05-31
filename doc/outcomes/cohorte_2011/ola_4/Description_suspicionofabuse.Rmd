@@ -180,14 +180,12 @@ abuse) and we added an additional variable based on the literature:
 To include the **grade of dependency** **in suspicion of abuse**,
 `dependency_abuse_s3` is created. This is a dichotomous variable that includes:
 
--    **No abuse in dependency**:
-    -    Without help and no help needed
-    -   Help needed without any problems
--    **Abuse within dependency**:
-    -    Any positive score on the dichotomous items that indicate presence or
-        absence on specific types of abuse. A intermediate variable
-        'abuse_types' is created to take them into account, which sums the
-        answer of these dichotomous items.
+-   **No abuse in dependency**: - Without help and no help needed - Help needed
+    without any problems
+-   **Abuse within dependency**: - Any positive score on the dichotomous items
+    that indicate presence or absence on specific types of abuse. A intermediate
+    variable 'abuse_types' is created to take them into account, which sums the
+    answer of these dichotomous items.
 
 # Syntax used to create the variable (Stata 15)
 
