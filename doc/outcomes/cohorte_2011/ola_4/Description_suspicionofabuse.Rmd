@@ -166,7 +166,7 @@ response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
 missing values).
 
 To include the **grade of dependency** **in suspicion of abuse**, a dichotomous
-intermediate variable is used, which may have the following values:
+intermediate variable is used with the following values:
 
 -   **No abuse in dependency**: "No dependency" or "Dependency served"
 -   **Abuse within dependency**: "Problematic dependency" or "Neglected
@@ -290,8 +290,8 @@ label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)"
 *#   variable is construed by using ifelse statements: '0' and '1' are
 *#   recoded as FALSE (in Stata logical values are just 0/1 numeric)" and >1 are
 *#   the categories of 2 and 3 of dependency_s3.
-*#   The 'if' command allows missings structure to remain intact, otherise they
-*#   would become 1, as missing is repesented as an infinite in Stata.
+*#   The 'if' command allows missings structure to remain intact, otherwise they
+*#   would become 1, as missing is represented as an infinite in Stata.
 
 gen abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 !=.
 
