@@ -104,37 +104,30 @@ The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008] is an
 adaptation of the Elder Abuse Suspicion Index (EASI) [@yaffe_development_2008],
 a brief instrument with direct questions aimed at detecting suspicion of abuse
 in older people (aged +64) without cognitive impairment. It is made up of five
-questions addressed to the elderly person and one to the professional, which are
-asked in the course of an encounter between the elderly person and the
-professional in the consultation room and are formulated by the professional
-using simple language. The first question focuses on the assessment of the level
-of dependency of the elderly person for some basic or instrumental activity of
-daily living. The remaining questions refer to different types of abuse:
-physical and sexual, psychological, financial, and neglect. The items are
-dichotomous (0=No; 1=Yes), and are followed by items on its frequency on a
-Likert scale. A positive response to any of the questions would indicate
-suspicion of abuse. It is noteworthy that in our version we do not use the item
-referring to the professional.
+questions addressed to the elderly person and one to the professional (not used
+in this survey), which are asked in the course of an encounter between the
+elderly person and the professional in the consultation room and are formulated
+by the professional using simple language. The first question focuses on the
+assessment of the level of dependency of the elderly person for some basic or
+instrumental activity of daily living; in this adaptation, this item is expanded
+as a module assessing whether there is a dependence and whether it is
+problematic / neglected. The remaining questions refer to different types of
+abuse: physical and sexual, psychological, financial, and neglect. A dichotomous
+item for each type of abuse (0=No; 1=Yes) is followed by a Likert-scale item
+about the frequency of abuse, ranging from 1 (ocassional) to 4 (often). A
+positive response to any of the dichotomous items would indicate suspicion of
+abuse. Please note that in our version we do not use the item referring to the
+professional. However, the "dependency" part is considered when assessing the
+suspicion of abuse.
 
-Each dichotomous item is accompanied by an item on the frequency of the abusive
-behavior they received if the dichotomous item is replied positively. This
-frequency is based on a Likert scale, ranging from 1 (ocassional) to 4 (often).
-See in more detail in the 'Explanation' section below.
+In this survey, the questions refer to situations that occurred in the 12 months
+before the completion of the questionnaire, and only participants aged 65 and
+older were assessed.
 
-The questions refer to situations that occurred in the 12 months before the
-completion of the questionnaire and only persons aged 65 and over were asked.
-
-Variables indicating the presence and frequency of each type of abuse are
-created, as well as a variable indicating the degree of dependency of the
-elderly and a general variable about suspicion of abuse. These variables are
-comparable with the previous waves. See 'explanation section' for more details.
-
--   `dependency_s3`: Dependency status
--   `abuse_negli_s3`: Negligence abuse
--   `abuse_psycho_s3`: Psychological abuse
--   `abuse_eco_s3`: Economical abuse
--   `abuse_phys_s3`: Physical abuse
--   `abusesuspicion_s3`: Suspicion of abuse
+In addition to the suspicion of abuse, the following variables, comparable to
+wave 3, are created: four variables indicating the presence and frequency of
+abuse (one for each type), and a variable indicating the dependency of the
+elderly and its type.
 
 # Explanation of how the variables were created
 
@@ -148,14 +141,14 @@ abuse) and we added an additional variable based on the literature:
 
     -   *No dependence*: has not received help because they didn't need it.
     -   *Dependency served*: has received the help needed
-    -   *Problematic dependence*: has received help, but had problems with
-        people who helped them;
+    -   *Problematic dependence*: has received help, but had problems with the
+        person/people who helped them;
     -   *Neglected dependence*: needed help but didn't receive it.
 
--   Create four variables, one for **each specific type of abuse**. For each
-    specific type of abuse, a pair of items is used. The first item of the pair
-    indicates the presence or absence of abuse, and the second item, if abuse is
-    present, its frequency on a Likert-type scale (1 occasional - 4 often).
+-   Create four ordinal variables, one for **each specific type of abuse**. For
+    each specific type of abuse, The first, dichotomous item of the pair is used
+    to create the 0 (No abuse) category, and the second item its frequency,
+    if abuse is present.
 
     -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
     -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
@@ -177,10 +170,11 @@ To include the **grade of dependency** **in suspicion of abuse**,
 `abuse_dep_s3` is created. This is a dichotomous variable that includes:
 
 -   **No abuse in dependency**: "No dependency" or "Dependency served"
--   **Abuse within dependency**: "Problematic dependency" or "Neglected dependency"
+-   **Abuse within dependency**: "Problematic dependency" or "Neglected
+    dependency"
 
-Suspicion of abuse (`abusesuspicion_s3`) is considered to be present (= 1) if
-any of the types of abuse is greater than 0; otherwise, there is no suspicion of
+Suspicion of abuse (`abusesuspicion_s3`) MAY be present (= 1) if any of the
+types of abuse is greater than 0; otherwise, there is no suspicion of
 abuse (= 0).
 
 # Syntax used to create the variable (Stata 15)
@@ -196,17 +190,17 @@ use "~/UAM/Marta Miret Garcia - Bases de datos maestras Edad con Salud/Ola_4/Coh
 recode q6701_s3 q6701d_s3 q6701b_s3 (2=0) (999=.) 
 gen dependency_s3=. 
 
-**0 = No dependence; when the person has not had any help (q6701_s3) and has not needed it (q6701d_s3):
+**0 = No dependence; has not had any help because has not needed it:
 replace dependency_s3=0 if q6701_s3==0 & q6701d_s3==0 
 
 **1 = Dependency served; has had help:
-replace dependency_s3=1 if q6701_s3==1  
+replace dependency_s3=1 if q6701_s3==1 & q6701b_s3==0
 
-**2 = Problematic dependence; had help and had problems with people who helped them
-replace dependency_s3=2 if (q6701_s3==1 & q6701b_s3==1)
+**2 = Problematic dependence; has had help, but problematic
+replace dependency_s3=2 if q6701_s3==1 & q6701b_s3==1
 
 **3 = Neglected dependence; needed help but didn`t receive it
-replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1 
+replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1
 
 label define dep 0 "No dependence" 1 "Dependency served" 2 "Problematic dependence" 3 "Neglected dependence"  
 label values dependency_s3 dep 
@@ -236,7 +230,6 @@ label values abuse_negli_s3 ab
 label variable abuse_negli_s3 "Negligence abuse (c2011_w4)" 
 
 
-
 *PSYCHOLOGICAL ABUSE
 *abuse_psycho_s3 Psychological abuse (c2011_w4) - q6703_s3, q6703a_s3 
 
@@ -255,7 +248,6 @@ label values abuse_psycho_s3 ab
 label variable abuse_psycho_s3 "Psychological abuse (c2011_w4)" 
 
  
-
 *ECONOMICAL ABUSE
 *abuse_eco_s3 Economical abuse (c2011_w4)- q6704_s3, q6704a_s3 
 recode q6704_s3 (2=0) (999=.) 
@@ -273,8 +265,8 @@ label values abuse_eco_s3 ab
 label variable abuse_eco_s3 "Economical abuse (c2011_w4)" 
 
  
-
-**abuse_phys_s3	Physical and sexual abuse (c2011_w4) - q6705_s3, q6705a_s3 
+*PHYSICAL / SEXUAL ABUSE
+*abuse_phys_s3	Physical and sexual abuse (c2011_w4) - q6705_s3, q6705a_s3 
 
 recode q6705_s3 (2=0) (999=.) 
 recode q6705a_s3 (999=.) 
@@ -292,10 +284,10 @@ label values abuse_phys_s3 ab
 label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)" 
 
 
-* ABUSE
+* SUSPICION OF ABUSE
 
-gen     abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 != .
-gen abuse_count = (abuse_dep_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
+gen abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 != .
+gen abuse_count  = (abuse_dep_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
 gen abusesuspicion_s3 = abuse_count > 0 if abuse_count != .
 
 label define abusesuspicion_l 0 "No" 1 "Yes"
