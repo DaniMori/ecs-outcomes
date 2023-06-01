@@ -134,26 +134,29 @@ elderly and its type.
 We have followed the conventions of Wave 3 (dependency, each specific type of
 abuse) and we added an additional variable based on the literature:
 
--   Create a variable indicating the **degree of dependency** (`dependency_s3`),
-    based on the block of questions `q6701_s3` (help from someone), `q6701b_s3`
+-   A variable indicating the **degree of dependency** (`dependency_s3`), based
+    on the block of questions `q6701_s3` (help from someone), `q6701b_s3`
     (problems with them) and `q6701d_s3` (need help). In this way, we find four
-    categories:
+    categories: <br>
 
-    -   *No dependence*: has not received help because they didn't need it.
-    -   *Dependency served*: has received the help needed
-    -   *Problematic dependence*: has received help, but had problems with the
+    -   **No dependence**: has not received help because they didn't need it.
+    -   **Dependency served**: has received the help needed
+    -   **Problematic dependence**: has received help, but had problems with the
         person/people who helped them;
-    -   *Neglected dependence*: needed help but didn't receive it.
+    -   **Neglected dependence**: needed help but didn't receive it.
 
--   Create four ordinal variables, one for **each specific type of abuse**. For
-    each specific type of abuse, The first, dichotomous item of the pair is used
-    to create the 0 (No abuse) category, and the second item its frequency,
-    if abuse is present.
+-   Four ordinal variables, one for **each specific type of abuse**. For each
+    specific type of abuse, The first, dichotomous item of the pair is used to
+    create the 0 (No abuse) category, and the second item its frequency, if
+    abuse is present.
 
-    -   `abuse_negli_s3`, negligence abuse: `q6702_s3`, `q6702a_s3`
-    -   `abuse_psycho_s3`, psychological abuse: `q6703_s3`, `q6703a_s3`
-    -   `abuse_eco_s3`, economical abuse: `q6704_s3`, `q6704a_s3`
-    -   `abuse_phys_s3`, physical and sexual abuse: `q6705_s3`, `q6705a_s3`
+    -   **Negligence abuse** `abuse_negli_s3`: `q6702_s3`, `q6702a_s3`
+
+    -   **Psychological abuse** `abuse_psycho_s3`: `q6703_s3`, `q6703a_s3`
+
+    -   **Economical abuse** `abuse_eco_s3`: `q6704_s3`, `q6704a_s3`
+
+    -   **Physical and sexual abuse** `abuse_phys_s3`: `q6705_s3`, `q6705a_s3`
 
 First, the values are recoded. Given that in the original scale of the
 questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted
@@ -166,9 +169,9 @@ subsidiary item of frequency (which has the suffix "a") is used to create the
 response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
 = Often. See syntax below for more details.
 
-To include the **grade of dependency** **in suspicion of abuse**,
-`abuse_dep_s3` is created as an intermediate variable.
-This is a dichotomous variable that includes:
+To include the **grade of dependency** **in suspicion of abuse**, `abuse_dep_s3`
+is created as an intermediate variable. This is a dichotomous variable that
+includes:
 
 -   **No abuse in dependency**: "No dependency" or "Dependency served"
 -   **Abuse within dependency**: "Problematic dependency" or "Neglected
@@ -176,9 +179,8 @@ This is a dichotomous variable that includes:
 
 Suspicion of abuse (`abusesuspicion_s3`) MAY be present (= 1) if any of the
 types of abuse is greater than 0, by using another intermediate variable called
-`abuse_count` which brings together `abuse_dep_s3` and dichotomous items 
-specific to each type of abuse; otherwise, there is no suspicion of
-abuse (= 0).
+`abuse_count` which brings together `abuse_dep_s3` and dichotomous items
+specific to each type of abuse; otherwise, there is no suspicion of abuse (= 0).
 
 # Syntax used to create the variable (Stata 15)
 
@@ -324,7 +326,7 @@ saveold "Outcome_suspicionofabuse.dta", replace version(13)
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_suspicionofabuse.dta", replace version(13)
 ```
 
-<br>
+\newpage
 
 # Contact person:
 
