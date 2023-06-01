@@ -195,7 +195,8 @@ replace dependency_s3=0 if q6701_s3==0 & q6701d_s3==0
 **1 = Dependency served; has had help:
 replace dependency_s3=1 if q6701_s3==1 & q6701b_s3==0
 
-**2 = Problematic dependence; has had help, but problematic. There are 0 cases that had problematic dependence
+**2 = Problematic dependence; has had help, but problematic.
+**# "NOTE: There are 0 cases that had problematic dependence"
 replace dependency_s3=2 if q6701_s3==1 & q6701b_s3==1
 
 **3 = Neglected dependence; needed help but didn`t receive it
@@ -284,17 +285,23 @@ label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)"
 
 
 * SUSPICION OF ABUSE
-*Intermediate variable abuse_dep_s3, created by selecting only the cases that have problematic dependence or neglected dependence
-*Please mind that this variable is construed by using ifelse statements: '0' and '1' are considered FALSE (in Stata there is not logical values, so the become 0)
-*and >1 are the categories of 2 and 3 of dependency_s3.
-*the 'if' command allows missings structure to remain intact, otherise they would become 1, as missing = infinity according to Stata.
+*# "Intermediate variable abuse_dep_s3, created by selecting only the cases that
+*#   have problematic dependence or neglected dependence. Please mind that this
+*#   variable is construed by using ifelse statements: '0' and '1' are
+*#   recoded as FALSE (in Stata logical values are just 0/1 numeric)" and >1 are
+*#   the categories of 2 and 3 of dependency_s3.
+*#   The 'if' command allows missings structure to remain intact, otherise they
+*#   would become 1, as missing is repesented as an infinite in Stata.
 
 gen abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 !=.
 
-*Intermediate variable abuse_count that takes into account all the possible presence of abuse by using abuse_dep_s3 and of each specific type of abuse.
+*# "Intermediate variable abuse_count that takes into account all the possible
+*#   presence of abuse by using abuse_dep_s3 and of each specific type of
+*#   abuse."
 gen abuse_count  = (abuse_dep_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
 
-*Final algorithm of abusesuspicion_s3: if any type of abuse is present, there may be suspicion of abuse:
+*# "Final algorithm of abusesuspicion_s3: if any type of abuse is present,
+*#   there may be suspicion of abuse:"
 gen abusesuspicion_s3 = abuse_count > 0 if abuse_count != .
 
 label define abusesuspicion_l 0 "No" 1 "Yes"
