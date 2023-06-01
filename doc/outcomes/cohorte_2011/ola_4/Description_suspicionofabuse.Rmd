@@ -145,42 +145,36 @@ abuse) and we added an additional variable based on the literature:
         person/people who helped them;
     -   **Neglected dependence**: needed help but didn't receive it.
 
--   Four ordinal variables, one for **each specific type of abuse**. For each
-    specific type of abuse, The first, dichotomous item of the pair is used to
-    create the 0 (No abuse) category, and the second item its frequency, if
-    abuse is present.
+-   Four ordinal variables, one for **each specific type of abuse**. The first,
+    dichotomous item of the pair for each of them is used to create the 0 (No
+    abuse) category, and the second item its frequency, if abuse is present. The
+    items used to create each variable are:
 
-    -   **Negligence abuse** `abuse_negli_s3`: `q6702_s3`, `q6702a_s3`
+    -   **Negligence abuse** (`abuse_negli_s3`): `q6702_s3`, `q6702a_s3`
 
-    -   **Psychological abuse** `abuse_psycho_s3`: `q6703_s3`, `q6703a_s3`
+    -   **Psychological abuse** (`abuse_psycho_s3`): `q6703_s3`, `q6703a_s3`
 
-    -   **Economical abuse** `abuse_eco_s3`: `q6704_s3`, `q6704a_s3`
+    -   **Economical abuse** (`abuse_eco_s3`): `q6704_s3`, `q6704a_s3`
 
-    -   **Physical and sexual abuse** `abuse_phys_s3`: `q6705_s3`, `q6705a_s3`
-
-First, the values are recoded. Given that in the original scale of the
-questionnaire the items are coded as 1 = yes and 2 = no, the 2 are converted
-into 0; and the 999 values are recoded into missings. This applies to all the
-items involved in the creation of these variables.
+    -   **Physical and sexual abuse** (`abuse_phys_s3`): `q6705_s3`, `q6705a_s3`
 
 The variable combines both frequency and presence / absence into a frequency
 variable. Therefore, if in the first item the option replied is "yes", the
 subsidiary item of frequency (which has the suffix "a") is used to create the
 response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
-= Often. See syntax below for more details.
+= Often (missing responses in the initial dichotomous item are considered
+missing values).
 
-To include the **grade of dependency** **in suspicion of abuse**, `abuse_dep_s3`
-is created as an intermediate variable. This is a dichotomous variable that
-includes:
+To include the **grade of dependency** **in suspicion of abuse**, a dichotomous
+intermediate variable is used, which may have the following values:
 
 -   **No abuse in dependency**: "No dependency" or "Dependency served"
 -   **Abuse within dependency**: "Problematic dependency" or "Neglected
     dependency"
 
-Suspicion of abuse (`abusesuspicion_s3`) MAY be present (= 1) if any of the
-types of abuse is greater than 0, by using another intermediate variable called
-`abuse_count` which brings together `abuse_dep_s3` and dichotomous items
-specific to each type of abuse; otherwise, there is no suspicion of abuse (= 0).
+Suspicion of abuse (`abusesuspicion_s3`) is present (= 1) if any of the four
+types of abuse OR "abuse within dependency" are present. Otherwise, there is no
+suspicion of abuse (= 0).
 
 # Syntax used to create the variable (Stata 15)
 
