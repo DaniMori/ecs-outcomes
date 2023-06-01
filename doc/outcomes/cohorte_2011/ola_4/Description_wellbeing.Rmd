@@ -164,12 +164,11 @@ the missings.
 
 Then, the mean of negative and positive affect is created by multiplying by 
 each time variable for affect in the three activities separately and weighting 
-them by the final duration. Since duration is given as a fraction of the time of
-day, if the value 1 is exceeded (duration_DRM4 >1), it can be understood that 
-the duration estimate is unreliable. Therefore, to avoid losing these values, 
-an intermediate solution is chosen: to obtain a score for these participants 
-based on the average of the emotions, but not by weighting on the duration of 
-the activities.
+them by the total duration. When the total duration is more than 24 hours
+(= 86400 seconds), it can be understood that the duration estimate is
+unreliable. Therefore, to avoid losing these values, an intermediate solution is
+chosen: to obtain a score for these participants based on the average of the
+emotions, but not by weighting on the duration of the activities.
 
 -   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
     emotions (calm/relaxed and enjoying).
@@ -227,8 +226,8 @@ egen pos_activity3=rowmean(q7119_calm_s3 q7120_enjoy_s3)
 * Mean of negative and positive affect
 gen negativeaffect_s3=((q7026_s3*neg_activity1) + (q7066_s3*neg_activity2) + (q7111_s3*neg_activity3))/duration_DRM4
 gen positiveaffect_s3=((q7026_s3*pos_activity1) + (q7066_s3*pos_activity2) + (q7111_s3*pos_activity3))/duration_DRM4
-replace negativeaffect_s3=((neg_activity1+neg_activity2+neg_activity3)/3) if duration_DRM4>1
-replace positiveaffect_s3=((pos_activity1+pos_activity2+pos_activity3)/3) if duration_DRM4>1
+replace negativeaffect_s3=(neg_activity1+neg_activity2+neg_activity3)/3 if duration_DRM4>86400
+replace positiveaffect_s3=(pos_activity1+pos_activity2+pos_activity3)/3 if duration_DRM4>86400
 
 *Net affect
 gen netaffect_s3=positiveaffect_s3-negativeaffect_s3
