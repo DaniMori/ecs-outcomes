@@ -224,8 +224,8 @@ egen pos_activity2=rowmean(q7074_calm_s3 q7075_enjoy_s3)
 egen pos_activity3=rowmean(q7119_calm_s3 q7120_enjoy_s3)
 
 * Mean of negative and positive affect
-gen negativeaffect_s3=((q7026_s3*neg_activity1) + (q7066_s3*neg_activity2) + (q7111_s3*neg_activity3))/duration_DRM4
-gen positiveaffect_s3=((q7026_s3*pos_activity1) + (q7066_s3*pos_activity2) + (q7111_s3*pos_activity3))/duration_DRM4
+gen negativeaffect_s3=(q7026_s3*neg_activity1 + q7066_s3*neg_activity2 + q7111_s3*neg_activity3) / duration_DRM4
+gen positiveaffect_s3=(q7026_s3*pos_activity1 + q7066_s3*pos_activity2 + q7111_s3*pos_activity3) / duration_DRM4
 replace negativeaffect_s3=(neg_activity1+neg_activity2+neg_activity3)/3 if duration_DRM4>86400
 replace positiveaffect_s3=(pos_activity1+pos_activity2+pos_activity3)/3 if duration_DRM4>86400
 
@@ -234,7 +234,7 @@ gen netaffect_s3=positiveaffect_s3-negativeaffect_s3
 
 label variable positiveaffect_s3 "Experiential wellbeing. Positive affect (DRM) (c2011w4)"
 label variable negativeaffect_s3 "Experiential wellbeing. Negative affect (DRM) (c2011w4)"
-label variable netaffect_s3 "Experiential wellbeing. Net affect (DRM) (c2011w4)"
+label variable netaffect_s3      "Experiential wellbeing. Net affect (DRM) (c2011w4)"
 
 ```
 
