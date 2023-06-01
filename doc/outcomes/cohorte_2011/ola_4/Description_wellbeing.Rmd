@@ -76,6 +76,7 @@ The original scale contains a ladder with 11 steps, and the end points of
 the scale are defined by the respondents in terms of their best and their worst 
 life experience.
 
+<br>
 
 - __Eudaimonic wellbeing__ _(Flourishing Scale_, @diener_new_2009) 
 (`flourishing_scale_s3`). Several authors, based on earlier humanistic 
@@ -86,14 +87,17 @@ engagement, and purpose and meaning, as basic components of human wellbeing.
 These aspects of wellbeing have been conceptualized as “eudaimonic wellbeing”. 
 The _Flourishing Scale_ allows assessing them in a brief and reliable way. 
 
+<br> 
 
-- __Experiential wellbeing__. The _Day Reconstruction Method (DRM)_ (@kahneman_survey_2004,
-@kahneman_developments_2006) measures how people spend their time and how they
-emotionally experience the various activities of life. In the extended version,
-it contains 12 items, including 4 positive and 8 negative. An example of a DRM
-item follows: \_"Indicate to what extent you\_ *felt happy during specific
-activities of your day"*. Response options are conformed by a 7-point Likert
-scale ranging from 0,"not at all" to 6, "very much".
+- __Experiential wellbeing__. The _Day Reconstruction Method (DRM)_ 
+(@kahneman_survey_2004, @kahneman_developments_2006) measures how people 
+spend their time and how they emotionally experience the various activities of 
+life. In the extended version, it contains 12 items, including 4 positive and 8 
+negative. An example of a DRM item follows: _"Indicate to what extent you felt_
+_happy during specific activities of your day"_. Response options are conformed 
+by a 7-point Likert scale ranging from 0,"not at all" to 6, "very much".
+
+<br>
 
 In Edad con Salud, respondents were asked to complete an abbreviated version
 of the DRM (@miret_validation_2012, @ayuso-mateos_multi-country_2013,
@@ -103,11 +107,10 @@ the emotions experienced during these activities. By means of Computer-Assisted
 Personal Interviewing, one activity was randomly selected for each time frame
 (morning, afternoon and evening).
 
--   **Positive affect** (`positiveaffect_s3`) refers to emotions of happiness, 
-    warminess, friendliness and enjoyment with myself.
+-   **Positive affect** (`positiveaffect_s3`) refers to emotions of 
+    calm/relaxation and enjoying.
 -   **Negative affect** (`negativeaffect_s3`) is defined by emotions of 
-    frustration, annoyment, depression, feeling blue, hassled/pushed around, 
-    angry/hostile, worried/anxious, criticized/put down.
+    worry, rush, irritation, depression, and tension.
 -   **Net affect** (`netaffect_s3`) is defined as the average of two positive 
     emotions (calm/relaxed and enjoying) minus the average of the five negative
     ones (worried, rushed, irritated/angry, depressed, and tense/stressed), 
@@ -135,16 +138,46 @@ to 56 (highest wellbeing possible).
 
 <br>
 
-In the case of __"experiential wellbeing"__:
+In the case of __"experiential wellbeing"__, three measures were obtained from 
+the Day Reconstruction Method (DRM): *positive* *affect*, *negative affect* and 
+*net affect*.
 
-Three measures were obtained from the Day Reconstruction Method (DRM): *positive*
-*affect*, *negative affect* and *net affect*.
+The Day Reconstruction Method records the activities that a person has performed
+in the morning (until 12 noon), in the afternoon (12 noon - 6 p.m.) and in the 
+evening (6 p.m. - bedtime). In our database, activities are recorded as 
+dichotomous variables and three of them are randomly chosen, 
+one for each time of day. 
+
+The duration of these activities is hereafter asked with the variables
+`q7026_s3`, `q7066_s3`and `q7111_s3.` The format is currently in seconds and
+is used as a way of weighting the duration of the emotion.
+
+Items `q7029_worr_s3:q7033_tense_s3`, `q7069_worr_s3:q7073_tense_s3`, 
+`q7114_worr_s3:q7118_tense_s3` ask about different negative emotions associated
+with the tasks performed: worry, rush, irritation, depression, and tension. 
+
+Items `q7034_calm_s3 q7035_enjoy_s3`, `q7074_calm_s3 q7075_enjoy_s3` and
+`q7119_calm_s3 q7120_enjoy_s3` ask about the positive emotions of calm/relaxation
+and enjoying. 
+
+The first step consists of constructing the mean of positive emotions per 
+activity and the mean of negative emotions per activity.
+
+Then, the mean of negative and positive affect is created by multiplying by 
+each time-variable for affect in the three activities separately and weighting 
+them by the total duration. When the total duration is more than 24 hours
+(= 86400 seconds), it can be understood that the duration estimate is
+unreliable. Therefore, to avoid losing these values, an intermediate solution is
+chosen: to obtain a score for these participants based on the average of the
+emotions, but not by weighting on the duration of the activities.
 
 -   **Positive affect** (`positiveaffect_s3`: the average of the two positive 
-    emotions (calm/relaxedand enjoying).
+    emotions (calm/relaxed and enjoying). The theoretical range goes from 0 to 6
+    (higher positive affect).
 
 -   **Negative affect** (`negativeaffect_s3`): the average of the five negative 
     ones (worried, rushed, irritated/angry, depressed, and tense/stressed).
+    The theoretical range goes from 0 to 6 (higher negative affect).
 
 -   **Net affect** (`netaffect_s3`): the average of the two positive emotions 
     (calm/relaxed and enjoying) minus the average of the five negative ones 
@@ -154,6 +187,7 @@ Three measures were obtained from the Day Reconstruction Method (DRM): *positive
     activity performed weighted by its duration. Net affect scores ranged from
     -6 to 6, with higher scores representing a better affective state.
 
+<br> 
 
 # Syntax used to create the variable (Stata 15)
 
@@ -194,19 +228,21 @@ egen pos_activity2=rowmean(q7074_calm_s3 q7075_enjoy_s3)
 egen pos_activity3=rowmean(q7119_calm_s3 q7120_enjoy_s3)
 
 * Mean of negative and positive affect
-gen negativeaffect_s3=((q7026_s3*neg_activity1) + (q7066_s3*neg_activity2) + (q7111_s3*neg_activity3))/duration_DRM4
-gen positiveaffect_s3=((q7026_s3*pos_activity1) + (q7066_s3*pos_activity2) + (q7111_s3*pos_activity3))/duration_DRM4
-replace negativeaffect_s3=((neg_activity1+neg_activity2+neg_activity3)/3) if duration_DRM4>1
-replace positiveaffect_s3=((pos_activity1+pos_activity2+pos_activity3)/3) if duration_DRM4>1
+gen negativeaffect_s3=(q7026_s3*neg_activity1 + q7066_s3*neg_activity2 + q7111_s3*neg_activity3) / duration_DRM4
+gen positiveaffect_s3=(q7026_s3*pos_activity1 + q7066_s3*pos_activity2 + q7111_s3*pos_activity3) / duration_DRM4
+replace negativeaffect_s3=(neg_activity1+neg_activity2+neg_activity3)/3 if duration_DRM4>86400
+replace positiveaffect_s3=(pos_activity1+pos_activity2+pos_activity3)/3 if duration_DRM4>86400
 
 *Net affect
 gen netaffect_s3=positiveaffect_s3-negativeaffect_s3
 
 label variable positiveaffect_s3 "Experiential wellbeing. Positive affect (DRM) (c2011w4)"
 label variable negativeaffect_s3 "Experiential wellbeing. Negative affect (DRM) (c2011w4)"
-label variable netaffect_s3 "Experiential wellbeing. Net affect (DRM) (c2011w4)"
+label variable netaffect_s3      "Experiential wellbeing. Net affect (DRM) (c2011w4)"
 
 ```
+
+\newpage 
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 keep ID_ECS q0007a_result_s3 proxy_s3 cantril_present_s3  cantril_future_s3  flourishing_scale_s3 positiveaffect_s3 negativeaffect_s3  netaffect_s3   
