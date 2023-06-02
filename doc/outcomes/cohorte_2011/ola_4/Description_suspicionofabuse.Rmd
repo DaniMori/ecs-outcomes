@@ -1,0 +1,360 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Suspicion of abuse'"
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( 
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++-------------------+----------------+--------------------+---------------------+
+| Main variable     | Label          | Format             | Code                |
+| name              |                |                    |                     |
++:==================+:===============+:===================+:====================+
+| dependency_s3     | Dependency     | Nominal            | -   0 = No          |
+|                   | status         |                    |     dependence      |
+|                   |                |                    |                     |
+|                   | (c2011_w4)     |                    | -   1 = Dependency  |
+|                   |                |                    |     served          |
+|                   |                |                    |                     |
+|                   |                |                    | -   2 = Problematic |
+|                   |                |                    |     dependence      |
+|                   |                |                    |                     |
+|                   |                |                    | -   3 = Neglected   |
+|                   |                |                    |     dependence      |
++-------------------+----------------+--------------------+---------------------+
+| abuse_negli_s3    | Negligence     | Ordinal            | -   0 = No abuse    |
+|                   | abuse          |                    |                     |
+|                   |                |                    | -   1 = Occasional  |
+|                   | (c2011_w4)     |                    |                     |
+|                   |                |                    | -   2 = Sometimes   |
+|                   |                |                    |                     |
+|                   |                |                    | -   3 = Quite often |
+|                   |                |                    |                     |
+|                   |                |                    | -   4 = Often       |
++-------------------+----------------+--------------------+---------------------+
+| abuse_psycho_s3   | Psychological  | Ordinal            | -   0 = No abuse    |
+|                   | abuse          |                    |                     |
+|                   |                |                    | -   1 = Occasional  |
+|                   | (c2011_w4)     |                    |                     |
+|                   |                |                    | -   2 = Sometimes   |
+|                   |                |                    |                     |
+|                   |                |                    | -   3 = Quite often |
+|                   |                |                    |                     |
+|                   |                |                    | -   4 = Often       |
++-------------------+----------------+--------------------+---------------------+
+| abuse_eco_s3      | Economical     | Ordinal            | -   0 = No abuse    |
+|                   | abuse          |                    |                     |
+|                   |                |                    | -   1 = Occasional  |
+|                   | (c2011_w4)     |                    |                     |
+|                   |                |                    | -   2 = Sometimes   |
+|                   |                |                    |                     |
+|                   |                |                    | -   3 = Quite often |
+|                   |                |                    |                     |
+|                   |                |                    | -   4 = Often       |
++-------------------+----------------+--------------------+---------------------+
+| abuse_phys_s3     | Physical and   | Ordinal            | -   0 = No abuse    |
+|                   | sexual abuse   |                    |                     |
+|                   |                |                    | -   1 = Occasional  |
+|                   | (c2011_w4)     |                    |                     |
+|                   |                |                    | -   2 = Sometimes   |
+|                   |                |                    |                     |
+|                   |                |                    | -   3 = Quite often |
+|                   |                |                    |                     |
+|                   |                |                    | -   4 = Often       |
++-------------------+----------------+--------------------+---------------------+
+| abusesuspicion_s3 | Suspicion of   | Dichotomic         | -   0 = No          |
+|                   | abuse          |                    |                     |
+|                   | (c2011_w4)     |                    | -   1 = Yes         |
++-------------------+----------------+--------------------+---------------------+
+
+# Variable description
+
+The Spanish version of the Elder Abuse Suspicion Index [@pérez-rojo2008] is an
+adaptation of the Elder Abuse Suspicion Index (EASI) [@yaffe_development_2008],
+a brief instrument with direct questions aimed at detecting suspicion of abuse
+in older people (aged +64) without cognitive impairment. It is made up of five
+questions addressed to the elderly person and one to the professional (not used
+in this survey), which are asked in the course of an encounter between the
+elderly person and the professional in the consultation room and are formulated
+by the professional using simple language. The first question focuses on the
+assessment of the level of dependency of the elderly person for some basic or
+instrumental activity of daily living; in this adaptation, this item is expanded
+as a module assessing whether there is a dependence and whether it is
+problematic / neglected. The remaining questions refer to different types of
+abuse: physical and sexual, psychological, financial, and neglect. A dichotomous
+item for each type of abuse (0=No; 1=Yes) is followed by a Likert-scale item
+about the frequency of abuse, ranging from 1 (ocassional) to 4 (often). A
+positive response to any of the dichotomous items would indicate suspicion of
+abuse. Please note that in our version we do not use the item referring to the
+professional. However, the "dependency" part is considered when assessing the
+suspicion of abuse.
+
+In this survey, the questions refer to situations that occurred in the 12 months
+before the completion of the questionnaire, and only participants aged 65 and
+older were assessed.
+
+In addition to the suspicion of abuse, the following variables, comparable to
+wave 3, are created: four variables indicating the presence and frequency of
+abuse (one for each type), and a variable indicating the dependency of the
+elderly and its type.
+
+# Explanation of how the variables were created
+
+We have followed the conventions of Wave 3 (dependency, each specific type of
+abuse) and we added an additional variable based on the literature:
+
+-   A variable indicating the **degree of dependency** (`dependency_s3`), based
+    on the block of questions `q6701_s3` (help from someone), `q6701b_s3`
+    (problems with them) and `q6701d_s3` (need help). In this way, we find four
+    categories: <br>
+
+    -   **No dependence**: has not received help because they didn't need it.
+    -   **Dependency served**: has received the help needed
+    -   **Problematic dependence**: has received help, but had problems with the
+        person/people who helped them;
+    -   **Neglected dependence**: needed help but didn't receive it.
+
+-   Four ordinal variables, one for **each specific type of abuse**. The first,
+    dichotomous item of the pair for each of them is used to create the 0 (No
+    abuse) category, and the second item its frequency, if abuse is present. The
+    items used to create each variable are:
+
+    -   **Negligence abuse** (`abuse_negli_s3`): `q6702_s3`, `q6702a_s3`
+
+    -   **Psychological abuse** (`abuse_psycho_s3`): `q6703_s3`, `q6703a_s3`
+
+    -   **Economical abuse** (`abuse_eco_s3`): `q6704_s3`, `q6704a_s3`
+
+    -   **Physical and sexual abuse** (`abuse_phys_s3`): `q6705_s3`, `q6705a_s3`
+
+The variable combines both frequency and presence / absence into a frequency
+variable. Therefore, if in the first item the option replied is "yes", the
+subsidiary item of frequency (which has the suffix "a") is used to create the
+response scale: 0 = No abuse, 1 = Occasional, 2 = Sometimes, 3 = Quite often, 4
+= Often (missing responses in the initial dichotomous item are considered
+missing values).
+
+To include the **grade of dependency** **in suspicion of abuse**, a dichotomous
+intermediate variable is used with the following values:
+
+-   **No abuse in dependency**: "No dependency" or "Dependency served"
+-   **Abuse within dependency**: "Problematic dependency" or "Neglected
+    dependency"
+
+Suspicion of abuse (`abusesuspicion_s3`) is present (= 1) if any of the four
+types of abuse OR "abuse within dependency" are present. Otherwise, there is no
+suspicion of abuse (= 0).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~/UAM/Marta Miret Garcia - Bases de datos maestras Edad con Salud/Ola_4/Cohorte 2011/rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*DEPENDENCY
+*Dependency (comparable)
+recode q6701_s3 q6701d_s3 q6701b_s3 (2=0) (999=.) 
+gen dependency_s3=. 
+
+**0 = No dependence; has not had any help because has not needed it:
+replace dependency_s3=0 if q6701_s3==0 & q6701d_s3==0 
+
+**1 = Dependency served; has had help:
+replace dependency_s3=1 if q6701_s3==1 & q6701b_s3==0
+
+**2 = Problematic dependence; has had help, but problematic.
+**# "NOTE: There are 0 cases that had problematic dependence"
+replace dependency_s3=2 if q6701_s3==1 & q6701b_s3==1
+
+**3 = Neglected dependence; needed help but didn`t receive it
+replace dependency_s3=3 if q6701_s3==0 & q6701d_s3==1
+
+label define dep 0 "No dependence" 1 "Dependency served" 2 "Problematic dependence" 3 "Neglected dependence"  
+label values dependency_s3 dep 
+label variable dependency_s3 "Dependency status (c2011_w4)" 
+
+
+**ABUSE VARIABLES
+* All variables have the same label values. We define them firstly:
+label define ab 0 "No abuse" 1 "Occasional" 2 "Sometimes" 3 "Quite often" 4 "Often" 
+  
+
+*NEGLIGENCE
+*abuse_negli_s3 "Negligence (c2011_w4)"	 - q6702_s3, q6702a_s3
+
+recode q6702_s3 (2=0) (999=.) 
+recode q6702a_s3 (999=.) 
+
+**We want the final variable to contain the Likert scale of item q6702a_s3, 
+**so we generate it from item q6702a_s3. 
+
+gen abuse_negli_s3=q6702a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+replace abuse_negli_s3=0 if q6702_s3==0
+
+label values abuse_negli_s3 ab 
+label variable abuse_negli_s3 "Negligence abuse (c2011_w4)" 
+
+
+*PSYCHOLOGICAL ABUSE
+*abuse_psycho_s3 Psychological abuse (c2011_w4) - q6703_s3, q6703a_s3 
+
+recode q6703_s3 (2=0) (999=.) 
+recode q6703a_s3 (999=.) 
+
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6703a_s3. 
+
+gen abuse_psycho_s3=q6703a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+replace abuse_psycho_s3=0 if q6703_s3==0
+
+label values abuse_psycho_s3 ab 
+label variable abuse_psycho_s3 "Psychological abuse (c2011_w4)" 
+
+ 
+*ECONOMICAL ABUSE
+*abuse_eco_s3 Economical abuse (c2011_w4)- q6704_s3, q6704a_s3 
+recode q6704_s3 (2=0) (999=.) 
+recode q6704a_s3 (999=.) 
+
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6704a_s3. 
+
+gen abuse_eco_s3=q6704a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+replace abuse_eco_s3=0 if q6704_s3==0
+
+label values abuse_eco_s3 ab 
+label variable abuse_eco_s3 "Economical abuse (c2011_w4)" 
+
+ 
+*PHYSICAL / SEXUAL ABUSE
+*abuse_phys_s3	Physical and sexual abuse (c2011_w4) - q6705_s3, q6705a_s3 
+
+recode q6705_s3 (2=0) (999=.) 
+recode q6705a_s3 (999=.) 
+
+**We want the final variable to contain the Likert scale of item q6703a_s3, 
+**so we generate it from item q6703a_s3. 
+
+gen abuse_phys_s3=q6705a_s3
+
+**Finally, we add the non-abuse cases with the dichotomous reference variable.
+
+replace abuse_phys_s3=0 if q6705_s3==0
+
+label values abuse_phys_s3 ab 
+label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)" 
+
+
+* SUSPICION OF ABUSE
+*# "Intermediate variable abuse_dep_s3, created by selecting only the cases that
+*#   have problematic dependence or neglected dependence. Please mind that this
+*#   variable is construed by using ifelse statements: '0' and '1' are
+*#   recoded as FALSE (in Stata logical values are just 0/1 numeric)" and >1 are
+*#   the categories of 2 and 3 of dependency_s3.
+*#   The 'if' command allows missings structure to remain intact, otherwise they
+*#   would become 1, as missing is represented as an infinite in Stata.
+
+gen abuse_dep_s3 = dependency_s3 > 1 if dependency_s3 !=.
+
+*# "Intermediate variable abuse_count that takes into account all the possible
+*#   presence of abuse by using abuse_dep_s3 and of each specific type of
+*#   abuse."
+gen abuse_count  = (abuse_dep_s3 + q6702_s3 + q6703_s3 + q6704_s3 + q6705_s3)
+
+*# "Final algorithm of abusesuspicion_s3: if any type of abuse is present,
+*#   there may be suspicion of abuse:"
+gen abusesuspicion_s3 = abuse_count > 0 if abuse_count != .
+
+label define abusesuspicion_l 0 "No" 1 "Yes"
+label values abusesuspicion_s3 abusesuspicion_l
+label variable abusesuspicion_s3 "Suspicion of abuse (c2011_w4)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
+codebook dependency_s3 abuse_negli_s3 abuse_psycho_s3 abuse_eco_s3 abuse_phys_s3 abusesuspicion_s3
+```
+
+```{stata save-data-test, eval=TEST}
+
+saveold "Outcome_suspicionofabuse.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_suspicionofabuse.dta", replace version(13)
+```
+
+\newpage
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+<br>
+
+-   Name: Cristina Rodríguez Prada
+-   e-mail:
+    [cristina.rodriguez\@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
