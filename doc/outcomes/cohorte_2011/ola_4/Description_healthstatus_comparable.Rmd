@@ -46,7 +46,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable name | Label                                | Format       | Code  |
 |:-------------------|:-------------------------------------|:-------------|:------|
 | health_s3          | Health status (c2011_w4)             | Quantitative | 0-100 |
-| health_s3_comp     | Health status, comparable (c2011_w4) | Quantitative | 0-100 |
+| health_comp_s3     | Health status, comparable (c2011_w4) | Quantitative | 0-100 |
 
 # Variable description
 
@@ -139,8 +139,8 @@ egen missing_count1 = rowmiss(q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 
 replace theta1 = . if missing_count1 > 10
 
 *## "Rescale and label":
-egen min_score = min(latent_score_comp)
-egen max_score = max(latent_score_comp)
+egen min_score = min(theta1)
+egen max_score = max(theta1)
 gen health_s3 = (theta1 - min_score) / (max_score - min_score) * 100
 label var health_s3 "Health status (c2011_w4)"
 
@@ -158,16 +158,16 @@ replace theta2 = . if missing_count2 > 10
 *## "Rescale and label":
 egen min_score_comp = min(theta2)
 egen max_score_comp = max(theta2)
-gen health_s3 = (theta2 - min_score_comp) / (max_score_comp - min_score_comp) * 100
-label var health_s3_comp "Health status, comparable (c2011_w4)"
+gen health_comp_s3 = (theta2 - min_score_comp) / (max_score_comp - min_score_comp) * 100
+label var health_comp_s3 "Health status, comparable (c2011_w4)"
 ```
 
 <br>
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy health_s3 health_s3_comp
+keep ID_ECS q0007a_result proxy health_s3 health_comp_s3
 
-codebook health_s3 health_s3_comp
+codebook health_s3 health_comp_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
