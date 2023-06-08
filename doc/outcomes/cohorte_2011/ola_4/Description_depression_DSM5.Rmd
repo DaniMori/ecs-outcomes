@@ -388,24 +388,24 @@ replace d_crit_A_comp = 0 if (d_symtotal_comp<5 & d_symtotal_comp!=.) | d_sympri
 replace d_crit_A_comp = 1 if (d_symtotal_comp>4 & d_symtotal_comp!=.) & d_symprior==1 
 
 gen     d_3y_comparable_s3 = .
-replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A_comp==0 | d_crit_C==0 | d_crit_D==0 
-replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A_comp==1 & d_crit_C==1 & d_crit_D==1
+replace d_3y_comparable_s3 = 0 if (d_skipped==1 | d_crit_A_comp==0 | d_crit_C==0 | d_crit_D==0) & proxy==2
+replace d_3y_comparable_s3 = 1 if  d_skipped==0 & d_crit_A_comp==1 & d_crit_C==1 & d_crit_D==1
 label values   d_3y_comparable_s3 yesno
 label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
 
 *#"12-month 'comparable', based on the intermediate 'Inter-survey comparable' and the individual item":
 gen     d_12m_comparable_s3 = .
-replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | depression_12m_s3==0
-replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 & depression_12m_s3==1
+replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | (q4227a_s3!=1 & proxy==2)
+replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 &  q4227a_s3==1
 label values   d_12m_comparable_s3 yesno
 label variable d_12m_comparable_s3 "12 month depression comparable (c2011_w4)"
 
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_12m_comparable_s3 d_3y_comparable_s3
+keep ID_ECS q0007a_result proxy depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_3y_comparable_s3 d_12m_comparable_s3
 
-codebook depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_12m_comparable_s3 d_3y_comparable_s3
+codebook depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_3y_comparable_s3 d_12m_comparable_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
