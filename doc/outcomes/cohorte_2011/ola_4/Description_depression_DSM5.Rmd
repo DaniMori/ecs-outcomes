@@ -307,8 +307,8 @@ replace d_crit_C = 1 if q4214_s3==1 | q4215_s3==1 | q4216_s3==1 | discomfort==1
 
 *#D criterion: "The episode is not attributable to the physiological effects of a substance or to another medical condition"
 gen     d_crit_D = .
-replace d_crit_D = 0 if                                  q4224b_s3==1                 | (q4224_s3==1 & (q4225_causemed3_s3==1 | q4225_causemed4_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
-replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed3_s3!=1 & q4225_causemed4_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
+replace d_crit_D = 0 if                                  q4224b_s3==1                 | (q4224_s3==1 & (q4225_causemed3_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
+replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed3_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
 
 ***#"Has the person skipped the depression module?"
 
@@ -349,7 +349,7 @@ label variable depression_3y_s3 "Inter-survey depression (c2011_w4)"
 
 gen     depression_12m_s3 = .
 replace depression_12m_s3 = 0 if depression_3y_s3==0 | (q4227a_s3!=1 & proxy==2)
-replace depression_12m_s3 = 1 if depression_3y_s3==1 & q4227a_s3==1
+replace depression_12m_s3 = 1 if depression_3y_s3==1 &  q4227a_s3==1
 label values   depression_12m_s3 yesno
 label variable depression_12m_s3 "12 months depression (c2011_w4)"
 
@@ -386,6 +386,7 @@ egen d_symtotal_comp = rowtotal (d_A1-d_A4 d_A6-d_A9), missing
 gen     d_crit_A_comp = .
 replace d_crit_A_comp = 0 if (d_symtotal_comp<5 & d_symtotal_comp!=.) | d_symprior==0 
 replace d_crit_A_comp = 1 if (d_symtotal_comp>4 & d_symtotal_comp!=.) & d_symprior==1 
+
 gen     d_3y_comparable_s3 = .
 replace d_3y_comparable_s3 = 0 if d_skipped==1 | d_crit_A_comp==0 | d_crit_C==0 | d_crit_D==0 
 replace d_3y_comparable_s3 = 1 if d_skipped==0 | d_crit_A_comp==1 & d_crit_C==1 & d_crit_D==1
