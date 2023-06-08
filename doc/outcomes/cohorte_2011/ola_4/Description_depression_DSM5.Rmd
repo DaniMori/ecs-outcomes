@@ -360,7 +360,7 @@ recode q4232_s3 (1=1) (2=0) (888=0) (999=0)
 recode q4231_s3 (1=1) (2=0) (888=0) (999=0)
 
 gen     depression_12treatment_s3 = .
-replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 & (q4232_s3!=. & q4231_s3!=1 & q4232_s3!=.) & (q4231_s3!=1  & q4231_s3!=.) & q4231_s3==0) | proxy==2
+replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 & (q4232_s3!=1 & q4232_s3!=.) & (q4231_s3!=1  & q4231_s3!=.) & q4231_s3==0) | proxy==2
 replace depression_12treatment_s3 = 1 if depression_12m_s3==1 & (q4231_s3==1 | q4232_s3==1)
 label values   depression_12treatment_s3 yesno
 label variable depression_12treatment_s3 "Treatment for depression in the previous 12 months (c2011_w4)"
