@@ -147,8 +147,17 @@ D.  The episode is not attributable to the physiological effects of a substance
     physical causes (`q4224b_s3`), nor must he or she have been diagnosed
     (`q4224_s3`) with any other mental illness or substance use or any other
     medication (`q4225_causemed3_s3`, `q4225_causemed4_s3`,
-    `q4225_causemed12_s3`, `q4225_causemed23_s3`, `q4225_causemed24_s3`,
-    `q4225_causemed25_s3`, `q4225_causemed30_s3`, `q4225_causemed31_s3`).
+    `q4225_causemed23_s3`, `q4225_causemed24_s3`, `q4225_causemed25_s3`,
+    `q4225_causemed30_s3`, `q4225_causemed31_s3`).
+
+**Please note:** There is an ongoing debate around the consideration of
+"bereavement" for a relative or beloved one as an exclusion criterion for
+diagnosing major depressive disorder; this is due to the fact that bereavement
+can lead to depressive-like symptoms in the short term as a normal response, but
+can also be considered pathological when the symptoms are too severe or last for
+too long. In this case, we have decided to not consider bereavement as an
+exclusion criterion in this version of the algorithm. This decision has been
+agreed upon with and approved by the "Edad con Salud" IPs.
 
 As the dataset will be used for longitudinal studies, a variable of the
 prevalence of depression during the last survey, comparable among waves 2 to 4,
