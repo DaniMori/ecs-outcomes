@@ -34,40 +34,37 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+------------------------------+--------------+--------------+--------------+
-| Main variable name           | Label        | Format       | Code         |
-+:=============================+:=============+:=============+:=============+
-| depression_3y_s3             | Inter-survey | Dichotomous  | 0 No         |
-|                              | depression   |              |              |
-|                              | (c2011_w4)   |              | 1 Yes        |
-+------------------------------+--------------+--------------+--------------+
-| depression_12m_s3            | 12 months    | Dichotomous  | 0 No         |
-|                              | depression   |              |              |
-|                              | (c2011_w4)   |              | 1 Yes        |
-+------------------------------+--------------+--------------+--------------+
-| depression_12treatment_s3    | Treatment    | Dichotomous  | 0 No         |
-|                              | for          |              |              |
-|                              | depression   |              | 1 Yes        |
-|                              | in previous  |              |              |
-|                              | 12 months    |              |              |
-|                              | (c2011_w4)   |              |              |
-+------------------------------+--------------+--------------+--------------+
-| depression_self_s3           | Depression   | Dichotomous  | 0 No         |
-|                              | s            |              |              |
-|                              | elf-reported |              | 1 Yes        |
-|                              | (c2011_w4)   |              |              |
-+------------------------------+--------------+--------------+--------------+
-| d_3y_comparable_s3           | Inter-survey | Dichotomous  | 0 No         |
-|                              | depressive   |              |              |
-|                              | episode      |              | 1 Yes        |
-|                              | comparable   |              |              |
-|                              | (c2011_w4)   |              |              |
-+------------------------------+--------------+--------------+--------------+
-| d_12m_comparable_s3          | 12 month     | Dichotomous  | 0 No         |
-|                              | depression   |              |              |
-|                              | comparable   |              | 1 Yes        |
-|                              | (c2011_w4)   |              |              |
-+------------------------------+--------------+--------------+--------------+
++---------------------------+-------------------+---------------+---------------+
+| Main variable name        | Label             | Format        | Code          |
++:==========================+:==================+:==============+:==============+
+| depression_3y_s3          | Inter-survey      | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| depression_12m_s3         | 12 months         | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| depression_12treatment_s3 | Treatment for     | Dichotomous   | 0 No          |
+|                           | depression in     |               |               |
+|                           | previous 12       |               | 1 Yes         |
+|                           | months (c2011_w4) |               |               |
++---------------------------+-------------------+---------------+---------------+
+| depression_self_s3        | Depression        | Dichotomous   | 0 No          |
+|                           | self-reported     |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| d_3y_comparable_s3        | Inter-survey      | Dichotomous   | 0 No          |
+|                           | depressive        |               |               |
+|                           | episode           |               | 1 Yes         |
+|                           | comparable        |               |               |
+|                           | (c2011_w4)        |               |               |
++---------------------------+-------------------+---------------+---------------+
+| d_12m_comparable_s3       | 12 month          | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | comparable        |               | 1 Yes         |
+|                           | (c2011_w4)        |               |               |
++---------------------------+-------------------+---------------+---------------+
 
 # Variable description
 
@@ -375,7 +372,7 @@ replace depression_self_s3 = 1 if p4040_depression_s3==1 & p4040a_age_s3!=997
 label values   depression_self_s3 yesno
 label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
-*#"Inter-survey depression "comparable" (does not take into account exclusion criteria B and E)"
+*#"Inter-survey depression "comparable" (does not take into account exclusion criterion B or symptom A5)"
 
 *#"To fulfil A criterion at least 5 screening symptoms should be present. In
 *# the comparable version, symptom 5 (psychomotor agitation or retardation) is
