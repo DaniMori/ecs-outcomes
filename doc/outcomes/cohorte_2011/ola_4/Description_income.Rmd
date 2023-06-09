@@ -74,11 +74,11 @@ between 1.000 and 1.999 == 1.500).
 To obtain an amount ranging from 0 to 1.000.000 the category items
 (q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3
 q0410k_other_s3) ranging from 0 to 35 have been recoded using the middle of each
-bracket; (1=0; 2=500; 3=1500; 4=2500; 5=3500; 6=4500; 7=5500; 8=6500; 9=7500;
-10=8500; 11=9500; 12=10500; 13=11500; 14=12500; 15=13500; 16=14500; 17=15500;
-18=16500; 19=17500; 20=18500; 21=19500; 22=22500; 23=27500; 24=32500; 25=37500;
-26=42500; 27=47500; 28=62500; 29=87500; 30=125000; 31=175500; 32=250000;
-33=400000; 34=750000; 35=1000000)
+bracket; (1=0; 2=0; 3=500; 4=1500; 5=2500; 6=3500; 7=4500; 8=5500; 9=6500; 10=7500;
+11=8500; 12=9500; 13=10500; 14=11500; 15=12500; 16=13500; 17=14500; 18=15500;
+19=16500; 20=17500; 21=18500; 22=19500; 23=22500; 24=27500; 25=32500; 26=37500;
+27=42500; 28=47500; 29=62500; 30=87500; 31=125000; 32=175500; 33=250000;
+34=400000; 35=750000; 36=1000000)
 
 # Syntax used to create the variable (Stata 15)
 
@@ -93,7 +93,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 label define quintile  1 "First quintile" 2 "Second quintile" 3 "Third quintile" 4 "Fourth quintile" 5 "Fifth quintile"
 
 *# Mid Brackets of income level
-recode q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3 q0410k_other_s3 (1=0) (2=500) (3=1500) (4=2500) (5=3500) (6=4500) (7=5500) (8=6500) (9=7500) (10=8500) (11=9500) (12=10500) (13=11500) (14=12500) (15=13500) (16=14500) (17=15500) (18=16500) (19=17500) (20=18500) (21=19500) (22=22500) (23=27500) (24=32500) (25=37500) (26=42500) (27=47500) (28=62500) (29=87500) (30=125000) (31=175500) (32=250000) (33=400000) (34=750000) (35=1000000) (else=.)
+recode q1516_total_s3 q0410g_total_s3 q0410i_ss_s3 q0410j_government_s3 q0410k_other_s3 (1=0) (2=0) (3=500) (4=1500) (5=2500) (6=3500) (7=4500) (8=5500) (9=6500) (10=7500) (11=8500) (12=9500) (13=10500) (14=11500) (15=12500) (16=13500) (17=14500) (18=15500) (19=16500) (20=17500) (21=18500) (22=19500) (23=22500) (24=27500) (25=32500) (26=37500) (27=42500) (28=47500) (29=62500) (30=87500) (31=125000) (32=175500) (33=250000) (34=400000) (35=750000) (36=1000000) (else=.)
 
 *# Annual household income level (bracket)
 gen hhincome_s3=q0410g_total_s3
@@ -104,6 +104,9 @@ label variable hhincome_s3 "Annual household income level (bracket) (c2011_w4)"
 
 *# Annual working income level (bracket) (c2011_w4) 
 gen indincome_s3 = q1516_total_s3
+replace indincome_s3 = q0410k_other_s3 if indincome_s3==0
+replace indincome_s3 = q0410i_ss_s3 if indincome_s3==0
+replace indincome_s3 = q0410j_government_s3 if indincome_s3==0 
 label variable indincome_s3 "Annual working income level (bracket) (c2011_w4)"
 
 
