@@ -37,27 +37,30 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+---------------+----------------------------+---------------+---------------+
-| Main variable | Label                      | Format        | Code          |
-| name          |                            |               |               |
-+:==============+:===========================+:==============+:==============+
-| grip_s3       | Grip strength at wave 4    | Categorical   | 0 normal      |
-|               | (c2011_w4)                 |               |               |
-|               |                            |               | 1 weak        |
-+---------------+----------------------------+---------------+---------------+
++----------------+-------------------------+----------------+----------------+
+| Main variable  | Label                   | Format         | Code           |
+| name           |                         |                |                |
++:===============+:========================+:===============+:===============+
+| grip_max_s3    | Maximum grip strength   | Quantitative   | 0,5 - 99,0     |
+|                | [kg] (c2011_w4)         |                |                |
++----------------+-------------------------+----------------+----------------+
+| grip_s3        | Grip strength           | Categorical    | 0 = Normal     |
+|                | (c2011_w4)              |                |                |
+|                |                         |                | 1 = Weak       |
++----------------+-------------------------+----------------+----------------+
 
 # Variable description
 
-This variable classifies the respondents in a subject with a normal grip 
-strength and a subject with a weak grip strength. Hand-grip strength has been 
-measured using the Smedley Hand Dynamometer (Stoelting Company, Wood Dale, 
-Illinois,United States). While each participant was sitting, he/she extended 
-his/her arm in front of him/her and gripped the dynamometer with his/her 
-dominant hand. The width of the handle was adjusted, so that, when the subject 
-held the dynamometer, the second joint of the forefinger was in 90 degree 
-flexion. Two trials, with brief pauses, were allowed unless the difference 
-between the two measures was more than 10%; in that case, the test was repeated 
-once more after a rest period. Participants were encouraged to exert their 
+This variable classifies the respondents in a subject with a normal grip
+strength and a subject with a weak grip strength. Hand-grip strength has been
+measured using the Smedley Hand Dynamometer (Stoelting Company, Wood Dale,
+Illinois,United States). While each participant was sitting, he/she extended
+his/her arm in front of him/her and gripped the dynamometer with his/her
+dominant hand. The width of the handle was adjusted, so that, when the subject
+held the dynamometer, the second joint of the forefinger was in 90 degree
+flexion. Two trials, with brief pauses, were allowed unless the difference
+between the two measures was more than 10%; in that case, the test was repeated
+once more after a rest period. Participants were encouraged to exert their
 maximal grip. The best result will be chosen for analyses.
 
 # Explanation of how the variables were created
@@ -84,20 +87,21 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 /* First, we would need to take the BMI variable from the anthropometrics measures outcomes dataset */
 merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_anthropometricmeasures.dta"
+
 recode q2521_first_s3 q2522_second_s3 q2522a_third_s3 (999 =.)
-generate grip_max=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
-replace grip_max=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
-replace grip_max= q2522a_third_s3 if q2521_first_s3>100
+generate grip_max_s3=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
+replace grip_max_s3=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
+replace grip_max_s3= q2522a_third_s3 if q2521_first_s3>100
 
-generate grip_s3=1 if (q1009_sex==1 & bmi_s3>0 & bmi_s3<=24 & grip_max<=29)|( q1009_sex==1 & bmi_s3>24 & bmi_s3<=26 & grip_max<=30)| (q1009_sex==1 & bmi_s3>26 & bmi_s3<=28 & grip_max<=30) | (q1009_sex==1 & bmi_s3>28 & bmi_s3<=40 & grip_max<=32)
+generate grip_s3=1 if (q1009_sex==1 & bmi_s3>0 & bmi_s3<=24 & grip_max_s3<=29)|( q1009_sex==1 & bmi_s3>24 & bmi_s3<=26 & grip_max_s3<=30)| (q1009_sex==1 & bmi_s3>26 & bmi_s3<=28 & grip_max_s3<=30) | (q1009_sex==1 & bmi_s3>28 & bmi_s3<=40 & grip_max_s3<=32)
 
-replace grip_s3=1 if (q1009_sex==2 & bmi_s3>0 & bmi_s3<=23 & grip_max<=17)|( q1009_sex==2 & bmi_s3>23 & bmi_s3<=26 & grip_max<=17.3)| (q1009_sex==2 & bmi_s3>26 & bmi_s3<=29 & grip_max<=18) | (q1009_sex==2 & bmi_s3>29 & bmi_s3<=40 & grip_max<=21)
+replace grip_s3=1 if (q1009_sex==2 & bmi_s3>0 & bmi_s3<=23 & grip_max_s3<=17)|( q1009_sex==2 & bmi_s3>23 & bmi_s3<=26 & grip_max_s3<=17.3)| (q1009_sex==2 & bmi_s3>26 & bmi_s3<=29 & grip_max_s3<=18) | (q1009_sex==2 & bmi_s3>29 & bmi_s3<=40 & grip_max_s3<=21)
 
 replace grip_s3=0 if grip_s3==.
 
 replace grip_s3=. if (q2521_first_s3==.| q2521_first_s3<0 | q2522_second_s3==. | q2522_second_s3 < 0 | bmi_s3>=50 | bmi_s3==.) | (q2521_first_s3>100 & q2522_second_s3>100)
 
-label define grip_s3 0 "Normal" 1 "Weak"
+label define grip 0 "Normal" 1 "Weak"
 label values grip_s3 grip
 label variable grip_s3 "Grip strength at wave 4 (c2011_w4)"
 
@@ -107,9 +111,9 @@ label variable grip_s3 "Grip strength at wave 4 (c2011_w4)"
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
 
-keep ID_ECS q0007a_result proxy grip_s3
+keep ID_ECS q0007a_result proxy grip_max_s3 grip_s3
 
-codebook grip_s3
+codebook grip_max_s3 grip_s3
 ```
 
 ```{stata save-data-test, eval=TEST}

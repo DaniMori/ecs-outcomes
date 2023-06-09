@@ -15,20 +15,13 @@
 
 - [ ] A table with variable metadata exists
 
-- [ ] The table is properly formatted in markdown (e.g. no variable names cut)
-
-- [ ] All the variables in the `keep` command (chunk `descriptives` are in the
-  table (except for the ID and the ancillary variables)
-  
-- [ ] All the variables in the metadata table end with suffix `_s\<followup\>`,
-  where `\<followup\> = \<ola\> - 1`
+- [ ] All variables in the chunk `save-data` are in the table
+  (except for the ID and the ancillary variables)
 
 - [ ] All the variables in the metadata table have a label (Label)
 
 - [ ] The labels in the metadata table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
-
-- [ ] All the variable labels in column "Label" are written in "Sentence case"
 
 - [ ] All labels have suffix "(c\<cohorte\>_w\<ola\>)"
 
@@ -38,8 +31,6 @@
 
 - [ ] Labels in column "Code" in the table coincide with the ones in the syntax
   (see chunk `generate-outcomes`)
-  
-- [ ] All the value labels in column "Code" are written in "Sentence case"
 
 - [ ] Section "Variable description" is filled in
 
@@ -51,17 +42,10 @@
 - [ ] Section "Explanation on how the variable was created"
   **explains clearly the procedure to create the variable(s)**
 
-- [ ] All the raw variables needed for creating the outcome variable(s) are
-  listed in section "Explanation on how the variable was created"
-  (formated as code, i.e., enclosed in `backticks`)
-
 - [ ] Title in section "Syntax used to create the variable" includes the
   software used to apply the generating syntax
 
 - [ ] Section "Syntax used to create the variable" includes the syntax
-
-- [ ] All the variables used in the syntax are referred to by their complete
-  name, including suffix `_s\<followup\>` (where `\<followup\> = \<ola\> - 1`)
 
 - [ ] Section "Syntax used to create the variable" includes descriptives of ALL
   the created variables (see chunk `descriptives`)
@@ -75,20 +59,18 @@
 
 - [ ] The contact information of the person who created the document is in
   section "For any further questions regarding this variable please contact:"
-  (Name, institutional email, telephone)
+  (Name, email, telephone, institution)
 
 - [ ] If the document is based on a previous version, created by another person,
   the contact information of the previous version (in which this one is based)
   are in section "For any further questions regarding this variable please
-  contact:" (Name, institutional email)
+  contact:" (Name, email, telephone, institution)
 
 - [ ] Al final "Session info" section is included
 
-- [ ] All the TODO's in the template are addressed and deleted
-
 - [ ] The document knits without errors
 
-- [ ] The "descriptives" table renders properly in the knitted document
+- [ ] The "descriptives"" table renders properly in the knitted document
 
 - [ ] The "Outcome dataset" is generated when the document is knitted
 
