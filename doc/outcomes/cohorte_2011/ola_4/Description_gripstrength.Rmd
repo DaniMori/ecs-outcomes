@@ -92,6 +92,7 @@ recode q2521_first_s3 q2522_second_s3 q2522a_third_s3 (999 =.)
 generate grip_max_s3=q2521_first_s3 if q2521_first_s3>= q2522_second_s3 | q2522_second_s3==.
 replace grip_max_s3=q2522_second_s3 if q2522_second_s3> q2521_first_s3 | q2521_first_s3==.
 replace grip_max_s3= q2522a_third_s3 if q2521_first_s3>100
+label variable grip_max_s3 "Maximum grip strength [kg] (c2011_w4)"
 
 generate grip_s3=1 if (q1009_sex==1 & bmi_s3>0 & bmi_s3<=24 & grip_max_s3<=29)|( q1009_sex==1 & bmi_s3>24 & bmi_s3<=26 & grip_max_s3<=30)| (q1009_sex==1 & bmi_s3>26 & bmi_s3<=28 & grip_max_s3<=30) | (q1009_sex==1 & bmi_s3>28 & bmi_s3<=40 & grip_max_s3<=32)
 
