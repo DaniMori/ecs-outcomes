@@ -34,26 +34,37 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable information
 
-+----------------------------+--------------------+-----------------+-----------------+
-| Main variable name         | Label              | Format          | Code            |
-+:===========================+:===================+:================+:================+
-| depression_lifetime_s3     | Lifetime           | Binary          | 0 No            |
-|                            | depression         |                 |                 |
-|                            | (c2011_w4)         |                 | 1 Yes           |
-+----------------------------+--------------------+-----------------+-----------------+
-| depression_12m_s3          | 12 months          | Binary          | 0 No            |
-|                            | depression         |                 |                 |
-|                            | (c2011_w4)         |                 | 1 Yes           |
-+----------------------------+--------------------+-----------------+-----------------+
-| depression_12treatment_s3  | Treatment for      | Binary          | 0 No            |
-|                            | depression in      |                 |                 |
-|                            | previous 12 months |                 | 1 Yes           |
-|                            | (c2011_w4)         |                 |                 |
-+----------------------------+--------------------+-----------------+-----------------+
-| depression_self_s3         | Depression         | Binary          | 0 No            |
-|                            | self-reported      |                 |                 |
-|                            | (c2011_w4)         |                 | 1 Yes           |
-+----------------------------+--------------------+-----------------+-----------------+
++---------------------------+-------------------+---------------+---------------+
+| Main variable name        | Label             | Format        | Code          |
++:==========================+:==================+:==============+:==============+
+| depression_3y_s3          | Inter-survey      | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| depression_12m_s3         | 12 months         | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| depression_12treatment_s3 | Treatment for     | Dichotomous   | 0 No          |
+|                           | depression in     |               |               |
+|                           | previous 12       |               | 1 Yes         |
+|                           | months (c2011_w4) |               |               |
++---------------------------+-------------------+---------------+---------------+
+| depression_self_s3        | Depression        | Dichotomous   | 0 No          |
+|                           | self-reported     |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
+| d_3y_comparable_s3        | Inter-survey      | Dichotomous   | 0 No          |
+|                           | depressive        |               |               |
+|                           | episode           |               | 1 Yes         |
+|                           | comparable        |               |               |
+|                           | (c2011_w4)        |               |               |
++---------------------------+-------------------+---------------+---------------+
+| d_12m_comparable_s3       | 12 month          | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | comparable        |               | 1 Yes         |
+|                           | (c2011_w4)        |               |               |
++---------------------------+-------------------+---------------+---------------+
 
 # Variable description
 
@@ -64,12 +75,9 @@ According to The *Diagnostic and Statistical Manual of Mental Disorders*,
 depression can be long-lasting or recurrent, substantially impairing an
 individual's ability to function at work or school or cope with daily life
 [@americanpsychiatricassociation2013]. At its most severe, depression can lead
-to suicide. When mild, people can be treated without medicines but when
-depression is moderate or severe they may need medication and professional
-talking treatments. Depression is a disorder that can be reliably diagnosed and
-treated by non-specialists as part of primary health care. Specialist care is
-needed for a small proportion of individuals with complicated depression or
-those who do not respond to first-line treatments.
+to suicide. When mild, psychological treatment is preferred as the first
+intervention tool. In some more moderate or severe cases, it may be helpful to
+combine it with pharmacological therapy.
 
 We used an adapted version of the Composite International Diagnostic Interview
 (CIDI 3.0), a comprehensive, fully-structured interview designed to be used by
@@ -82,41 +90,78 @@ Composite International Diagnostic Interview.
 # Explanation of how the variables were created
 
 An algorithm based on the DSM-V was used for the endorsement of major depressive
-episode at some point in their lives (lifetime prevalence) and in the previous
-12 months (point prevalence). We also included a treatment variable for 12-month
-depression. These algorithms were created only for the non-proxy respondents.
-Although a variable (depression_self_s3) was created to assess an eventual
-presence of depression episode self-reported.
+episodes since the last survey (`depression_3y_s3`) and in the previous 12
+months (point prevalence) (`depression_12m_s3`) using only one item
+(`q4227a_s3`). We also included a treatment variable for 12-month depression
+(`depression_12treatment_s3`). These algorithms were created only for the
+non-proxy respondents. Although a variable (`depression_self_s3`) was created to
+assess the eventual presence of depression episode self-reported.
 
 As for the proxy participants, original variables include a diagnosis depression
-item (p4040_depression_s3) and reported treatment taking (p4040a_age_s3). A
+item (`p4040_depression_s3`) and reported treatment taking (`p4040a_age_s3`). A
 diagnosis of depression was endorsed if the participant answered "yes" to
-p4040_depression_s3, but not 997 in p4040a_age_s3 (they affirmed they had never
-had depression). We also included a treatment code (depress_12treatment_s3) in
-those individuals who, apart from having reported depression, have received
-treatment for it in the previous 12 months.
+`p4040_depression_s3`, but not 997 in `p4040a_age_s3` (they affirmed they had
+never had depression). We also included a treatment code
+(`depress_12treatment_s3`) in those individuals who, apart from having reported
+depression, have received treatment (psychological or pharmacological) for it in
+the previous 12 months (`q4231_s3` and `q4232_s3`).
 
-The following criteria must be fulfilled in order to diagnose depression: A) At
-least five of the following symptoms have been present during the same 2-week
-period and represent a change from previous functioning; (1) depressed mood, (2)
-loss of interest or pleasure, (3) significant weight loss, (4) insomnia or
-hypersomnia, (5) psychomotor agitation or retardation, (6) fatigue or loss of
-energy, (7) feelings of worthlessness, (8) diminished ability to think or
-concentrate, (9) recurrent thoughts of death. At least one of the symptoms is
-either (1) depressed mood or (2) loss of interest or pleasure. (Note: Do not
-include symptoms that are clearly attributable to another medical condition.) B)
-The symptoms cause clinically significant distress or impairment in social,
-occupational, or other important areas of functioning.; C) The episode is not
-attributable to the physiological effects of a substance or to another medical
-condition. ; D) The occurrence of the major depressive episode is not better
-explained by schizoaffective disorder, schizophrenia, schizophreniform disorder,
-delusional disorder, or other specified and unspecified schizophrenia spectrum
-and other psychotic disorders; E) There has never been a manic episode or a
-hypomanic episode. These criteria where used to create the variable related to
-lifetime depression (depression_lifetime_s3). We also created a variable to
-assess the presence of a depressive episode during the last 12 months using only
-one item (q4227a_s3) which directly asks for the presence of a depressive
-episode during this 12-month period.
+The following criteria must be fulfilled in order to diagnose depression:
+
+A.  At least five of the following symptoms have been present during the same
+    2-week period and represent a change from previous functioning; (1)
+    depressed mood (`q4220a_s3`, `q4220b_s3`, `q4220c_s3`, `q4220d_s3`), (2)
+    loss of interest or pleasure (`q4220e_s3`, `q4220f_s3`), (3) significant
+    weight changes (`q4222a_s3`, `q4222b_s3`), (4) insomnia or hypersomnia
+    (`q4222c_s3`, `q4222d_s3`), (5) psychomotor agitation or retardation
+    (`q4222f_s3`, `q4222fa_s3`, `q4222g_s3`, `q4222ga_s3`), (6) fatigue or loss
+    of energy (`q4222e_s3`), (7) feelings of worthlessness (`q4222k_s3`,
+    `q4222l_s3`, `q4222m_s3`, `q4222n_s3`), (8) diminished ability to think or
+    concentrate (`q4222h_s3`, `q4222i_s3`, `q4222j_s3`), (9) recurrent thoughts
+    of death (`q4222r_s3`, `q4222s_s3`, `q4222t_s3`, `q4222u_s3`, `q4222v_s3`).
+    At least one of the symptoms is either (1) depressed mood or (2) loss of
+    interest or pleasure. (Note: Do not include symptoms that are clearly
+    attributable to another medical condition);
+
+B.  There has never been a manic episode or a hypomanic episode (`q4233_s3`,
+    `q4225_causemed2_s3`). These criteria were used to create the variable
+    related to inter-survey depression (`depression_3y_s3`). We also created a
+    variable to assess the presence of a depressive episode during the last 12
+    months using only one item (`q4227a_s3`) which directly asks for the
+    presence of a depressive episode during this 12-month period.
+
+C.  The symptoms cause clinically significant distress or impairment in social,
+    occupational, or other important areas of functioning. A level of impairment
+    is considered significant if the person has experienced at least moderate
+    emotional discomfort (`q4214_s3_s3, q4215_s3_s3, q4216_s3_s3`) Or who has
+    had an impact of at least 4 on a scale of 0 to 10 on the normal performance
+    of daily activities such as cleaning (`q4700a_s3)`, work (`q4700b_s3`),
+    social relationship (`q4700c_s3, q4700d_s3`);
+
+D.  The episode is not attributable to the physiological effects of a substance
+    or to another medical condition. To full this criteria participant must not
+    have said that he or she thought his or her episodes were due solely to
+    physical causes (`q4224b_s3`), nor must he or she have been diagnosed
+    (`q4224_s3`) with any other mental illness or substance use or any other
+    medication (`q4225_causemed3_s3`, `q4225_causemed4_s3`,
+    `q4225_causemed23_s3`, `q4225_causemed24_s3`, `q4225_causemed25_s3`,
+    `q4225_causemed30_s3`, `q4225_causemed31_s3`).
+
+**Please note:** There is an ongoing debate around the consideration of
+"bereavement" for a relative or beloved one as an exclusion criterion for
+diagnosing major depressive disorder; this is due to the fact that bereavement
+can lead to depressive-like symptoms in the short term as a normal response, but
+can also be considered pathological when the symptoms are too severe or last for
+too long. In this case, we have decided to not consider bereavement as an
+exclusion criterion in this version of the algorithm. This decision has been
+agreed upon with and approved by the "Edad con Salud" IPs.
+
+As the dataset will be used for longitudinal studies, a variable of the
+prevalence of depression during the last survey, comparable among waves 2 to 4,
+has also been created (`d_3y_comparable_s3`). It differs from the previously
+explained one in the following: (1) It does not take into account symptom 5
+(psychomotor agitation or retardation) when computing the symptom count in
+criterion A, and (2) it omits the exclusion criterion B.
 
 The coding of this algorithm is very complex and requires many different
 criteria to be taken into account. We have tried to make use of uniform coding
@@ -166,18 +211,18 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 *#"Value labels (defined for all the outcome variables in the dataset)":
 label define yesno  0 "No" 1 "Yes"
 
-***#"VARIABLE `depression_lifetime_s3`: Major depressive episode"
+***#"VARIABLE `depression_3y_s3`: Major depressive episode"
 
 *#A criterion:"At least five of the following symptoms have been present during the same 2-week"
-  
+
 *#A1:"Depressed mood most of the day, nearly every day, as indicated by either subjective report or observation made by others" 
 gen     d_A1 = .
-replace d_A1 = 0 if q4220a_s3!=1 & q4220a_s3!=. & q4220b_s3!=1 & q4220c_s3!=1 & q4220d_s3!=1
+replace d_A1 = 0 if (q4220a_s3!=1 & q4220a_s3!=.) & q4220b_s3!=1 & q4220c_s3!=1 & q4220d_s3!=1
 replace d_A1 = 1 if q4220a_s3==1 | q4220b_s3==1 | q4220c_s3==1 | q4220d_s3==1
 
 *#A2:"Markedly diminished interest or pleasure in all, or almost all, activities most of the day nearly every day" 
 gen     d_A2 = .
-replace d_A2 = 0 if q4220e_s3!=1 & q4220e_s3!=. & q4220f_s3!=1 & q4220f_s3!=. 
+replace d_A2 = 0 if (q4220e_s3!=1 & q4220e_s3!=.) & (q4220f_s3!=1 & q4220f_s3!=.)
 replace d_A2 = 1 if q4220e_s3==1 | q4220f_s3==1
   
 *#A3:"Significant weight loss when not dieting, or weight gain or decrease or increase in appetite nearly every day"
@@ -187,7 +232,7 @@ replace d_A3 = 1 if  q4222a_s3==1 | q4222b_s3==1
 
 *#A4:"Insomnia or hypersomnia nearly every day" 
 gen     d_A4 = .
-replace d_A4 = 0 if q4222c_s3!=1 & q4222c_s3!=.
+replace d_A4 = 0 if (q4222c_s3!=1 & q4222c_s3!=.) & q4222d_s3!=.
 replace d_A4 = 1 if q4222c_s3==1 | q4222d_s3==1           
 
 *#A5:"Psychomotor agitation or retardation nearly every day" 
@@ -202,8 +247,11 @@ replace d_A6 = 1 if q4222e_s3==1
 
 *#A7:"Feelings of worthlessness or excessive or inappropriate guilt nearly every day (not merely self-reproach or guilt about being sick)"
 gen     d_A7 = .
-replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222n_s3!=1 & q4222n_s3!=.) &  (q4222l_s3!=1 & q4222l_s3!=.) &  (q4222m_s3!=1 & q4222m_s3!=.) 
-replace d_A7 = 1 if q4222k_s3==1 | q4222n_s3==1 | q4222l_s3==1 | q4222m_s3==1
+replace d_A7 = 0 if (q4222k_s3!=1 & q4222k_s3!=.) & (q4222l_s3!=1 & q4222l_s3!=.) & q4222m_s3!=1 & (q4222n_s3!=1 & q4222n_s3!=.)
+replace d_A7 = 1 if  q4222k_s3==1                 |  q4222l_s3==1                 | q4222m_s3==1 |  q4222n_s3==1
+*#"NOTE: When `q4222l==2`, then `q4222m==.` because it is skipped; to take that
+*#       possible combination into account, the comparison `q4222m_s3!=.` must
+*#       not be included in the computation of the negative cases."
 
 *#A8:"Diminished ability to think or concentrate, or indecisiveness, nearly every day"
 gen     d_A8 = .
@@ -217,6 +265,7 @@ replace d_A9 = 1 if q4222r_s3==1 | q4222s_s3==1 | q4222t_s3==1 | q4222u_s3==1 | 
 
 *#"To fulfil A criterion at least 5 screening symptoms should be present"
 egen d_symtotal = rowtotal (d_A1-d_A9), missing
+
 *#"At least one of following symptom must be present, (A1) depressed mood, (A2) loss of interest or pleasure"
 gen     d_symprior = .
 replace d_symprior = 0 if d_A1==0 & d_A2==0
@@ -227,43 +276,38 @@ gen     d_crit_A = .
 replace d_crit_A = 0 if (d_symtotal<5 & d_symtotal!=.) | d_symprior==0 
 replace d_crit_A = 1 if (d_symtotal>4 & d_symtotal!=.) & d_symprior==1 
 
-*#Bcriterion:"The symptoms cause clinically significant distress or impairment in social, occupational, or other important areas of functioning"
+*#Bcriterion:"There is no hyper or hypomanic crisis"
 
+gen d_crit_B =. 
+replace d_crit_B = 0 if (q4233_s3==1 | q4225_causemed2_s3==1) & proxy==2
+replace d_crit_B = 1 if (q4233_s3!=1 & q4233_s3!=.) & q4225_causemed2_s3!=1
+
+
+*#C criterion:"The symptoms cause clinically significant distress or impairment in social, occupational, or other important areas of functioning"
 *#"Follow of A critierion"
 
 recode q4214_s3 (1=0) (2=1) (3=1) (4=1) (else=.) 
 recode q4215_s3 (1=1) (2=1) (3=1) (4=0) (else=.)
-recode q4216_s3 (1=0) (2=1) (3=1) (4=0) (else=.)
-recode q4700a_s3 q4700b_s3 q4700c_s3 q4700d_s3 (999=.) (888=.)
-gen discomfort=. 
-replace discomfort=1 if q4700a_s3>=4 | q4700b_s3>=4 | q4700c_s3>=4 | q4700d_s3>=4 
-replace discomfort=0 if (q4700a_s3<4 & q4700a_s3!=.) & (q4700b_s3<4 & q4700b_s3!=.) & (q4700c_s3<4 & q4700c_s3!=.) & (q4700d_s3<4 & q4700d_s3!=.)
-
-gen     d_crit_B = .
-replace d_crit_B = 0 if q4214_s3==0 | q4215_s3==0 | q4216_s3==0 | discomfort==0
-replace d_crit_B = 1 if q4214_s3==1 | q4215_s3==1 | q4216_s3==1 | discomfort==1
-  
-  
-*#C criterion:"The episode is not attributable to the physiological effects of a substance or to another medical condition"
+recode q4216_s3 (1=1) (2=1) (3=1) (4=0) (else=.)
+recode q4700a_s3 q4700b_s3 q4700c_s3 q4700d_s3 (97=.) (999=.) (888=.)
+gen     discomfort=. 
+replace discomfort=0 if  q4700a_s3 <4                 |  q4700b_s3 <4                 |  q4700c_s3 <4                 |  q4700d_s3 <4
+replace discomfort=1 if (q4700a_s3>=4 & q4700a_s3!=.) | (q4700b_s3>=4 & q4700b_s3!=.) | (q4700c_s3>=4 & q4700c_s3!=.) | (q4700d_s3>=4 & q4700d_s3!=.)
+*# NOTE: To prevent that missing values prevail over "zeroes", all of the cases
+*#       where "at least" one zero (lower than 4) happens are coded initially as
+*#       a 0; then, the "ones" overwrite the "zeroes" where required.
 
 gen     d_crit_C = .
-replace d_crit_C = 0 if                            q4224b_s3==1              | (q4224_s3==1 & (q4225_causemed12_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
-replace d_crit_C = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed12_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
+replace d_crit_C = 0 if q4214_s3==0 | q4215_s3==0 | q4216_s3==0 | discomfort==0
+replace d_crit_C = 1 if q4214_s3==1 | q4215_s3==1 | q4216_s3==1 | discomfort==1
   
-*#D criterion: "The occurrence of the major depressive episode is not better explained by schizoaffective disorder, schizophrenia, schizophreniform disorder, delusional disorder, or other specified and unspecified schizophrenia spectrum and other psychotic disorders"
 
-gen d_crit_D =. 
-replace d_crit_D = 0 if q4224b_s3==1 | (q4224_s3==1 & (q4225_causemed3_s3==1 | q4225_causemed4_s3==1)) 
-replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed3_s3!=1 & q4225_causemed4_s3!=. & q4225_causemed4_s3!=1 & q4225_causemed4_s3!=.))
+*#D criterion: "The episode is not attributable to the physiological effects of a substance or to another medical condition"
+gen     d_crit_D = .
+replace d_crit_D = 0 if                                  q4224b_s3==1                 | (q4224_s3==1 & (q4225_causemed3_s3==1 | q4225_causemed23_s3==1 | q4225_causemed24_s3==1 | q4225_causemed25_s3==1 | q4225_causemed30_s3==1 | q4225_causemed31_s3==1))
+replace d_crit_D = 1 if (q4224a_s3!=1 & q4224a_s3!=.) | (q4224b_s3!=1 & q4224b_s3!=.) | (q4224_s3==1 & (q4225_causemed3_s3!=1 & q4225_causemed23_s3!=1 & q4225_causemed24_s3!=1 & q4225_causemed25_s3!=1 & q4225_causemed30_s3!=1 & q4225_causemed31_s3!=1))
 
-*#Ecriterion:"There is no hyper or hypomanic crisis"
-
-gen d_crit_E =. 
-replace d_crit_E = 1 if (q4233!=1 & q4233!=.) & (q4225_causemed2_s3!=1 & q4225_causemed2_s3!=.) 
-replace d_crit_E = 0 if q4233_s3==1 & q4225_causemed2_s3==1
-
- 
-***#"Has the person skipped the lifetime depression module?"
+***#"Has the person skipped the depression module?"
 
 *#"Depression symptoms recoded into 0/1 to compute the tally":
 recode q4220a_s3-q4222v_s3 (1=1) (2=0) (888 999=.)
@@ -275,10 +319,10 @@ egen f4223_sum = rowtotal (q4220a_s3-q4222v_s3), missing
 
 *#"Variable "skipped" computation":
 gen     d_skipped = .
-replace d_skipped = q4202_s3!=1                   if q4202_s3!=.
-replace d_skipped = q4211_s3!=1    | d_skipped==1 if q4211_s3!=.    
-replace d_skipped = q4213_s3!=1    | d_skipped==1 if q4213_s3!=.    
-replace d_skipped = q4218_s3!=1    | d_skipped==1 if q4218_s3!=.    
+replace d_skipped = q4202_s3!=1                if q4202_s3!=.
+replace d_skipped = q4211_s3!=1 | d_skipped==1 if q4211_s3!=.    
+replace d_skipped = q4213_s3!=1 | d_skipped==1 if q4213_s3!=.    
+replace d_skipped = q4218_s3!=1 | d_skipped==1 if q4218_s3!=.    
 replace d_skipped = f4217==1    | d_skipped==1 if f4217!=.    
 replace d_skipped = f4221_sum<1 | d_skipped==1 if f4221_sum!=.
 replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
@@ -291,18 +335,18 @@ replace d_skipped = f4223_sum<2 | d_skipped==1 if f4223_sum!=.
 
 ***#"Major depressive episode (DSM-5)"
 
-gen     depression_lifetime_s3 = .
-replace depression_lifetime_s3 = 0 if (d_skipped==1 | d_crit_A==0 | d_crit_B==0 | d_crit_C==0 | d_crit_D==0 | d_crit_E==0) & proxy==2
-replace depression_lifetime_s3 = 1 if d_skipped==0 & d_crit_A==1 & d_crit_B==1 & d_crit_C==1 & d_crit_D==1 & d_crit_E==1
-label values   depression_lifetime_s3 yesno
-label variable depression_lifetime_s3 "Lifetime depression (c2011_w4)"
+gen     depression_3y_s3 = .
+replace depression_3y_s3 = 0 if (d_skipped==1 | d_crit_A!=1 | d_crit_B!=1 | d_crit_C!=1 | d_crit_D!=1) & proxy==2
+replace depression_3y_s3 = 1 if  d_skipped==0 & d_crit_A==1 & d_crit_B==1 & d_crit_C==1 & d_crit_D==1
+label values   depression_3y_s3 yesno
+label variable depression_3y_s3 "Inter-survey depression (c2011_w4)"
 
 
 ***#VARIABLE "`depression_12m_s3`: 12-month depression"
 
 gen     depression_12m_s3 = .
-replace depression_12m_s3 = 0 if q4227a_s3!=1 & proxy==2
-replace depression_12m_s3 = 1 if q4227a_s3==1
+replace depression_12m_s3 = 0 if depression_3y_s3==0 | (q4227a_s3!=1 & proxy==2)
+replace depression_12m_s3 = 1 if depression_3y_s3==1 &  q4227a_s3==1
 label values   depression_12m_s3 yesno
 label variable depression_12m_s3 "12 months depression (c2011_w4)"
 
@@ -313,11 +357,11 @@ recode q4232_s3 (1=1) (2=0) (888=0) (999=0)
 recode q4231_s3 (1=1) (2=0) (888=0) (999=0)
 
 gen     depression_12treatment_s3 = .
-replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 & (q4232_s3!=. & q4231_s3!=1 & q4232_s3!=.) & (q4231_s3!=1  & q4231_s3!=.) & q4231_s3==0) | proxy==2
-replace depression_12treatment_s3 = 1 if depression_12m_s3==1 & (q4231_s3==1 | q4232_s3==1)
+replace depression_12treatment_s3 = 0 if (depression_12m_s3==0 &  q4232_s3!=1 & q4232_s3!=. & q4231_s3!=1 & q4231_s3!=.) | proxy==2
+replace depression_12treatment_s3 = 1 if  depression_12m_s3==1 & (q4232_s3==1 |               q4231_s3==1)
 label values   depression_12treatment_s3 yesno
 label variable depression_12treatment_s3 "Treatment for depression in the previous 12 months (c2011_w4)"
-*#"NOTE: We take into acount psychological treatment and pharmacological treatment.
+*#"NOTE: We take into acount psychological treatment and pharmacological treatment."
 
 ***#VARIABLE "`depression_self_s3`: `depression self-reported`"
 
@@ -328,12 +372,37 @@ replace depression_self_s3 = 1 if p4040_depression_s3==1 & p4040a_age_s3!=997
 label values   depression_self_s3 yesno
 label variable depression_self_s3 "Depression self-reported (c2011_w4)"
 
+*#"Inter-survey depression "comparable" (does not take into account exclusion criterion B or symptom A5)"
+
+*#"To fulfil A criterion at least 5 screening symptoms should be present. In
+*# the comparable version, symptom 5 (psychomotor agitation or retardation) is
+*# not taken into account."
+egen d_symtotal_comp = rowtotal (d_A1-d_A4 d_A6-d_A9), missing
+
+*#"Total of A criterion"  
+gen     d_crit_A_comp = .
+replace d_crit_A_comp = 0 if (d_symtotal_comp<5 & d_symtotal_comp!=.) | d_symprior==0 
+replace d_crit_A_comp = 1 if (d_symtotal_comp>4 & d_symtotal_comp!=.) & d_symprior==1 
+
+gen     d_3y_comparable_s3 = .
+replace d_3y_comparable_s3 = 0 if (d_skipped==1 | d_crit_A_comp==0 | d_crit_C==0 | d_crit_D==0) & proxy==2
+replace d_3y_comparable_s3 = 1 if  d_skipped==0 & d_crit_A_comp==1 & d_crit_C==1 & d_crit_D==1
+label values   d_3y_comparable_s3 yesno
+label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
+
+*#"12-month 'comparable', based on the intermediate 'Inter-survey comparable' and the individual item":
+gen     d_12m_comparable_s3 = .
+replace d_12m_comparable_s3 = 0 if d_3y_comparable_s3==0 | (q4227a_s3!=1 & proxy==2)
+replace d_12m_comparable_s3 = 1 if d_3y_comparable_s3==1 &  q4227a_s3==1
+label values   d_12m_comparable_s3 yesno
+label variable d_12m_comparable_s3 "12 month depression comparable (c2011_w4)"
+
 ```
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-keep ID_ECS q0007a_result proxy depression_lifetime_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3
+keep ID_ECS q0007a_result proxy depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_3y_comparable_s3 d_12m_comparable_s3
 
-codebook depression_lifetime_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3
+codebook depression_3y_s3 depression_12m_s3 depression_12treatment_s3 depression_self_s3 d_3y_comparable_s3 d_12m_comparable_s3
 ```
 
 ```{stata save-data-test, eval=TEST}
