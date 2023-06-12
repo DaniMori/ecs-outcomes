@@ -109,260 +109,147 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 
 # Variable description
 
-<!--# TODO: Leer párrafo a continuación -->
+This dataset includes sociodemographic variables related to sex, age (continuous
+and categorical by groups), marital status, education level, employment status
+and occupation.
 
-Por favor, incluye aquí una breve descripción de la variable o constructo que
-estás trabajando. Qué significa o qué evalúa esa variable y por qué es
-importante. Incluye las referencias bibliográficas necesarias.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Redactar descripción de variable(s) -->
+A unique dataset is created for these variables because of the relevance that
+sociodemographic factors have in our outcome variables of interest, as 
+mental health issues happens in a context modulated by sociodemographic variables.
 
 # Explanation of how the variables were created
 
-<!--# TODO: Leer párrafos a continuación -->
+- `sex_s3`. Based on `q1009_sex`, we have renamed this variable and established 
+properly the missing values. 
+  
+- `agegroups_s3`. Based on `q1011_age`, a continuous variable from 29-99, it is
+divided in 5 groups: 18-29, 30-49, 50-64, 65-79 and 80+.
 
-Este apartado es complementario al siguiente. Trata de describir, de forma clara
-y concisa, cómo has generado la variable. El objetivo de esta sección es doble.
-Por un lado, que sirva de apoyo para los/as investigadores/as que pudieran no
-estar familiarizados con el código utilizado para generar la/s variable/s (e.g.,
-R, Stata). Por otro, facilitar la información suficiente para describir
-adecuadamente la/s variable/s en los artículos científicos.
+- `marital_s3`. Based on `q1012_mar_stat`, label values have been modified for
+suiting Sentence case format and missing values were handled properly.
 
-Si se trata de variable/s que ya se había/n generado en ocasiones anteriores
-(e.g., evaluaciones o cohortes distintas), por favor, documenta las potenciales
-particularidades o modificaciones que realices (e.g., versión reducida,
-detección de errores).
+- `education_s3`. Based on `q1016_highest`, five categories are created to
+sum up education level: less than primary, primary, upper secondary, lower
+secondary and tertiary.
 
-Como criterio general, **esta sección debería ser suficiente para entender cómo
-ha de generarse la variable sin necesidad de entender la sintaxis**.
+- `employment_s3`. Based on `q1011_age`, `q1501_ever_worked`, `q1503_work_now` and
+`q1504_reason`, four categories are created:
 
-<!--# TODO: Borrar párrafos anteriores -->
-
-<!--# TODO: Redactar explicación de la creación de variable(s) -->
+  - __never worked__ (1), using `q1501_ever_worked.` It also includes “homemakers”
+  and “care family” from `q1504_reason`.
+  - __working__ (2), using `q1503_work_now`. It also includes ”seasonal work” and 
+  “vacation” from `q1504_reason`.
+  - __retired__ (3), for people that is older than 65 years that have ever
+  ever worked and are not working, combining q1011_age, q1501_ever_worked and
+  q1503_work_now. It also includes "health", "not permitted" and "retired" from
+  q1504_reason.
+  - __unemployed__ (4), for people who has answered "couldn't find a job",
+  "unpaid", "studies", "no need", "laid off", "doesn't want for a while" and 
+  "other" from `q1504_reason`, and are under 77 years old (`q1011_age`).
+  
+  
+- `occupation_s3`. Based on `q1510_catoccu` and `q1501_ever_worked`, five
+categories are established: legislators/professionals, technicians, skilled workers,
+elementary occupations and "never worked".
 
 # Syntax used to create the variable (Stata 15)
 
-<!--# TODO: Cambiar software y versión en el título según correponda a la
-sintaxis utilizada (e.g., 'R 4.0.5' en lugar de 'Stata 15') -->
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Aquí debes incluir el algoritmo o código empleado para generar la/s variable/s.
-Es fundamental que revises minuciosamente esta sección. **Cualquier
-investigador/a debería poder generar la/s variable/s y obtener los mismos
-resultados**. Por favor, indica también el programa utilizado (e.g., Stata, R),
-si bien ten en cuenta que **el consenso es utilizar Stata**. Incluye también una
-pequeña tabla con los descriptivos principales de esta/s variable/s (i.e., n,
-frecuencia absoluta y relativa, rango, media...).
-
-<!--# TODO: Borrar párrafo anterior -->
-
 ```{stata load-data}
-* TODO: Descomentar linea correspondiente a la base de datos maestra a utilizar
-* TODO: Comprobar que la ruta de origen coincide con la localización de `DB`
-
-* Cohorte 2011, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_1_Linea_base\All_COURAGE_VFINAL.dta"
-
-* Cohorte 2011, ola 2:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_2\20150916 Database COURAGE wave 1.dta"
-
-* Cohorte 2011, ola 3:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta"
-
 * Cohorte 2011, ola 4:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
-
-* Cohorte 2019, linea base:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_3\Cohorte_2019\rawdata_c2019w1.dta"
-
-* Cohorte 2019, ola post-confinamiento:
-* use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Subestudio_COVID\Edad_con_salud_Fichero_Completo.dta"
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
 ```
 
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
-* TODO: Escribir aquí la sintaxis de generación de las variables
+*SEX
+gen sex_s3 = q1009_sex
+label variable sex_s3 "Sex (c2011w4)"
+
+*AGE BY GROUPS - agegroups_s3
+recode q1011_age_s3 (18/29 = 1) (30/49 = 2) (50/64 = 3) (65/79 = 4) (80/120 = 5) 
+gen agegroups_s3 = q1011_age_s3
+label define agegroups 1 "18-29" 2 "30-49" 3 "50-64" 4 "65-79" 5 "80+"
+label value agegroups_s3 agegroups 
+label variable agegroups_s3 "Age, categorical (c2011_w4)"
+
+
+* MARITAL STATUS - marital_s3
+gen marital_s3 = q1012_mar_stat
+recode marital_s3 (888=.)
+label define marital 1 "Never married (and no cohabiting)" 2 "Currently married/ law partner" 3 "Cohabiting" 4 "Separated/divorced" 5 "Widowed"
+label variable marital_s3 "Marital status (c2011w4)"
+
+*EDUCATION LEVEL - education_s3
+recode q1016_highest (0/1 = 1) (5/6 = 5) (888 = .)
+gen education_s3 = q1016_highest
+label define education 1 "Less than primary" 2 "Primary" 3 "Lower secondary" 4 "Upper secondary" 5 "Tertiary"
+label value education_s3 education
+label variable education_s3 "Level of education, categorical (c2011_w4)"
+
+*EMPLOYMENT STATUS - employment_s3
+gen employment_s3 =.
+
+**Never worked
+replace employment=1 if q1501_ever_worked==2 | (q1501_ever_worked==1 & (q1504_reason==1 | q1504_reason==6))
+**Working 
+replace employment=2 if q1503_work_now==1 | (q1503_work_now==2 & (q1504_reason==11 | q1504_reason==13))
+**Retired
+replace employment=3 if (q1504_reason==5 | q1504_reason==8 | q1504_reason==9) | (q1011_age>65 & q1501_ever_worked!=2 & employment!=2)
+**Unemployed
+replace employment=4 if (q1504_reason==2 | q1504_reason==3 | q1504_reason==4 | q1504_reason==7 | q1504_reason==10 | q1504_reason==12 | q1504_reason==87) & (q1011_age<66)
+
+label define employment 1 "Never worked/homemaker" 2 "Working" 3 "Retired/disabled" 4"Unemployed/not working"
+label value employment_s3 employment
+label variable employment_s3 "Employment status (c2011_w4)"
+
+*OCCUPATION STATUS - occupation_s3
+recode q1510_catoccu (1/2 = 1) (3/4 = 2) (5/7 = 3) (8/10 = 4), gen(occupation_s3)
+replace occupation_s3 =5 if q1501_ever_worked == 2
+recode occupation_s3 (888 = .) (999 = .)
+
+label define occupation 1 "Legislators and professionals" 2 "Technicians and clerks" 3 "Skilled workers" 4 "Plant operators and elementary occupations" 5 "Never worked"
+label value occupation_s3 occupation
+label variable occupation_s3 "Working occupation (c2011_w4)"
 ```
-
-<!--# TODO: Leer texto "Otras consideraciones a continuación -->
-
-**Otras consideraciones**
-
-    -   El **número de participantes (n) que debe aparecer en cada base de
-    datos** debe ser correspondiente con aquella que aparece en la base de datos
-    maestra u original. Para la **base de datos de la muestra completa serán
-    3002 participantes**. En el caso de la **muestra pre-confinamiento serán
-    1935 participantes**.
-
-    -   Es recomendable que revises los descriptivos de la/s variable/s
-    generadas. De esta forma podrás detectar posibles errores (e.g., un
-    porcentaje de datos perdidos que no responde a lo esperado; una prevalencia
-    de x patología muy superior o inferior a lo que la evidencia científica
-    señala).
-
-<!--# TODO: Borrar texto "Otras consideraciones" anterior -->
-
-<br> <!--# Salto de línea (i.e. párrafo vacío); añadir donde se necesite -->
 
 ```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-* TODO: Añadir `subsample_pre interview_pre` si procede (sólo para Cohorte 2019, Ola 1)
-keep ID_ECS q0007a_result proxy <variable(s) generada(s)>
+keep ID_ECS q0007a_result_s3 proxy_s3 sex_s3 agegroups_s3 marital_s3 education_s3 employment_s3 occupation_s3
 
-* TODO: Sustituir '<variable(s) generada(s)>' por las variables del dataset
-codebook <variable(s) generada(s)>
+codebook sex_s3 agegroups_s3 marital_s3 education_s3 employment_s3 occupation_s3
 ```
 
-<!--# TODO: Leer párrafos a continuación -->
-
--   Variable/s de identificación
-
-**La variable de identificación que debes incluir para la cohorte 2011 es
-ID_ECS**. Para conocer la equivalencia y las particularidades de las distintas
-variables de identificación, por favor, revisa la tabla 1 en el documento
-[LÉEME. Pautas para la creación de variables..docx](https://dauam-my.sharepoint.com/:w:/r/personal/marta_miret_uam_es/Documents/Edad%20con%20Salud/Documentacion%20Edad%20con%20Salud/Edad%20con%20salud%20-%20Ola%203/Outcomes/L%C3%89EME.%20Pautas%20para%20la%20creaci%C3%B3n%20de%20variables..docx?d=wb61214c5b3e542638e3af80472f0089c&csf=1&web=1&e=GFJJ2i)
-.
-
--   Variable(s) generada(s)
-
-Debes incluir la variable principal, así como las transformaciones pertinentes
-asociadas a esta variable. En el caso de que la/s variable/s generada/s que
-requiera/n la creación previa de otras variables, solo se incluirán aquellas que
-pueden resultar clave para entender o analizar la variable final. Por ejemplo,
-si creas una variable a partir de otra existente en la que eliminas casos con
-datos inválidos o modificas las etiquetas, no es necesario que incluyas esta
-información en este punto (tampoco en el documento de descripción). Los/as
-investigadores/as podrán verlo en el algoritmo. En caso que tengas dudas sobre
-qué variables incluir en este punto, por favor, pregunta a alguno de los/as
-compañeros responsables del proyecto.
-
--   Variables de apoyo
-
-Puesto que en ocasiones no todos los individuos contactados participan en el
-estudio (porque no quieren, porque no pueden, porque no los encontramos...) y
-dado que no todos los participantes responden a todos los ítems, se incluirán
-las siguientes variables como apoyo para la interpretación de los resultados:
-
-    -   **Variable estado de entrevista**: `q0007a_result`. El código 1 hace
-    referencia a todas las personas que han participado en el estudio.
-
-    -   **Variable proxy**: proxy El código 1 hace referencia a los
-    participantes que realizaron una entrevista proxy. Esto quiere decir que el
-    individuo seleccionado no contestó las preguntas, sino que otra persona
-    respondió en su lugar a una versión reducida del cuestionario. El código 2
-    hace referencia a los participantes que hicieron entrevista directa.
-
-Otras consideraciones:
-
--   Las bases de datos deben tener formato Stata 13 (.dta)
-
--   El nombre de estos archivos debe tener la siguiente estructura:
-"Outcome_[variablename]_[qualifier]". Se añadirá cualquier particularidad en
-caso que exista/n variable/s generadas en base a distintos criterios (e.g.,
-diagnóstico, versión reducida).
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 ```{stata save-data-test, eval=TEST}
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-saveold "Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "Outcome_sociodemo.dta", replace version(13)
 ```
 
 
 ```{stata save-data, eval=!TEST}
-* TODO: Descomentar linea correspondiente a la cohorte y ola utilizada
-* TODO: Comprobar que la ruta de destino coincide con la localización de `DOC`
-* TODO: Sustituir '<variable>' y '<qualifier>' por los valores correspondientes
-
-* Cohorte 2011, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 1 - Línea base\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13) // TODO: Aviso! El acento en "Línea" puede dar problemas con la ruta del archivo
-
-* Cohorte 2011, ola 2:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 2\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2011, ola 3:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
 * Cohorte 2011, ola 4:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola 1:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 3\Outcomes\Cohorte 2019\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
-
-* Cohorte 2019, ola post-confinamiento:
-* saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Subestudio COVID\Outcomes\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_sociodemo.dta", replace version(13)
 ```
 
 <br>
 
 # Contact person:
 
-<!--# TODO: Leer párrafo a continuación -->
-
-Incluye tu nombre completo, correo electrónico, teléfono e institución a la que
-perteneces. Si el algoritmo que has generado ha estado basado en el trabajo que
-ya había hecho otro/a compañero/a, por favor, indícalo.
-
-<!--# TODO: Borrar párrafo anterior -->
-
-<!--# TODO: Completar '<Nombre y apellidos>', 'nombre.buzon@institucion.org>', y
-'<prefijo>' y '<teléfono>' -->
-
--   Name: <Nombre y apellidos>
+-   Name: Cristina Rodríguez Prada (adapted algorithm for wave 4)
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono>
+    [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
 
 <br>
 
-<!--# TODO: Completar / eliminar "original version" según corresponda -->
 
-\< Original version:
+Original version:
 
--   Name: <Nombre y apellidos>
+-   Name: Joan Domènech
 -   e-mail:
-    [\<nombre.buzon\@institucion.org\>](mailto:nombre.buzon@institucion.org){.email}
--   Phone number: (+<prefijo>) <teléfono> \>
+    [joan.domenech@sjd.es](mailto:joan.domenech@sjd.es){.email}
 
-# References
-
-<!--# TODO: Leer párrafo a continuación -->
-
-Indica las referencias utilizadas para explicar o generar la/s variable/s. Esta
-información será igualmente útil para citar apropiadamente en nuestros artículos
-científicos.
-
-<!--# TODO: Borrar párrafo anterior -->
 
 ::: {#refs}
 :::
 
 \newpage
-
-<!--# TODO: Leer párrafos a continuación -->
-
-He terminado de generar la/s variable/s.
-
-¡Maravilloso, enhorabuena! Cuando hayas terminado de generar la/s variable/s,
-por favor, actualiza el documento
-
-    [C2011_W4_Planning_outcomes.xlsxl](https://dauam.sharepoint.com/:x:/r/sites/EdadconSalud-OutcomesC2011W4/Documentos compartidos/Outcomes C2011 W4/C2011_W4_Planning_outcomes.xlsx?d=w3e49821bd21047ab8f57ab5837db2393&csf=1&web=1&e=QQRWdn)
-
-\*Este documento hace referencia exclusiva a las variables de cohorte 2011, Ola
-4.
-
-Así, el/la compañero/a al que le corresponda podrá examinar los distintos
-archivos y, sobre todo, el algoritmo. En caso de que se detecten
-inconsistencias, errores o surjan dudas, se te comunicará para proceder con su
-revisión.
-
-Finalmente, cuando todas las variables estén generadas y revisadas se creará una
-base de datos común con todas ellas y los datos sociodemográficos principales de
-los participantes.
-
-<!--# TODO: Borrar párrafos anteriores -->
 
 # Session info
 
