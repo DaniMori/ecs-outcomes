@@ -49,8 +49,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | sex_s3             | Sex (c2011w4)                            | Categorical| 1 = Male;            |
 |                    |                                          |            | 2 = Female           |
 +--------------------+------------------------------------------+------------+----------------------+
-| age_s3             | Age, continuous (c2011_w4)               | Continuous | 29-99                |
-+--------------------+------------------------------------------+------------+----------------------+
 | agegroups_s3       | Age, categorical (c2011_w4)              | Categorical| 1 = 18-29;           |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = 30-49;           |
@@ -72,31 +70,6 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |4 = Separated/divorced|   
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = Widowed          |
-+--------------------+------------------------------------------+------------+----------------------+
-| highested_s3       | Highest level of education (c2011_w4)    | Categorical| 1 = No formal        |
-|                    |                                          |            |     education;       |
-|                    |                                          |            |                      |
-|                    |                                          |            | 2 = Primary education|
-|                    |                                          |            | not completed;       |
-|                    |                                          |            |                      |
-|                    |                                          |            | 3 = Primary education|
-|                    |                                          |            |completed             |
-|                    |                                          |            |                      |
-|                    |                                          |            | 4 = Lower secondary  |
-|                    |                                          |            |education completed   |
-|                    |                                          |            |                      |
-|                    |                                          |            | 5 = Upper secondary  |
-|                    |                                          |            |education completed,  |
-|                    |                                          |            | intermediate         |
-|                    |                                          |            |professional training |
-|                    |                                          |            |                      |
-|                    |                                          |            | 6 = University       |
-|                    |                                          |            | completed, upper     |
-|                    |                                          |            |professional training |
-|                    |                                          |            |                      |
-|                    |                                          |            | 7 = Master degree,   |
-|                    |                                          |            | PhD completed;       |
-|                    |                                          |            |                      |
 +--------------------+------------------------------------------+------------+----------------------+
 | education_s3       |Level of education, categorical (c2011_w4)| Categorical| 1 = Less than primary|
 |                    |                                          |            |;                     |
