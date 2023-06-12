@@ -92,7 +92,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            | 4 = Unemployed/ not  |
 |                    |                                          |            |     working;         |
 +--------------------+------------------------------------------+------------+----------------------+
-| occupation_s3      | Working occupation (c2011_w4)            | Ordinal    | 1 = Legislators and  |
+| occupation_s3      | Working occupation (c2011_w4)            | Categorical| 1 = Legislators and  |
 |                    |                                          |            | professionals;       |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Technicians and  |
