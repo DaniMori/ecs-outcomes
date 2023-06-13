@@ -120,21 +120,20 @@ mental health issues happens in a context modulated by sociodemographic variable
 
 # Explanation of how the variables were created
 
-- `sex_s3`. Based on `q1009_sex`, we have renamed this variable and established 
-properly the missing values. 
+- `sex_s3`. Based on `q1009_sex`, we have renamed this variable. 
   
 - `agegroups_s3`. Based on `q1011_age`, a continuous variable from 29-99, it is
 divided in 5 groups: 18-29, 30-49, 50-64, 65-79 and 80+.
 
 - `marital_s3`. Based on `q1012_mar_stat`, label values have been modified for
-suiting Sentence case format and missing values were handled properly.
+suiting 'sentence case' format.
 
 - `education_s3`. Based on `q1016_highest`, five categories are created to
 sum up education level: less than primary, primary, upper secondary, lower
 secondary and tertiary.
 
 - `employment_s3`. Based on `q1011_age`, `q1501_ever_worked`, `q1503_work_now` and
-`q1504_reason`, four categories are created:
+`q1504_reason`, four categories are created, indicating the employment situation of the person.
 
   - __never worked__ (1), using `q1501_ever_worked.` It also includes “homemakers”
   and “care family” from `q1504_reason`.
@@ -151,7 +150,7 @@ secondary and tertiary.
   
 - `occupation_s3`. Based on `q1510_catoccu` and `q1501_ever_worked`, five
 categories are established: legislators/professionals, technicians, skilled workers,
-elementary occupations and "never worked".
+elementary occupations and "never worked". This follows the OIT categorization for international comparative purposes. 
 
 # Syntax used to create the variable (Stata 15)
 
@@ -175,12 +174,11 @@ label variable agegroups_s3 "Age, categorical (c2011_w4)"
 
 * MARITAL STATUS - marital_s3
 gen marital_s3 = q1012_mar_stat
-recode marital_s3 (888=.)
 label define marital 1 "Never married (and no cohabiting)" 2 "Currently married/ law partner" 3 "Cohabiting" 4 "Separated/divorced" 5 "Widowed"
 label variable marital_s3 "Marital status (c2011w4)"
 
 *EDUCATION LEVEL - education_s3
-recode q1016_highest (0/1 = 1) (5/6 = 5) (888 = .)
+recode q1016_highest (0/1 = 1) (5/7 = 5) (888 = .)
 gen education_s3 = q1016_highest
 label define education 1 "Less than primary" 2 "Primary" 3 "Lower secondary" 4 "Upper secondary" 5 "Tertiary"
 label value education_s3 education
