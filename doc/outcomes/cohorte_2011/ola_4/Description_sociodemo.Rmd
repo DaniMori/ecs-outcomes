@@ -47,6 +47,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
 | sex_s3             | Sex (c2011w4)                            | Categorical| 1 = Male;            |
+|                    |                                          |            |                      |
 |                    |                                          |            | 2 = Female           |
 +--------------------+------------------------------------------+------------+----------------------+
 | agegroups_s3       | Age, categorical (c2011_w4)              | Categorical| 1 = 18-29;           |
