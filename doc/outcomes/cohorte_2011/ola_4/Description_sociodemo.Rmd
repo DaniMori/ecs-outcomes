@@ -46,11 +46,11 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 +--------------------+------------------------------------------+------------+----------------------+
 | Main variable name | Label                                    | Format     | Code                 |
 +:===================+:=========================================+:===========+:=====================+
-| sex_s3             | Sex (c2011w4)                            | Categorical| 1 = Male;            |
+| sex_s3             | Sex (c2011w4)                            | Nominal    | 1 = Male;            |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Female           |
 +--------------------+------------------------------------------+------------+----------------------+
-| agegroups_s3       | Age, categorical (c2011_w4)              | Categorical| 1 = 18-29;           |
+| agegroups_s3       | Age, categorical (c2011_w4)              | Nominal    | 1 = 18-29;           |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = 30-49;           |
 |                    |                                          |            |                      |
@@ -60,7 +60,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = 80+              |
 +--------------------+------------------------------------------+------------+----------------------+
-| marital_s3         | Marital status (c2011_w4)                | Categorical| 1 = Never married    |
+| marital_s3         | Marital status (c2011_w4)                | Nominal    | 1 = Never married    |
 |                    |                                          |            | and no cohabiting;   |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Currently married|
@@ -72,7 +72,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = Widowed          |
 +--------------------+------------------------------------------+------------+----------------------+
-| education_s3       |Education level, categorical (c2011_w4)   | Categorical| 1 = Less than primary|
+| education_s3       |Education level, categorical (c2011_w4)   | Nominal    | 1 = Less than primary|
 |                    |                                          |            |;                     |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Primary;         |
@@ -83,7 +83,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = Tertiary         |
 +--------------------+------------------------------------------+------------+----------------------+
-| employment_s3      | Employment status (c2011_w4)             | Categorical| 1 = Never worked/    |
+| employment_s3      | Employment status (c2011_w4)             | Nominal    | 1 = Never worked/    |
 |                    |                                          |            | homemaker;           |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Working;         |
@@ -93,7 +93,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            | 4 = Unemployed/ not  |
 |                    |                                          |            |     working;         |
 +--------------------+------------------------------------------+------------+----------------------+
-| occupation_s3      | Working occupation (c2011_w4)            | Categorical| 1 = Legislators and  |
+| occupation_s3      | Working occupation (c2011_w4)            | Nominal    | 1 = Legislators and  |
 |                    |                                          |            | professionals;       |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Technicians and  |
