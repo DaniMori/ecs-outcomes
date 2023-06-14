@@ -72,7 +72,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = Widowed          |
 +--------------------+------------------------------------------+------------+----------------------+
-| education_s3       |Level of education, categorical (c2011_w4)| Categorical| 1 = Less than primary|
+| education_s3       |Education level, categorical (c2011_w4)   | Categorical| 1 = Less than primary|
 |                    |                                          |            |;                     |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Primary;         |
@@ -183,7 +183,7 @@ recode q1016_highest (0/1 = 1) (5/7 = 5)
 gen education_s3 = q1016_highest
 label define education 1 "Less than primary" 2 "Primary" 3 "Lower secondary" 4 "Upper secondary" 5 "Tertiary"
 label value education_s3 education
-label variable education_s3 "Level of education, categorical (c2011_w4)"
+label variable education_s3 "Education level, categorical (c2011_w4)"
 
 *EMPLOYMENT STATUS - employment_s3
 gen employment_s3 =.
