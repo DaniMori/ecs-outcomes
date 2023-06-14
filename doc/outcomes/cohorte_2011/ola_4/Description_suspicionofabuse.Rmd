@@ -287,9 +287,9 @@ label variable abuse_phys_s3 "Physical and sexual abuse (c2011_w4)"
 * SUSPICION OF ABUSE
 *# "Intermediate variable abuse_dep_s3, created by selecting only the cases that
 *#   have problematic dependence or neglected dependence. Please mind that this
-*#   variable is construed by using ifelse statements: '0' and '1' are
-*#   recoded as FALSE (in Stata logical values are just 0/1 numeric)" and >1 are
-*#   the categories of 2 and 3 of dependency_s3.
+*#   variable is constructed by using `if` statements: '0' and '1' are recoded
+*#   as FALSE (in Stata logical values are just 0/1 numeric)" and >1 are the
+*#   categories of 2 and 3 of dependency_s3.
 *#   The 'if' command allows missings structure to remain intact, otherwise they
 *#   would become 1, as missing is represented as an infinite in Stata.
 
