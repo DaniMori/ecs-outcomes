@@ -174,11 +174,12 @@ label variable agegroups_s3 "Age, categorical (c2011_w4)"
 
 * MARITAL STATUS - marital_s3
 gen marital_s3 = q1012_mar_stat
-label define marital 1 "Never married (and no cohabiting)" 2 "Currently married/ law partner" 3 "Cohabiting" 4 "Separated/divorced" 5 "Widowed"
+label define marital 1 "Never married and no cohabiting" 2 "Currently married/law-partnered" 3 "Cohabiting" 4 "Separated/divorced" 5 "Widowed"
+label value marital_s3 marital
 label variable marital_s3 "Marital status (c2011w4)"
 
 *EDUCATION LEVEL - education_s3
-recode q1016_highest (0/1 = 1) (5/7 = 5) (888 = .)
+recode q1016_highest (0/1 = 1) (5/7 = 5)
 gen education_s3 = q1016_highest
 label define education 1 "Less than primary" 2 "Primary" 3 "Lower secondary" 4 "Upper secondary" 5 "Tertiary"
 label value education_s3 education
