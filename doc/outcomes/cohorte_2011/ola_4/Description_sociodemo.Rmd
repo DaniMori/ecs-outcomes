@@ -133,7 +133,8 @@ sum up education level: less than primary, primary, upper secondary, lower
 secondary and tertiary.
 
 - `employment_s3`. Based on `q1011_age`, `q1501_ever_worked`, `q1503_work_now` and
-`q1504_reason`, four categories are created, indicating the employment situation of the person.
+`q1504_reason`, four categories are created, indicating the employment situation 
+of the person.
 
   - __never worked__ (1), using `q1501_ever_worked.` It also includes “homemakers”
   and “care family” from `q1504_reason`.
@@ -150,7 +151,12 @@ secondary and tertiary.
   
 - `occupation_s3`. Based on `q1510_catoccu` and `q1501_ever_worked`, five
 categories are established: legislators/professionals, technicians, skilled workers,
-elementary occupations and "never worked". This follows the OIT categorization for international comparative purposes. 
+elementary occupations and "never worked". This follows the OIT categorization 
+for international comparative purposes. 
+
+*Note: in variables `marital_s3` and `education_s3` there's one missing value
+due to participant ID= 3500. He/she refused to answer questions 'q1012' to 'q1017' 
+when he was recontacted.
 
 # Syntax used to create the variable (Stata 15)
 
@@ -189,13 +195,17 @@ label variable education_s3 "Education level, categorical (c2011_w4)"
 gen employment_s3 =.
 
 **Never worked
-replace employment=1 if q1501_ever_worked==2 | (q1501_ever_worked==1 & (q1504_reason==1 | q1504_reason==6))
+*merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con *Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta", gen(merge_hbws2) *keepusing(q1501_ever_worked_s2)
+replace employment_s3=1 if q1501_ever_worked_s3==2 | (q1501_ever_worked_s3 == 1 & (q1504_reason==1 | q1504_reason==6))
+
 **Working 
-replace employment=2 if q1503_work_now==1 | (q1503_work_now==2 & (q1504_reason==11 | q1504_reason==13))
+replace employment_s3=2 if q1503_work_now==1 | (q1503_work_now==2 & (q1504_reason==11 | q1504_reason==13))
+
 **Retired
-replace employment=3 if (q1504_reason==5 | q1504_reason==8 | q1504_reason==9) | (q1011_age>65 & q1501_ever_worked!=2 & employment!=2)
+replace employment_s3=3 if (q1504_reason==5 | q1504_reason==8 | q1504_reason==9) | (q1011_age>65 & q1501_ever_worked_s3!=2 & employment_s3!=2)
+
 **Unemployed
-replace employment=4 if (q1504_reason==2 | q1504_reason==3 | q1504_reason==4 | q1504_reason==7 | q1504_reason==10 | q1504_reason==12 | q1504_reason==87) & (q1011_age<66)
+replace employment_s3=4 if (q1504_reason==2 | q1504_reason==3 | q1504_reason==4 | q1504_reason==7 | q1504_reason==10 | q1504_reason==12 | q1504_reason==87) & (q1011_age<66)
 
 label define employment 1 "Never worked/homemaker" 2 "Working" 3 "Retired/disabled" 4"Unemployed/not working"
 label value employment_s3 employment
