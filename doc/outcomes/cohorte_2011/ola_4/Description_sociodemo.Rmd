@@ -168,6 +168,8 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 *SEX
 gen sex_s3 = q1009_sex
+label define sex 1 "Male" 2 "Female"
+label value sex_s3 sex
 label variable sex_s3 "Sex (c2011w4)"
 
 *AGE BY GROUPS - agegroups_s3
