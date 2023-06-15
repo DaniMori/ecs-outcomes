@@ -195,7 +195,6 @@ label variable education_s3 "Education level, categorical (c2011_w4)"
 gen employment_s3 =.
 
 **Never worked
-*merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con *Salud\Ola_3\Cohorte_2011\FINAL\20190208_PES16028242_Seguimiento_final_completo_V6.dta", gen(merge_hbws2) *keepusing(q1501_ever_worked_s2)
 replace employment_s3=1 if q1501_ever_worked_s3==2 | (q1501_ever_worked_s3 == 1 & (q1504_reason==1 | q1504_reason==6))
 
 **Working 
