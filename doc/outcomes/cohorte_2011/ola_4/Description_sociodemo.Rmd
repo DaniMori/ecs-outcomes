@@ -50,7 +50,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Female           |
 +--------------------+------------------------------------------+------------+----------------------+
-| agegroups_s3       | Age, categorical (c2011_w4)              | Nominal    | 1 = 18-29;           |
+| agegroups_s3       | Age, categorical (c2011_w4)              | Ordinal    | 1 = 18-29;           |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = 30-49;           |
 |                    |                                          |            |                      |
@@ -72,7 +72,7 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                    |                                          |            |                      |
 |                    |                                          |            | 5 = Widowed          |
 +--------------------+------------------------------------------+------------+----------------------+
-| education_s3       |Education level, categorical (c2011_w4)   | Nominal    | 1 = Less than primary|
+| education_s3       |Education level, categorical (c2011_w4)   | Ordinal    | 1 = Less than primary|
 |                    |                                          |            |;                     |
 |                    |                                          |            |                      |
 |                    |                                          |            | 2 = Primary;         |
