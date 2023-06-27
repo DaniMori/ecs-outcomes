@@ -1,0 +1,209 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Health status'"
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: "`r ecs.data::get_proj_bib_file()`"
+csl: "`r ecs.data::get_proj_csl_file()`"
+nocite: '@caballero2017, @delafuente2018'
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+# Ruta al ejecutable de Stata (Ejecuta `sysdir` en Stata para encontrar la ruta)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                | Format       | Code  |
+|:-------------------|:-------------------------------------|:-------------|:------|
+| health_s3          | Health status (c2011_w4)             | Quantitative | 0-100 |
+| health_comp_s3     | Health status, comparable (c2011_w4) | Quantitative | 0-100 |
+
+# Variable description
+
+We have created a health score that can be compared (in terms of changes in
+health scores) across the three waves of the COURAGE in Europe - Edad con Salud
+project conducted in Spain. The metric of health was built from a set of
+self-reported health questions and measured tests, common in both waves. The
+procedure employed is based on a Rasch Item Response Theory (IRT) model. A
+global score ranging from 0 to 100 was obtained, with higher scores indicating
+better health, after considering a similar range of responses for each of the
+items considered to build the metric.
+
+# Explanation of how the variables were created
+
+All the original self-reported health questions, responded on a 5-point Likert
+scale from 1 ("None") to 5 ("Extreme / Cannot do") were dichotomized as
+"presence" or "absence of difficulties", recoding every value higher than 1 to a
+0. Variables recoded this way were the responses to the following items:
+`Q2001`, `Q2003`, `Q2005`, `Q2006`, `Q2007`, `Q2009`, `Q2011`, `Q2012`, `Q2013`,
+`Q2014`, `Q2015`, `Q2016`, `Q2017`, `Q2018`, `Q2019`, `Q2023`, `Q2024`, `Q2025`,
+`Q2026`, `Q2027`, `Q2028`, `Q2029`, `Q2030`, `Q2031`, `Q2032`, `Q2034`, `Q2035`,
+`Q2036`, `Q2037`, `Q2038`, `Q2039`, `Q2040`, `Q2041`, `Q2042`, `Q2043`, `Q2044`,
+`Q2045`, `Q2046`, `Q2047`, `Q2048`, `Q2051`, and `Q2052`.
+
+A similar categorization was employed for the measured tests, considering the
+25^th^ percentile of the distribution as cut-off point: A score lower than the
+25^th^ percentile of the distribution was considered as indicator of
+difficulties, whereas scores higher than the 25^th^ percentile of the
+distribution indicated the absence of difficulties.
+
+A total of 43 self-reported health questions and seven measured tests were
+identified in both waves. The measured tests employed in this survey included
+*grip strength*, *walking speed*, and the following cognitive functioning tests:
+*immediate verbal recall*, *delayed verbal recall*, *digit span backwards*,
+*digit span forward* and *verbal fluency*. In the case of *grip strength*, we
+used two different criteria: (1) using the 25^th^ percentile, as in the rest of
+the tests (for creating variable `health_s3_comp`), and (2) using the previously
+computed outcome variable after recoding the values so that `0` means "weak" and
+`1` "normal" grip strength (used for creating variable `health_s3`).
+
+After applying the Rasch IRT model, the latent score obtained was transformed
+into a 0-100 scale, with higher scores indicating a better a health status. A
+maximum of a 20% of missing values across the 50 variables was allowed before
+creating the metric of health status; that is, if there were more than 10
+missing values, the estimated score was recoded as a "missing".
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*# "Merge in ancillary datasets":
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_gripstrength.dta", gen(merge_gs)
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognition.dta", gen(merge_cog)
+
+
+*# "Create new binary variables from the measured tests":
+
+**# "Recode first into quartiles":
+xtile ws_binary  = q2513_4m_s3,       nquantiles(4)
+xtile ivr_binary = immediate_c_s3,    nquantiles(4)
+xtile dvr_binary = delayed_c_s3,      nquantiles(4)
+xtile dsb_binary = ds_backward_s3,    nquantiles(4)
+xtile dsf_binary = ds_forward_s3,     nquantiles(4)
+xtile vf_binary  = verbal_fluency_s3, nquantiles(4)
+xtile gs_binary  = grip_max_s3,       nquantiles(4)
+
+**# "Recode then as 0 (1st quartile) or 1 (the rest)":
+recode ws_binary-gs_binary (1=0) (2=1) (3=1) (4=1)
+
+**# "Recode grip strength":
+recode grip_s3 (1=0) (0=1)
+
+
+*# "Recode item values":
+recode q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff_s3 q2052_hear_diff_s3 (888=.) (2=0) (3=0) (4=0) (5=0)
+
+*# "VARIABLE `health_status`":
+
+*## "Run IRT model and estimate person parameter":
+irt 1pl q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff_s3 q2052_hear_diff_s3 grip_s3 ws_binary-vf_binary
+
+predict theta1, latent
+
+*## "Compute number of missing values and drop estimates when missing > 20%":
+egen missing_count1 = rowmiss(q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff_s3 q2052_hear_diff_s3 grip_s3 ws_binary-vf_binary)
+replace theta1 = . if missing_count1 > 10
+
+*## "Rescale and label":
+egen min_score = min(theta1)
+egen max_score = max(theta1)
+gen health_s3 = (theta1 - min_score) / (max_score - min_score) * 100
+label var health_s3 "Health status (c2011_w4)"
+
+*# "VARIABLE `health_status_comp`":
+
+*## "Run IRT model and estimate person parameter":
+irt 1pl q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff_s3 q2052_hear_diff_s3 ws_binary-gs_binary
+
+predict theta2, latent
+
+*## "Compute number of missing values and drop estimates when missing > 20%":
+egen missing_count2 = rowmiss(q2001_activ_s3 q2007_pains_s3 q2009_difficulty_s3 q2003_vigor_s3 q2036_walk_s3 q2026_walk_s3 q2041_movement_s3 q2029_climb_s3 q2046_going_s3 q2045_movement_s3 q2030_crouch_s3 q2027_stand_s3 q2043_arising_s3 q2025_sitting_s3 q2028_stand_s3 q2031_pickup_s3 q2034_reach_s3 q2040_carry_s3 q2037_wash_s3 q2038_dress_s3 q2044_toilet_s3 q2042_eating_s3 q2005_appear_s3 q2006_stay_s3 q2035_concent_s3 q2011_learn_s3 q2033_activ_s3 q2012_relat_s3 q2013_confl_s3 q2014_friend_s3 q2015_strang_s3 q2032_hh_resp_s3 q2039_daily_s3 q2016_sleep_s3 q2017_rested_s3 q2018_depr_s3 q2019_worry_s3 q2047_affect_s3 q2048_interf_s3 q2023_vis_diff_s3 q2024_vis_diff_s3 q2051_hear_diff_s3 q2052_hear_diff_s3 ws_binary-gs_binary)
+replace theta2 = . if missing_count2 > 10
+
+*## "Rescale and label":
+egen min_score_comp = min(theta2)
+egen max_score_comp = max(theta2)
+gen health_comp_s3 = (theta2 - min_score_comp) / (max_score_comp - min_score_comp) * 100
+label var health_comp_s3 "Health status, comparable (c2011_w4)"
+```
+
+<br>
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result proxy health_s3 health_comp_s3
+
+codebook health_s3 health_comp_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_healthstatus.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_healthstatus.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Daniel Morillo
+-   e-mail:
+    [daniel.morillo\@cibersam.es](mailto:daniel.morillo@cibersam.es){.email}
+-   Phone number: (+34) 91 497 58 16
+
+<br>
+
+Original version:
+
+-   Name: Darío Moreno-Agostino
+-   e-mail: [dario.moreno\@uam.es](mailto:dario.moreno@uam.es){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

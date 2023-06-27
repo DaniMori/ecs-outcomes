@@ -1,0 +1,269 @@
+---
+title: "Edad con Salud -- cohort 2011 -- w4 -- 'Sociodemographic variables'" 
+output:
+  word_document:
+    reference_docx: !expr ecs.data::get_pkg_docx_template()
+# bibliography: "`r ecs.data::get_proj_bib_file()`" ## TODO: Borrar esta línea, O BIEN deescomentar esta línea y borrar siguiente UNA VEZ completo el documento
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib ## TODO: Descomentar esta línea SI se utiliza el gestor bibliográfico, en otro caso BORRAR esta línea
+csl: "`r ecs.data::get_proj_csl_file()`"
+# nocite: '@<cita_1>, @<cita_2>' ## TODO: Descomentar y añadir cita(s) o borrar campo
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set( # Para todos los 'chunks' de código:
+  ## TODO: Descomentar si hace falta
+  # engine.path = list(stata = STATA_PATH),
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
++--------------------+------------------------------------------+------------+----------------------+
+| Main variable name | Label                                    | Format     | Code                 |
++:===================+:=========================================+:===========+:=====================+
+| sex_s3             | Sex (c2011w4)                            | Nominal    | 1 = Male;            |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Female           |
++--------------------+------------------------------------------+------------+----------------------+
+| agegroups_s3       | Age, categorical (c2011_w4)              | Ordinal    | 1 = 18-29;           |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = 30-49;           |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = 50-64;           |
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = 65-75;           |
+|                    |                                          |            |                      |
+|                    |                                          |            | 5 = 80+              |
++--------------------+------------------------------------------+------------+----------------------+
+| marital_s3         | Marital status (c2011_w4)                | Nominal    | 1 = Never married    |
+|                    |                                          |            | and no cohabiting;   |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Currently married|
+|                    |                                          |            | /law-partnered;      |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = Cohabiting;      |
+|                    |                                          |            |                      |
+|                    |                                          |            |4 = Separated/divorced|   
+|                    |                                          |            |                      |
+|                    |                                          |            | 5 = Widowed          |
++--------------------+------------------------------------------+------------+----------------------+
+| education_s3       |Education level, categorical (c2011_w4)   | Ordinal    | 1 = Less than primary|
+|                    |                                          |            |;                     |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Primary;         |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = Lower secondary; |
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = Upper secondary; |
+|                    |                                          |            |                      |
+|                    |                                          |            | 5 = Tertiary         |
++--------------------+------------------------------------------+------------+----------------------+
+| employment_s3      | Employment status (c2011_w4)             | Nominal    | 1 = Never worked/    |
+|                    |                                          |            | homemaker;           |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Working;         |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = Retired/disabled;|
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = Unemployed/ not  |
+|                    |                                          |            |     working;         |
++--------------------+------------------------------------------+------------+----------------------+
+| occupation_s3      | Working occupation (c2011_w4)            | Nominal    | 1 = Legislators and  |
+|                    |                                          |            | professionals;       |
+|                    |                                          |            |                      |
+|                    |                                          |            | 2 = Technicians and  |
+|                    |                                          |            | clerks;              |
+|                    |                                          |            |                      |
+|                    |                                          |            | 3 = Skilled workers; |
+|                    |                                          |            |                      |
+|                    |                                          |            | 4 = Plant opperators |
+|                    |                                          |            | and elementary       |
+|                    |                                          |            | occupations          |
+|                    |                                          |            |                      |
+|                    |                                          |            | 5 = Never worked;    |
++--------------------+------------------------------------------+------------+----------------------+
+
+# Variable description
+
+This dataset includes sociodemographic variables related to sex, age (continuous
+and categorical by groups), marital status, education level, employment status
+and occupation.
+
+A unique dataset is created for these variables because of the relevance that
+sociodemographic factors have in our outcome variables of interest, as 
+mental health issues happens in a context modulated by sociodemographic variables.
+
+# Explanation of how the variables were created
+
+- `sex_s3`. Based on `q1009_sex`, we have renamed this variable. 
+  
+- `agegroups_s3`. Based on `q1011_age`, a continuous variable from 29-99, it is
+divided in 5 groups: 18-29, 30-49, 50-64, 65-79 and 80+.
+
+- `marital_s3`. Based on `q1012_mar_stat`, label values have been modified for
+suiting 'sentence case' format.
+
+- `education_s3`. Based on `q1016_highest`, five categories are created to
+sum up education level: less than primary, primary, upper secondary, lower
+secondary and tertiary.
+
+- `employment_s3`. Based on `q1011_age`, `q1501_ever_worked`, `q1503_work_now` and
+`q1504_reason`, four categories are created, indicating the employment situation 
+of the person.
+
+  - __never worked__ (1), using `q1501_ever_worked.` It also includes “homemakers”
+  and “care family” from `q1504_reason`.
+  - __working__ (2), using `q1503_work_now`. It also includes ”seasonal work” and 
+  “vacation” from `q1504_reason`.
+  - __retired__ (3), for people that is older than 65 years that have ever
+  ever worked and are not working, combining q1011_age, q1501_ever_worked and
+  q1503_work_now. It also includes "health", "not permitted" and "retired" from
+  q1504_reason.
+  - __unemployed__ (4), for people who has answered "couldn't find a job",
+  "unpaid", "studies", "no need", "laid off", "doesn't want for a while" and 
+  "other" from `q1504_reason`, and are under 77 years old (`q1011_age`).
+  
+  
+- `occupation_s3`. Based on `q1510_catoccu` and `q1501_ever_worked`, five
+categories are established: legislators/professionals, technicians, skilled workers,
+elementary occupations and "never worked". This follows the OIT categorization 
+for international comparative purposes. 
+
+*Note: in variables `marital_s3` and `education_s3` there's one missing value
+due to participant ID= 3500. He/she refused to answer questions 'q1012' to 'q1017' 
+when he was recontacted.
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+*SEX
+gen sex_s3 = q1009_sex
+label define sex 1 "Male" 2 "Female"
+label value sex_s3 sex
+label variable sex_s3 "Sex (c2011w4)"
+
+*AGE BY GROUPS - agegroups_s3
+recode q1011_age_s3 (18/29 = 1) (30/49 = 2) (50/64 = 3) (65/79 = 4) (80/120 = 5) 
+gen agegroups_s3 = q1011_age_s3
+label define agegroups 1 "18-29" 2 "30-49" 3 "50-64" 4 "65-79" 5 "80+"
+label value agegroups_s3 agegroups 
+label variable agegroups_s3 "Age, categorical (c2011_w4)"
+
+
+* MARITAL STATUS - marital_s3
+gen marital_s3 = q1012_mar_stat
+label define marital 1 "Never married and no cohabiting" 2 "Currently married/law-partnered" 3 "Cohabiting" 4 "Separated/divorced" 5 "Widowed"
+label value marital_s3 marital
+label variable marital_s3 "Marital status (c2011w4)"
+
+*EDUCATION LEVEL - education_s3
+recode q1016_highest (0/1 = 1) (5/7 = 5)
+gen education_s3 = q1016_highest
+label define education 1 "Less than primary" 2 "Primary" 3 "Lower secondary" 4 "Upper secondary" 5 "Tertiary"
+label value education_s3 education
+label variable education_s3 "Education level, categorical (c2011_w4)"
+
+*EMPLOYMENT STATUS - employment_s3
+gen employment_s3 =.
+
+**Never worked
+replace employment_s3=1 if q1501_ever_worked_s3==2 | (q1501_ever_worked_s3 == 1 & (q1504_reason==1 | q1504_reason==6))
+
+**Working 
+replace employment_s3=2 if q1503_work_now==1 | (q1503_work_now==2 & (q1504_reason==11 | q1504_reason==13))
+
+**Retired
+replace employment_s3=3 if (q1504_reason==5 | q1504_reason==8 | q1504_reason==9) | (q1011_age>65 & q1501_ever_worked_s3!=2 & employment_s3!=2)
+
+**Unemployed
+replace employment_s3=4 if (q1504_reason==2 | q1504_reason==3 | q1504_reason==4 | q1504_reason==7 | q1504_reason==10 | q1504_reason==12 | q1504_reason==87) & (q1011_age<66)
+
+label define employment 1 "Never worked/homemaker" 2 "Working" 3 "Retired/disabled" 4"Unemployed/not working"
+label value employment_s3 employment
+label variable employment_s3 "Employment status (c2011_w4)"
+
+*OCCUPATION STATUS - occupation_s3
+recode q1510_catoccu (1/2 = 1) (3/4 = 2) (5/7 = 3) (8/10 = 4), gen(occupation_s3)
+replace occupation_s3 =5 if q1501_ever_worked == 2
+recode occupation_s3 (888 = .) (999 = .)
+
+label define occupation 1 "Legislators and professionals" 2 "Technicians and clerks" 3 "Skilled workers" 4 "Plant operators and elementary occupations" 5 "Never worked"
+label value occupation_s3 occupation
+label variable occupation_s3 "Working occupation (c2011_w4)"
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+keep ID_ECS q0007a_result_s3 proxy_s3 sex_s3 agegroups_s3 marital_s3 education_s3 employment_s3 occupation_s3
+
+codebook sex_s3 agegroups_s3 marital_s3 education_s3 employment_s3 occupation_s3
+```
+
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_sociodemo.dta", replace version(13)
+```
+
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+ saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_sociodemo.dta", replace version(13)
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Cristina Rodríguez Prada (adapted algorithm for wave 4)
+-   e-mail:
+    [cristina.rodriguez@inv.uam.es](mailto:cristina.rodriguez@inv.uam.es){.email}
+
+<br>
+
+
+Original version:
+
+-   Name: Joan Domènech
+-   e-mail:
+    [joan.domenech@sjd.es](mailto:joan.domenech@sjd.es){.email}
+
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```

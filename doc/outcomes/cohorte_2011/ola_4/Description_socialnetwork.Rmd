@@ -1,0 +1,230 @@
+---
+title: "Edad con Salud -- cohort 2011 -- wave 4-- 'social network'" 
+output:
+  word_document:
+   reference_docx: !expr ecs.data::get_pkg_docx_template()
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
+csl: "`r ecs.data::get_proj_csl_file()`"
+editor_options: 
+  markdown:
+    wrap: 80
+params:
+  test: true
+  double-coding: false
+---
+
+```{r setup, include=FALSE}
+# Activar los paquetes que R necesita para ejecutar el código:
+
+library(Statamarkdown)
+
+STATA_PATH <- r"(C:/Program Files (x86)/Stata15/StataSE-64.exe)"
+
+# Opciones de configuración de las salidas de R y Stata:
+
+options(width = 88) # Ancho de salida de texto en R
+
+knitr::opts_chunk$set(
+  echo        = FALSE, #   - No muestra la sintaxis en el documento
+  results     = 'hide',#   - Omite los resultados de ejecutar la sintaxis
+  cleanlog    = TRUE,  #   - Omite repetir sintaxis en resultados de Stata
+  collectcode = TRUE,  #   - Reutiliza el código de Stata de 'chunks' anteriores
+  comment     = ''     #   - No añade ningún prefijo a los resultados
+)
+
+TEST          <- params$test
+DOUBLE_CODING <- params$`double-coding` & TEST
+```
+
+# Variable information
+
+| Main variable name | Label                                                                  | Format     | Code   |
+|:------------------|:----------------------|:------------------|:------------------|
+| size_s3            | Size of the social network (c2011_w4)                                  | Continuous | 0-inf. |
+| quality_s3         | Quality of contact with the members of the social network (c2011_w4)   | Continuous | 0-8    |
+| frequency_s3       | Frequency of contact with the members of the social network (c2011_w4) | Continuous | 0-9    |
+
+# Variable description
+
+Social network is defined as "the relatively organized set of relationships that
+an individual or group has with others, including types and methods of
+communication, patterns of liking and disliking, and the strength of
+interpersonal connections" [@americanpsychologicalassociation2023].The
+structural dimension of the Berkman-Syme Social Network Index considers the
+number of the social ties, frequency and quality (closeness) of contact with the
+members of the network as components of the social network [@berkman1979].
+
+# Explanation of how the variables were created
+
+The variable related to the size of the social network (**size3_s3**)
+corresponds to the item q6101_s3 (how many people composed the social network).
+This variable ranges from 0 to infinite, with the datum indicating the number of
+social ties. The more higher is the number, the bigger is the size of the social
+network.
+
+The variable related to the quality of the social network (**quality3_s3**) was
+generated from information about close relationship with husband/wife
+(q6102_s3), parents (q6111_s3), sons (q6112_s3), grandchildren (q6113_s3), other
+relatives (q6114_s3), work colleagues (q6115_s3), friends (q6116_s3), and
+neighbour (q6117_s3). The original variables were dichotomized into 0 (whenever
+the respondent considered his/her relationship with the corresponding
+person/group as *not very close,* *not close at all*, or when he/she informed
+not having a close relationship with any member of the corresponding group), or
+1 (in the rest of cases). The final score is the summation of these dichotomized
+variables, thus ranging from 0 (lower quality of contact with the members of the
+social network) to 8 (higher quality).
+
+The variable about the frequency of social contact with the social network
+(**frequency3_s3**) was generated from the items q6211_s3 , q6212_s3, q6213_s3,
+q6214_s3, q6215_s3, q6216_s3, q6217_s3, q6218_s3, q6219_s3. Those items ask
+information about the frequency of the social contact in the last 12 months,
+respectively, with wife/husband, parents, sons, grandchildren, other relatives,
+friends, neighbours, and other people. The original variables were dichotomized
+into 0 (whenever the respondent informed having contact with the corresponding
+person/group either never or once a year), or 1 (in the rest of cases). The
+final score is the summation of these dichotomized variables, thus ranging from
+0 (lower frequency of contact with the members of the social network) to 9
+(higher frequency).
+
+# Syntax used to create the variable (Stata 15)
+
+```{stata load-data}
+
+* Cohorte 2011, ola 4:
+use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Cohorte 2011\rawdata_c2011w4.dta"
+
+```
+
+```{stata generate-outcomes, echo=!DOUBLE_CODING}
+* FREQUENCY
+
+generate frequency_spouse = q6211_spouse_s3
+recode frequency_spouse (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_spouse=0 if q6010a_spouse_s3==2 & proxy==2
+
+generate frequency_parents = q6212_parents_s3
+recode frequency_parents (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_parents=0 if q6010b_parents_s3==2 & proxy==2
+
+generate frequency_children = q6213_children_s3
+recode frequency_children (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_children=0 if q6010c_children_s3==2 & proxy==2
+
+generate frequency_grandchildren = q6214_grandch_s3
+recode frequency_grandchildren (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_grandchildren=0 if q6010d_grandch_s3==2 & proxy==2
+
+generate frequency_relatives = q6215_other_s3
+recode frequency_relatives (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_relatives=0 if q6010e_other_s3==2 & proxy==2
+
+generate frequency_coworkers = q6216_cowork_s3 
+recode frequency_coworkers (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_coworkers=0 if q6010f_cowork_s3==2 & proxy==2
+
+generate frequency_friends = q6217_friends_s3 
+recode frequency_friends (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_friends=0 if q6010g_friends_s3==2 & proxy==2
+
+generate frequency_neighbours = q6218_neighbours_s3 
+recode frequency_neighbours (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+replace frequency_neighbours=0 if q6010h_neighbours_s3==2 & proxy==2
+
+generate frequency_others = q6219_acquaintances_s3 
+recode frequency_others (1=0)(2=0)(3=1)(4=1)(5=1)(999=.)(888=.)
+
+gen frequency_s3 = frequency_spouse + frequency_parents + frequency_children + frequency_grandchildren + frequency_relatives + frequency_coworkers + frequency_friends + frequency_neighbours + frequency_others
+
+label variable frequency_s3 "Frequency of contact with the members of the social network (c2011_w4)"
+
+
+* SIZE
+
+gen size_s3 = q6101_close_s3
+recode size_s3 (888=.)
+label variable size_s3 "Size of the social network (c2011_w4)"
+
+
+* QUALITY
+
+gen quality_a = q6102_spouse_s3
+recode quality_a (1=1) (2=1) (3=0) (4=0) (999=0)
+replace quality_a = 0 if q6010a_spouse_s3 == 2 & proxy==2
+
+gen quality_b = q6111_parents_s3
+recode quality_b (1=0) (2=1) (3=1) (999=0)
+replace quality_b = 0 if q6010b_parents_s3 == 2 & proxy==2
+
+gen quality_c = q6112_children_s3
+recode quality_c (1=0) (2=1) (3=1) (999=0)
+replace quality_c = 0 if q6010c_children_s3 == 2 & proxy==2
+
+gen quality_d = q6113_grandch_s3
+recode quality_d (1=0) (2=1) (3=1) (999=0)
+replace quality_d = 0 if q6010d_grandch_s3 == 2 & proxy==2
+
+gen quality_e = q6114_other_s3
+recode quality_e (1=0) (2=1) (3=1) (999=0)
+replace quality_e = 0 if q6010e_other_s3 == 2 & proxy==2
+
+gen quality_f = q6115_cowork_s3
+recode quality_f (1=0) (2=1) (3=1) (999=0)
+replace quality_f = 0 if q6010f_cowork_s3 == 2 & proxy==2
+
+gen quality_g = q6116_friends_s3
+recode quality_g (1=0) (2=1) (3=1) (999=0)
+replace quality_g = 0 if q6010g_friends_s3 == 2 & proxy==2
+
+gen quality_h = q6117_neighbours_s3
+recode quality_h (1=0) (2=1) (3=1) (999=0)
+replace quality_h = 0 if q6010h_neighbours_s3 == 2 & proxy==2
+
+gen quality_s3 = (quality_a + quality_b + quality_c + quality_d + quality_e + quality_f + quality_g + quality_h )
+
+label variable quality_s3 "Quality of contact with the members of the social network (c2011_w4)"
+
+*/NOTE: In the questionnaire items about quality range from 1 to 3 and 999 */correspond to 'Not applicable' and has been considered has 0 (none).
+```
+
+```{stata descriptives, cleanlog=FALSE, collectcode=FALSE, results='markup', include=!DOUBLE_CODING}
+
+keep ID_ECS q0007a_result proxy size_s3 frequency_s3 quality_s3
+
+codebook size_s3 frequency_s3 quality_s3
+```
+
+```{stata save-data-test, eval=TEST}
+saveold "Outcome_socialnetwork.dta", replace version(13)
+```
+
+```{stata save-data, eval=!TEST}
+* Cohorte 2011, ola 4:
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_socialnetwork.dta", replace version(13)
+
+```
+
+<br>
+
+# Contact person:
+
+-   Name: Lea Francia
+-   e-mail: [lea.francia\@inv.uam.es](mailto:lea.francia@inv.uam.es){.email}
+-   Phone number: (+34) 914974601
+
+Original version:
+
+-   Name: Dario Moreno Agostino
+-   e-mail: [d.moreno\@ucl.ac.uk](mailto:d.moreno@ucl.ac.uk){.email}
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Session info
+
+```{r, results='markup'}
+devtools::session_info()
+```
