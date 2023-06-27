@@ -1,0 +1,66 @@
+---
+title: "Workload estimation"
+author: "Daniel Morillo"
+format:
+  docx:
+    table-of-contents: true
+    self-contained:    true
+knitr:
+  opts_chunk:
+    echo:    false
+    error:   false
+    warning: false
+    message: false
+---
+
+```{r source}
+source("../src/C2011_W4_Planning.R", encoding = 'UTF-8')
+```
+
+```{r num-outcomes}
+```
+
+# Planning
+
+The total number of outcomes planned to be carried out by each team member is
+shown in @fig-num-outcomes-output.
+
+::: {#fig-num-outcomes-output layout-ncol=3}
+
+```{r coding-member}
+#| fig-cap: to code
+coding_load
+```
+
+```{r review-member}
+#| fig-cap: to review
+review_load
+```
+
+```{r total-member}
+#| fig-cap: in total (code or review)
+total_load
+```
+
+Number of outcome documents
+:::
+
+## By date
+
+### Coding
+
+```{r coding-date}
+coding_date
+```
+
+### Review
+
+```{r review-date}
+review_date
+```
+
+### Total
+
+```{r total-date}
+total_date
+```
