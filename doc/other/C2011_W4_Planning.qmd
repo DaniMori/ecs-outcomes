@@ -19,6 +19,9 @@ source("../../src/C2011_W4_Planning.R", encoding = 'UTF-8')
 
 # Number of outcomes
 
+```{r num-outcomes}
+```
+
 ## By team member
 
 ::: {.panel-tabset}
@@ -69,6 +72,9 @@ total_date |> ggplotly()
 :::
 
 # Estimated efforts (in "relative points")
+
+```{r effort}
+```
 
 ## By team member
 

@@ -38,6 +38,8 @@ review_data <- planning_data       |>
   select(ASIGNEE = ASIGNEE...10, `DUE DATE` = `DUE DATE...11`, points = Review)
 
 
+##----num-outcomes----
+
 # Number of outcomes:
 
 ## By team member:
@@ -82,6 +84,9 @@ total_date <- bind_rows(coding_data, review_data) |>
   geom_freqpoly(stat = "identity") +
   geom_point() +
   ylim(0, 5)
+
+
+##----effort----
 
 # Estimated efforts (in "relative points"):
 
