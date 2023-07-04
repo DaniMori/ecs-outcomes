@@ -185,3 +185,36 @@ errors_summary |>
   theme(strip.background = element_blank(), strip.text.x = element_blank()) +
   guides(fill = "none", colour = "none")
 ```
+
+# Dedication
+
+The total nº of hours dedicated by each team member is detailed in
+@tbl-dedication-out. These hours are an estimate, and include the time dedicated
+to coding, review, checking the original syntax with the double coding, internal
+communication, incidence resolution, reporting, etc. Also, other members of the
+Edad con Salud team have been involved in the approval of the final versions of
+the datasets, which has included solving inconsistencies and doubts, reviewing
+and suggesting changes, and attending meetings.
+
+Information of the dedication of these members and finer-detail information of
+the dedication of the members assigned to the task are not available.
+
+```{r}
+#| label: tbl-dedication-out
+#| tbl-cap: Estimate of dedicated hours to the creation of the outcome datasets
+tribble(
+  ~Member,     ~`Estimate (hours)`,
+   "Cristina",  453,
+   "Daniel",    321,
+   "Lea",       670
+)
+```
+
+# Conclusions
+
+* The coding of the 4-th wave outcome datasets of the 2011 Cohort of Edad con
+Salud has taken a large amount of the working hours of the three team members
+involved.
+
+* The independent double coding procedure has proven to be valuable for
+detecting and correcting potential errors in the datasets.
