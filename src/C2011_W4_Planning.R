@@ -48,6 +48,7 @@ review_data <- planning_data       |>
 coding_load <- coding_data |>
   ggplot(aes(x = Assignee, fill = Assignee)) +
   geom_bar()                                 +
+  ylim(0, 31)                                +
   ylab("Outcome datasets")                   +
   guides(fill = guide_none())
 
@@ -55,6 +56,7 @@ coding_load <- coding_data |>
 review_load <- review_data |>
   ggplot(aes(x = Assignee, fill = Assignee)) +
   geom_bar()                                 +
+  ylim(0, 31)                                +
   ylab("Outcome datasets")                   +
   guides(fill = guide_none())
 
@@ -62,6 +64,7 @@ review_load <- review_data |>
 total_load <- coding_data |> bind_rows(review_data) |>
   ggplot(aes(x = Assignee, fill = Assignee)) +
   geom_bar()                                 +
+  ylim(0, 31)                                +
   ylab("Outcome datasets")                   +
   guides(fill = guide_none())
 
