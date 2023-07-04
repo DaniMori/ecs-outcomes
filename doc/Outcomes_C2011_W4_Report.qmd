@@ -20,6 +20,7 @@ knitr:
 library(knitr)
 library(patchwork)
 library(gtsummary)
+library(scales)
 ```
 
 ```{r source}
@@ -72,7 +73,8 @@ completion_data <- planning_data  |>
     SECTION:`VARIABLE (s)`,
     `Due date` = `DUE DATE...16`,
     Complete   = COMPLETE...17,
-    Incidence  = REMARKS
+    Incidence  = REMARKS,
+    starts_with("Errors")
   ) |>
   rename_with(str_to_sentence) |>
   mutate(Complete = Complete |> coalesce("No") |> str_to_sentence())
@@ -111,3 +113,75 @@ completion_data |>
 incomplete_datasets
 ```
 
+# Error detection and correction
+
+```{r error-data}
+error_data <- completion_data |> filter(Complete == "Yes")
+
+errors_summary <- error_data |>
+  pivot_longer(starts_with("Error"), names_to = "Variable") |>
+  mutate(value = value |> coalesce("No")) |>
+  group_by(Variable) |>
+  count(value) |>
+  mutate(percentage = n / sum(n)) |>
+  filter(value == "Yes")
+
+n_errors_dc <- errors_summary |>
+  filter(Variable == "Errors detected (with double coding)") |>
+  pull(n)
+perc_errors_dc <- errors_summary |>
+  filter(Variable == "Errors detected (with double coding)") |>
+  pull(percentage) |>
+  percent(accuracy = .1)
+
+n_errors_pw <- errors_summary |>
+  filter(Variable == "Errors in previous waves") |>
+  pull(n)
+perc_errors_pw <- errors_summary |>
+  filter(Variable == "Errors in previous waves") |>
+  pull(percentage) |>
+  percent(accuracy = .1)
+
+```
+
+The double coding process implemented has helped detect and correct coding
+errors in `r n_errors_dc` out of the `r n_datasets_complete` coded datasets;
+this constitutes a `r perc_errors_dc` as represented in @fig-error-data-out.
+It is worth noting that **these errors have only been detected and corrected by
+the independent double coding, and not the review process**, which highlights
+the need to implement this process in the coding of the outcome datasets of
+future waves. Additionally, by using the data from previous waves as starting
+point for the coding of the new data, we have detected errors in `r n_errors_pw`
+of the equivalent datasets in previous waves, representing a `r perc_errors_pw`
+of the coded datasets (see @fig-error-data-out).
+
+```{r error-data-out}
+#| label: fig-error-data-out
+#| fig-cap: |
+#|   Errors detected with double coding (left) and in the datasets in previous
+#|   waves.
+
+# Gauge adapted from https://pomvlad.blog/2018/05/03/gauges-ggplot2/
+errors_summary |>
+  ggplot(
+    aes(fill = Variable, ymax = percentage, ymin = 0, xmax = 2, xmin = 1)
+  ) +
+  geom_rect(aes(ymax = 1, ymin = 0, xmax = 2, xmin = 1), fill ="#ece8bd") +
+  geom_rect() + 
+  coord_polar(theta = "y", start = -pi / 2) +
+  xlim(c(0, 2)) +
+  ylim(c(0, 2)) +
+  geom_text(aes(x = 0, y = 0, label = n, colour = Variable), size = 6.5) +
+  geom_text(aes(x = 1.5, y = 1.5, label = Variable), size = 4.2) +
+  facet_wrap(~Variable) +
+  theme_void() +
+  scale_fill_manual(
+    values = c(
+      "Errors detected (with double coding)" = "red",
+      "Errors in previous waves"             = "#DA9112"
+    ),
+    aesthetics = c("colour", "fill")
+  ) +
+  theme(strip.background = element_blank(), strip.text.x = element_blank()) +
+  guides(fill = "none", colour = "none")
+```
