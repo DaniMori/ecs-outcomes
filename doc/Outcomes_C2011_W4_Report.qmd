@@ -30,41 +30,6 @@ read_chunk("../src/C2011_W4_Planning.R")
 ```{r main}
 ```
 
-# Planning
-
-The total number of outcomes assigned to each team member is shown in
-@fig-num-outcomes-output. From left to right, the figure shows the datasets
-assigned to be coded by each member, reviewed by each member, and the sum of
-both. The same information can be seen in @fig-coding-date disaggregated by due
-date.
-
-```{r num-outcomes}
-```
-
-```{r num-outcomes-output}
-#| label:   fig-num-outcomes-output
-#| fig-cap: Number of outcome datasets by team member
-coding_load <- coding_load + ggtitle("coded")
-review_load <- review_load + ggtitle("reviewed")
-total_load  <- total_load  + ggtitle("total (code + reviewed)")
-
-coding_load + review_load + total_load
-```
-
-```{r coding-date}
-#| label:   fig-coding-date
-#| fig-cap: Number of outcome datasets by team member and due date
-#| fig-height: 8.5
-coding_date <- coding_date + ggtitle("coded")    + guides(color = guide_none())
-review_date <- review_date + ggtitle("reviewed") + guides(color = guide_none())
-total_date  <- total_date            +
-  ggtitle("total (code + reviewed)") +
-  guides(color = guide_legend(title = NULL, direction = "horizontal")) +
-  theme(legend.position = "bottom")
-
-coding_date / review_date / total_date
-```
-
 # Completion
 
 ```{r}
@@ -112,6 +77,54 @@ completion_data |>
 #| tbl-cap: Detail of the incomplete datasets.
 incomplete_datasets
 ```
+
+# Planning of the outcomes
+
+The total number of outcomes assigned to each team member is shown in
+@fig-num-outcomes-output. The figure shows the datasets assigned to be coded
+(left) and reviewed by each member. The same information can be seen in
+@fig-coding-date disaggregated by due date.
+
+```{r num-outcomes}
+```
+
+```{r num-outcomes-output}
+#| label:   fig-num-outcomes-output
+#| fig-cap: Number of outcome datasets by team member
+coding_load <- coding_load + ggtitle("coded")
+review_load <- review_load + ggtitle("reviewed")
+
+coding_load + review_load
+```
+
+```{r coding-date}
+#| label:   fig-coding-date
+#| fig-cap: Number of outcome datasets by team member and due date
+#| fig-height: 8.5
+coding_date <- coding_date + ggtitle("coded") + guides(color = guide_none())
+review_date <- review_date +
+  ggtitle("reviewed") +
+  guides(color = guide_legend(title = NULL, direction = "horizontal")) +
+  theme(legend.position = "bottom")
+
+coding_date / review_date / total_date
+```
+
+These figures must be interpreted according to the following highlights:
+
+* The workload of the coding and the review steps are not comparable. Reviewing
+has been estimated to imply approximately half the effort of coding for each
+dataset, but this estimation depends on many factors.
+
+* The workload shown in these graphs refers only to the assignation of the two
+main tasks of the outcome datasets (coding and review) to each team member.
+There have been many other tasks for which the effort is difficult to take into
+account and represent graphically.
+
+* Instead of showing only the `r n_datasets_complete` we have chosen to
+represent the information of the whole `r n_datasets_total`. This is because,
+although not having been complete due to external circumstances, the team has
+put effort equally into the coding and review of those datasets.
 
 # Error detection and correction
 
