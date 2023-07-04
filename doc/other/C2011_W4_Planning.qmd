@@ -13,46 +13,14 @@ knitr:
     message: false
 ---
 
-```{r libraries}
-library(tidyverse)
-library(readxl)
-library(plotly)
-```
-
-```{r setup}
-theme_set(theme_minimal())
-```
-
-```{r load-data}
-PLANNING_DATA_PATH <- file.path(
-  '~/..',
-  r"(OneDrive - UAM\Documentación\Proyectos\Edad_con_Salud)",
-  "Outcomes C2011 W4",
-  "C2011_W4_Planning_outcomes.xlsx"
-)
-
-col_names <- PLANNING_DATA_PATH                                 |>
-  read_excel(col_names = FALSE, n_max = 1)                      |>
-  pivot_longer(everything())                                    |>
-  filter(!is.na(value), !name %in% paste0("...", c(7, 18, 19))) |>
-  select(value, name)                                           |>
-  deframe()
-
-planning_data <- PLANNING_DATA_PATH |>
-  read_excel(skip = 2)              |>
-  select(-c(...18, ...21:...25))    |>
-  rename(!!!col_names)              |>
-  select(-matches("COMPLETE"))
-
-coding_data <- planning_data      |>
-  filter(!ASIGNEE...7 |> is.na()) |>
-  select(ASIGNEE = ASIGNEE...7,  `DUE DATE` = `DUE DATE...8`,  points = Coding)
-review_data <- planning_data       |>
-  filter(!ASIGNEE...10 |> is.na()) |>
-  select(ASIGNEE = ASIGNEE...10, `DUE DATE` = `DUE DATE...11`, points = Review)
+```{r source}
+source("../../src/C2011_W4_Planning.R", encoding = 'UTF-8')
 ```
 
 # Number of outcomes
+
+```{r num-outcomes}
+```
 
 ## By team member
 
@@ -61,30 +29,18 @@ review_data <- planning_data       |>
 ### Coding
 
 ```{r coding-member}
-coding_load <- coding_data |>
-  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
-  geom_bar()
-
 coding_load |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-member}
-review_load <- review_data |>
-  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
-  geom_bar()
-
 review_load |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-member}
-total_load <- coding_data |> bind_rows(review_data) |>
-  ggplot(aes(x = ASIGNEE, fill = ASIGNEE)) +
-  geom_bar()
-
 total_load |> ggplotly()
 ```
 
@@ -98,39 +54,18 @@ total_load |> ggplotly()
 ### Coding
 
 ```{r coding-date}
-coding_date <- coding_data |>
-  count(ASIGNEE, `DUE DATE`) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point() +
-  ylim(0, 5)
-
 coding_date |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-date}
-review_date <- review_data |>
-  count(ASIGNEE, `DUE DATE`) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point() +
-  ylim(0, 5)
-
 review_date |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-date}
-total_date <- bind_rows(coding_data, review_data) |>
-  count(ASIGNEE, `DUE DATE`) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point() +
-  ylim(0, 5)
-
 total_date |> ggplotly()
 ```
 
@@ -145,34 +80,19 @@ total_date |> ggplotly()
 ### Coding
 
 ```{r coding-member-points}
-coding_load <- coding_data |>
-  count(ASIGNEE, wt = points) |>
-  ggplot(aes(x = ASIGNEE, y = n, fill = ASIGNEE)) +
-  geom_col()
-
-coding_load |> ggplotly()
+coding_effort |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-member-points}
-review_load <- review_data |>
-  count(ASIGNEE, wt = points) |>
-  ggplot(aes(x = ASIGNEE, y = n, fill = ASIGNEE)) +
-  geom_col()
-
-review_load |> ggplotly()
+review_effort |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-member-points}
-total_load <- coding_data |> bind_rows(review_data) |>
-  count(ASIGNEE, wt = points) |>
-  ggplot(aes(x = ASIGNEE, y = n, fill = ASIGNEE)) +
-  geom_col()
-
-total_load |> ggplotly()
+total_effort |> ggplotly()
 ```
 
 :::
@@ -185,37 +105,19 @@ total_load |> ggplotly()
 ### Coding
 
 ```{r coding-date-points}
-coding_date <- coding_data |>
-  count(ASIGNEE, `DUE DATE`, wt = points) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point()
-
-coding_date |> ggplotly()
+coding_effort_date |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-date-points}
-review_date <- review_data |>
-  count(ASIGNEE, `DUE DATE`, wt = points) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point()
-
-review_date |> ggplotly()
+review_effort_date |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-date-points}
-total_date <- bind_rows(coding_data, review_data) |>
-  count(ASIGNEE, `DUE DATE`, wt = points) |>
-  ggplot(aes(x = `DUE DATE`, y = n, color = ASIGNEE, group = ASIGNEE)) +
-  geom_freqpoly(stat = "identity") +
-  geom_point()
-
-total_date |> ggplotly()
+total_effort_date |> ggplotly()
 ```
 
 :::

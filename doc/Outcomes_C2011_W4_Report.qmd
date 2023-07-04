@@ -1,0 +1,242 @@
+---
+title: "Edad con Salud: Outcome dataset coding of Cohort 2011, Wave 4"
+author: "Daniel Morillo"
+format:
+  docx:
+    table-of-contents: true
+    self-contained:    true
+    fig-width:          7.75
+    fig-height:         4.25
+    df-print:          kable
+knitr:
+  opts_chunk:
+    echo:    false
+    error:   false
+    warning: false
+    message: false
+---
+
+```{r setup}
+library(knitr)
+library(patchwork)
+library(gtsummary)
+library(scales)
+```
+
+```{r source}
+read_chunk("../src/C2011_W4_Planning.R")
+```
+
+```{r main}
+```
+
+# Introduction
+
+We report the coding of the outcome datasets of the Wave 4, 2011 cohort, of the
+Edad con Salud research project. First, we give an overview of the completion of
+the outcome datasets that have been coded, and compare it with the planification
+initially made. We show the result of implementing the double coding procedure
+by reporting the errors detected and corrected, and then we give an estimate of
+the dedication to the project by the team members involved.
+
+# Completion
+
+```{r}
+completion_data <- planning_data  |>
+  select(
+    SECTION:`VARIABLE (s)`,
+    `Due date` = `DUE DATE...16`,
+    Complete   = COMPLETE...17,
+    Incidence  = REMARKS,
+    starts_with("Errors")
+  ) |>
+  rename_with(str_to_sentence) |>
+  mutate(Complete = Complete |> coalesce("No") |> str_to_sentence())
+
+n_datasets_total    <- completion_data |> nrow()
+n_datasets_complete <- completion_data |>
+  filter(Complete == "Yes") |>
+  nrow()
+
+incomplete_datasets <- completion_data |>
+  filter(Complete == "No") |>
+  select(Section:`Variable (s)`, Incidence)
+```
+
+There were `r n_datasets_total` datasets planned to be coded. Out of them,
+`r n_datasets_complete` have been successfully coded.
+However, some datasets have been found to be dependent on non-existent outcomes
+from previous waves. That means that some variables could not be created because
+the variables they depend on have not been created in previous waves, either.
+These are reported in @tbl-dependent-detail-out. Also, the details of the
+datasets that have not been coded are shown in @tbl-incomplete-detail-out.
+
+```{r dependent-detail-out}
+#| label:   tbl-dependent-detail-out
+#| tbl-cap: |
+#|   Detail of complete datasets that have had incidences due to being dependent
+#|   on non-existing variables in previous waves.
+completion_data |>
+  filter(Incidence == '"Lifetime" needs to be created') |>
+  select(-`Due date`, -Complete)
+```
+
+```{r incomplete-detail-out}
+#| label:   tbl-incomplete-detail-out
+#| tbl-cap: Detail of the incomplete datasets.
+incomplete_datasets
+```
+
+# Planning of the outcomes
+
+The total number of outcomes assigned to each team member is shown in
+@fig-num-outcomes-output. The figure shows the datasets assigned to be coded
+(left) and reviewed by each member. The same information can be seen in
+@fig-coding-date disaggregated by due date.
+
+```{r num-outcomes}
+```
+
+```{r num-outcomes-output}
+#| label:   fig-num-outcomes-output
+#| fig-cap: Number of outcome datasets by team member
+coding_load <- coding_load + ggtitle("coded")
+review_load <- review_load + ggtitle("reviewed")
+
+coding_load + review_load
+```
+
+```{r coding-date}
+#| label:   fig-coding-date
+#| fig-cap: Number of outcome datasets by team member and due date
+#| fig-height: 8.5
+coding_date <- coding_date + ggtitle("coded") + guides(color = guide_none())
+review_date <- review_date +
+  ggtitle("reviewed") +
+  guides(color = guide_legend(title = NULL, direction = "horizontal")) +
+  theme(legend.position = "bottom")
+
+coding_date / review_date / total_date
+```
+
+These figures must be interpreted according to the following highlights:
+
+* The workload of the coding and the review steps are not comparable. Reviewing
+has been estimated to imply approximately half the effort of coding for each
+dataset, but this estimation depends on many factors.
+
+* The workload shown in these graphs refers only to the assignation of the two
+main tasks of the outcome datasets (coding and review) to each team member.
+There have been many other tasks for which the effort is difficult to take into
+account and represent graphically.
+
+* Instead of showing only the `r n_datasets_complete` we have chosen to
+represent the information of the whole `r n_datasets_total`. This is because,
+although not having been complete due to external circumstances, the team has
+put effort equally into the coding and review of those datasets.
+
+# Error detection and correction
+
+```{r error-data}
+error_data <- completion_data |> filter(Complete == "Yes")
+
+errors_summary <- error_data |>
+  pivot_longer(starts_with("Error"), names_to = "Variable") |>
+  mutate(value = value |> coalesce("No")) |>
+  group_by(Variable) |>
+  count(value) |>
+  mutate(percentage = n / sum(n)) |>
+  filter(value == "Yes")
+
+n_errors_dc <- errors_summary |>
+  filter(Variable == "Errors detected (with double coding)") |>
+  pull(n)
+perc_errors_dc <- errors_summary |>
+  filter(Variable == "Errors detected (with double coding)") |>
+  pull(percentage) |>
+  percent(accuracy = .1)
+
+n_errors_pw <- errors_summary |>
+  filter(Variable == "Errors in previous waves") |>
+  pull(n)
+perc_errors_pw <- errors_summary |>
+  filter(Variable == "Errors in previous waves") |>
+  pull(percentage) |>
+  percent(accuracy = .1)
+
+```
+
+The double coding process implemented has helped detect and correct coding
+errors in `r n_errors_dc` out of the `r n_datasets_complete` coded datasets;
+this constitutes a `r perc_errors_dc` as represented in @fig-error-data-out.
+It is worth noting that **these errors have only been detected and corrected by
+the independent double coding, and not the review process**, which highlights
+the need to implement this process in the coding of the outcome datasets of
+future waves. Additionally, by using the data from previous waves as starting
+point for the coding of the new data, we have detected errors in `r n_errors_pw`
+of the equivalent datasets in previous waves, representing a `r perc_errors_pw`
+of the coded datasets (see @fig-error-data-out).
+
+```{r error-data-out}
+#| label: fig-error-data-out
+#| fig-cap: |
+#|   Errors detected with double coding (left) and in the datasets in previous
+#|   waves.
+
+# Gauge adapted from https://pomvlad.blog/2018/05/03/gauges-ggplot2/
+errors_summary |>
+  ggplot(
+    aes(fill = Variable, ymax = percentage, ymin = 0, xmax = 2, xmin = 1)
+  ) +
+  geom_rect(aes(ymax = 1, ymin = 0, xmax = 2, xmin = 1), fill ="#ece8bd") +
+  geom_rect() + 
+  coord_polar(theta = "y", start = -pi / 2) +
+  xlim(c(0, 2)) +
+  ylim(c(0, 2)) +
+  geom_text(aes(x = 0, y = 0, label = n, colour = Variable), size = 6.5) +
+  geom_text(aes(x = 1.5, y = 1.5, label = Variable), size = 4.2) +
+  facet_wrap(~Variable) +
+  theme_void() +
+  scale_fill_manual(
+    values = c(
+      "Errors detected (with double coding)" = "red",
+      "Errors in previous waves"             = "#DA9112"
+    ),
+    aesthetics = c("colour", "fill")
+  ) +
+  theme(strip.background = element_blank(), strip.text.x = element_blank()) +
+  guides(fill = "none", colour = "none")
+```
+
+# Dedication
+
+The total nº of hours dedicated by each team member is detailed in
+@tbl-dedication-out. These hours are an estimate, and include the time dedicated
+to coding, review, checking the original syntax with the double coding, internal
+communication, incidence resolution, reporting, etc. Also, other members of the
+Edad con Salud team have been involved in the approval of the final versions of
+the datasets, which has included solving inconsistencies and doubts, reviewing
+and suggesting changes, and attending meetings.
+
+Information of the dedication of these members and finer-detail information of
+the dedication of the members assigned to the task are not available.
+
+```{r}
+#| label: tbl-dedication-out
+#| tbl-cap: Estimate of dedicated hours to the creation of the outcome datasets
+tribble(
+  ~Member,     ~`Estimate (hours)`,
+   "Cristina",  453,
+   "Daniel",    321,
+   "Lea",       670
+)
+```
+
+# Conclusions
+
+* The coding of the 4-th wave outcome datasets of the 2011 Cohort of Edad con
+Salud has taken a large amount of the working hours of the three team members
+involved.
+
+* The independent double coding procedure has proven to be valuable for
+detecting and correcting potential errors in the datasets.
