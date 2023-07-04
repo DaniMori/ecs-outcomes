@@ -7,6 +7,7 @@ format:
     self-contained:    true
     fig-width:          7.75
     fig-height:         4.25
+    df-print:          kable
 knitr:
   opts_chunk:
     echo:    false
@@ -63,14 +64,50 @@ total_date  <- total_date            +
 coding_date / review_date / total_date
 ```
 
-### Review
+# Completion
 
-```{r review-date}
-review_date
+```{r}
+completion_data <- planning_data  |>
+  select(
+    SECTION:`VARIABLE (s)`,
+    `Due date` = `DUE DATE...16`,
+    Complete   = COMPLETE...17,
+    Incidence  = REMARKS
+  ) |>
+  rename_with(str_to_sentence) |>
+  mutate(Complete = Complete |> coalesce("No") |> str_to_sentence())
+
+n_datasets_total    <- completion_data |> nrow()
+n_datasets_complete <- completion_data |>
+  filter(Complete == "Yes") |>
+  nrow()
+
+incomplete_datasets <- completion_data |>
+  filter(Complete == "No") |>
+  select(Section:`Variable (s)`, Incidence)
 ```
 
-### Total
+There were `r n_datasets_total` datasets planned to be coded. Out of them,
+`r n_datasets_complete` have been successfully coded (see @tab-completion-out).
+However, some datasets have been found to be dependent on non-existent outcomes
+from previous waves. That means that some variables could not be created because
+the variables they depend on have not been created in previous waves, either.
+These are reported in @tbl-dependent-detail-out. Also, the details of the
+datasets that have not been coded are shown in @tbl-incomplete-detail-out.
 
-```{r total-date}
-total_date
+```{r dependent-detail-out}
+#| label:   tbl-dependent-detail-out
+#| tbl-cap: |
+#|   Detail of complete datasets that have had incidences due to being dependent
+#|   on non-existing variables in previous waves.
+completion_data |>
+  filter(Incidence == '"Lifetime" needs to be created') |>
+  select(-`Due date`, -Complete)
 ```
+
+```{r incomplete-detail-out}
+#| label:   tbl-incomplete-detail-out
+#| tbl-cap: Detail of the incomplete datasets.
+incomplete_datasets
+```
+
