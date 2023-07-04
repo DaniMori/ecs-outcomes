@@ -73,9 +73,6 @@ total_date |> ggplotly()
 
 # Estimated efforts (in "relative points")
 
-```{r effort}
-```
-
 ## By team member
 
 ::: {.panel-tabset}
@@ -83,19 +80,19 @@ total_date |> ggplotly()
 ### Coding
 
 ```{r coding-member-points}
-coding_load |> ggplotly()
+coding_effort |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-member-points}
-review_load |> ggplotly()
+review_effort |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-member-points}
-total_load |> ggplotly()
+total_effort |> ggplotly()
 ```
 
 :::
@@ -108,19 +105,19 @@ total_load |> ggplotly()
 ### Coding
 
 ```{r coding-date-points}
-coding_date |> ggplotly()
+coding_effort_date |> ggplotly()
 ```
 
 ### Review
 
 ```{r review-date-points}
-review_date |> ggplotly()
+review_effort_date |> ggplotly()
 ```
 
 ### Total
 
 ```{r total-date-points}
-total_date |> ggplotly()
+total_effort_date |> ggplotly()
 ```
 
 :::

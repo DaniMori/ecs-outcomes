@@ -102,7 +102,7 @@ total_date <- bind_rows(coding_data, review_data) |>
 ## By team member:
 
 ### Coding:
-coding_load <- coding_data |>
+coding_effort <- coding_data |>
   count(Assignee, wt = points) |>
   ggplot(aes(x = Assignee, y = n, fill = Assignee)) +
   geom_col() +
@@ -110,7 +110,7 @@ coding_load <- coding_data |>
   guides(fill = guide_none())
 
 ### Review:
-review_load <- review_data |>
+review_effort <- review_data |>
   count(Assignee, wt = points) |>
   ggplot(aes(x = Assignee, y = n, fill = Assignee)) +
   geom_col() +
@@ -118,7 +118,7 @@ review_load <- review_data |>
   guides(fill = guide_none())
 
 ### Total:
-total_load <- coding_data |> bind_rows(review_data) |>
+total_effort <- coding_data |> bind_rows(review_data) |>
   count(Assignee, wt = points) |>
   ggplot(aes(x = Assignee, y = n, fill = Assignee)) +
   geom_col() +
@@ -128,7 +128,7 @@ total_load <- coding_data |> bind_rows(review_data) |>
 ## By date:
 
 ### Coding:
-coding_date <- coding_data |>
+coding_effort_date <- coding_data |>
   count(Assignee, `Due date`, wt = points) |>
   ggplot(aes(x = `Due date`, y = n, color = Assignee, group = Assignee)) +
   geom_freqpoly(stat = "identity") +
@@ -136,7 +136,7 @@ coding_date <- coding_data |>
   ylab("Effort (points)")
 
 ### Review:
-review_date <- review_data |>
+review_effort_date <- review_data |>
   count(Assignee, `Due date`, wt = points) |>
   ggplot(aes(x = `Due date`, y = n, color = Assignee, group = Assignee)) +
   geom_freqpoly(stat = "identity") +
@@ -144,9 +144,10 @@ review_date <- review_data |>
   ylab("Effort (points)")
 
 ### Total:
-total_date <- bind_rows(coding_data, review_data) |>
+total_effort_date <- bind_rows(coding_data, review_data) |>
   count(Assignee, `Due date`, wt = points) |>
   ggplot(aes(x = `Due date`, y = n, color = Assignee, group = Assignee)) +
   geom_freqpoly(stat = "identity") +
   geom_point() +
   ylab("Effort (points)")
+
