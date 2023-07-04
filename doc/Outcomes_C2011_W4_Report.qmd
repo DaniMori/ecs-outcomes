@@ -30,6 +30,15 @@ read_chunk("../src/C2011_W4_Planning.R")
 ```{r main}
 ```
 
+# Introduction
+
+We report the coding of the outcome datasets of the Wave 4, 2011 cohort, of the
+Edad con Salud research project. First, we give an overview of the completion of
+the outcome datasets that have been coded, and compare it with the planification
+initially made. We show the result of implementing the double coding procedure
+by reporting the errors detected and corrected, and then we give an estimate of
+the dedication to the project by the team members involved.
+
 # Completion
 
 ```{r}
