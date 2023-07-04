@@ -116,7 +116,7 @@ review_date <- review_date +
   guides(color = guide_legend(title = NULL, direction = "horizontal")) +
   theme(legend.position = "bottom")
 
-coding_date / review_date / total_date
+coding_date / review_date
 ```
 
 These figures must be interpreted according to the following highlights:
