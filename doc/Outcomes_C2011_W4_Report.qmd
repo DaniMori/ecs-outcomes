@@ -5,6 +5,8 @@ format:
   docx:
     table-of-contents: true
     self-contained:    true
+    fig-width:          7.75
+    fig-height:         4.25
 knitr:
   opts_chunk:
     echo:    false
@@ -13,44 +15,52 @@ knitr:
     message: false
 ---
 
-```{r source}
-source("../src/C2011_W4_Planning.R", encoding = 'UTF-8')
+```{r setup}
+library(knitr)
+library(patchwork)
+library(gtsummary)
 ```
 
-```{r num-outcomes}
+```{r source}
+read_chunk("../src/C2011_W4_Planning.R")
+```
+
+```{r main}
 ```
 
 # Planning
 
-The total number of outcomes planned to be carried out by each team member is
-shown in @fig-num-outcomes-output.
+The total number of outcomes assigned to each team member is shown in
+@fig-num-outcomes-output. From left to right, the figure shows the datasets
+assigned to be coded by each member, reviewed by each member, and the sum of
+both. The same information can be seen in @fig-coding-date disaggregated by due
+date.
 
-::: {#fig-num-outcomes-output layout-ncol=3}
-
-```{r coding-member}
-#| fig-cap: to code
-coding_load
+```{r num-outcomes}
 ```
 
-```{r review-member}
-#| fig-cap: to review
-review_load
+```{r num-outcomes-output}
+#| label:   fig-num-outcomes-output
+#| fig-cap: Number of outcome datasets by team member
+coding_load <- coding_load + ggtitle("coded")
+review_load <- review_load + ggtitle("reviewed")
+total_load  <- total_load  + ggtitle("total (code + reviewed)")
+
+coding_load + review_load + total_load
 ```
-
-```{r total-member}
-#| fig-cap: in total (code or review)
-total_load
-```
-
-Number of outcome documents
-:::
-
-## By date
-
-### Coding
 
 ```{r coding-date}
-coding_date
+#| label:   fig-coding-date
+#| fig-cap: Number of outcome datasets by team member and due date
+#| fig-height: 8.5
+coding_date <- coding_date + ggtitle("coded")    + guides(color = guide_none())
+review_date <- review_date + ggtitle("reviewed") + guides(color = guide_none())
+total_date  <- total_date            +
+  ggtitle("total (code + reviewed)") +
+  guides(color = guide_legend(title = NULL, direction = "horizontal")) +
+  theme(legend.position = "bottom")
+
+coding_date / review_date / total_date
 ```
 
 ### Review
