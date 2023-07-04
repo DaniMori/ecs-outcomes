@@ -55,7 +55,7 @@ incomplete_datasets <- completion_data |>
 ```
 
 There were `r n_datasets_total` datasets planned to be coded. Out of them,
-`r n_datasets_complete` have been successfully coded (see @tab-completion-out).
+`r n_datasets_complete` have been successfully coded.
 However, some datasets have been found to be dependent on non-existent outcomes
 from previous waves. That means that some variables could not be created because
 the variables they depend on have not been created in previous waves, either.
