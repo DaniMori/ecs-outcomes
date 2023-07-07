@@ -3,7 +3,7 @@ title: "Edad con Salud -- cohort 2011 -- wave 4 -- 'Feelings of guilt (for being
 output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
-bibliography: "`r ecs.data::get_proj_bib_file()`" 
+bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib 
 csl: "`r ecs.data::get_proj_csl_file()`"
 editor_options: 
   markdown:
