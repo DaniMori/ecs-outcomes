@@ -121,7 +121,7 @@ use "~\UAM\Marta Miret Garcia - Bases de datos maestras Edad con Salud\Ola_4\Coh
 ```{stata generate-outcomes, echo=!DOUBLE_CODING}
 ***Social support 
 recode q6310_help_neig_s3 q6320_close_s3 (888=.) (999=.)
-recode q6330_concern_s3 (888=0) 
+recode q6330_concern_s3 (888=.)
 replace q6310_help_neig_s3 = 5 if q6010h_neighbours_s3==2 
 generate social_support_s3 =(q6320_close_s3+(6-q6310_help_neig_s3)+(6-q6330_concern_s3))
 replace social_support_s3 =((social_support-3)/11)*100
