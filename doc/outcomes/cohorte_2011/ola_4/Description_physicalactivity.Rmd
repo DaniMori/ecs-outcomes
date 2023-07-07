@@ -4,7 +4,6 @@ output:
   word_document:
     reference_docx: !expr ecs.data::get_pkg_docx_template()
 bibliography: ../../../../www/Edad_con_salud_outcome_vars.bib
-#bibliography: ecs.data::get_proj_bib_file()
 csl: "`r ecs.data::get_proj_csl_file()`"
 nocite: '@world_health_organization_global_2012'
 editor_options: 
