@@ -119,7 +119,7 @@ saveold "Outcome_tobaccoconsumption.dta", replace version(13)
 
 ```{stata save-data, eval=!TEST}
 * Cohorte 2011, ola 4:
-saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_<variable>_<qualifier>.dta", replace version(13)
+saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_tobaccoconsumption.dta", replace version(13)
 ```
 
 <br>
