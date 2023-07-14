@@ -106,7 +106,6 @@ saveold "Outcome_cognitivedecline.dta", replace version(13)
 
 * Cohorte 2011, ola 4:
 saveold "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\Outcome datasets\Outcome_cognitivedecline.dta", replace version(13)
-
 ```
 
 # Contact person:
