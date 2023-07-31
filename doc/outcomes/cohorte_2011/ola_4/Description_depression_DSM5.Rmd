@@ -41,6 +41,10 @@ DOUBLE_CODING <- params$`double-coding` & TEST
 |                           | depression        |               |               |
 |                           | (c2011_w4)        |               | 1 Yes         |
 +---------------------------+-------------------+---------------+---------------+
+| depression_lifetime_s3    | Lifetime          | Dichotomous   | 0 No          |
+|                           | depression        |               |               |
+|                           | (c2011_w4)        |               | 1 Yes         |
++---------------------------+-------------------+---------------+---------------+
 | depression_12m_s3         | 12 months         | Dichotomous   | 0 No          |
 |                           | depression        |               |               |
 |                           | (c2011_w4)        |               | 1 Yes         |
@@ -92,7 +96,9 @@ Composite International Diagnostic Interview.
 An algorithm based on the DSM-V was used for the endorsement of major depressive
 episodes since the last survey (`depression_3y_s3`) and in the previous 12
 months (point prevalence) (`depression_12m_s3`) using only one item
-(`q4227a_s3`). We also included a treatment variable for 12-month depression
+(`q4227a_s3`). In combination with `depression_3y_s3` we create
+`depression_lifetime_s3`, which indicates if  participant has ever had depression, 
+with the information of previous waves. We also included a treatment variable for 12-month depression
 (`depression_12treatment_s3`). These algorithms were created only for the
 non-proxy respondents. Although a variable (`depression_self_s3`) was created to
 assess the eventual presence of depression episode self-reported.
@@ -389,6 +395,23 @@ replace d_3y_comparable_s3 = 0 if (d_skipped==1 | d_crit_A_comp==0 | d_crit_C==0
 replace d_3y_comparable_s3 = 1 if  d_skipped==0 & d_crit_A_comp==1 & d_crit_C==1 & d_crit_D==1
 label values   d_3y_comparable_s3 yesno
 label variable d_3y_comparable_s3 "Inter-survey depressive episode comparable (c2011_w4)"
+
+* # LIFETIME DEPRESSION VARIABLE
+*#Merge w2
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\depression_lifetime_DSMV\Outcome_depression_DSM5_comp_w2.dta", keep(match) gen(merge_DSM5w2)
+
+*#Merge w3
+merge 1:1 ID_ECS using "~\UAM\Marta Miret Garcia - Documentacion Edad con Salud\Edad con salud - Ola 4\Outcomes\Cohorte 2011\depression_lifetime_DSMV\Outcome_depression_DSM5_comp_w3.dta", keep(match) gen(merge_DSM5w3)
+
+*#If in none of the previous waves there has been a positive in depression, create the variable with 0. 
+gen depression_lifetime_s3 = 0 if d_3y_comparable_s3 != 1 & depression_lifetime_s2_comp_w3 !=1 & depression_lifetime_s1_comp_w2 !=1 
+
+*#Indicates as positive cases in the new variable if in at least one of the previous waves there has been a positive case.
+replace depression_lifetime_s3 = 1 if (d_3y_comparable_s3 ==1 | depression_lifetime_s2_comp_w3 ==1 | depression_lifetime_s1_comp_w2 ==1) 
+
+label define depression_lifetime_s3 0 "No" 1 "Yes"
+label value depression_lifetime_s3 depression_lifetime_s3
+label variable depression_lifetime_s3 "Lifetime depression (c2011w4)"
 
 *#"12-month 'comparable', based on the intermediate 'Inter-survey comparable' and the individual item":
 gen     d_12m_comparable_s3 = .
